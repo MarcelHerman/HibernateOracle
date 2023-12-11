@@ -1,5 +1,6 @@
 package net.codejava;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
@@ -23,7 +26,6 @@ public class HibernateOracle {
 		OracleConnection oc =  OracleConnection.getInstance();
 		
 		oc.createDBSession();
-		oc.closeDBSession();
 		
 		Session session = oc.getDBSession();
 		
@@ -37,8 +39,6 @@ public class HibernateOracle {
 		//session.save(new Faktury("05-10-23","232312",3));
 		
 		
-        //oc.closeDBSession();
-
 		try
 		{
 			session = oc.getDBSession();
@@ -52,17 +52,19 @@ public class HibernateOracle {
 		try (Session session2 = oc.getDBSession()) {
             Query<Kategorie> query = session2.createQuery("FROM Kategorie", Kategorie.class);
             entities = query.getResultList();
+            oc.closeDBSession();
         } catch (Exception e) {
             e.printStackTrace();
         }
-		oc.closeDBSession();
+		//oc.closeDBSession();	
 		
         
 		System.out.println(entities);
 		System.out.println(entities.get(0).getNazwa());
+		 
 		
-		String placeholderLogin = "login";
-		String placeholderPassword = "1234";
+		String placeholderLogin = "xd";
+		String placeholderPassword = "1";
 		
 		final JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,12 +115,32 @@ public class HibernateOracle {
 	                ;
 	            }
 	        });
+		 
+		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();
+        //budSwing.tworzTabele(budSwing);
 		
+		
+		budSwing.dodajNaglowek();
+		
+		budSwing.dodajKolumne("Lp.");
+		budSwing.dodajKolumne("Nazwa");
+		for(Kategorie entry: entities)
+		{
+			budSwing.dodajWiersz();			
+			budSwing.dodajKolumne(Integer.toString(entry.getId_Kategorii()));
+			budSwing.dodajKolumne(entry.getNazwa().toString());
+		}
+		
+        
+        JTable tabSwing = budSwing.pobierzTabeleSwing();
+               
+        frame.add(new JScrollPane(tabSwing));
+	
 		frame.setJMenuBar(bar);
-		
+	
 		frame.setSize(600, 450);
         frame.setVisible(true);
-		
-	}
+       	     
+    }
 
 }
