@@ -2,6 +2,7 @@ package net.codejava;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -13,9 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 public class HibernateOracle {
 
@@ -24,6 +23,7 @@ public class HibernateOracle {
 		OracleConnection oc =  OracleConnection.getInstance();
 		
 		oc.createDBSession();
+		oc.closeDBSession();
 		
 		Session session = oc.getDBSession();
 		
@@ -36,7 +36,8 @@ public class HibernateOracle {
 		//session.save(new Produkt_Magazyn(new Produkt_Magazyn_Id(1,3),2,2));
 		//session.save(new Faktury("05-10-23","232312",3));
 		
-        oc.closeDBSession();
+		
+        //oc.closeDBSession();
 
 		try
 		{
@@ -45,6 +46,20 @@ public class HibernateOracle {
 		{
             System.out.println("Blad dodania tablicy");
 		}
+		
+		List<Kategorie> entities = null;
+		
+		try (Session session2 = oc.getDBSession()) {
+            Query<Kategorie> query = session2.createQuery("FROM Kategorie", Kategorie.class);
+            entities = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		oc.closeDBSession();
+		
+        
+		System.out.println(entities);
+		System.out.println(entities.get(0).getNazwa());
 		
 		String placeholderLogin = "login";
 		String placeholderPassword = "1234";

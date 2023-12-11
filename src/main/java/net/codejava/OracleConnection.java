@@ -48,14 +48,14 @@ public class OracleConnection {
 		config.addAnnotatedClass(Produkty.class);
 		config.addAnnotatedClass(Produkt_Magazyn.class);
 		config.addAnnotatedClass(Faktury.class);
+		
+		sessionFactory = config.buildSessionFactory();
+		session = sessionFactory.openSession();
+		transaction = session.beginTransaction();
 	}
 	
 	public Session getDBSession()
 	{
-		sessionFactory = config.buildSessionFactory();
-		session = sessionFactory.openSession();
-		transaction = session.beginTransaction();
-		
 		return session;
 	}
 	
