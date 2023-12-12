@@ -20,6 +20,8 @@ public class Produkt_Zamowienia implements java.io.Serializable, Obiekt_Do_Polec
         this.ilosc = ilosc;
     }
     
+    public Produkt_Zamowienia(){}
+    
     public int getZamowienieId()
     {
     	return produkt_zamowienia_id.getZamowienieId();

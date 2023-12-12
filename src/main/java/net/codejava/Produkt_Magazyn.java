@@ -21,6 +21,8 @@ public class Produkt_Magazyn implements java.io.Serializable, Obiekt_Do_Polecen{
 		this.stan_faktyczny = stan_faktyczny;
 		this.stan_magazynowy = stan_magazynowy;
 	}
+	
+	public Produkt_Magazyn() {}
 
 	public Produkt_Magazyn_Id getProdukt_magazyn_id() {
 		return produkt_magazyn_id;

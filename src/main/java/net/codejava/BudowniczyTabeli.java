@@ -9,11 +9,15 @@ import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
+import org.hibernate.Session;
 
 public interface BudowniczyTabeli {
 	
@@ -30,6 +34,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	private LinkedList<String> naglowek;
 	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
 	private LinkedList<Object> wiersz;
+	private Obiekt_Do_Polecen obj = null;
 
 	public void dodajNaglowek() {
 		this.naglowek = new LinkedList<String>();
@@ -103,12 +108,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         }
     }
 
-    private static class ButtonEditor extends DefaultCellEditor {
+    private class ButtonEditor extends DefaultCellEditor {
         protected JButton button;
 
         private String label;
 
         private boolean isPushed;
+        
+        private int id; 
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -129,17 +136,67 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 button.setForeground(table.getForeground());
                 button.setBackground(table.getBackground());
             }
-            label = (value == null) ? "" : value.toString();
-            button.setText(label);
+            if (column == (naglowek.size() - 1)) {
+            	label = "Usuń";
+            } else if(column == (naglowek.size() - 2)) {
+            	label = "Edytuj";
+            }      
+            else{
+            	label = (value == null) ? "" : value.toString();
+            }   
+            this.id = Integer.parseInt((String)table.getValueAt(row, 0));
+            if(obj instanceof Uzytkownicy)button.setText("kurwa");
+            else button.setText("xd");
             isPushed = true;
             return button;
         }
 
         public Object getCellEditorValue() {
             if (isPushed) {
-                // Do something when button is pressed
-                // You probably want to open a dialog here
-                JOptionPane.showMessageDialog(button, label + " Clicked");
+            	 if (this.label.equals("Edytuj")) {
+                     // Kod dla przycisku "Edytuj"
+                     JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
+                 } else if ("Usuń".equals(this.label)) {
+                     // Kod dla przycisku "Usuń"
+                	                       	 
+                	JPanel myPanel = new JPanel();
+ 	                myPanel.add(new JLabel("Czy na pewno chcesz usunąć dany rekord?"));
+ 	                
+ 	               int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	                         "Usuwanie", JOptionPane.OK_CANCEL_OPTION);
+                			
+ 	              try {
+ 	            	 if (result == JOptionPane.OK_OPTION) {
+ 	            		OracleConnection oc =  OracleConnection.getInstance();
+ 	                	oc.createDBSession();	                			
+ 	                	Session session = oc.getDBSession();
+ 	            		
+ 	                	if(obj instanceof Faktury)
+ 	                	{
+ 	                		Faktury pr = new Faktury();
+ 	 	                	pr.setId_faktury(this.id);
+ 	 	                	session.delete(pr);
+ 	                	}
+ 	                	
+ 	                	else if(obj instanceof Kategorie)
+ 	                	{
+ 	                		
+ 	                	}
+ 	                	
+ 	                	//...
+ 	                	
+ 	                	else if(obj instanceof Uzytkownicy)
+ 	 	                {
+ 	 	                	Uzytkownicy pr = new Uzytkownicy();
+ 	 	 	                pr.setId_uzytkownika(this.id);
+ 	 	 	                session.delete(pr);
+ 	 	                } 	                 
+ 	            		 
+ 	            		 oc.closeDBSession();
+ 	            	 } 	            	  
+ 	              }catch(Exception e) {	            	  
+ 	              }           			                	
+                 }
             }
             isPushed = false;
             return label;
@@ -158,6 +215,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
 	void tworzTabeleMagazyn(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Magazyny();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -183,6 +241,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Produkty();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -210,6 +269,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Kategorie();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -235,6 +295,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleFaktury(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Faktury();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -260,6 +321,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukt_Magazyn(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Produkt_Magazyn();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -287,6 +349,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukt_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Produkt_Zamowienia();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -312,6 +375,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleStany_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Stany_Zamowienia();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -335,6 +399,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProducenci(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Producenci();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -364,6 +429,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleUzytkownicy(List<Obiekt_Do_Polecen> entities)
 	{	
+		this.obj = new Uzytkownicy();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -393,6 +459,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
 	void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> entities)
 	{
+		this.obj = new Zamowienia();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -424,6 +491,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleTypy_uzytkownika(List<Obiekt_Do_Polecen> entities)
     {
+		this.obj = new Typy_uzytkownika();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
         this.dodajNaglowek();
