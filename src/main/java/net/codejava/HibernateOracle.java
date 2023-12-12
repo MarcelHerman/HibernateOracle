@@ -189,13 +189,15 @@ public class HibernateOracle {
 		 
 		 
 		 BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
-		/*
+		
 		budSwing.tworzTabeleKategorie(entities);
 		        
         JTable tabSwing = budSwing.pobierzTabeleSwing();
+        
+        JScrollPane pane = new JScrollPane(tabSwing);
                
-        frame.add(new JScrollPane(tabSwing));
-        */
+        frame.add(pane);
+        
 	
 		frame.setJMenuBar(bar);
 	
@@ -203,11 +205,12 @@ public class HibernateOracle {
         frame.setVisible(true);
         
         
-        
         pokazProduktPrzycisk.addActionListener(new ActionListener() 
 		 {
 			 @Override
-				public void actionPerformed(ActionEvent a) {
+				public void actionPerformed(ActionEvent a) {				 	
+				 	frame.remove(pane);			 	
+
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
 					
@@ -221,13 +224,66 @@ public class HibernateOracle {
 					
 					budSwing.tworzTabeleProdukty(entities);
 					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
-					 frame.add(new JScrollPane(tabSwing));
+					 frame.add(pane);
 					 frame.revalidate();
 					 frame.repaint();
 				}
-			 
+		 });
+        
+        pokazZamowieniaPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	frame.remove(pane);			 	
 
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Zamowienia", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleZamowienia(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 frame.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazUzytkownicyPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	frame.remove(pane);			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Uzytkownicy", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleUzytkownicy(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 frame.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
 		 });
        	     
     }

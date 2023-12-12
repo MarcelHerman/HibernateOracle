@@ -22,17 +22,17 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	private LinkedList<String> wiersz;
 
 	public void dodajNaglowek() {
-		naglowek = new LinkedList<String>();
+		this.naglowek = new LinkedList<String>();
 	}
 
 	public void dodajKolumne(String wartosc) {
-		if(wiersz==null)naglowek.addLast(wartosc);
-		else wiersz.addLast(wartosc);
+		if(this.wiersz==null)this.naglowek.addLast(wartosc);
+		else this.wiersz.addLast(wartosc);
 	}
 
 	public void dodajWiersz() {
-		if(wiersz!=null)dane.addLast(wiersz);
-		wiersz = new LinkedList<String>();
+		if(this.wiersz!=null)this.dane.addLast(wiersz);
+		this.wiersz = new LinkedList<String>();
 	}
 	
 	public void dodajPrzycisk(BudowniczyTabeli budowniczy)
@@ -43,17 +43,19 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	public JTable pobierzTabeleSwing()
 	{
-		if(wiersz!=null) dane.addLast(wiersz);
-		Object[] nagl = naglowek.toArray();
-		Object[][] dan = new Object[dane.size()][];
+		if(this.wiersz!=null) this.dane.addLast(wiersz);
+		Object[] nagl = this.naglowek.toArray();
+		Object[][] dan = new Object[this.dane.size()][];
 		int i = 0;
-		for(LinkedList<String> w:dane) dan[i++]=w.toArray();
+		for(LinkedList<String> w:this.dane) dan[i++]=w.toArray();
 		return new JTable(dan, nagl);
 	}
 	
 
 	void tworzTabeleMagazyn(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -71,6 +73,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -90,6 +94,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -105,6 +111,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleFaktury(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -122,6 +130,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukt_Magazyn(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Id Magazynu");
@@ -141,6 +151,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukt_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Id Zamowienia");
@@ -158,6 +170,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleStany_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Id Stanu Zamówienia");
@@ -173,6 +187,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProducenci(List<Obiekt_Do_Polecen> entities)
 	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -193,14 +209,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	}
 	
 	void tworzTabeleUzytkownicy(List<Obiekt_Do_Polecen> entities)
-	{		
+	{	
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
-		this.dodajKolumne("Nazwa");
-		this.dodajKolumne("Kontakt");
-		this.dodajKolumne("Miasto");
-		this.dodajKolumne("Ulica");
+		this.dodajKolumne("Nazwa użytkownika");
+		this.dodajKolumne("Login");
+		this.dodajKolumne("Hasło");
+		this.dodajKolumne("E-mail");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -214,7 +232,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	}
 
 	void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> entities)
-	{		
+	{
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -238,6 +258,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleTypy_uzytkownika(List<Obiekt_Do_Polecen> entities)
     {
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<String>>();
         this.dodajNaglowek();
 
         this.dodajKolumne("Lp.");
