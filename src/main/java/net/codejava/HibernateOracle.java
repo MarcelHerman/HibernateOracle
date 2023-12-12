@@ -24,7 +24,16 @@ import org.hibernate.query.Query;
 
 public class HibernateOracle {
 	
-	public static String nazwaTypu = null;
+	public static String nazwaTypu = "null";
+	
+	private static JButton pokazZalogujPrzycisk;
+	private static JButton pokazProduktPrzycisk;
+	private static JButton pokazZamowieniaPrzycisk;
+	private static JButton pokazMagazynyPrzycisk;
+	private static JButton pokazFakturyPrzycisk;
+	private static JButton pokazUzytkownicyPrzycisk;
+	private static JButton pokazWylogujPrzycisk;
+	private static JMenuBar bar;
 
 	public static void main(String[] args) {
 		
@@ -88,21 +97,36 @@ public class HibernateOracle {
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-        JMenuBar bar = new JMenuBar();
+        bar = new JMenuBar();
         
-		JButton pokazZalogujPrzycisk = new JButton("Zaloguj sie");
-		JButton pokazProduktPrzycisk = new JButton("Produkty");
-		JButton pokazZamowieniaPrzycisk = new JButton("Zamowienia");
-		JButton pokazMagazynyPrzycisk = new JButton("Magazyny");
-		JButton pokazFakturyPrzycisk = new JButton("Faktury");
-		JButton pokazUzytkownicyPrzycisk = new JButton("Uzytkownicy");
-		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
+		pokazZalogujPrzycisk = new JButton("Zaloguj sie");
+		pokazProduktPrzycisk = new JButton("Produkty");
+		pokazZamowieniaPrzycisk = new JButton("Zamowienia");
+		pokazMagazynyPrzycisk = new JButton("Magazyny");
+		pokazFakturyPrzycisk = new JButton("Faktury");
+		pokazUzytkownicyPrzycisk = new JButton("Uzytkownicy");
+		pokazWylogujPrzycisk = new JButton("Wyloguj");
 		
 		JLabel nazwaUzytkownika = new JLabel();
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
 		bar.add(pokazZalogujPrzycisk);
+		
+		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
+		
+		budSwing.tworzTabeleKategorie(entities);
+		        
+        JTable tabSwing = budSwing.pobierzTabeleSwing();
+        
+        JScrollPane pane = new JScrollPane(tabSwing);
+               
+        kontener.add(pane);
+        
+		frame.setJMenuBar(bar);
+	
+		frame.setSize(600, 450);
+        frame.setVisible(true);
 		
 		 pokazZalogujPrzycisk.addActionListener(new ActionListener() {
 
@@ -154,30 +178,12 @@ public class HibernateOracle {
 			                            	}
 			                            }
 				                		
-				                		switch(nazwaTypu) {
-				                			case "Administrator":
-						                		bar.add(pokazProduktPrzycisk);
-						                		bar.add(pokazZamowieniaPrzycisk);
-						                		bar.add(pokazUzytkownicyPrzycisk);
-				                				break;
-				                			case "Pracownik":
-				                				bar.add(pokazProduktPrzycisk);
-						                		bar.add(pokazZamowieniaPrzycisk);
-				                				bar.add(pokazFakturyPrzycisk);
-				                				break;
-				                			case "Klient":
-				                				bar.add(pokazProduktPrzycisk);
-				                				bar.add(pokazZamowieniaPrzycisk);
-				                			default:
-				                				break;
-				                		}
+			                            changeBar();
 				                		
-				                		bar.add(glue);
-				                		
-				                		nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());				         
+				                		nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());
 				                		
 				                		bar.add(nazwaUzytkownika);
-				                		bar.add(pokazWylogujPrzycisk);	
+				                		
 
 				                		break;
 			                		}
@@ -195,22 +201,47 @@ public class HibernateOracle {
 	                }
 	                ;
 	            }
-	        });
+	        });	
 		 
 		 pokazWylogujPrzycisk.addActionListener(new ActionListener() {
 			 
-			 public void actionPerformed(ActionEvent e)
+			 public void actionPerformed(ActionEvent a)
 			 {
-				 nazwaTypu = null;
+				 List<Obiekt_Do_Polecen> entities = null;
+				 nazwaTypu = "null";
 				 
 				 kontener.removeAll();
 				 
 				 bar.removeAll();
+				 try
+				 {
+					 bar.remove(pokazWylogujPrzycisk);
+             		 bar.remove(glue);
+             		 bar.remove(nazwaUzytkownika);
+				 }catch(Exception e)
+				 {
+					 
+				 }
 				 
-				 bar.add(glue);
-				 bar.add(pokazZalogujPrzycisk);
+				 oc.createDBSession();
+				 try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
 				 
+				 changeBar();
+				 budSwing.tworzTabeleKategorie(entities);
+			        
+			     JTable tabSwing = budSwing.pobierzTabeleSwing();
+			        
+			     JScrollPane pane = new JScrollPane(tabSwing);
+			               
+			     kontener.add(pane);
 				 frame.setJMenuBar(bar);
+				
 				 
 				 frame.revalidate();
 				 frame.repaint();
@@ -222,25 +253,7 @@ public class HibernateOracle {
 				 }
 			 }
 		 });
-		 
-		 
-		 BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
-		
-		budSwing.tworzTabeleKategorie(entities);
-		        
-        JTable tabSwing = budSwing.pobierzTabeleSwing();
-        
-        JScrollPane pane = new JScrollPane(tabSwing);
-               
-        kontener.add(pane);
-        
-	
-		frame.setJMenuBar(bar);
-	
-		frame.setSize(600, 450);
-        frame.setVisible(true);
-        
-        
+          
         pokazProduktPrzycisk.addActionListener(new ActionListener() 
 		 {
 			 @Override
@@ -323,4 +336,46 @@ public class HibernateOracle {
 		 });
        	     
     }
+	public static  void changeBar()
+	{
+		bar.removeAll();
+		Component glue = Box.createHorizontalGlue();
+		JLabel nazwaUzytkownika = new JLabel();
+		
+		switch(nazwaTypu)
+		{
+			case "Administrator":
+				try
+				{
+					pokazZalogujPrzycisk.setVisible(false);
+					
+				}catch(Exception e)
+				{
+					
+				}
+				bar.add(pokazProduktPrzycisk);
+        		bar.add(pokazZamowieniaPrzycisk);
+        		bar.add(pokazUzytkownicyPrzycisk);
+        		bar.add(glue);
+        		bar.add(pokazWylogujPrzycisk);	
+				break;
+			case "Pracownik":
+				bar.add(pokazProduktPrzycisk);
+        		bar.add(pokazZamowieniaPrzycisk);
+				bar.add(pokazFakturyPrzycisk);
+				bar.add(glue);
+				bar.add(pokazWylogujPrzycisk);	
+				break;
+			case "Klient":
+				bar.add(pokazProduktPrzycisk);
+				bar.add(pokazZamowieniaPrzycisk);
+				bar.add(glue);
+				bar.add(pokazWylogujPrzycisk);	
+			default:
+				bar.add(glue);
+				bar.add(pokazZalogujPrzycisk);	
+				break;
+		}
+	}
+	
 }
