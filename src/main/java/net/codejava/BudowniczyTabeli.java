@@ -165,6 +165,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
 			this.dodajKolumne(((Magazyny) entry).getMiasto().toString());
 			this.dodajKolumne(((Magazyny) entry).getUlica().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -186,10 +192,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Produkty) entry).getNazwa().toString());
 			this.dodajKolumne(Double.toString(((Produkty) entry).getCena()));
 			this.dodajKolumne(((Produkty) entry).getOpis().toString());
-			if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
-			{
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
 				this.dodajKolumne("");
 				this.dodajKolumne("");
+				break;
 			}
 		}
 	}
@@ -208,6 +215,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajWiersz();			
 			this.dodajKolumne(Integer.toString(((Kategorie) entry).getId_Kategorii()));
 			this.dodajKolumne(((Kategorie) entry).getNazwa().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	
@@ -227,6 +242,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Integer.toString(((Faktury) entry).getId_faktury()));
 			this.dodajKolumne(((Faktury) entry).getData_wystawienia().toString());
 			this.dodajKolumne(((Faktury) entry).getNIP().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -248,6 +269,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getProdukt_id()));			
 			this.dodajKolumne(Double.toString(((Produkt_Magazyn) entry).getStan_faktyczny()));
 			this.dodajKolumne(Double.toString(((Produkt_Magazyn) entry).getStan_magazynowy()));
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -267,6 +294,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getZamowienieId()));
 			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getProduktId()));
 			this.dodajKolumne(Double.toString(((Produkt_Zamowienia) entry).getIlosc()));
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -284,6 +317,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajWiersz();			
 			this.dodajKolumne(Integer.toString(((Stany_Zamowienia) entry).getId_Stanu_Zamowienia()));
 			this.dodajKolumne(((Stany_Zamowienia) entry).getNazwa().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -307,6 +346,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Producenci) entry).getKontakt().toString());
 			this.dodajKolumne(((Producenci) entry).getMiasto().toString());
 			this.dodajKolumne(((Producenci) entry).getUlica().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -330,6 +375,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Uzytkownicy) entry).getLogin().toString());
 			this.dodajKolumne(((Uzytkownicy) entry).getHaslo().toString());
 			this.dodajKolumne(((Uzytkownicy) entry).getE_mail().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 
@@ -355,6 +406,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Double.toString(((Zamowienia) entry).getKoszt()));
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getId_stanu_zamowienia()));
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
 		}
 	}
 	
@@ -372,6 +429,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             this.dodajWiersz();
             this.dodajKolumne(Integer.toString(((Typy_uzytkownika) entry).getId_typu_uzytkownika()));
             this.dodajKolumne(((Typy_uzytkownika) entry).getNazwa().toString());
+			switch(HibernateOracle.nazwaTypu) {
+			case("Administrator"):
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+				break;
+			}
         }
     }
 	
