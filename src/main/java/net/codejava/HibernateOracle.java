@@ -89,6 +89,7 @@ public class HibernateOracle {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
         JMenuBar bar = new JMenuBar();
+        
 		JButton pokazZalogujPrzycisk = new JButton("Zaloguj sie");
 		JButton pokazProduktPrzycisk = new JButton("Produkty");
 		JButton pokazZamowieniaPrzycisk = new JButton("Zamowienia");
@@ -97,8 +98,9 @@ public class HibernateOracle {
 		JButton pokazUzytkownicyPrzycisk = new JButton("Uzytkownicy");
 		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
 		
-		Component glue = Box.createHorizontalGlue();
+		JLabel nazwaUzytkownika = new JLabel();
 		
+		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
 		bar.add(pokazZalogujPrzycisk);
 		
@@ -172,7 +174,9 @@ public class HibernateOracle {
 				                		
 				                		bar.add(glue);
 				                		
-				                		bar.add(new JLabel(uzytkownik.getNazwa_uzytkownika()));
+				                		nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());				         
+				                		
+				                		bar.add(nazwaUzytkownika);
 				                		bar.add(pokazWylogujPrzycisk);	
 
 				                		break;
@@ -192,6 +196,32 @@ public class HibernateOracle {
 	                ;
 	            }
 	        });
+		 
+		 pokazWylogujPrzycisk.addActionListener(new ActionListener() {
+			 
+			 public void actionPerformed(ActionEvent e)
+			 {
+				 nazwaTypu = null;
+				 
+				 kontener.removeAll();
+				 
+				 bar.removeAll();
+				 
+				 bar.add(glue);
+				 bar.add(pokazZalogujPrzycisk);
+				 
+				 frame.setJMenuBar(bar);
+				 
+				 frame.revalidate();
+				 frame.repaint();
+				 
+				 try {
+					 
+				 } catch(Exception e3) {
+					 System.out.println("Wylogowanie sie nie powiodlo");
+				 }
+			 }
+		 });
 		 
 		 
 		 BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
