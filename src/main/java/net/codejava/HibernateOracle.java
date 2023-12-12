@@ -138,20 +138,8 @@ public class HibernateOracle {
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();
         //budSwing.tworzTabele(budSwing);
 		
-		
-		budSwing.dodajNaglowek();
-		
-		budSwing.dodajKolumne("Lp.");
-		budSwing.dodajKolumne("Nazwa");
-		
-		for(Obiekt_Do_Polecen entry: entities)
-		{
-			budSwing.dodajWiersz();			
-			budSwing.dodajKolumne(Integer.toString(((Kategorie) entry).getId_Kategorii()));
-			budSwing.dodajKolumne(((Kategorie) entry).getNazwa().toString());
-		}
-		
-        
+		budSwing.tworzTabeleKategorie(entities);
+		        
         JTable tabSwing = budSwing.pobierzTabeleSwing();
                
         frame.add(new JScrollPane(tabSwing));
@@ -162,5 +150,7 @@ public class HibernateOracle {
         frame.setVisible(true);
        	     
     }
+	
+	
 
 }

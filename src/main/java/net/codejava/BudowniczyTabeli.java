@@ -52,37 +52,52 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	}
 	
 
-	void tworzTabeleMagazyn(BudowniczyTabeli budowniczy, List<Obiekt_Do_Polecen> entities)
+	void tworzTabeleMagazyn(List<Obiekt_Do_Polecen> entities)
 	{
-		budowniczy.dodajNaglowek();
+		this.dodajNaglowek();
 		
-		budowniczy.dodajKolumne("Lp.");
-		budowniczy.dodajKolumne("Miasto");
-		budowniczy.dodajKolumne("Ulica");
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Miasto");
+		this.dodajKolumne("Ulica");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
-			budowniczy.dodajWiersz();			
-			budowniczy.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
-			budowniczy.dodajKolumne(((Magazyny) entry).getMiasto().toString());
-			budowniczy.dodajKolumne(((Magazyny) entry).getUlica().toString());
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
+			this.dodajKolumne(((Magazyny) entry).getMiasto().toString());
+			this.dodajKolumne(((Magazyny) entry).getUlica().toString());
 		}
 	}
 	
-	void tworzTabeleProdukty(BudowniczyTabeli budowniczy, List<Obiekt_Do_Polecen> entities)
+	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
-		budowniczy.dodajNaglowek();
+		this.dodajNaglowek();
 		
-		budowniczy.dodajKolumne("Lp.");
-		budowniczy.dodajKolumne("Miasto");
-		budowniczy.dodajKolumne("Ulica");
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Miasto");
+		this.dodajKolumne("Ulica");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
-			budowniczy.dodajWiersz();			
-			budowniczy.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
-			budowniczy.dodajKolumne(((Magazyny) entry).getMiasto().toString());
-			budowniczy.dodajKolumne(((Magazyny) entry).getUlica().toString());
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
+			this.dodajKolumne(((Magazyny) entry).getMiasto().toString());
+			this.dodajKolumne(((Magazyny) entry).getUlica().toString());
+		}
+	}
+	
+	void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities)
+	{
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Nazwa");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Kategorie) entry).getId_Kategorii()));
+			this.dodajKolumne(((Kategorie) entry).getNazwa().toString());
 		}
 	}
 }
