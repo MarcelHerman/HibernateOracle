@@ -48,10 +48,10 @@ public class HibernateOracle {
             System.out.println("Blad dodania tablicy");
 		}
 		
-		List<Kategorie> entities = null;
+		List<Obiekt_Do_Polecen> entities = null;
 		
 		try (Session session2 = oc.getDBSession()) {
-            Query<Kategorie> query = session2.createQuery("FROM Kategorie", Kategorie.class);
+            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
             entities = query.getResultList();
             oc.closeDBSession();
         } catch (Exception e) {
@@ -59,8 +59,10 @@ public class HibernateOracle {
         }
 		//oc.closeDBSession();	
 		
+		Kategorie kat = (Kategorie)entities.get(0);
+		
 		System.out.println(entities);
-		System.out.println(entities.get(0).getNazwa());
+		System.out.println(kat.getNazwa());
 		 
 		
 		String placeholderLogin = "xd";
@@ -141,11 +143,12 @@ public class HibernateOracle {
 		
 		budSwing.dodajKolumne("Lp.");
 		budSwing.dodajKolumne("Nazwa");
-		for(Kategorie entry: entities)
+		
+		for(Obiekt_Do_Polecen entry: entities)
 		{
 			budSwing.dodajWiersz();			
-			budSwing.dodajKolumne(Integer.toString(entry.getId_Kategorii()));
-			budSwing.dodajKolumne(entry.getNazwa().toString());
+			budSwing.dodajKolumne(Integer.toString(((Kategorie) entry).getId_Kategorii()));
+			budSwing.dodajKolumne(((Kategorie) entry).getNazwa().toString());
 		}
 		
         

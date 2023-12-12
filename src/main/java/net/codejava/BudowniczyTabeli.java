@@ -1,6 +1,7 @@
 package net.codejava;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JTable;
 
@@ -51,19 +52,37 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	}
 	
 
-	void tworzTabele(BudowniczyTabeli budowniczy)
+	void tworzTabeleMagazyn(BudowniczyTabeli budowniczy, List<Obiekt_Do_Polecen> entities)
 	{
 		budowniczy.dodajNaglowek();
+		
 		budowniczy.dodajKolumne("Lp.");
-		budowniczy.dodajKolumne("Imię");
-		budowniczy.dodajKolumne("Nazwisko");
-		budowniczy.dodajWiersz();
-		budowniczy.dodajKolumne("1");
-		budowniczy.dodajKolumne("Jan");
-		budowniczy.dodajKolumne("xd");
-		budowniczy.dodajWiersz();
-		budowniczy.dodajKolumne("2");
-		budowniczy.dodajKolumne("Jan");
-		budowniczy.dodajKolumne("xd");
+		budowniczy.dodajKolumne("Miasto");
+		budowniczy.dodajKolumne("Ulica");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			budowniczy.dodajWiersz();			
+			budowniczy.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
+			budowniczy.dodajKolumne(((Magazyny) entry).getMiasto().toString());
+			budowniczy.dodajKolumne(((Magazyny) entry).getUlica().toString());
+		}
+	}
+	
+	void tworzTabeleProdukty(BudowniczyTabeli budowniczy, List<Obiekt_Do_Polecen> entities)
+	{
+		budowniczy.dodajNaglowek();
+		
+		budowniczy.dodajKolumne("Lp.");
+		budowniczy.dodajKolumne("Miasto");
+		budowniczy.dodajKolumne("Ulica");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			budowniczy.dodajWiersz();			
+			budowniczy.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
+			budowniczy.dodajKolumne(((Magazyny) entry).getMiasto().toString());
+			budowniczy.dodajKolumne(((Magazyny) entry).getUlica().toString());
+		}
 	}
 }
