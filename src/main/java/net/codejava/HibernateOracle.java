@@ -24,7 +24,7 @@ import org.hibernate.query.Query;
 
 public class HibernateOracle {
 	
-	public static String nazwaTypu = null;
+	public static String nazwaTypu = "null";
 
 	public static void main(String[] args) {
 		
@@ -178,6 +178,9 @@ public class HibernateOracle {
 				                		
 				                		bar.add(nazwaUzytkownika);
 				                		bar.add(pokazWylogujPrzycisk);	
+				                		
+				                		bar.revalidate();
+				                		bar.repaint();
 
 				                		break;
 			                		}
@@ -201,16 +204,20 @@ public class HibernateOracle {
 			 
 			 public void actionPerformed(ActionEvent e)
 			 {
-				 nazwaTypu = null;
+				 nazwaTypu = "null";
 				 
 				 kontener.removeAll();
 				 
 				 bar.removeAll();
+				 			 
+				 bar.setVisible(true);
 				 
 				 bar.add(glue);
+				 pokazZalogujPrzycisk.setVisible(true);
 				 bar.add(pokazZalogujPrzycisk);
 				 
-				 frame.setJMenuBar(bar);
+				 bar.revalidate();
+				 bar.repaint();
 				 
 				 frame.revalidate();
 				 frame.repaint();
