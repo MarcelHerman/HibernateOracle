@@ -191,6 +191,11 @@ public class HibernateOracle {
 				                		
 				                		bar.revalidate();
 				                		bar.repaint();
+				                		
+				                		kontener.removeAll();
+				                		
+				                		frame.revalidate();
+				                		frame.repaint();
 
 				                		break;
 			                		}
