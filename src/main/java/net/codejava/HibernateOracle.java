@@ -2,6 +2,7 @@ package net.codejava;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -78,6 +79,11 @@ public class HibernateOracle {
 		String placeholderPassword = "1";
 		
 		final JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
+		
+		JPanel kontener = new JPanel();
+		frame.setContentPane(kontener);
+		
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
         JMenuBar bar = new JMenuBar();
@@ -166,8 +172,8 @@ public class HibernateOracle {
 				                		
 				                		bar.add(glue);
 				                		
+				                		bar.add(pokazWylogujPrzycisk);	
 				                		bar.add(new JLabel(uzytkownik.getNazwa_uzytkownika()));
-				                		bar.add(pokazWylogujPrzycisk);				              						                		
 
 				                		break;
 			                		}
@@ -196,7 +202,7 @@ public class HibernateOracle {
         
         JScrollPane pane = new JScrollPane(tabSwing);
                
-        frame.add(pane);
+        kontener.add(pane);
         
 	
 		frame.setJMenuBar(bar);
@@ -209,7 +215,7 @@ public class HibernateOracle {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {				 	
-				 	frame.remove(pane);			 	
+				 	kontener.removeAll();			 	
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -226,7 +232,7 @@ public class HibernateOracle {
 					 JTable tabSwing = budSwing.pobierzTabeleSwing();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
-					 frame.add(pane);
+					 kontener.add(pane);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -236,7 +242,7 @@ public class HibernateOracle {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	frame.remove(pane);			 	
+				 	kontener.removeAll();		 	
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -253,7 +259,7 @@ public class HibernateOracle {
 					 JTable tabSwing = budSwing.pobierzTabeleSwing();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
-					 frame.add(pane);
+					 kontener.add(pane);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -263,7 +269,7 @@ public class HibernateOracle {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	frame.remove(pane);			 	
+				 	kontener.removeAll();			 	
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -280,7 +286,7 @@ public class HibernateOracle {
 					 JTable tabSwing = budSwing.pobierzTabeleSwing();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
-					 frame.add(pane);
+					 kontener.add(pane);
 					 frame.revalidate();
 					 frame.repaint();
 				}
