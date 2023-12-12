@@ -19,4 +19,14 @@ public class Produkt_Zamowienia_Id implements Serializable {
 		this.id_produktu = produkty_id_produktu;
 	}
 	
+	public int getZamowienieId()
+	{
+		return id_zamowienia;
+	}
+	
+	public int getProduktId()
+	{
+		return id_produktu;
+	}
+	
 }

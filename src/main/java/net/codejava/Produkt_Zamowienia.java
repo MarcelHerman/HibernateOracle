@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Produkt_Zamowienia")
-public class Produkt_Zamowienia implements java.io.Serializable {
+public class Produkt_Zamowienia implements java.io.Serializable, Obiekt_Do_Polecen {
 
     @EmbeddedId
     private Produkt_Zamowienia_Id produkt_zamowienia_id;
@@ -19,7 +19,16 @@ public class Produkt_Zamowienia implements java.io.Serializable {
         this.produkt_zamowienia_id = produkt_zamowienia_id;
         this.ilosc = ilosc;
     }
-
+    
+    public int getZamowienieId()
+    {
+    	return produkt_zamowienia_id.getZamowienieId();
+    }
+    
+    public int getProduktId()
+    {
+    	return produkt_zamowienia_id.getProduktId();
+    }
 
     public float getIlosc() {
         return ilosc;

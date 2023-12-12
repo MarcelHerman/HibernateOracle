@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Stany_Zamowienia {
+public class Stany_Zamowienia implements Obiekt_Do_Polecen{
     private int id_stanu_zamowienia;
     private String nazwa;
     public Stany_Zamowienia() {

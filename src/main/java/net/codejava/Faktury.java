@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Faktury {
+public class Faktury implements Obiekt_Do_Polecen{
 	private int id_faktury;
 	private String data_wystawienia;
 	private String NIP;

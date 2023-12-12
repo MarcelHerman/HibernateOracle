@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Produkt_Magazyn")
-public class Produkt_Magazyn implements java.io.Serializable{
+public class Produkt_Magazyn implements java.io.Serializable, Obiekt_Do_Polecen{
 	
 	@EmbeddedId
 	private Produkt_Magazyn_Id produkt_magazyn_id;
@@ -25,7 +25,17 @@ public class Produkt_Magazyn implements java.io.Serializable{
 	public Produkt_Magazyn_Id getProdukt_magazyn_id() {
 		return produkt_magazyn_id;
 	}
+	
+	public int getProdukt_id()
+	{
+		return produkt_magazyn_id.getProductId();
+	}
 
+	public int getMagazyn_id()
+	{
+		return produkt_magazyn_id.getMagazyntId();
+	}
+	
 	public void setProdukt_magazyn_id(Produkt_Magazyn_Id produkt_magazyn_id) {
 		this.produkt_magazyn_id = produkt_magazyn_id;
 	}

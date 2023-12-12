@@ -19,4 +19,14 @@ public class Produkt_Magazyn_Id implements Serializable {
 		this.produkty_id_produktu = produkty_id_produktu;
 	}
 	
+	public int getProductId()
+	{
+		return produkty_id_produktu;
+	}
+	
+	public int getMagazyntId()
+	{
+		return magazyny_id_zamowienia;
+	}
+	
 }
