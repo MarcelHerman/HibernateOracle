@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Typy_uzytkownika {
+public class Typy_uzytkownika implements Obiekt_Do_Polecen {
 	private int id_typu_uzytkownika;
 	private String nazwa;
 	public Typy_uzytkownika() {

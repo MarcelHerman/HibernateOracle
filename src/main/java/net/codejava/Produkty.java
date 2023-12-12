@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Produkty {
+public class Produkty implements Obiekt_Do_Polecen{
 	private int id_produktu;
 	private String nazwa;
 	private double cena;

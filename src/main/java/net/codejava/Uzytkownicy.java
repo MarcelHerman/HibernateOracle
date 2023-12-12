@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Uzytkownicy {
+public class Uzytkownicy implements Obiekt_Do_Polecen {
 	private int id_uzytkownika;
 	private String nazwa_uzytkownika;
 	private String login;

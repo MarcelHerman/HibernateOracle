@@ -30,7 +30,7 @@ public class HibernateOracle {
 		
 		Session session = oc.getDBSession();
 		
-		//session.save(new Kategorie("laptopy"));
+		//session.save(new Kategorie("Plytki"));
 		//session.save(new Zamowienia(15.25,"Wiej","Hallera",1,3));
 		//session.save(new Producenci("Biedronka","238989","Bialystok","Pogodna"));
 		//session.save(new Produkty("wiadro 2000",52.32,"jeszcze fajniejsze",1,1));

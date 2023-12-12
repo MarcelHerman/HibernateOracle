@@ -1,5 +1,5 @@
 package net.codejava;
 
-public class Obiekt_Do_Polecen {
+public interface Obiekt_Do_Polecen {
 
 }

@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Magazyny {
+public class Magazyny implements Obiekt_Do_Polecen {
 	private int id_magazynu;
 	private String miasto;
 	private String ulica;

@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Kategorie {
+public class Kategorie implements Obiekt_Do_Polecen{
 	private int id_kategorii;
 	private String nazwa;
 	public Kategorie() {
