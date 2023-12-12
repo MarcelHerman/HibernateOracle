@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,7 +59,6 @@ public class HibernateOracle {
         }
 		//oc.closeDBSession();	
 		
-        
 		System.out.println(entities);
 		System.out.println(entities.get(0).getNazwa());
 		 
@@ -96,21 +96,38 @@ public class HibernateOracle {
 	                
 	                try {
 	                	if (result == JOptionPane.OK_OPTION) {
-		                	if(loginField.getText().equals(placeholderLogin ) && hasloField.getText().equals(placeholderPassword)) {
-		                		System.out.println("zalogowano");
-		                		zaloguj.setVisible(false);
-		                		bar.remove(zaloguj);
-		                		
-		                		bar.add(new JLabel(placeholderLogin));
-		                	}
-		                	else
-		                	{
-		                		System.out.println("nie zalogowano");
-		                	}
+	                		
+	                		oc.createDBSession();
+	                		List<Uzytkownicy> uzytkownicy = null;
+	                		try (Session session2 = oc.getDBSession()) {
+	                            Query<Uzytkownicy> query = session2.createQuery("FROM Uzytkownicy", Uzytkownicy.class);
+	                            uzytkownicy = query.getResultList();
+	                            oc.closeDBSession();
+	                        } catch (Exception e1) {
+	                            e1.printStackTrace();
+	                        }
+	                		for(Uzytkownicy uzytkownik: uzytkownicy) {
+			                	if(loginField.getText().equals(uzytkownik.getLogin())) {
+			                		if(hasloField.getText().equals(uzytkownik.getHaslo()))
+			                		{
+				                		System.out.println("zalogowano");
+				                		zaloguj.setVisible(false);
+				                		bar.remove(zaloguj);
+				                		
+				                		bar.add(new JLabel(uzytkownik.getNazwa_uzytkownika()));
+				                		break;
+			                		}
+			                		else
+			                		{
+			                			System.out.println("Podano zle haslo");
+			                			break;
+			                		}
+			                	}
+	                		}
 		                }
 	                    
 	                } catch (Exception ex) {
-	                    JOptionPane.showMessageDialog(null, "Jakis Blad.");
+	                    JOptionPane.showMessageDialog(null, "Podano zle dane logowania.");
 	                }
 	                ;
 	            }
