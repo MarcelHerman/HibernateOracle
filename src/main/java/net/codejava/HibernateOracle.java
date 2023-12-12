@@ -91,6 +91,7 @@ public class HibernateOracle {
 		JButton pokazFakturyPrzycisk = new JButton("Faktury");
 		JButton pokazUzytkownicyPrzycisk = new JButton("Uzytkownicy");
 		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
+		JButton pokazKategoriePrzycisk = new JButton("Kategorie");
 		
 		JLabel nazwaUzytkownika = new JLabel();
 		
@@ -169,6 +170,7 @@ public class HibernateOracle {
 						                		bar.add(pokazProduktPrzycisk);
 						                		bar.add(pokazZamowieniaPrzycisk);
 						                		bar.add(pokazUzytkownicyPrzycisk);
+						                		bar.add(pokazKategoriePrzycisk);
 				                				break;
 				                			case "Pracownik":
 				                				bar.add(pokazProduktPrzycisk);
@@ -335,6 +337,33 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleUzytkownicy(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazKategoriePrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleKategorie(entities);
 					 JTable tabSwing = budSwing.pobierzTabeleSwing();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 

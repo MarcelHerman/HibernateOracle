@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -145,8 +147,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	label = (value == null) ? "" : value.toString();
             }   
             this.id = Integer.parseInt((String)table.getValueAt(row, 0));
-            if(obj instanceof Uzytkownicy)button.setText("kurwa");
-            else button.setText("xd");
+            button.setText(label);
             isPushed = true;
             return button;
         }
@@ -154,8 +155,83 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         public Object getCellEditorValue() {
             if (isPushed) {
             	 if (this.label.equals("Edytuj")) {
-                     // Kod dla przycisku "Edytuj"
+            		// Kod dla przycisku "Edytuj"
+                 	JTextField pierwszyField = new JTextField(7);
+	                JTextField drugiField = new JTextField(7);
+	                JTextField trzeciField = new JTextField(7);
+	                JTextField czwartyField = new JTextField(7);
+	                JTextField piatyField = new JTextField(7);
+            		 
+ 	                JPanel myPanel = new JPanel();
+	                
+	                if(obj instanceof Faktury)
+	                	{
+	                	
+	                		myPanel.add(new JLabel("Data wystawienia: "));
+	                		myPanel.add(pierwszyField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("NIP:"));
+	                		myPanel.add(drugiField);
+	                		//kij w te faktury
+	                		Faktury pr = new Faktury();
+	 	                	pr.setId_faktury(this.id);	 	                	
+	                	}
+	                	
+	                	else if(obj instanceof Kategorie)
+	                	{
+	                		myPanel.add(new JLabel("Nazwa kategorii: "));
+	                		myPanel.add(pierwszyField);
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();	                			
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	                		Kategorie kat = new Kategorie(pierwszyField.getText());
+	     	                		kat.setId_Kategorii(this.id);
+	     	                		
+	     	                		session.update(kat);
+	     	                		
+	     	                		oc.closeDBSession();
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 JOptionPane.showMessageDialog(null, "Nie udalo sie edytowac.");
+	                		 }	                		
+	                	}
+	                	
+	                	else if(obj instanceof Uzytkownicy)
+	 	                {
+	 	                	Uzytkownicy pr = new Uzytkownicy();
+	 	 	                pr.setId_uzytkownika(this.id);
+	 	                } 	 
+	                	else if(obj instanceof Produkty)
+	 	                {
+	 	                	Produkty pr = new Produkty();
+	 	 	                pr.setId_produktu(this.id);
+	 	                } 	 
+	                	else if(obj instanceof Zamowienia)
+	 	                {
+	 	                	Zamowienia pr = new Zamowienia();
+	 	 	                pr.setId_zamowienia(this.id);
+	 	                } 	 
+	                	else if(obj instanceof Magazyny)
+	 	                {
+	 	                	Magazyny pr = new Magazyny();
+	 	 	                pr.setId_magazynu(this.id);
+	 	                } 
+	                	else if(obj instanceof Producenci)
+	 	                {
+	                		Producenci pr = new Producenci();
+	 	 	                pr.setId_producenta(this.id);
+	 	                } 
+ 	                
                      JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
+                     
                  } else if ("Usuń".equals(this.label)) {
                      // Kod dla przycisku "Usuń"
                 	                       	 
@@ -180,17 +256,41 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                	
  	                	else if(obj instanceof Kategorie)
  	                	{
- 	                		
+ 	                		Kategorie pr = new Kategorie();
+ 	 	                	pr.setId_Kategorii(this.id);
+ 	 	                	session.delete(pr);
  	                	}
- 	                	
- 	                	//...
  	                	
  	                	else if(obj instanceof Uzytkownicy)
  	 	                {
  	 	                	Uzytkownicy pr = new Uzytkownicy();
  	 	 	                pr.setId_uzytkownika(this.id);
  	 	 	                session.delete(pr);
- 	 	                } 	                 
+ 	 	                } 	 
+ 	                	else if(obj instanceof Produkty)
+ 	 	                {
+ 	 	                	Produkty pr = new Produkty();
+ 	 	 	                pr.setId_produktu(this.id);
+ 	 	 	                session.delete(pr);
+ 	 	                } 	 
+ 	                	else if(obj instanceof Zamowienia)
+ 	 	                {
+ 	 	                	Zamowienia pr = new Zamowienia();
+ 	 	 	                pr.setId_zamowienia(this.id);
+ 	 	 	                session.delete(pr);
+ 	 	                } 	 
+ 	                	else if(obj instanceof Magazyny)
+ 	 	                {
+ 	 	                	Magazyny pr = new Magazyny();
+ 	 	 	                pr.setId_magazynu(this.id);
+ 	 	 	                session.delete(pr);
+ 	 	                } 
+ 	                	else if(obj instanceof Producenci)
+ 	 	                {
+ 	                		Producenci pr = new Producenci();
+ 	 	 	                pr.setId_producenta(this.id);
+ 	 	 	                session.delete(pr);
+ 	 	                } 
  	            		 
  	            		 oc.closeDBSession();
  	            	 } 	            	  
