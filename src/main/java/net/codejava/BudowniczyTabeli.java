@@ -1,15 +1,25 @@
 package net.codejava;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 public interface BudowniczyTabeli {
 	
 	public void dodajNaglowek();
 	
-	public void dodajKolumne(String wartosc);
+	public void dodajKolumne(Object wartosc);
 	
 	public void dodajWiersz();
 }
@@ -18,21 +28,21 @@ public interface BudowniczyTabeli {
 class BudowniczyTabeliSwing implements BudowniczyTabeli
 {
 	private LinkedList<String> naglowek;
-	private LinkedList<LinkedList<String>> dane = new LinkedList<LinkedList<String>>();
-	private LinkedList<String> wiersz;
+	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
+	private LinkedList<Object> wiersz;
 
 	public void dodajNaglowek() {
 		this.naglowek = new LinkedList<String>();
 	}
 
-	public void dodajKolumne(String wartosc) {
-		if(this.wiersz==null)this.naglowek.addLast(wartosc);
+	public void dodajKolumne(Object wartosc) {
+		if(this.wiersz==null)this.naglowek.addLast(wartosc.toString());
 		else this.wiersz.addLast(wartosc);
 	}
 
 	public void dodajWiersz() {
 		if(this.wiersz!=null)this.dane.addLast(wiersz);
-		this.wiersz = new LinkedList<String>();
+		this.wiersz = new LinkedList<Object>();
 	}
 	
 	public void dodajPrzycisk(BudowniczyTabeli budowniczy)
@@ -44,18 +54,105 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	public JTable pobierzTabeleSwing()
 	{
 		if(this.wiersz!=null) this.dane.addLast(wiersz);
+		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
+		{
+			this.naglowek.addLast(" ");
+			this.naglowek.addLast(" ");
+		}
 		Object[] nagl = this.naglowek.toArray();
 		Object[][] dan = new Object[this.dane.size()][];
 		int i = 0;
-		for(LinkedList<String> w:this.dane) dan[i++]=w.toArray();
-		return new JTable(dan, nagl);
+		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
+		JTable jt = new JTable(dan, nagl);
+			
+		if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
+            TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
+            buttonColumn.setCellRenderer(new ButtonRenderer());
+            buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+
+            TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
+            buttonColumn2.setCellRenderer(new ButtonRenderer());
+            buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
+        }
+		
+		return jt;
 	}
+	
+	private static class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(UIManager.getColor("Button.background"));
+            }
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
+    }
+
+    private static class ButtonEditor extends DefaultCellEditor {
+        protected JButton button;
+
+        private String label;
+
+        private boolean isPushed;
+
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            if (isSelected) {
+                button.setForeground(table.getSelectionForeground());
+                button.setBackground(table.getSelectionBackground());
+            } else {
+                button.setForeground(table.getForeground());
+                button.setBackground(table.getBackground());
+            }
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            return button;
+        }
+
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                // Do something when button is pressed
+                // You probably want to open a dialog here
+                JOptionPane.showMessageDialog(button, label + " Clicked");
+            }
+            isPushed = false;
+            return label;
+        }
+
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+
+        protected void fireEditingStopped() {
+            super.fireEditingStopped();
+        }
+    }
 	
 
 	void tworzTabeleMagazyn(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -74,13 +171,13 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
 		this.dodajKolumne("Nazwa");
 		this.dodajKolumne("Cena");
-		this.dodajKolumne("Opis");
+		this.dodajKolumne("Opis");		
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -89,13 +186,18 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Produkty) entry).getNazwa().toString());
 			this.dodajKolumne(Double.toString(((Produkty) entry).getCena()));
 			this.dodajKolumne(((Produkty) entry).getOpis().toString());
+			if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
+			{
+				this.dodajKolumne("");
+				this.dodajKolumne("");
+			}
 		}
 	}
 	
 	void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -112,7 +214,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleFaktury(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -131,7 +233,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleProdukt_Magazyn(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Id Magazynu");
@@ -152,7 +254,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleProdukt_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Id Zamowienia");
@@ -171,7 +273,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleStany_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Id Stanu Zamówienia");
@@ -188,7 +290,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleProducenci(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -211,7 +313,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleUzytkownicy(List<Obiekt_Do_Polecen> entities)
 	{	
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
@@ -234,13 +336,13 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> entities)
 	{
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
 		
 		this.dodajKolumne("Lp.");
-		this.dodajKolumne("Nazwa");
-		this.dodajKolumne("Koszt");
 		this.dodajKolumne("Miasto wysyłki");
+		this.dodajKolumne("Ulica wysyłki");
+		this.dodajKolumne("Koszt");
 		this.dodajKolumne("Id stanu zamowienia");
 		this.dodajKolumne("Id Użytkownika");
 		
@@ -248,9 +350,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		{
 			this.dodajWiersz();			
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getId_zamowienia()));
-			this.dodajKolumne(Double.toString(((Zamowienia) entry).getKoszt()));
 			this.dodajKolumne(((Zamowienia) entry).getAdres_wysylki_miasto().toString());
 			this.dodajKolumne(((Zamowienia) entry).getAdres_wysylki_ulica().toString());
+			this.dodajKolumne(Double.toString(((Zamowienia) entry).getKoszt()));
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getId_stanu_zamowienia()));
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 		}
@@ -259,7 +361,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	void tworzTabeleTypy_uzytkownika(List<Obiekt_Do_Polecen> entities)
     {
 		this.wiersz = null;
-		this.dane =  new LinkedList<LinkedList<String>>();
+		this.dane =  new LinkedList<LinkedList<Object>>();
         this.dodajNaglowek();
 
         this.dodajKolumne("Lp.");
@@ -272,4 +374,5 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             this.dodajKolumne(((Typy_uzytkownika) entry).getNazwa().toString());
         }
     }
+	
 }

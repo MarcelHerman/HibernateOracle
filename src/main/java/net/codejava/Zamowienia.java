@@ -22,6 +22,8 @@ public class Zamowienia implements Obiekt_Do_Polecen {
 	@ManyToOne
 	@JoinColumn(name = "uzytkownicy_id_uzytkownika")
 	private int uzytkownicy_id_uzytkownika;
+	
+	public Zamowienia() {}
 
 	public Zamowienia(double koszt, String adres_wysylki_miasto, String adres_wysylki_ulica, int id_stanu_zamowienia,
 			int uzytkownicy_id_uzytkownika) {
@@ -47,7 +49,7 @@ public class Zamowienia implements Obiekt_Do_Polecen {
 		return koszt;
 	}
 
-	public void setKoszt(float koszt) {
+	public void setKoszt(double koszt) {
 		this.koszt = koszt;
 	}
 

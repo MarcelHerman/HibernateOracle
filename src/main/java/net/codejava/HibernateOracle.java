@@ -23,6 +23,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class HibernateOracle {
+	
+	public static String nazwaTypu = null;
 
 	public static void main(String[] args) {
 		
@@ -141,10 +143,8 @@ public class HibernateOracle {
 				                		oc.createDBSession();
 				                		Session session2 = oc.getDBSession();
 				                		Query<Typy_uzytkownika> query = session2.createQuery("FROM Typy_uzytkownika", Typy_uzytkownika.class);
-			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();
-			                            
-			                            String nazwaTypu = null;
-			                            
+			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();                           
+			                                
 			                            for(Typy_uzytkownika typ: typyUzytkownika) {
 			                            	if(typ.getId_typu_uzytkownika() == uzytkownik.getId_typu_uzytkownika()) {
 			                            		nazwaTypu = typ.getNazwa();
@@ -172,8 +172,8 @@ public class HibernateOracle {
 				                		
 				                		bar.add(glue);
 				                		
-				                		bar.add(pokazWylogujPrzycisk);	
 				                		bar.add(new JLabel(uzytkownik.getNazwa_uzytkownika()));
+				                		bar.add(pokazWylogujPrzycisk);	
 
 				                		break;
 			                		}
