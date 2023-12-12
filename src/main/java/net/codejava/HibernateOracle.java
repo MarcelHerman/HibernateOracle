@@ -63,19 +63,13 @@ public class HibernateOracle {
 		List<Obiekt_Do_Polecen> entities = null;
 		
 		try (Session session2 = oc.getDBSession()) {
-            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty", Obiekt_Do_Polecen.class);
             entities = query.getResultList();
             oc.closeDBSession();
         } catch (Exception e) {
             e.printStackTrace();
         }
-		//oc.closeDBSession();	
-		
-		Kategorie kat = (Kategorie)entities.get(0);
-		
-		System.out.println(entities);
-		System.out.println(kat.getNazwa());
-		 
+		//oc.closeDBSession();			 
 		
 		String placeholderLogin = "xd";
 		String placeholderPassword = "1";
@@ -103,6 +97,22 @@ public class HibernateOracle {
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
 		bar.add(pokazZalogujPrzycisk);
+		
+		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
+		
+		budSwing.tworzTabeleProdukty(entities);
+		        
+        JTable tabSwing = budSwing.pobierzTabeleSwing();
+        
+        JScrollPane pane = new JScrollPane(tabSwing);
+               
+        kontener.add(pane);
+        
+	
+		frame.setJMenuBar(bar);
+	
+		frame.setSize(600, 450);
+        frame.setVisible(true);
 		
 		 pokazZalogujPrzycisk.addActionListener(new ActionListener() {
 
@@ -202,22 +212,39 @@ public class HibernateOracle {
 		 
 		 pokazWylogujPrzycisk.addActionListener(new ActionListener() {
 			 
-			 public void actionPerformed(ActionEvent e)
+			 public void actionPerformed(ActionEvent a)
 			 {
+				 List<Obiekt_Do_Polecen> entities = null;
 				 nazwaTypu = "null";
 				 
 				 kontener.removeAll();
 				 
 				 bar.removeAll();
-				 			 
 				 bar.setVisible(true);
+
+				 oc.createDBSession();
+				 try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
 				 
-				 bar.add(glue);
+				 budSwing.tworzTabeleProdukty(entities);
+			        
+			     JTable tabSwing = budSwing.pobierzTabeleSwing();
+			        
+			     JScrollPane pane = new JScrollPane(tabSwing);
+			               
+			     kontener.add(pane);
+			     bar.add(glue);
 				 pokazZalogujPrzycisk.setVisible(true);
 				 bar.add(pokazZalogujPrzycisk);
 				 
 				 bar.revalidate();
 				 bar.repaint();
+				
 				 
 				 frame.revalidate();
 				 frame.repaint();
@@ -230,24 +257,7 @@ public class HibernateOracle {
 			 }
 		 });
 		 
-		 
-		 BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
-		
-		budSwing.tworzTabeleKategorie(entities);
-		        
-        JTable tabSwing = budSwing.pobierzTabeleSwing();
-        
-        JScrollPane pane = new JScrollPane(tabSwing);
-               
-        kontener.add(pane);
-        
-	
-		frame.setJMenuBar(bar);
-	
-		frame.setSize(600, 450);
-        frame.setVisible(true);
-        
-        
+
         pokazProduktPrzycisk.addActionListener(new ActionListener() 
 		 {
 			 @Override
