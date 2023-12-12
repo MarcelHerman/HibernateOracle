@@ -58,7 +58,7 @@ public class Produkty implements Obiekt_Do_Polecen{
 		return cena;
 	}
 
-	public void setCena(float cena) {
+	public void setCena(double cena) {
 		this.cena = cena;
 	}
 

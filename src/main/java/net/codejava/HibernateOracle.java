@@ -187,18 +187,21 @@ public class HibernateOracle {
 	            }
 	        });
 		 
+		 
 		 BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
-		
+		/*
 		budSwing.tworzTabeleKategorie(entities);
 		        
         JTable tabSwing = budSwing.pobierzTabeleSwing();
                
         frame.add(new JScrollPane(tabSwing));
+        */
 	
 		frame.setJMenuBar(bar);
 	
 		frame.setSize(600, 450);
         frame.setVisible(true);
+        
         
         
         pokazProduktPrzycisk.addActionListener(new ActionListener() 
@@ -215,11 +218,16 @@ public class HibernateOracle {
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
+					
 					budSwing.tworzTabeleProdukty(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 
+					 frame.add(new JScrollPane(tabSwing));
+					 frame.revalidate();
+					 frame.repaint();
 				}
 			 
-			 JTable tabSwing = budSwing.pobierzTabeleSwing();
-			 //fireTableStructureChanged();
+
 		 });
        	     
     }
