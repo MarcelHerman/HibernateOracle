@@ -78,7 +78,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		return jt;
 	}
 	
-	private static class ButtonRenderer extends JButton implements TableCellRenderer {
+	private class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() {
             setOpaque(true);
         }
@@ -91,7 +91,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 setForeground(table.getForeground());
                 setBackground(UIManager.getColor("Button.background"));
             }
-            setText((value == null) ? "" : value.toString());
+            if (column == (naglowek.size() - 1)) {
+                setText("Usuń");
+            } else if(column == (naglowek.size() - 2)) {
+            	setText("Edytuj");
+            }      
+            else{
+                setText((value == null) ? "" : value.toString());
+            }
             return this;
         }
     }
