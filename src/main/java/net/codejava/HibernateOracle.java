@@ -166,9 +166,8 @@ public class HibernateOracle {
 				                		
 				                		bar.add(glue);
 				                		
-				                		bar.add(pokazWylogujPrzycisk);
 				                		bar.add(new JLabel(uzytkownik.getNazwa_uzytkownika()));
-				                		
+				                		bar.add(pokazWylogujPrzycisk);				              						                		
 
 				                		break;
 			                		}
@@ -188,8 +187,7 @@ public class HibernateOracle {
 	            }
 	        });
 		 
-		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();
-        //budSwing.tworzTabele(budSwing);
+		 BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
 		
 		budSwing.tworzTabeleKategorie(entities);
 		        
@@ -201,6 +199,28 @@ public class HibernateOracle {
 	
 		frame.setSize(600, 450);
         frame.setVisible(true);
+        
+        
+        pokazProduktPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					budSwing.tworzTabeleProdukty(entities);
+				}
+			 
+			 JTable tabSwing = budSwing.pobierzTabeleSwing();
+			 //fireTableStructureChanged();
+		 });
        	     
     }
 }
