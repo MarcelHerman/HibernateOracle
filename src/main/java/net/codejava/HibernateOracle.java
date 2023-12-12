@@ -1,6 +1,7 @@
 package net.codejava;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -39,6 +40,14 @@ public class HibernateOracle {
 		//session.save(new Produkt_Magazyn(new Produkt_Magazyn_Id(1,3),2,2));
 		//session.save(new Faktury("05-10-23","232312",3));
 		
+		//session.save(new Typy_uzytkownika("Administrator"));
+		//session.save(new Typy_uzytkownika("Pracownik"));
+		//session.save(new Typy_uzytkownika("Klient"));
+		
+		//session.save(new Uzytkownicy("Mariusz", "admin","admin", "admin@wp.pl", 2));
+		//session.save(new Uzytkownicy("Pawel", "pracownik","pracownik", "pracownik@wp.pl", 3));
+		//session.save(new Uzytkownicy("Leokadia", "uzytkownik","uzytkownik", "admin@wp.pl", 4));
+		
 		
 		try
 		{
@@ -72,14 +81,20 @@ public class HibernateOracle {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
         JMenuBar bar = new JMenuBar();
-		JButton zaloguj = new JButton("Zaloguj sie");
-		JButton dodajProduktPrzycisk = new JButton("Produkty");
+		JButton pokazZalogujPrzycisk = new JButton("Zaloguj sie");
+		JButton pokazProduktPrzycisk = new JButton("Produkty");
+		JButton pokazZamowieniaPrzycisk = new JButton("Zamowienia");
+		JButton pokazMagazynyPrzycisk = new JButton("Magazyny");
+		JButton pokazFakturyPrzycisk = new JButton("Faktury");
+		JButton pokazUzytkownicyPrzycisk = new JButton("Uzytkownicy");
+		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
 		
-		bar.add(dodajProduktPrzycisk);
-		bar.add(Box.createHorizontalGlue());
-		bar.add(zaloguj);
+		Component glue = Box.createHorizontalGlue();
 		
-		 zaloguj.addActionListener(new ActionListener() {
+		bar.add(glue);
+		bar.add(pokazZalogujPrzycisk);
+		
+		 pokazZalogujPrzycisk.addActionListener(new ActionListener() {
 
 	            public void actionPerformed(ActionEvent e) {
 	            	JTextField loginField = new JTextField(5);
@@ -113,10 +128,48 @@ public class HibernateOracle {
 			                		if(hasloField.getText().equals(uzytkownik.getHaslo()))
 			                		{
 				                		System.out.println("zalogowano");
-				                		zaloguj.setVisible(false);
-				                		bar.remove(zaloguj);
+				                		pokazZalogujPrzycisk.setVisible(false);
+				                		bar.remove(pokazZalogujPrzycisk);
+				                		bar.remove(glue);
 				                		
+				                		oc.createDBSession();
+				                		Session session2 = oc.getDBSession();
+				                		Query<Typy_uzytkownika> query = session2.createQuery("FROM Typy_uzytkownika", Typy_uzytkownika.class);
+			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();
+			                            
+			                            String nazwaTypu = null;
+			                            
+			                            for(Typy_uzytkownika typ: typyUzytkownika) {
+			                            	if(typ.getId_typu_uzytkownika() == uzytkownik.getId_typu_uzytkownika()) {
+			                            		nazwaTypu = typ.getNazwa();
+			                            		break;
+			                            	}
+			                            }
+				                		
+				                		switch(nazwaTypu) {
+				                			case "Administrator":
+						                		bar.add(pokazProduktPrzycisk);
+						                		bar.add(pokazZamowieniaPrzycisk);
+						                		bar.add(pokazUzytkownicyPrzycisk);
+				                				break;
+				                			case "Pracownik":
+				                				bar.add(pokazProduktPrzycisk);
+						                		bar.add(pokazZamowieniaPrzycisk);
+				                				bar.add(pokazFakturyPrzycisk);
+				                				break;
+				                			case "Klient":
+				                				bar.add(pokazProduktPrzycisk);
+				                				bar.add(pokazZamowieniaPrzycisk);
+				                			default:
+				                				break;
+				                		}
+				                		
+				                		bar.add(glue);
+				                		
+				                		bar.add(pokazWylogujPrzycisk);
 				                		bar.add(new JLabel(uzytkownik.getNazwa_uzytkownika()));
+				                		
+
 				                		break;
 			                		}
 			                		else
@@ -150,7 +203,4 @@ public class HibernateOracle {
         frame.setVisible(true);
        	     
     }
-	
-	
-
 }
