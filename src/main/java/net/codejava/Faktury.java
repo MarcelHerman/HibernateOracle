@@ -1,5 +1,7 @@
 package net.codejava;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 public class Faktury implements Obiekt_Do_Polecen{
 	private int id_faktury;
-	private String data_wystawienia;
+	private LocalDate  data_wystawienia;
 	private String NIP;
 	
 	@ManyToOne
@@ -21,7 +23,7 @@ public class Faktury implements Obiekt_Do_Polecen{
 	public Faktury() {
 	}
 
-	public Faktury(String data_wystawienia, String nIP, int zamowienia_id_zamowienia) {
+	public Faktury(LocalDate  data_wystawienia, String nIP, int zamowienia_id_zamowienia) {
 		super();
 		this.data_wystawienia = data_wystawienia;
 		NIP = nIP;
@@ -39,11 +41,11 @@ public class Faktury implements Obiekt_Do_Polecen{
 		this.id_faktury = id_faktury;
 	}
 
-	public String getData_wystawienia() {
+	public LocalDate  getData_wystawienia() {
 		return data_wystawienia;
 	}
 
-	public void setData_wystawienia(String data_wystawienia) {
+	public void setData_wystawienia(LocalDate  data_wystawienia) {
 		this.data_wystawienia = data_wystawienia;
 	}
 

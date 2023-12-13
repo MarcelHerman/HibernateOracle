@@ -1,5 +1,6 @@
 package net.codejava;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Magazyny implements Obiekt_Do_Polecen {
+	@Column(name = "id_magazynu")
 	private int id_magazynu;
 	private String miasto;
 	private String ulica;

@@ -4,6 +4,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -442,17 +445,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                } 
 	                	else if(obj instanceof Produkt_Magazyn)
 	 	                {
-	                		myPanel.add(new JLabel("Id magazynu: "));
+	                		myPanel.add(new JLabel("Stan faktyczny: "));
 	                		myPanel.add(pierwszyField);
 	                		myPanel.add(Box.createHorizontalStrut(5));
-	                		myPanel.add(new JLabel("Id produktu: "));
-	                		myPanel.add(drugiField);
-	                		myPanel.add(Box.createHorizontalStrut(5));
-	                		myPanel.add(new JLabel("Stan faktyczny: "));
-	                		myPanel.add(trzeciField);
-	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Stan magazynowy: "));
-	                		myPanel.add(czwartyField);
+	                		myPanel.add(drugiField);	                		
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
@@ -462,22 +459,53 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		OracleConnection oc =  OracleConnection.getInstance();
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
+	     	 	                	
+	     	 	                	try {	     	
+	     	 	                		session.doWork(connection -> {
+	     	 	                		    // Tutaj możesz bezpośrednio operować na obiekcie java.sql.Connection
+	     	 	                		    Connection connectionxd = connection.unwrap(Connection.class);
+	     	 	                		    // ...
+	     	 	                		    // Wykonaj operacje na jdbcConnection
+	     	 	                		    
+	     	 	                		  DatabaseMetaData metaData = connectionxd.getMetaData();
+	     	 	                		System.out.println(metaData);
+
+		     	 	                	    // Podaj nazwę tabeli, dla której chcesz uzyskać metadane
+		     	 	                	    String tableName = "PRODUKT_M%";
+
+		     	 	                	    // Uzyskaj informacje o kolumnach dla danej tabeli
+		     	 	                	    ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
+		     	 	                	  System.out.println(resultSet);
+		     	 	                	  
+		     	 	                	    // Przejdź przez wyniki i wydrukuj nazwy kolumn
+		     	 	                	    while (resultSet.next()) {
+		     	 	                	        String columnName = resultSet.getString("COLUMN_NAME");
+		     	 	                	        System.out.println("Nazwa kolumny: " + columnName);
+		     	 	                	        // Możesz zebrać te nazwy do listy lub innej struktury danych, aby je wykorzystać później
+		     	 	                	    }
+	     	 	                		});	     	 	                		     	 	             
+	     	 	                	} catch (Exception e) {
+	     	 	                		e.printStackTrace();
+	   	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage()); // u.produkt_magazyn_id like "+Integer.toString(this.id) + " and u.produkty_Id_Produktu like " + Integer.toString(this.id2)
+	     	 	                	}
 	     	                		
-	     	 	                	 	 	                	
-	     	 	                	Produkt_Magazyn user = (Produkt_Magazyn)session.createQuery("select u from Produkt_Magazyn u where u.magazyny_id_magazynu like "+Integer.toString(this.id) + " and u.produkty_id_produktu like " + Integer.toString(this.id2))
+	     	 	                	Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(this.id, this.id2);	 	                	
+	     	 	                	Produkt_Magazyn user = (Produkt_Magazyn)session.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
+	     	 	                			.setParameter("pr", pr)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
+	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
-	     	 	                		user.setMagazyn_Id(Integer.parseInt(pierwszyField.getText()));
+	     	 	                		user.setStan_faktyczny(Integer.parseInt(pierwszyField.getText()));
 	     	 	                	if(!drugiField.getText().isEmpty())
-	     	 	                		user.setProdukt_Id(Integer.parseInt(drugiField.getText()));
-	     	 	                	if(!trzeciField.getText().isEmpty())
-	     	 	                		user.setStan_faktyczny(Integer.parseInt(trzeciField.getText()));
-	     	 	                	if(!czwartyField.getText().isEmpty())
-	     	 	                		user.setStan_magazynowy(Integer.parseInt(czwartyField.getText()));
+	     	 	                		user.setStan_magazynowy(Integer.parseInt(drugiField.getText()));
+	     	 	                	
 	     	                		session.update(user);
 	     	                		
+	     	 	                	
+	     	 	                	
+	     	 	                	System.out.println(user.getProdukt_magazyn_id() + " " + user.getStan_faktyczny() +  " " + user.getStan_magazynowy());
 	     	 	                	
 	     	                		oc.closeDBSession();
 	     	                	}
@@ -499,12 +527,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		
 	     	                		OracleConnection oc =  OracleConnection.getInstance();
 	     	 	                	oc.createDBSession();
-	     	 	                	Session session = oc.getDBSession();
-	     	                		
-	     	 	                	 	 	                	
-	     	 	                	Stany_Zamowienia user = (Stany_Zamowienia)session.createQuery("select u from Stany_Zamowienia u where u.id_stanu_zamowienia like "+Integer.toString(this.id))
-	     	 	                			.uniqueResult();
-	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	Session session = oc.getDBSession();  	 	                 
+	     	 	                	    	 	                	
+	     	 	                	Stany_Zamowienia user = (Stany_Zamowienia)session.createQuery("select u from Stany_Zamowienia u where u.id_Stanu_Zamowienia like " + Integer.toString(this.id))
+	     	 	                			.uniqueResult();	     	 	                	
 	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
 	     	 	                		user.setNazwa(pierwszyField.getText());	     	 	              	
@@ -516,7 +542,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage());
 	                		 }
 	 	                }
 	                

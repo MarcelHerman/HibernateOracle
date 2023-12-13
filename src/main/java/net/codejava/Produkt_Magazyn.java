@@ -1,5 +1,6 @@
 package net.codejava;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,8 +12,10 @@ import javax.persistence.Table;
 public class Produkt_Magazyn implements java.io.Serializable, Obiekt_Do_Polecen{
 	
 	@EmbeddedId
+	@Column(name = "produkt_magazyn_id")
 	private Produkt_Magazyn_Id produkt_magazyn_id;
 	
+	@Column(name = "stan_faktyczny")
 	private int stan_faktyczny;
 	private int stan_magazynowy;
 	
@@ -67,8 +70,4 @@ public class Produkt_Magazyn implements java.io.Serializable, Obiekt_Do_Polecen{
 	public void setStan_magazynowy(int stan_magazynowy) {
 		this.stan_magazynowy = stan_magazynowy;
 	}
-	
-	
-	
-
 }
