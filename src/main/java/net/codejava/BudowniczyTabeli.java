@@ -199,7 +199,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
 	     	 	                	 	 	                	
-	     	 	                	Faktury user = (Faktury)session.createQuery("select u from Faktury u where u.id_faktury like "+Integer.toString(this.id))
+	     	 	                	Faktury user = (Faktury)session.createQuery("select u from Faktury u where u.id_faktury = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
@@ -271,7 +272,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
-	     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(this.id))
+	     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
@@ -315,7 +317,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
-	     	 	                	Produkty user = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu like "+Integer.toString(this.id))
+	     	 	                	Produkty user = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
@@ -355,7 +358,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
-	     	 	                	Zamowienia user = (Zamowienia)session.createQuery("select u from Zamowienia u where u.id_zamowienia like "+Integer.toString(this.id))
+	     	 	                	Zamowienia user = (Zamowienia)session.createQuery("select u from Zamowienia u where u.id_zamowienia = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
@@ -393,7 +397,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
-	     	 	                	Magazyny user = (Magazyny)session.createQuery("select u from Magazyny u where u.id_magazynu like "+Integer.toString(this.id))
+	     	 	                	Magazyny user = (Magazyny)session.createQuery("select u from Magazyny u where u.id_magazynu = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
@@ -435,7 +440,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
-	     	 	                	Producenci user = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta like "+Integer.toString(this.id))
+	     	 	                	Producenci user = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
@@ -543,7 +549,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();  	 	                 
 	     	 	                	    	 	                	
-	     	 	                	Stany_Zamowienia user = (Stany_Zamowienia)session.createQuery("select u from Stany_Zamowienia u where u.id_Stanu_Zamowienia like " + Integer.toString(this.id))
+	     	 	                	Stany_Zamowienia user = (Stany_Zamowienia)session.createQuery("select u from Stany_Zamowienia u where u.id_Stanu_Zamowienia = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();	     	 	                	
 	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
@@ -575,7 +582,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
 	     	 	                	 	 	                	
-	     	 	                	Typy_uzytkownika user = (Typy_uzytkownika)session.createQuery("select u from Typy_uzytkownika u where u.id_typu_uzytkownika like "+Integer.toString(this.id))
+	     	 	                	Typy_uzytkownika user = (Typy_uzytkownika)session.createQuery("select u from Typy_uzytkownika u where u.id_typu_uzytkownika = :id")
+	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
