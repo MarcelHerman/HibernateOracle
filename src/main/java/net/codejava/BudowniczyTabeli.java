@@ -40,7 +40,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	private LinkedList<String> naglowek;
 	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
 	private LinkedList<Object> wiersz;
-	private Obiekt_Do_Polecen obj = null;
 
 	public void dodajNaglowek() {
 		this.naglowek = new LinkedList<String>();
@@ -86,7 +85,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		JTable jt = new JTable(dan, nagl);
 			
 		if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
-            if(!(obj instanceof Produkt_Zamowienia))
+            if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
             {
             	TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
             	buttonColumn.setCellRenderer(new ButtonRenderer());
@@ -166,7 +165,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	label = (value == null) ? "" : value.toString();
             }   
             this.id = Integer.parseInt((String)table.getValueAt(row, 0));
-            if(obj instanceof Produkt_Magazyn) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
+            if(HibernateOracle.obj instanceof Produkt_Magazyn) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
             button.setText(label);
             isPushed = true;
             return button;
@@ -184,7 +183,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             		 
  	                JPanel myPanel = new JPanel();
 	                
-	                if(obj instanceof Faktury)
+	                if(HibernateOracle.obj instanceof Faktury)
 	                	{	                	
 		                	myPanel.add(new JLabel("NIP: "));
 	                		myPanel.add(pierwszyField);             		
@@ -217,7 +216,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 		 }	 	                	
 	                	}
 	                	
-	                	else if(obj instanceof Kategorie)
+	                	else if(HibernateOracle.obj instanceof Kategorie)
 	                	{
 	                		myPanel.add(new JLabel("Nazwa kategorii: "));
 	                		myPanel.add(pierwszyField);
@@ -246,7 +245,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }	                		
 	                	}
 	                	
-	                	else if(obj instanceof Uzytkownicy)
+	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
 	 	                {
 	                		myPanel.add(new JLabel("Nazwa użytkownika: "));
 	                		myPanel.add(pierwszyField);
@@ -297,7 +296,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 	 
-	                	else if(obj instanceof Produkty)
+	                	else if(HibernateOracle.obj instanceof Produkty)
 	 	                {
 	                		myPanel.add(new JLabel("Nazwa produktu: "));
 	                		myPanel.add(pierwszyField);
@@ -338,7 +337,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować produktu. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 	 
-	                	else if(obj instanceof Zamowienia)
+	                	else if(HibernateOracle.obj instanceof Zamowienia)
 	 	                {
 	                		myPanel.add(new JLabel("Miasto wysyłki"));
 	                		myPanel.add(pierwszyField);	    
@@ -380,7 +379,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować zamówienia. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 	 
-	                	else if(obj instanceof Magazyny)
+	                	else if(HibernateOracle.obj instanceof Magazyny)
 	 	                {
 	                		myPanel.add(new JLabel("Miasto: "));
 	                		myPanel.add(pierwszyField);
@@ -417,7 +416,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować magazynu. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 
-	                	else if(obj instanceof Producenci)
+	                	else if(HibernateOracle.obj instanceof Producenci)
 	 	                {
 	                		myPanel.add(new JLabel("Nazwa producenta: "));
 	                		myPanel.add(pierwszyField);
@@ -463,7 +462,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować producenta. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 
-	                	else if(obj instanceof Produkt_Magazyn)
+	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
 	 	                {
 	                		myPanel.add(new JLabel("Stan faktyczny: "));
 	                		myPanel.add(pierwszyField);
@@ -535,7 +534,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
 	                		 }
 	 	                }
-	                	else if(obj instanceof Stany_Zamowienia)
+	                	else if(HibernateOracle.obj instanceof Stany_Zamowienia)
 	 	                {
 	                		myPanel.add(new JLabel("Nazwa: "));
 	                		myPanel.add(pierwszyField);             		
@@ -567,7 +566,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	 	                }
 	                
-	                	else if(obj instanceof Typy_uzytkownika)
+	                	else if(HibernateOracle.obj instanceof Typy_uzytkownika)
 	 	                {
 	                		myPanel.add(new JLabel("Nazwa: "));
 	                		myPanel.add(pierwszyField);             		
@@ -618,45 +617,45 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                	oc.createDBSession();	                			
  	                	Session session = oc.getDBSession();
  	            		
- 	                	if(obj instanceof Faktury)
+ 	                	if(HibernateOracle.obj instanceof Faktury)
  	                	{
  	                		Faktury pr = new Faktury();
  	 	                	pr.setId_faktury(this.id);
  	 	                	session.delete(pr);
  	                	}
  	                	
- 	                	else if(obj instanceof Kategorie)
+ 	                	else if(HibernateOracle.obj instanceof Kategorie)
  	                	{
  	                		Kategorie pr = new Kategorie();
  	 	                	pr.setId_Kategorii(this.id);
  	 	                	session.delete(pr);
  	                	}
  	                	
- 	                	else if(obj instanceof Uzytkownicy)
+ 	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
  	 	                {
  	 	                	Uzytkownicy pr = new Uzytkownicy();
  	 	 	                pr.setId_uzytkownika(this.id);
  	 	 	                session.delete(pr);
  	 	                } 	 
- 	                	else if(obj instanceof Produkty)
+ 	                	else if(HibernateOracle.obj instanceof Produkty)
  	 	                {
  	 	                	Produkty pr = new Produkty();
  	 	 	                pr.setId_produktu(this.id);
  	 	 	                session.delete(pr);
  	 	                } 	 
- 	                	else if(obj instanceof Zamowienia)
+ 	                	else if(HibernateOracle.obj instanceof Zamowienia)
  	 	                {
  	 	                	Zamowienia pr = new Zamowienia();
  	 	 	                pr.setId_zamowienia(this.id);
  	 	 	                session.delete(pr);
  	 	                } 	 
- 	                	else if(obj instanceof Magazyny)
+ 	                	else if(HibernateOracle.obj instanceof Magazyny)
  	 	                {
  	 	                	Magazyny pr = new Magazyny();
  	 	 	                pr.setId_magazynu(this.id);
  	 	 	                session.delete(pr);
  	 	                } 
- 	                	else if(obj instanceof Producenci)
+ 	                	else if(HibernateOracle.obj instanceof Producenci)
  	 	                {
  	                		Producenci pr = new Producenci();
  	 	 	                pr.setId_producenta(this.id);
@@ -686,7 +685,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
 	void tworzTabeleMagazyny(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Magazyny();
+		HibernateOracle.obj = new Magazyny();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -712,7 +711,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Produkty();
+		HibernateOracle.obj = new Produkty();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -720,7 +719,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Lp.");
 		this.dodajKolumne("Nazwa");
 		this.dodajKolumne("Cena");
-		this.dodajKolumne("Opis");		
+		this.dodajKolumne("Opis");	
+		this.dodajKolumne("Id producenta");
+		this.dodajKolumne("Id kategorii");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -729,6 +730,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Produkty) entry).getNazwa().toString());
 			this.dodajKolumne(Double.toString(((Produkty) entry).getCena()));
 			this.dodajKolumne(((Produkty) entry).getOpis().toString());
+			this.dodajKolumne(Integer.toString(((Produkty) entry).getProducenci_id_producenta()));
+			this.dodajKolumne(Integer.toString(((Produkty) entry).getKategorie_id_kategorii()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
 				this.dodajKolumne("");
@@ -740,7 +743,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Kategorie();
+		HibernateOracle.obj = new Kategorie();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -766,7 +769,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleFaktury(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Faktury();
+		HibernateOracle.obj = new Faktury();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -794,7 +797,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukt_Magazyn(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Produkt_Magazyn();
+		HibernateOracle.obj = new Produkt_Magazyn();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -822,7 +825,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukt_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Produkt_Zamowienia();
+		HibernateOracle.obj = new Produkt_Zamowienia();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -848,7 +851,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleStany_Zamowienia(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Stany_Zamowienia();
+		HibernateOracle.obj = new Stany_Zamowienia();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -872,7 +875,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProducenci(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Producenci();
+		HibernateOracle.obj = new Producenci();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -902,7 +905,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleUzytkownicy(List<Obiekt_Do_Polecen> entities)
 	{	
-		this.obj = new Uzytkownicy();
+		HibernateOracle.obj = new Uzytkownicy();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -934,7 +937,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
 	void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> entities)
 	{
-		this.obj = new Zamowienia();
+		HibernateOracle.obj = new Zamowienia();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 		this.dodajNaglowek();
@@ -966,7 +969,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleTypy_uzytkownika(List<Obiekt_Do_Polecen> entities)
     {
-		this.obj = new Typy_uzytkownika();
+		HibernateOracle.obj = new Typy_uzytkownika();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
         this.dodajNaglowek();

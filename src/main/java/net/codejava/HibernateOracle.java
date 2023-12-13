@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ import org.hibernate.query.Query;
 public class HibernateOracle {
 	
 	public static String nazwaTypu = "null";
+	public static Obiekt_Do_Polecen obj = null;
 	
 	private static int idUzytkownika;
 
@@ -108,6 +110,7 @@ public class HibernateOracle {
 		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
+		JButton dodajPrzycisk = new JButton("Dodaj rekord");
 		
 		
 		Component glue = Box.createHorizontalGlue();
@@ -122,17 +125,8 @@ public class HibernateOracle {
         
         JScrollPane pane = new JScrollPane(tabSwing);
         
-        // Ustaw preferowany rozmiar dla tabeli
-        //tabSwing.setPreferredScrollableViewportSize(new Dimension(1000, 400));
-
-        // Ustaw preferowany rozmiar dla JScrollPane
-        //pane.setPreferredSize(new Dimension(1000, 400));
-
         kontener.add(pane);
-        
-        //kontener.setSize(1000, 400);
-        
-	
+        	
 		frame.setJMenuBar(bar);
 	
 		// Ustaw preferowany rozmiar dla JFrame
@@ -476,6 +470,8 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -503,6 +499,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -530,6 +527,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -557,6 +555,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -584,6 +583,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -611,6 +611,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -638,6 +639,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -665,6 +667,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -692,6 +695,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -719,6 +723,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -746,8 +751,429 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
+					 kontener.add(dodajPrzycisk);
 					 frame.revalidate();
 					 frame.repaint();
+				}
+		 });
+        
+        dodajPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	JTextField pierwszyField = new JTextField(7);
+	                JTextField drugiField = new JTextField(7);
+	                JTextField trzeciField = new JTextField(7);
+	                JTextField czwartyField = new JTextField(7);
+	                JTextField piatyField = new JTextField(7);
+         		 
+	                JPanel myPanel = new JPanel();
+	                
+	                if(obj instanceof Produkty) 
+	                {
+	                	myPanel.add(new JLabel("Nazwa: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Cena: "));
+		         		myPanel.add(drugiField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Opis: "));
+		         		myPanel.add(trzeciField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id producenta: "));
+		         		myPanel.add(czwartyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id kategorii: "));
+		         		myPanel.add(piatyField);
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany");
+			 	                		return;
+			 	                	}
+			 	                				 	                	
+			 	                	//Obiekt_Do_Polecen odp = new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), Integer.parseInt(czwartyField.getText()), Integer.parseInt(piatyField.getText()));
+			 	                
+			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), Integer.parseInt(czwartyField.getText()), Integer.parseInt(piatyField.getText())));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Faktury) 
+	                {
+	                	myPanel.add(new JLabel("NIP: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id zamówienia: "));
+		         		myPanel.add(drugiField);		         		
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj fakturę", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie została dodana");
+			 	                		return;
+			 	                	}
+			 	                	
+			 	                	session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać faktury. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Kategorie) 
+	                {
+	                	myPanel.add(new JLabel("Nazwa: "));
+		         		myPanel.add(pierwszyField);		         			         		
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj kategorię", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Kategoria nie została dodana");
+			 	                		return;
+			 	                	}
+			 	                	
+			 	                	session.save(new Kategorie(pierwszyField.getText()));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać kategorii. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Magazyny) 
+	                {
+	                	myPanel.add(new JLabel("Miasto: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Ulica: "));
+		         		myPanel.add(drugiField);		         		
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Magazyn nie został dodany");
+			 	                		return;
+			 	                	}
+			 	                	
+			 	                	session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać magazynu. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Producenci) 
+	                {
+	                	myPanel.add(new JLabel("Nazwa: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Kontakt: "));
+		         		myPanel.add(drugiField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Miasto: "));
+		         		myPanel.add(trzeciField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Ulica: "));
+		         		myPanel.add(czwartyField);
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Producent nie został dodany");
+			 	                		return;
+			 	                	}
+			 	                				 	                				 	                
+			 	                	session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText()));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać producenta. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Produkt_Magazyn) 
+	                {
+	                	myPanel.add(new JLabel("Id magazynu: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id produktu: "));
+		         		myPanel.add(drugiField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Stan magazynowy: "));
+		         		myPanel.add(trzeciField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Stan faktyczny: "));
+		         		myPanel.add(czwartyField);
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj produkt do magazynu", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do magazynu");
+			 	                		return;
+			 	                	}
+			 	                	
+			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
+			 	                	session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu do magazynu. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Produkt_Zamowienia) 
+	                {
+	                	myPanel.add(new JLabel("Id zamowienia: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id produktu: "));
+		         		myPanel.add(drugiField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Ilosc: "));
+		         		myPanel.add(trzeciField);
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj produkt do zamówienia", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do zamówienia.");
+			 	                		return;
+			 	                	}
+			 	                	
+			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
+			 	                	
+			 	                	session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(czwartyField.getText())));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu do zamówienia. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Stany_Zamowienia) 
+	                {
+	                	myPanel.add(new JLabel("Nazwa: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));		         	
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj stan zamówienia", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Stan zamówienia nie został dodany.");
+			 	                		return;
+			 	                	}
+			 	                				 	                	
+			 	                	session.save(new Stany_Zamowienia(pierwszyField.getText()));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać stanu zamówienia. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Typy_uzytkownika) 
+	                {
+	                	myPanel.add(new JLabel("Nazwa: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));		         	
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Typ użytkownika nie został dodany.");
+			 	                		return;
+			 	                	}
+			 	                				 	                	
+			 	                	session.save(new Typy_uzytkownika(pierwszyField.getText()));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać typu użytkownika. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Uzytkownicy) 
+	                {
+	                	myPanel.add(new JLabel("Nazwa uzytkownika: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Login: "));
+		         		myPanel.add(drugiField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Hasło: "));
+		         		myPanel.add(trzeciField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("E-mail: "));
+		         		myPanel.add(czwartyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id typu użytkownika: "));
+		         		myPanel.add(piatyField);
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Użytkownik nie został dodany");
+			 	                		return;
+			 	                	}
+			 	                				 	                				 	                
+			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), Integer.parseInt(piatyField.getText())));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać użytkownika. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	                else if(obj instanceof Zamowienia) 
+	                {
+	                	myPanel.add(new JLabel("Id uzytkownika: "));
+		         		myPanel.add(pierwszyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Id stanu zamówienia: "));
+		         		myPanel.add(drugiField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Adres wysyłki miasto: "));
+		         		myPanel.add(trzeciField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Adres wysyłki ulica: "));
+		         		myPanel.add(czwartyField);
+		         		myPanel.add(Box.createHorizontalStrut(5));
+		         		myPanel.add(new JLabel("Koszt: "));
+		         		myPanel.add(piatyField);
+		         		
+		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                         "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
+		         		 try {
+			                	if (result == JOptionPane.OK_OPTION) {
+			                		
+			                		OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
+			                		
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
+			 	                	{
+			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
+			 	                		return;
+			 	                	}
+			 	                				 	                				 	                
+			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), Integer.parseInt(drugiField.getText()), Integer.parseInt(pierwszyField.getText())));
+			                		
+			                		oc.closeDBSession();
+			                	}
+		         		 }
+		         		 catch(Exception e) {
+		         			 e.printStackTrace();
+		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać zamówienia. Błąd: " + e.getMessage());
+		         		 }
+	                }
+	             
+	                			 
 				}
 		 });
        	     
