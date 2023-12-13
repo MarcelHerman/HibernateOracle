@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -304,9 +306,8 @@ public class HibernateOracle {
 			 
 			 @Override
 				public void actionPerformed(ActionEvent a) {				 	
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
 
-					List<Obiekt_Do_Polecen> entities = null;
 					Uzytkownicy user = new Uzytkownicy();
 					oc.createDBSession();
 					
@@ -317,34 +318,133 @@ public class HibernateOracle {
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
-					
-					GridBagConstraints gbc = new GridBagConstraints();
-			        gbc.gridx = 0;
-			        gbc.gridy = GridBagConstraints.RELATIVE;
-			        gbc.anchor = GridBagConstraints.CENTER;
-			        gbc.insets = new Insets(5, 5, 5, 5);
-					
+															
 					JLabel szczegoly = new JLabel("Szczególy");
 					JLabel nazwa = new JLabel("Nazwa użytkownika:  " + user.getNazwa_uzytkownika());
-					//nazwa.setHorizontalAlignment(SwingConstants.CENTER); 
 					JLabel login = new JLabel("Login:  " + user.getLogin());
 					JLabel haslo = new JLabel("Hasło:  " + "*".repeat(user.getHaslo().length()));
 					JLabel email = new JLabel("E-mail:  " + user.getE_mail());
-				
-					kontener.setLayout(new FlowLayout(FlowLayout.CENTER)); 
-					/*
-					budSwing.tworzTabeleProdukty(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
-					 JScrollPane pane = new JScrollPane(tabSwing);					 
-					 */
+					JButton edytujPrzycisk = new JButton("Edytuj konto");
+					JButton usunPrzycisk = new JButton("Usuń konto");
 					
-					 kontener.add(szczegoly, gbc);
-					 kontener.add(nazwa);
-					 kontener.add(login);
-					 kontener.add(haslo);
-					 kontener.add(email);
+					JPanel jp = new JPanel();
+				
+					jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
+
+			        szczegoly.setAlignmentX(Component.CENTER_ALIGNMENT);
+			        nazwa.setAlignmentX(Component.CENTER_ALIGNMENT);
+			        login.setAlignmentX(Component.CENTER_ALIGNMENT);
+			        haslo.setAlignmentX(Component.CENTER_ALIGNMENT);
+			        email.setAlignmentX(Component.CENTER_ALIGNMENT);
+			        
+			        edytujPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+			        usunPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+			        jp.add(szczegoly);
+			        jp.add(nazwa);
+			        jp.add(login);
+			        jp.add(haslo);
+			        jp.add(email);
+			        jp.add(edytujPrzycisk);
+			        jp.add(usunPrzycisk);
+					 
+			        kontener.add(jp);
 					 frame.revalidate();
 					 frame.repaint();
+					 
+					 edytujPrzycisk.addActionListener(new ActionListener() 
+					 {
+						 @Override
+							public void actionPerformed(ActionEvent a) {	
+							 JTextField pierwszyField = new JTextField(7);
+				                JTextField drugiField = new JTextField(7);
+				                JTextField trzeciField = new JTextField(7);
+				                JTextField czwartyField = new JTextField(7);
+				                JTextField piatyField = new JTextField(7);
+			            		 
+			 	                JPanel myPanel = new JPanel();
+							 myPanel.add(new JLabel("Nazwa użytkownika: "));
+		                		myPanel.add(pierwszyField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Login: "));
+		                		myPanel.add(drugiField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Hasło: "));
+		                		myPanel.add(trzeciField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("E-mail: "));
+		                		myPanel.add(czwartyField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Id typu użytkownika: "));
+		                		myPanel.add(piatyField);
+		                		
+		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		                		 try {
+		     	                	if (result == JOptionPane.OK_OPTION) {
+		     	                		
+		     	                		OracleConnection oc =  OracleConnection.getInstance();
+		     	 	                	oc.createDBSession();
+		     	 	                	Session session = oc.getDBSession();
+		     	                		
+		     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(idUzytkownika))
+		     	 	                			.uniqueResult();
+		     	 	                	//System.out.println(user.getId_uzytkownika());
+		     	 	                	
+		     	 	                	if(!pierwszyField.getText().isEmpty())
+		     	 	                		user.setNazwa_uzytkownika(pierwszyField.getText());
+		     	 	                	if(!drugiField.getText().isEmpty())
+		     	 	                		user.setLogin(drugiField.getText());
+		     	 	                	if(!trzeciField.getText().isEmpty())
+		     	 	                		user.setHaslo(trzeciField.getText());
+		     	 	                	if(!czwartyField.getText().isEmpty())
+		     	 	                		user.setE_mail(czwartyField.getText());
+		     	 	                	if(!piatyField.getText().isEmpty())
+		     	 	                		user.setId_typu_uzytkownika(Integer.parseInt(piatyField.getText()));
+		     	                		session.update(user);
+		     	                		
+		     	                		oc.closeDBSession();
+		     	                	}
+		                		 }
+		                		 catch(Exception e) {
+		                			 e.printStackTrace();
+		                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+		                		 }
+						 }
+					 });
+					 
+					 usunPrzycisk.addActionListener(new ActionListener() 
+					 {
+						 @Override
+							public void actionPerformed(ActionEvent a) {
+							 
+							 	JPanel myPanel = new JPanel();
+			 	                myPanel.add(new JLabel("Czy na pewno chcesz usunąć dany rekord?"));
+			 	                
+			 	                int result = JOptionPane.showConfirmDialog(null, myPanel, 
+				                         "Usuwanie", JOptionPane.OK_CANCEL_OPTION);
+			                			
+				 	            try {
+				 	            	 if (result == JOptionPane.OK_OPTION) {
+				 	            		 OracleConnection oc =  OracleConnection.getInstance();
+				 	            		 oc.createDBSession();	                			
+				 	            		 Session session = oc.getDBSession();
+				 	            		 Uzytkownicy pr = new Uzytkownicy();
+			 	 	 	                pr.setId_uzytkownika(idUzytkownika);
+			 	 	 	                session.delete(pr);
+			 	 	 	                idUzytkownika = -1;
+			 	 	 	                //Wylogowanie śmiecia
+				 	            		
+				 	            	 }
+				 	            }catch(Exception e)
+				 	            	 {
+				 	            		 
+				 	            }finally
+				 	            {
+				 	            	oc.closeDBSession();
+				 	            }							 		 	 	 	                	 	 	 	                	 	 	                
+						 }	 	 	 	             
+					 });
 				}
 		 });
 		 
