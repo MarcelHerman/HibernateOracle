@@ -154,7 +154,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
         public Object getCellEditorValue() {
             if (isPushed) {
-            	 if (this.label.equals("Edytuj")) {
+            	 if (this.label.equals("Edytuj")) { //normalna składnia
             		// Kod dla przycisku "Edytuj"
                  	JTextField pierwszyField = new JTextField(7);
 	                JTextField drugiField = new JTextField(7);
@@ -172,7 +172,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("NIP:"));
 	                		myPanel.add(drugiField);
-	                		//kij w te faktury
+	                		//kij w te faktury xd
 	                		Faktury pr = new Faktury();
 	 	                	pr.setId_faktury(this.id);	 	                	
 	                	}
@@ -188,7 +188,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
 	     	                		OracleConnection oc =  OracleConnection.getInstance();
-	     	 	                	oc.createDBSession();	                			
+	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
 	     	                		Kategorie kat = new Kategorie(pierwszyField.getText());
@@ -206,8 +206,53 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                	
 	                	else if(obj instanceof Uzytkownicy)
 	 	                {
-	 	                	Uzytkownicy pr = new Uzytkownicy();
-	 	 	                pr.setId_uzytkownika(this.id);
+	                		myPanel.add(new JLabel("Nazwa użytkownika: "));
+	                		myPanel.add(pierwszyField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Login: "));
+	                		myPanel.add(drugiField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Hasło: "));
+	                		myPanel.add(trzeciField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("E-mail: "));
+	                		myPanel.add(czwartyField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Id typu użytkownika: "));
+	                		myPanel.add(piatyField);
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(this.id))
+	     	 	                			.uniqueResult();
+	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	
+	     	 	                	if(!pierwszyField.getText().isEmpty())
+	     	 	                		user.setNazwa_uzytkownika(pierwszyField.getText());
+	     	 	                	if(!drugiField.getText().isEmpty())
+	     	 	                		user.setLogin(drugiField.getText());
+	     	 	                	if(!trzeciField.getText().isEmpty())
+	     	 	                		user.setHaslo(trzeciField.getText());
+	     	 	                	if(!czwartyField.getText().isEmpty())
+	     	 	                		user.setE_mail(czwartyField.getText());
+	     	 	                	if(!piatyField.getText().isEmpty())
+	     	 	                		user.setId_typu_uzytkownika(Integer.parseInt(piatyField.getText()));
+	     	                		session.update(user);
+	     	                		
+	     	                		oc.closeDBSession();
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                		 }
 	 	                } 	 
 	                	else if(obj instanceof Produkty)
 	 	                {
@@ -230,9 +275,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	 	                pr.setId_producenta(this.id);
 	 	                } 
  	                
-                     JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
+                     //JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
                      
-                 } else if ("Usuń".equals(this.label)) {
+                 } else if ("Usuń".equals(this.label)) { //składnia Yody
                      // Kod dla przycisku "Usuń"
                 	                       	 
                 	JPanel myPanel = new JPanel();
