@@ -255,7 +255,7 @@ public class HibernateOracle {
 	            }
 	        });
 		 
-		 pokazWylogujPrzycisk.addActionListener(new ActionListener() {
+		 ActionListener akcja = new ActionListener() {
 			 
 			 public void actionPerformed(ActionEvent a)
 			 {
@@ -300,9 +300,11 @@ public class HibernateOracle {
 					 System.out.println("Wylogowanie sie nie powiodlo");
 				 }
 			 }
-		 });
+		 };
 		 
-		 kontoPrzycisk.addActionListener(new ActionListener() {
+		 pokazWylogujPrzycisk.addActionListener(akcja);
+		 
+		 kontoPrzycisk.addActionListener(new  ActionListener() {
 			 
 			 @Override
 				public void actionPerformed(ActionEvent a) {				 	
@@ -426,25 +428,28 @@ public class HibernateOracle {
 			                			
 				 	            try {
 				 	            	 if (result == JOptionPane.OK_OPTION) {
+				 	            		 akcja.actionPerformed(a);
 				 	            		 OracleConnection oc =  OracleConnection.getInstance();
 				 	            		 oc.createDBSession();	                			
 				 	            		 Session session = oc.getDBSession();
 				 	            		 Uzytkownicy pr = new Uzytkownicy();
 			 	 	 	                pr.setId_uzytkownika(idUzytkownika);
-			 	 	 	                session.delete(pr);
+			 	 	 	                //session.delete(pr);
 			 	 	 	                idUzytkownika = -1;
-			 	 	 	                //Wylogowanie śmiecia
+			 	 	 	                
+
 				 	            		
 				 	            	 }
 				 	            }catch(Exception e)
 				 	            	 {
+				 	            	System.out.println("Wystapil blad podczas usuwania konta: "+ e.toString());
 				 	            		 
-				 	            }finally
-				 	            {
-				 	            	oc.closeDBSession();
-				 	            }							 		 	 	 	                	 	 	 	                	 	 	                
+				 	            }
+		 	 	 	                
+				 	            	oc.closeDBSession();							 		 	 	 	                	 	 	 	                	 	 	                
 						 }	 	 	 	             
 					 });
+					 
 				}
 		 });
 		 
