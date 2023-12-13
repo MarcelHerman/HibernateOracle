@@ -1,6 +1,7 @@
 package net.codejava;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -54,7 +55,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	public void dodajPrzycisk(BudowniczyTabeli budowniczy)
 	{
+		/*
+		this.setLayout(new BorderLayout());
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		JButton clickmeButton = new JButton("Click Me");
+		buttonPanel.add(clickmeButton);
+		this.add(buttonPanel,BorderLayout.SOUTH);
+		*/
 		
+		//https://stackoverflow.com/questions/11165807/put-jbutton-in-bottom-right
 	}
 	
 	
@@ -82,6 +92,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
         }
 		
+		jt.setPreferredScrollableViewportSize(new Dimension(1000, 400));
 		return jt;
 	}
 	
@@ -117,7 +128,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
         private boolean isPushed;
         
-        private int id; 
+        private int id;
+        
+        private int id2;
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -147,6 +160,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	label = (value == null) ? "" : value.toString();
             }   
             this.id = Integer.parseInt((String)table.getValueAt(row, 0));
+            if(obj instanceof Produkt_Magazyn) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
             button.setText(label);
             isPushed = true;
             return button;
@@ -165,16 +179,35 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                JPanel myPanel = new JPanel();
 	                
 	                if(obj instanceof Faktury)
-	                	{
-	                	
-	                		myPanel.add(new JLabel("Data wystawienia: "));
-	                		myPanel.add(pierwszyField);
-	                		myPanel.add(Box.createHorizontalStrut(5));
-	                		myPanel.add(new JLabel("NIP:"));
-	                		myPanel.add(drugiField);
-	                		//kij w te faktury xd
-	                		Faktury pr = new Faktury();
-	 	                	pr.setId_faktury(this.id);	 	                	
+	                	{	                	
+		                	myPanel.add(new JLabel("NIP: "));
+	                		myPanel.add(pierwszyField);             		
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj rekord", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	 	                	 	 	                	
+	     	 	                	Faktury user = (Faktury)session.createQuery("select u from Faktury u where u.id_faktury like "+Integer.toString(this.id))
+	     	 	                			.uniqueResult();
+	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	
+	     	 	                	if(!pierwszyField.getText().isEmpty())
+	     	 	                		user.setNIP(pierwszyField.getText());	     	 	              	
+	     	                		session.update(user);
+	     	                			  	 	                	
+	     	                		oc.closeDBSession();
+	     	                	}
+                		 }
+                		 catch(Exception e) {
+                			 e.printStackTrace();
+                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage());
+                		 }	 	                	
 	                	}
 	                	
 	                	else if(obj instanceof Kategorie)
@@ -297,8 +330,34 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                } 	 
 	                	else if(obj instanceof Zamowienia)
 	 	                {
-	 	                	Zamowienia pr = new Zamowienia();
-	 	 	                pr.setId_zamowienia(this.id);
+	                		myPanel.add(new JLabel("Stan zamówienia: "));
+	                		myPanel.add(pierwszyField);	                
+
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	 	                	Zamowienia user = (Zamowienia)session.createQuery("select u from Zamowienia u where u.id_zamowienia like "+Integer.toString(this.id))
+	     	 	                			.uniqueResult();
+	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	
+	     	 	                	if(!pierwszyField.getText().isEmpty())
+	     	 	                		user.setId_stanu_zamowienia(Integer.parseInt(pierwszyField.getText()));
+	     	 	                	
+	     	                		session.update(user);
+	     	                		
+	     	                		oc.closeDBSession();
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                		 }
 	 	                } 	 
 	                	else if(obj instanceof Magazyny)
 	 	                {
@@ -381,7 +440,119 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 
- 	                
+	                	else if(obj instanceof Produkt_Magazyn)
+	 	                {
+	                		myPanel.add(new JLabel("Id magazynu: "));
+	                		myPanel.add(pierwszyField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Id produktu: "));
+	                		myPanel.add(drugiField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Stan faktyczny: "));
+	                		myPanel.add(trzeciField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Stan magazynowy: "));
+	                		myPanel.add(czwartyField);
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	 	                	 	 	                	
+	     	 	                	Produkt_Magazyn user = (Produkt_Magazyn)session.createQuery("select u from Produkt_Magazyn u where u.magazyny_id_magazynu like "+Integer.toString(this.id) + " and u.produkty_id_produktu like " + Integer.toString(this.id2))
+	     	 	                			.uniqueResult();
+	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	
+	     	 	                	if(!pierwszyField.getText().isEmpty())
+	     	 	                		user.setMagazyn_Id(Integer.parseInt(pierwszyField.getText()));
+	     	 	                	if(!drugiField.getText().isEmpty())
+	     	 	                		user.setProdukt_Id(Integer.parseInt(drugiField.getText()));
+	     	 	                	if(!trzeciField.getText().isEmpty())
+	     	 	                		user.setStan_faktyczny(Integer.parseInt(trzeciField.getText()));
+	     	 	                	if(!czwartyField.getText().isEmpty())
+	     	 	                		user.setStan_magazynowy(Integer.parseInt(czwartyField.getText()));
+	     	                		session.update(user);
+	     	                		
+	     	 	                	
+	     	                		oc.closeDBSession();
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                		 }
+	 	                }
+	                	else if(obj instanceof Stany_Zamowienia)
+	 	                {
+	                		myPanel.add(new JLabel("Nazwa: "));
+	                		myPanel.add(pierwszyField);             		
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	 	                	 	 	                	
+	     	 	                	Stany_Zamowienia user = (Stany_Zamowienia)session.createQuery("select u from Stany_Zamowienia u where u.id_stanu_zamowienia like "+Integer.toString(this.id))
+	     	 	                			.uniqueResult();
+	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	
+	     	 	                	if(!pierwszyField.getText().isEmpty())
+	     	 	                		user.setNazwa(pierwszyField.getText());	     	 	              	
+	     	                		session.update(user);
+	     	                		
+	     	 	                	
+	     	                		oc.closeDBSession();
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                		 }
+	 	                }
+	                
+	                	else if(obj instanceof Typy_uzytkownika)
+	 	                {
+	                		myPanel.add(new JLabel("Nazwa: "));
+	                		myPanel.add(pierwszyField);             		
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj rekord", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     	                		OracleConnection oc =  OracleConnection.getInstance();
+	     	 	                	oc.createDBSession();
+	     	 	                	Session session = oc.getDBSession();
+	     	                		
+	     	 	                	 	 	                	
+	     	 	                	Typy_uzytkownika user = (Typy_uzytkownika)session.createQuery("select u from Typy_uzytkownika u where u.id_typu_uzytkownika like "+Integer.toString(this.id))
+	     	 	                			.uniqueResult();
+	     	 	                	//System.out.println(user.getId_uzytkownika());
+	     	 	                	
+	     	 	                	if(!pierwszyField.getText().isEmpty())
+	     	 	                		user.setNazwa(pierwszyField.getText());	     	 	              	
+	     	                		session.update(user);
+	     	                		
+	     	 	                	
+	     	                		oc.closeDBSession();
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage());
+	                		 }
+	 	                }
+	                	                             
                      //JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
                      
                  } else if ("Usuń".equals(this.label)) { //składnia Yody
@@ -465,7 +636,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
     }
 	
 
-	void tworzTabeleMagazyn(List<Obiekt_Do_Polecen> entities)
+	void tworzTabeleMagazyny(List<Obiekt_Do_Polecen> entities)
 	{
 		this.obj = new Magazyny();
 		this.wiersz = null;
@@ -555,6 +726,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Lp.");
 		this.dodajKolumne("Data wystawienia");
 		this.dodajKolumne("NIP");
+		this.dodajKolumne("Id zamówienia");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -562,6 +734,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Integer.toString(((Faktury) entry).getId_faktury()));
 			this.dodajKolumne(((Faktury) entry).getData_wystawienia().toString());
 			this.dodajKolumne(((Faktury) entry).getNIP().toString());
+			this.dodajKolumne(Integer.toString(((Faktury) entry).getZamowienia_id_zamowienia()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
 				this.dodajKolumne("");

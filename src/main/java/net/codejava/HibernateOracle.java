@@ -3,6 +3,7 @@ package net.codejava;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -84,15 +85,19 @@ public class HibernateOracle {
 		
         JMenuBar bar = new JMenuBar();
         
-		JButton pokazZalogujPrzycisk = new JButton("Zaloguj sie");
+		JButton pokazZalogujPrzycisk = new JButton("Zaloguj się");
 		JButton pokazProduktPrzycisk = new JButton("Produkty");
-		JButton pokazZamowieniaPrzycisk = new JButton("Zamowienia");
+		JButton pokazZamowieniaPrzycisk = new JButton("Zamówienia");
 		JButton pokazMagazynyPrzycisk = new JButton("Magazyny");
 		JButton pokazFakturyPrzycisk = new JButton("Faktury");
-		JButton pokazUzytkownicyPrzycisk = new JButton("Uzytkownicy");
+		JButton pokazUzytkownicyPrzycisk = new JButton("Użytkownicy");
 		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
 		JButton pokazKategoriePrzycisk = new JButton("Kategorie");
 		JButton pokazProducentowPrzycisk = new JButton("Produceni");
+		JButton pokazProduktMagazynPrzycisk = new JButton("Produkty w magazynach");
+		JButton pokazProduktZamowieniaPrzycisk = new JButton("Produkty w zamowieniach");
+		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
+		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		
 		JLabel nazwaUzytkownika = new JLabel();
 		
@@ -107,13 +112,26 @@ public class HibernateOracle {
         JTable tabSwing = budSwing.pobierzTabeleSwing();
         
         JScrollPane pane = new JScrollPane(tabSwing);
-               
+        
+        // Ustaw preferowany rozmiar dla tabeli
+        //tabSwing.setPreferredScrollableViewportSize(new Dimension(1000, 400));
+
+        // Ustaw preferowany rozmiar dla JScrollPane
+        //pane.setPreferredSize(new Dimension(1000, 400));
+
         kontener.add(pane);
+        
+        //kontener.setSize(1000, 400);
         
 	
 		frame.setJMenuBar(bar);
 	
-		frame.setSize(600, 450);
+		// Ustaw preferowany rozmiar dla JFrame
+		frame.setPreferredSize(new Dimension(1400, 800));
+
+		// Spakuj ramkę
+		frame.pack();
+
         frame.setVisible(true);
 		
 		 pokazZalogujPrzycisk.addActionListener(new ActionListener() {
@@ -173,6 +191,12 @@ public class HibernateOracle {
 						                		bar.add(pokazUzytkownicyPrzycisk);
 						                		bar.add(pokazKategoriePrzycisk);
 						                		bar.add(pokazProducentowPrzycisk);
+						                		bar.add(pokazProduktMagazynPrzycisk);
+						                		bar.add(pokazProduktZamowieniaPrzycisk);
+						                		bar.add(pokazStanyZamowienPrzycisk);
+						                		bar.add(pokazTypyUzytkownikaPrzycisk);
+						                		bar.add(pokazMagazynyPrzycisk);
+						                		bar.add(pokazFakturyPrzycisk);
 				                				break;
 				                			case "Pracownik":
 				                				bar.add(pokazProduktPrzycisk);
@@ -393,6 +417,168 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleProducenci(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazProduktMagazynPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Magazyn", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleProdukt_Magazyn(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazProduktZamowieniaPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Zamowienia", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleProdukt_Zamowienia(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazStanyZamowienPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleStany_Zamowienia(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazTypyUzytkownikaPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleTypy_uzytkownika(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazMagazynyPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleMagazyny(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 
+					 kontener.add(pane);
+					 frame.revalidate();
+					 frame.repaint();
+				}
+		 });
+        
+        pokazFakturyPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Faktury", Obiekt_Do_Polecen.class);
+			            entities = query.getResultList();
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					budSwing.tworzTabeleFaktury(entities);
 					 JTable tabSwing = budSwing.pobierzTabeleSwing();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
