@@ -187,7 +187,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(pierwszyField);             		
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj rekord", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -209,7 +209,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 		 }
                 		 catch(Exception e) {
                 			 e.printStackTrace();
-                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage());
+                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować faktury. Błąd: " + e.getMessage());
                 		 }	 	                	
 	                	}
 	                	
@@ -237,7 +237,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
-	                			 JOptionPane.showMessageDialog(null, "Nie udalo sie edytowac.");
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować kategorii. Błąd: " + e.getMessage());
 	                		 }	                		
 	                	}
 	                	
@@ -303,7 +304,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(trzeciField);
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -328,7 +329,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować produktu. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 	 
 	                	else if(obj instanceof Zamowienia)
@@ -337,7 +338,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(pierwszyField);	                
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -359,7 +360,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować zamówienia. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 	 
 	                	else if(obj instanceof Magazyny)
@@ -371,7 +372,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(drugiField);
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj magazyn", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -395,7 +396,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować magazynu. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 
 	                	else if(obj instanceof Producenci)
@@ -413,7 +414,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(czwartyField);
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj producenta", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -440,7 +441,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować producenta. Błąd: " + e.getMessage());
 	                		 }
 	 	                } 
 	                	else if(obj instanceof Produkt_Magazyn)
@@ -452,7 +453,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(drugiField);	                		
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj produkt w magazynie", JOptionPane.OK_CANCEL_OPTION); //??
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -486,7 +487,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		});	     	 	                		     	 	             
 	     	 	                	} catch (Exception e) {
 	     	 	                		e.printStackTrace();
-	   	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage()); // u.produkt_magazyn_id like "+Integer.toString(this.id) + " and u.produkty_Id_Produktu like " + Integer.toString(this.id2)
+	   	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować produktu w magazynie. Błąd: " + e.getMessage()); // u.produkt_magazyn_id like "+Integer.toString(this.id) + " and u.produkty_Id_Produktu like " + Integer.toString(this.id2)
 	     	 	                	}
 	     	                		
 	     	 	                	Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(this.id, this.id2);	 	                	
@@ -521,7 +522,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(pierwszyField);             		
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj stan zamówienia", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -542,7 +543,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować stanu zamówienia. Błąd: " + e.getMessage());
 	                		 }
 	 	                }
 	                
@@ -552,7 +553,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(pierwszyField);             		
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj rekord", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Edytuj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
@@ -575,7 +576,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	                		 catch(Exception e) {
 	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować rekordu. Błąd: " + e.getMessage());
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować typu użytkownika. Błąd: " + e.getMessage());
 	                		 }
 	 	                }
 	                	                             

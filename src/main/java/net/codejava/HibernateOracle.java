@@ -93,7 +93,7 @@ public class HibernateOracle {
 		JButton pokazUzytkownicyPrzycisk = new JButton("Użytkownicy");
 		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
 		JButton pokazKategoriePrzycisk = new JButton("Kategorie");
-		JButton pokazProducentowPrzycisk = new JButton("Produceni");
+		JButton pokazProducentowPrzycisk = new JButton("Producenci");
 		JButton pokazProduktMagazynPrzycisk = new JButton("Produkty w magazynach");
 		JButton pokazProduktZamowieniaPrzycisk = new JButton("Produkty w zamowieniach");
 		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
