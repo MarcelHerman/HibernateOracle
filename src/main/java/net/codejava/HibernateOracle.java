@@ -4,12 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -26,6 +31,8 @@ import org.hibernate.query.Query;
 public class HibernateOracle {
 	
 	public static String nazwaTypu = "null";
+	
+	private static int idUzytkownika;
 
 	public static void main(String[] args) {
 		
@@ -98,8 +105,8 @@ public class HibernateOracle {
 		JButton pokazProduktZamowieniaPrzycisk = new JButton("Produkty w zamowieniach");
 		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
+		JButton kontoPrzycisk = new JButton(" ");
 		
-		JLabel nazwaUzytkownika = new JLabel();
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
@@ -171,6 +178,7 @@ public class HibernateOracle {
 				                		pokazZalogujPrzycisk.setVisible(false);
 				                		bar.remove(pokazZalogujPrzycisk);
 				                		bar.remove(glue);
+				                		idUzytkownika = uzytkownik.getId_uzytkownika();
 				                		
 				                		oc.createDBSession();
 				                		Session session2 = oc.getDBSession();
@@ -212,9 +220,11 @@ public class HibernateOracle {
 				                		
 				                		bar.add(glue);
 				                		
-				                		nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());				         
+				                		kontoPrzycisk.setText(uzytkownik.getNazwa_uzytkownika());				                		
+				                		//nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());				         
 				                		
-				                		bar.add(nazwaUzytkownika);
+				                		//bar.add(nazwaUzytkownika);
+				                		bar.add(kontoPrzycisk);
 				                		bar.add(pokazWylogujPrzycisk);	
 				                		
 				                		bar.revalidate();
@@ -288,6 +298,54 @@ public class HibernateOracle {
 					 System.out.println("Wylogowanie sie nie powiodlo");
 				 }
 			 }
+		 });
+		 
+		 kontoPrzycisk.addActionListener(new ActionListener() {
+			 
+			 @Override
+				public void actionPerformed(ActionEvent a) {				 	
+				 	kontener.removeAll();			 	
+
+					List<Obiekt_Do_Polecen> entities = null;
+					Uzytkownicy user = new Uzytkownicy();
+					oc.createDBSession();
+					
+					try (Session session2 = oc.getDBSession()) {
+						user = (Uzytkownicy)session2.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+ idUzytkownika)
+	 	                			.uniqueResult();			            			            
+			            oc.closeDBSession();
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+					
+					GridBagConstraints gbc = new GridBagConstraints();
+			        gbc.gridx = 0;
+			        gbc.gridy = GridBagConstraints.RELATIVE;
+			        gbc.anchor = GridBagConstraints.CENTER;
+			        gbc.insets = new Insets(5, 5, 5, 5);
+					
+					JLabel szczegoly = new JLabel("Szczególy");
+					JLabel nazwa = new JLabel("Nazwa użytkownika:  " + user.getNazwa_uzytkownika());
+					//nazwa.setHorizontalAlignment(SwingConstants.CENTER); 
+					JLabel login = new JLabel("Login:  " + user.getLogin());
+					JLabel haslo = new JLabel("Hasło:  " + "*".repeat(user.getHaslo().length()));
+					JLabel email = new JLabel("E-mail:  " + user.getE_mail());
+				
+					kontener.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+					/*
+					budSwing.tworzTabeleProdukty(entities);
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					 */
+					
+					 kontener.add(szczegoly, gbc);
+					 kontener.add(nazwa);
+					 kontener.add(login);
+					 kontener.add(haslo);
+					 kontener.add(email);
+					 frame.revalidate();
+					 frame.repaint();
+				}
 		 });
 		 
 

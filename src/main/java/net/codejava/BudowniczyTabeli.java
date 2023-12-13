@@ -86,10 +86,13 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		JTable jt = new JTable(dan, nagl);
 			
 		if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
-            TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
-            buttonColumn.setCellRenderer(new ButtonRenderer());
-            buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
-
+            if(!(obj instanceof Produkt_Zamowienia))
+            {
+            	TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
+            	buttonColumn.setCellRenderer(new ButtonRenderer());
+            	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+            }
+			
             TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
             buttonColumn2.setCellRenderer(new ButtonRenderer());
             buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
@@ -157,7 +160,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             if (column == (naglowek.size() - 1)) {
             	label = "Usuń";
             } else if(column == (naglowek.size() - 2)) {
-            	label = "Edytuj";
+            	label = "Edytuj";            		
             }      
             else{
             	label = (value == null) ? "" : value.toString();
@@ -334,8 +337,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                } 	 
 	                	else if(obj instanceof Zamowienia)
 	 	                {
+	                		myPanel.add(new JLabel("Miasto wysyłki"));
+	                		myPanel.add(pierwszyField);	    
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(new JLabel("Ulica wysyłki: "));
+	                		myPanel.add(drugiField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Stan zamówienia: "));
-	                		myPanel.add(pierwszyField);	                
+	                		myPanel.add(trzeciField);
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
@@ -351,7 +360,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	//System.out.println(user.getId_uzytkownika());
 	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
-	     	 	                		user.setId_stanu_zamowienia(Integer.parseInt(pierwszyField.getText()));
+	     	 	                		user.setAdres_wysylki_miasto(pierwszyField.getText());
+	     	 	                	if(!drugiField.getText().isEmpty())
+	     	 	                		user.setAdres_wysylki_ulica(drugiField.getText());
+	     	 	                	if(!trzeciField.getText().isEmpty())
+	     	 	                		user.setId_stanu_zamowienia(Integer.parseInt(trzeciField.getText()));
 	     	 	                	
 	     	                		session.update(user);
 	     	                		
