@@ -113,7 +113,7 @@ public class HibernateOracle {
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
 		JButton dodajPrzycisk = new JButton("Dodaj rekord");
-		List<Produkt_Koszyk> koszyk = null;	
+		List<Obiekt_Do_Polecen> koszyk = null;	
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
@@ -345,8 +345,14 @@ public class HibernateOracle {
 			        jp.add(email);
 			        jp.add(edytujPrzycisk);
 			        jp.add(usunPrzycisk);
+			        			        					
+										
+					budSwing.tworzTabeleProdukty(koszyk); // <- zmienić na inną metodę
+					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 			        kontener.add(jp);
+			       //kontener.add(pane);
 					 frame.revalidate();
 					 frame.repaint();
 					 

@@ -81,24 +81,48 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				this.naglowek.addLast(" ");				
 			}
 		}
+		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null")))
+			this.naglowek.addLast(" ");
+		
 		Object[] nagl = this.naglowek.toArray();
 		Object[][] dan = new Object[this.dane.size()][];
 		int i = 0;
 		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
 		JTable jt = new JTable(dan, nagl);
 			
-		if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
-			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
-            {
-            	TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
-            	buttonColumn.setCellRenderer(new ButtonRenderer());
-            	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
-            	
-            	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
-            	buttonColumn2.setCellRenderer(new ButtonRenderer());
-            	buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
+		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null"))){
+			TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 1);
+        	buttonColumn.setCellRenderer(new ButtonRenderer());
+        	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+        	if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
+    			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
+                {
+                	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 3);
+                	buttonColumn2.setCellRenderer(new ButtonRenderer());
+                	buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
+                	
+                	TableColumn buttonColumn3 = jt.getColumnModel().getColumn(naglowek.size() - 2);
+                	buttonColumn3.setCellRenderer(new ButtonRenderer());
+                	buttonColumn3.setCellEditor(new ButtonEditor(new JCheckBox()));
+                }
+    			
             }
-        }
+		}
+		else {
+			if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
+				if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
+	            {
+	            	TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
+	            	buttonColumn.setCellRenderer(new ButtonRenderer());
+	            	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+	            	
+	            	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
+	            	buttonColumn2.setCellRenderer(new ButtonRenderer());
+	            	buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
+	            }
+				
+	        }
+		}
 		
 		jt.setPreferredScrollableViewportSize(new Dimension(1000, 400));
 		return jt;
@@ -117,14 +141,30 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 setForeground(table.getForeground());
                 setBackground(UIManager.getColor("Button.background"));
             }
-            if (column == (naglowek.size() - 1)) {
-                setText("Usuń");
-            } else if(column == (naglowek.size() - 2)) {
-            	setText("Edytuj");
-            }      
-            else{
-                setText((value == null) ? "" : value.toString());
+            if(HibernateOracle.obj instanceof Produkty)
+            {
+            	if (column == (naglowek.size() - 1)) {
+            		setText("Dodaj do koszyka"); ;
+            	} else if(column == (naglowek.size() - 2)) {
+            		setText("Usuń");           		
+	            } else if(column == (naglowek.size()-3)){
+	            	setText("Edytuj");
+	            }
+	            else{
+	            	setText((value == null) ? "" : value.toString());
+	            } 
             }
+            else
+            {
+            	if (column == (naglowek.size() - 1)) {
+            		setText("Usuń");
+            	} else if(column == (naglowek.size() - 2)) {
+            		setText("Edytuj");           		
+	            }      
+	            else{
+	            	setText((value == null) ? "" : value.toString());
+	            } 
+            }                      
             return this;
         }
     }
@@ -159,14 +199,31 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 button.setForeground(table.getForeground());
                 button.setBackground(table.getBackground());
             }
-            if (column == (naglowek.size() - 1)) {
-            	label = "Usuń";
-            } else if(column == (naglowek.size() - 2)) {
-            	label = "Edytuj";            		
-            }      
-            else{
-            	label = (value == null) ? "" : value.toString();
-            }   
+            if(HibernateOracle.obj instanceof Produkty)
+            {
+            	if (column == (naglowek.size() - 1)) {
+            		label = "Dodaj do koszyka";
+            	} else if(column == (naglowek.size() - 2)) {
+	            	label = "Usuń";            		
+	            } else if(column == (naglowek.size()-3)){
+	            	label = "Edytuj";
+	            }
+	            else{
+	            	label = (value == null) ? "" : value.toString();
+	            } 
+            }
+            else
+            {
+            	if (column == (naglowek.size() - 1)) {
+            		label = "Usuń";
+            	} else if(column == (naglowek.size() - 2)) {
+	            	label = "Edytuj";            		
+	            }      
+	            else{
+	            	label = (value == null) ? "" : value.toString();
+	            } 
+            }
+              
             this.id = Integer.parseInt((String)table.getValueAt(row, 0));
             if(HibernateOracle.obj instanceof Produkt_Magazyn) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
             button.setText(label);
@@ -745,6 +802,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				this.dodajKolumne("");
 				break;
 			}
+			if(!(HibernateOracle.nazwaTypu.equals("null")))this.dodajKolumne(" ");
 		}
 	}
 	
