@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import javax.persistence.Entity;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -466,6 +469,8 @@ public class HibernateOracle {
 							public void actionPerformed(ActionEvent a) {		
 							 JTextField pierwszyField = new JTextField(7);
 				                JTextField drugiField = new JTextField(7);
+				                JTextField trzeciField = new JTextField(7);
+				                JCheckBox checkbox = new JCheckBox("Faktura");
 			            		 
 			 	                JPanel myPanel = new JPanel();
 							 myPanel.add(new JLabel("Miasto wysyłki: "));
@@ -473,12 +478,36 @@ public class HibernateOracle {
 		                		myPanel.add(Box.createHorizontalStrut(5));
 		                		myPanel.add(new JLabel("Ulica: "));
 		                		myPanel.add(drugiField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel(" "));
+		                		myPanel.add(checkbox);
+		                		checkbox.setSelected(false);		                				                	
 		                		
 		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		   	                         "Złóż zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		                				                		
 		                		 try {	
 		                			 if (result == JOptionPane.OK_OPTION) {
+		                				 
+		                				 if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
+					 	                	{
+					 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało złożone.");
+					 	                		return;
+					 	                	}
+		                				 if(checkbox.isSelected()==true)
+		                				 {
+		                					 JPanel myPanel2 = new JPanel();
+		        							 myPanel2.add(new JLabel("NIP: "));
+		        		                	 myPanel2.add(trzeciField);
+		        		                	 int result2 = JOptionPane.showConfirmDialog(null, myPanel2, 
+			    		   	                         "Złóż fakturę", JOptionPane.OK_CANCEL_OPTION);
+			                				 
+			                				 if (result2 == JOptionPane.CANCEL_OPTION || trzeciField.getText().isEmpty()) {
+			                					 JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie zostanie dodana.");
+			                					 throw new Exception("Zamówienie nie zostało żłożone");
+			                				 }
+		                				 }
+		                				 
 		     	                		OracleConnection oc =  OracleConnection.getInstance();
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
@@ -493,7 +522,7 @@ public class HibernateOracle {
 		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		     	 	                	
 		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(zamowienie.getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), ((Produkt_Koszyk)odp).getIlosc()));
 		     	 	                	
-		     	 	                			     	 	                		     	                				     	                	
+		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), zamowienie.getId_zamowienia()));    	 	                		     	                				     	                	
 		     	                		oc.closeDBSession();
 		     	                		
 		     	                		koszyk.clear();
