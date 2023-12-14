@@ -680,6 +680,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                			}
 	     	 	                		}
 	     	 	                	}
+	     	 	                	else
+	     	 	                		throw new Exception("Nie podano wartosci lub podano niedopuszczalna liczbe");
 	     	 	                		 	 	              	
 	     	                	}
 	                		 }
@@ -767,8 +769,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                  }
                  else if(this.label.equals("Dodaj do koszyka")) {
                 	 //Przycisk Dodaj do koszyka
+                	 	
+                	 try {
+                    	 for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
+                    			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == id) {
+                    				throw new Exception("Podany produkt juz zostal dodany."
+                    						+ " Jesli chcesz dodac wieksza ilosc tego produkut zmodyfikuj jego wartosc w zamowieniu");
+                    			}
+                    		}
+                	 
 
-	                	
 	                	 JPanel myPanel = new JPanel();
 	                	 JLabel labelek = new JLabel("Podaj ilosc");
 	                	 JTextField pierwszyField = new JTextField(7);
@@ -799,6 +809,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 e.printStackTrace();
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się dodac produktu do zamowienia. Błąd: " + e.getMessage());
 	                		 }
+                	 }catch(Exception e){
+                		 JOptionPane.showMessageDialog(null, "Nie udało się dodac produktu do zamowienia. Błąd: " + e.getMessage());
+                	 }
 	                	
 	                	
 	                	
