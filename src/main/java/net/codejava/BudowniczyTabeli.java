@@ -309,6 +309,31 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                	
 	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
 	 	                {
+	                		OracleConnection oc =  OracleConnection.getInstance();
+			                oc.createDBSession();
+
+			                List<Obiekt_Do_Polecen> fData = null;
+
+			                try (Session session = oc.getDBSession()) {
+			                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+			                    fData = query.getResultList();
+			                    oc.closeDBSession();
+			                } catch (Exception e) {
+			                    e.printStackTrace();
+			                    System.out.println(e);
+			                }
+			                
+			                String nazwy[] = new String[fData.size()]; 
+			                
+			                int i=0;
+			                for(Obiekt_Do_Polecen stan: fData) {
+			                	//nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] = ((Stany_Zamowienia)stan).getNazwa();
+			                	nazwy[i] = ((Typy_uzytkownika)stan).getNazwa();
+			                	i++;
+			                }
+			                
+			                JComboBox jombo = new JComboBox(nazwy);
+			                
 	                		myPanel.add(new JLabel("Nazwa użytkownika: "));
 	                		myPanel.add(pierwszyField);
 	                		myPanel.add(Box.createHorizontalStrut(5));
@@ -321,15 +346,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(new JLabel("E-mail: "));
 	                		myPanel.add(czwartyField);
 	                		myPanel.add(Box.createHorizontalStrut(5));
-	                		myPanel.add(new JLabel("Id typu użytkownika: "));
-	                		myPanel.add(piatyField);
+	                		myPanel.add(new JLabel("Typ użytkownika: "));
+	                		myPanel.add(jombo);
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
-	     	                		OracleConnection oc =  OracleConnection.getInstance();
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
@@ -346,8 +370,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		user.setHaslo(trzeciField.getText());
 	     	 	                	if(!czwartyField.getText().isEmpty())
 	     	 	                		user.setE_mail(czwartyField.getText());
-	     	 	                	if(!piatyField.getText().isEmpty())
-	     	 	                		user.setId_typu_uzytkownika(Integer.parseInt(piatyField.getText()));
+	     	 	                	user.setId_typu_uzytkownika(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
+	     	 	                	
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
@@ -360,6 +384,31 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                } 	 
 	                	else if(HibernateOracle.obj instanceof Produkty)
 	 	                {
+	                		OracleConnection oc =  OracleConnection.getInstance();
+			                oc.createDBSession();
+
+			                List<Obiekt_Do_Polecen> fData = null;
+
+			                try (Session session = oc.getDBSession()) {
+			                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+			                    fData = query.getResultList();
+			                    oc.closeDBSession();
+			                } catch (Exception e) {
+			                    e.printStackTrace();
+			                    System.out.println(e);
+			                }
+			                
+			                String nazwy[] = new String[fData.size()]; 
+			                
+			                int i=0;
+			                for(Obiekt_Do_Polecen stan: fData) {
+			                	//nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] = ((Stany_Zamowienia)stan).getNazwa();
+			                	nazwy[i] = ((Kategorie)stan).getNazwa();
+			                	i++;
+			                }
+			                
+			                JComboBox jombo = new JComboBox(nazwy);
+			                
 	                		myPanel.add(new JLabel("Nazwa produktu: "));
 	                		myPanel.add(pierwszyField);
 	                		myPanel.add(Box.createHorizontalStrut(5));
@@ -368,15 +417,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Opis: "));
 	                		myPanel.add(trzeciField);
-	                		myPanel.add(new JLabel("Id Kategorii: "));
-	                		myPanel.add(czwartyField);
+	                		myPanel.add(new JLabel("Kategoria: "));
+	                		myPanel.add(jombo);
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
-	     	                		OracleConnection oc =  OracleConnection.getInstance();
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
@@ -388,11 +436,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	if(!pierwszyField.getText().isEmpty())
 	     	 	                		user.setNazwa(pierwszyField.getText());
 	     	 	                	if(!drugiField.getText().isEmpty())
-	     	 	                		user.setCena(Double.parseDouble(drugiField.getText()));
+	     	 	                		if(Double.parseDouble(drugiField.getText())<=0)
+	     	 	                			throw(new Exception("Nie można dodać ujemnej ceny, ani ceny równej 0"));
+	     	 	                		else
+	     	 	                			user.setCena(Double.parseDouble(drugiField.getText()));
 	     	 	                	if(!trzeciField.getText().isEmpty())
 	     	 	                		user.setOpis(trzeciField.getText());
 	     	 	                	if(!czwartyField.getText().isEmpty())
 	     	 	                		user.setKategorie_id_kategorii(Integer.parseInt(czwartyField.getText()));
+	     	 	                	
+	     	 	                	user.setKategorie_id_kategorii(((Kategorie)fData.get(jombo.getSelectedIndex())).getId_Kategorii());
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
@@ -404,7 +457,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	 	                } 	 
 	                	else if(HibernateOracle.obj instanceof Zamowienia)
-	 	                {	               	
+	 	                {
+	                		
 	                		OracleConnection oc =  OracleConnection.getInstance();
 			                oc.createDBSession();
 
@@ -606,9 +660,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	
 	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
-	     	 	                		user.setStan_faktyczny(Integer.parseInt(pierwszyField.getText()));
+	     	 	                		if(Integer.parseInt(drugiField.getText())<0)
+	     	 	                			throw(new Exception("Nie można dodać ujemnego stanu faktycznego."));
+	     	 	                		else
+	     	 	                			user.setStan_faktyczny(Integer.parseInt(pierwszyField.getText()));
+	     	 	                		
 	     	 	                	if(!drugiField.getText().isEmpty())
-	     	 	                		user.setStan_magazynowy(Integer.parseInt(drugiField.getText()));
+	     	 	                		if(Integer.parseInt(drugiField.getText())<0)
+	     	 	                			throw(new Exception("Nie można dodać ujemnego stanu magazynowego."));
+	     	 	                		else
+	     	 	                			user.setStan_magazynowy(Integer.parseInt(pierwszyField.getText()));
 	     	 	                	
 	     	                		session.update(user);
 	     	                		
