@@ -660,7 +660,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	
 	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
-	     	 	                		if(Integer.parseInt(drugiField.getText())<0)
+	     	 	                		if(Integer.parseInt(pierwszyField.getText())<0)
 	     	 	                			throw(new Exception("Nie można dodać ujemnego stanu faktycznego."));
 	     	 	                		else
 	     	 	                			user.setStan_faktyczny(Integer.parseInt(pierwszyField.getText()));
@@ -956,8 +956,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Nazwa");
 		this.dodajKolumne("Cena");
 		this.dodajKolumne("Opis");	
-		this.dodajKolumne("Id producenta");
-		this.dodajKolumne("Id kategorii");
+		this.dodajKolumne("Producent");
+		this.dodajKolumne("Kategoria");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
@@ -1203,9 +1203,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             e.printStackTrace();
             System.out.println(e);
         }
-
-		
-		
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -1244,7 +1241,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Miasto wysyłki");
 		this.dodajKolumne("Ulica wysyłki");
 		this.dodajKolumne("Koszt");
-		this.dodajKolumne("Id stanu zamowienia");
+		this.dodajKolumne("Stan zamowienia");
 		this.dodajKolumne("Id Użytkownika");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
@@ -1275,10 +1272,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 					break;
 				}
 			}
-			
-
-			
-			
+								
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
@@ -1324,8 +1318,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         this.dodajKolumne("Lp.");
         this.dodajKolumne("Nazwa");
         this.dodajKolumne("Cena za sztuke");
-        this.dodajKolumne("Ilosc");
-        this.dodajKolumne("Laczna cena");
+        this.dodajKolumne("Ilość");
+        this.dodajKolumne("Łączna cena");
 
         for(Obiekt_Do_Polecen entry: entities)
         {
