@@ -731,6 +731,44 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	              }catch(Exception e) {	            	  
  	              }           			                	
                  }
+                 else if(this.label.equals("Dodaj do koszyka")) {
+                	 //Przycisk Dodaj do koszyka
+
+	                	
+	                	 JPanel myPanel = new JPanel();
+	                	 JLabel labelek = new JLabel("Podaj ilosc");
+	                	 JTextField pierwszyField = new JTextField(7);
+	                	 
+	                	 myPanel.add(labelek);
+	                	 myPanel.add(pierwszyField);
+	                	
+	                	int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	                		
+	     		                	if(!pierwszyField.getText().isEmpty()) {
+	   	     	                  	 OracleConnection oc = OracleConnection.getInstance();
+		     	                	 oc.createDBSession();
+		     	                	 Session session = oc.getDBSession();
+		     	                	 
+		     		                	Produkty user = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
+		     		 	                			.setParameter("id", this.id)
+		     		 	                			.uniqueResult();
+		     		                	
+		     		                	Produkt_Koszyk pk = new Produkt_Koszyk(user,Integer.parseInt(pierwszyField.getText()));
+		     		                	HibernateOracle.koszyk.add(pk);
+	     		                	}
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się dodac produktu do zamowienia. Błąd: " + e.getMessage());
+	                		 }
+	                	
+	                	
+	                	
+                 }
             }
             isPushed = false;
             return label;

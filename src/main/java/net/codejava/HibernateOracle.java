@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -35,6 +36,7 @@ public class HibernateOracle {
 	
 	public static String nazwaTypu = "null";
 	public static Obiekt_Do_Polecen obj = null;
+	public static List<Obiekt_Do_Polecen> koszyk = new ArrayList<Obiekt_Do_Polecen>();
 	
 	private static int idUzytkownika;
 
@@ -112,8 +114,7 @@ public class HibernateOracle {
 		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
-		JButton dodajPrzycisk = new JButton("Dodaj rekord");
-		List<Obiekt_Do_Polecen> koszyk = null;	
+		JButton dodajPrzycisk = new JButton("Dodaj rekord");	
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
@@ -251,12 +252,13 @@ public class HibernateOracle {
 	            }
 	        });
 		 
-		 ActionListener akcja = new ActionListener() {
+		 ActionListener akcjaWylogowania = new ActionListener() {
 			 
 			 public void actionPerformed(ActionEvent a)
 			 {
 				 List<Obiekt_Do_Polecen> entities = null;
 				 nazwaTypu = "null";
+				 koszyk = new ArrayList<Obiekt_Do_Polecen>();
 				 
 				 kontener.removeAll();
 				 
@@ -298,7 +300,7 @@ public class HibernateOracle {
 			 }
 		 };
 		 
-		 pokazWylogujPrzycisk.addActionListener(akcja);
+		 pokazWylogujPrzycisk.addActionListener(akcjaWylogowania);
 		 
 		 kontoPrzycisk.addActionListener(new  ActionListener() {
 			 
@@ -345,14 +347,18 @@ public class HibernateOracle {
 			        jp.add(email);
 			        jp.add(edytujPrzycisk);
 			        jp.add(usunPrzycisk);
-			        			        					
+			        kontener.add(jp);       					
 										
-					budSwing.tworzTabeleProdukty(koszyk); // <- zmienić na inną metodę
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
-					 JScrollPane pane = new JScrollPane(tabSwing);					 
+					if(koszyk.size() != 0) {
+						budSwing.tworzTabeleKoszyk(koszyk); // <- zmienić na inną metodę
+						 JTable tabSwing = budSwing.pobierzTabeleSwing();
+						 JScrollPane pane = new JScrollPane(tabSwing);	
+					       kontener.add(pane);
+					}
+				 
 					 
-			        kontener.add(jp);
-			       //kontener.add(pane);
+
+
 					 frame.revalidate();
 					 frame.repaint();
 					 
@@ -430,7 +436,7 @@ public class HibernateOracle {
 			                			
 				 	            try {
 				 	            	 if (result == JOptionPane.OK_OPTION) {
-				 	            		 akcja.actionPerformed(a);
+				 	            		 akcjaWylogowania.actionPerformed(a);
 				 	            		 OracleConnection oc =  OracleConnection.getInstance();
 				 	            		 oc.createDBSession();	                			
 				 	            		 Session session = oc.getDBSession();
