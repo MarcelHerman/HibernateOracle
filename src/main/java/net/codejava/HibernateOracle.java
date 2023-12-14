@@ -113,7 +113,7 @@ public class HibernateOracle {
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
 		JButton dodajPrzycisk = new JButton("Dodaj rekord");
-		
+		List<Produkt_Koszyk> koszyk = null;	
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
