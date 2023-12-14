@@ -47,13 +47,15 @@ public class HibernateOracle {
 		Session session = oc.getDBSession();
 		
 		//session.save(new Kategorie("Plytki"));
-		//session.save(new Zamowienia(15.25,"Wiej","Hallera",1,3));
+		//session.save(new Zamowienia(15.25,"testFaktur","Hallera",1,1));
 		//session.save(new Producenci("Biedronka","238989","Bialystok","Pogodna"));
 		//session.save(new Produkty("wiadro 2000",52.32,"jeszcze fajniejsze",1,1));
 		//session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(2,3),3));
 		//session.save(new Magazyny("Skieblewo","Piotrkowa"));
 		//session.save(new Produkt_Magazyn(new Produkt_Magazyn_Id(1,3),2,2));
 		//session.save(new Faktury("05-10-23","232312",3));
+		
+		//session.save(new Faktury(LocalDate.now(),"232312",3));
 		
 		//session.save(new Typy_uzytkownika("Administrator"));
 		//session.save(new Typy_uzytkownika("Pracownik"));

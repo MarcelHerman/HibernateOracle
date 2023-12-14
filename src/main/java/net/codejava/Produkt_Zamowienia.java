@@ -13,9 +13,9 @@ public class Produkt_Zamowienia implements java.io.Serializable, Obiekt_Do_Polec
     @EmbeddedId
     private Produkt_Zamowienia_Id produkt_zamowienia_id;
 
-    private float ilosc;
+    private int ilosc;
 
-    public Produkt_Zamowienia(Produkt_Zamowienia_Id produkt_zamowienia_id, float ilosc) {
+    public Produkt_Zamowienia(Produkt_Zamowienia_Id produkt_zamowienia_id, int ilosc) {
         this.produkt_zamowienia_id = produkt_zamowienia_id;
         this.ilosc = ilosc;
     }
@@ -32,11 +32,11 @@ public class Produkt_Zamowienia implements java.io.Serializable, Obiekt_Do_Polec
     	return produkt_zamowienia_id.getProduktId();
     }
 
-    public float getIlosc() {
+    public int getIlosc() {
         return ilosc;
     }
 
-    public void setIlosc(float ilosc) {
+    public void setIlosc(int ilosc) {
         this.ilosc = ilosc;
     }
 

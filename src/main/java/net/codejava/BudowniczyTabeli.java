@@ -75,7 +75,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		if(this.wiersz!=null) this.dane.addLast(wiersz);
 		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
 		{
-			this.naglowek.addLast(" ");
+			if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
+				this.naglowek.addLast(" ");
 			this.naglowek.addLast(" ");
 		}
 		Object[] nagl = this.naglowek.toArray();
@@ -812,8 +813,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajWiersz();			
 			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getMagazyn_id()));
 			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getProdukt_id()));			
-			this.dodajKolumne(Double.toString(((Produkt_Magazyn) entry).getStan_faktyczny()));
-			this.dodajKolumne(Double.toString(((Produkt_Magazyn) entry).getStan_magazynowy()));
+			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getStan_faktyczny()));
+			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getStan_magazynowy()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
 				this.dodajKolumne("");
@@ -839,10 +840,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajWiersz();			
 			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getZamowienieId()));
 			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getProduktId()));
-			this.dodajKolumne(Double.toString(((Produkt_Zamowienia) entry).getIlosc()));
+			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getIlosc()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
-				this.dodajKolumne("");
+				if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
+					this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
 			}
