@@ -1090,7 +1090,7 @@ public class HibernateOracle {
 		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać producenta. Błąd: " + e.getMessage());
 		         		 }
 	                }
-	                else if(obj instanceof Produkt_Magazyn) 
+	                else if(obj instanceof Produkt_Magazyn)
 	                {
 	                	myPanel.add(new JLabel("Id magazynu: "));
 		         		myPanel.add(pierwszyField);
@@ -1119,6 +1119,12 @@ public class HibernateOracle {
 			 	                		return;
 			 	                	}
 			 	                	
+			 	                	if(Integer.parseInt(trzeciField.getText())<0)
+			 	                		throw(new Exception("Stan magazynowy nie może być ujemny."));
+			 	                	
+			 	                	if(Integer.parseInt(czwartyField.getText())<=0)
+			 	                		throw(new Exception("Stan faktyczny nie może być ujemny."));
+			 	                	
 			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
 			                		
@@ -1132,13 +1138,13 @@ public class HibernateOracle {
 	                }
 	                else if(obj instanceof Produkt_Zamowienia) 
 	                {
-	                	myPanel.add(new JLabel("Id zamowienia: "));
+	                	myPanel.add(new JLabel("Id zamówienia: "));
 		         		myPanel.add(pierwszyField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Id produktu: "));
 		         		myPanel.add(drugiField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Ilosc: "));
+		         		myPanel.add(new JLabel("Ilość: "));
 		         		myPanel.add(trzeciField);
 		         		
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
@@ -1146,7 +1152,7 @@ public class HibernateOracle {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
+			                		OracleConnection oc = OracleConnection.getInstance();
 			 	                	oc.createDBSession();
 			 	                	Session session = oc.getDBSession();
 			                		
@@ -1155,6 +1161,9 @@ public class HibernateOracle {
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do zamówienia.");
 			 	                		return;
 			 	                	}
+			 	                	
+			 	                	if(Integer.parseInt(trzeciField.getText())<=0)
+			 	                		throw(new Exception("Ilość nie może być ujemna ani równa 0."));
 			 	                	
 			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	
