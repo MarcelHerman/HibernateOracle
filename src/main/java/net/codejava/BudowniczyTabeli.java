@@ -422,8 +422,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			                
 			                String nazwy[] = new String[fData.size()]; 
 			                
+			                int i=0;
 			                for(Obiekt_Do_Polecen stan: fData) {
-			                	nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] = ((Stany_Zamowienia)stan).getNazwa();
+			                	//nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] = ((Stany_Zamowienia)stan).getNazwa();
+			                	nazwy[i] = ((Stany_Zamowienia)stan).getNazwa();
+			                	i++;
 			                }
 			                
 			                JComboBox jombo = new JComboBox(nazwy);
@@ -455,7 +458,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	if(!drugiField.getText().isEmpty())
 	     	 	                		user.setAdres_wysylki_ulica(drugiField.getText());
 	     	 	                	
-	     	 	                	user.setId_stanu_zamowienia(jombo.getSelectedIndex()+1);
+	     	 	                	user.setId_stanu_zamowienia(((Stany_Zamowienia)fData.get(jombo.getSelectedIndex())).getId_Stanu_Zamowienia());
 	     	 	                	
 	     	                		session.update(user);
 	     	                		
