@@ -1256,15 +1256,30 @@ public class HibernateOracle {
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Koszt: "));
 		         		myPanel.add(piatyField);
+		         				         	
+		         		OracleConnection oc =  OracleConnection.getInstance();
+		                oc.createDBSession();
+
+		                List<Obiekt_Do_Polecen> fData = null;
+
+		                try (Session session = oc.getDBSession()) {
+		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+		                    fData = query.getResultList();
+		                    oc.closeDBSession();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                    System.out.println(e);
+		                }
+		         	        
 		         		
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		                         "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			                		OracleConnection oc1 =  OracleConnection.getInstance();
+			 	                	oc1.createDBSession();
+			 	                	Session session = oc1.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
 			 	                	{
@@ -1274,7 +1289,7 @@ public class HibernateOracle {
 			 	                				 	                				 	                
 			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), Integer.parseInt(drugiField.getText()), Integer.parseInt(pierwszyField.getText())));
 			                		
-			                		oc.closeDBSession();
+			                		oc1.closeDBSession();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
