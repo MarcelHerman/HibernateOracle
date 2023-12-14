@@ -404,8 +404,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
 	 	                } 	 
 	                	else if(HibernateOracle.obj instanceof Zamowienia)
-	 	                {
-	                		
+	 	                {	               	
 	                		OracleConnection oc =  OracleConnection.getInstance();
 			                oc.createDBSession();
 

@@ -882,6 +882,40 @@ public class HibernateOracle {
 	                
 	                if(obj instanceof Produkty) 
 	                {
+	                	OracleConnection oc =  OracleConnection.getInstance();
+		                oc.createDBSession();
+
+		                List<Obiekt_Do_Polecen> fData = null;
+		                List<Obiekt_Do_Polecen> fData2 = null;
+
+		                try (Session session = oc.getDBSession()) {
+		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
+		                    fData = query.getResultList();
+		                    query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+		                    fData2 = query.getResultList();
+		                    oc.closeDBSession();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                    System.out.println(e);
+		                }
+		                
+		                String nazwy[] = new String[fData.size()]; 
+		                String nazwy2[] = new String[fData2.size()];
+		                
+		                int i=0;
+		                for(Obiekt_Do_Polecen stan: fData) {
+		                	nazwy[i] = ((Producenci)stan).getNazwa();
+		                	i++;
+		                }
+		                i=0;
+		                for(Obiekt_Do_Polecen stan: fData2) {
+		                	nazwy2[i] = ((Kategorie)stan).getNazwa();
+		                	i++;
+		                }
+		                
+		                JComboBox jombo = new JComboBox(nazwy);
+		                JComboBox jombo2 = new JComboBox(nazwy2);
+                		
 	                	myPanel.add(new JLabel("Nazwa: "));
 		         		myPanel.add(pierwszyField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
@@ -892,29 +926,26 @@ public class HibernateOracle {
 		         		myPanel.add(trzeciField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Id producenta: "));
-		         		myPanel.add(czwartyField);
+		         		myPanel.add(jombo);
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Id kategorii: "));
-		         		myPanel.add(piatyField);
+		         		myPanel.add(jombo2);
 		         		
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		                         "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
+			                	if (result == JOptionPane.OK_OPTION) {			                		
 			 	                	oc.createDBSession();
 			 	                	Session session = oc.getDBSession();
 			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany");
 			 	                		return;
 			 	                	}
 			 	                				 	                	
-			 	                	//Obiekt_Do_Polecen odp = new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), Integer.parseInt(czwartyField.getText()), Integer.parseInt(piatyField.getText()));
 			 	                
-			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), Integer.parseInt(czwartyField.getText()), Integer.parseInt(piatyField.getText())));
+			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii()));
 			                		
 			                		oc.closeDBSession();
 			                	}
@@ -1201,6 +1232,32 @@ public class HibernateOracle {
 	                }
 	                else if(obj instanceof Uzytkownicy) 
 	                {
+	                	OracleConnection oc =  OracleConnection.getInstance();
+		                oc.createDBSession();
+
+		                List<Obiekt_Do_Polecen> fData = null;
+
+		                try (Session session = oc.getDBSession()) {
+		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+		                    fData = query.getResultList();
+		                    oc.closeDBSession();
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                    System.out.println(e);
+		                }
+		                
+		                String nazwy[] = new String[fData.size()]; 
+		                
+		                int i=0;
+		                for(Obiekt_Do_Polecen stan: fData) {
+		                	nazwy[i] = ((Typy_uzytkownika)stan).getNazwa();
+		                	i++;
+		                }
+		                
+		                JComboBox jombo = new JComboBox(nazwy);
+                		
+                		//user.setId_stanu_zamowienia(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
+
 	                	myPanel.add(new JLabel("Nazwa uzytkownika: "));
 		         		myPanel.add(pierwszyField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
@@ -1214,24 +1271,22 @@ public class HibernateOracle {
 		         		myPanel.add(czwartyField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Id typu użytkownika: "));
-		         		myPanel.add(piatyField);
+                		myPanel.add(jombo);
 		         		
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		                         "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
+			                	if (result == JOptionPane.OK_OPTION) {			                		
 			 	                	oc.createDBSession();
 			 	                	Session session = oc.getDBSession();
 			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
+			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Użytkownik nie został dodany");
 			 	                		return;
 			 	                	}
 			 	                				 	                				 	                
-			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), Integer.parseInt(piatyField.getText())));
+			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika()));
 			                		
 			                		oc.closeDBSession();
 			                	}
@@ -1242,9 +1297,7 @@ public class HibernateOracle {
 		         		 }
 	                }
 	                else if(obj instanceof Zamowienia) 
-	                {
-		         		
-	                	
+	                {		         			                	
 	                	myPanel.add(new JLabel("Id uzytkownika: "));
 		         		myPanel.add(pierwszyField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
