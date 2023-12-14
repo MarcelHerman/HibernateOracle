@@ -114,7 +114,8 @@ public class HibernateOracle {
 		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
-		JButton dodajPrzycisk = new JButton("Dodaj rekord");	
+		JButton dodajPrzycisk = new JButton("Dodaj rekord");
+		
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
@@ -258,7 +259,7 @@ public class HibernateOracle {
 			 {
 				 List<Obiekt_Do_Polecen> entities = null;
 				 nazwaTypu = "null";
-				 koszyk = new ArrayList<Obiekt_Do_Polecen>();
+				 koszyk.clear();
 				 
 				 kontener.removeAll();
 				 
@@ -326,6 +327,8 @@ public class HibernateOracle {
 					JLabel email = new JLabel("E-mail:  " + user.getE_mail());
 					JButton edytujPrzycisk = new JButton("Edytuj konto");
 					JButton usunPrzycisk = new JButton("Usuń konto");
+					JButton zlozzamowieniePrzycisk = new JButton("Złóż zamówienie");
+					JButton oproznijkoszykPrzycisk = new JButton("Opróżnij koszyk");
 					
 					JPanel jp = new JPanel();
 				
@@ -352,13 +355,15 @@ public class HibernateOracle {
 					if(koszyk.size() != 0) {
 						budSwing.tworzTabeleKoszyk(koszyk); // <- zmienić na inną metodę
 						 JTable tabSwing = budSwing.pobierzTabeleSwing();
-						 JScrollPane pane = new JScrollPane(tabSwing);	
+						 JScrollPane pane = new JScrollPane(tabSwing);
+						 pane.setAlignmentX(Component.CENTER_ALIGNMENT);
 					       kontener.add(pane);
+					       zlozzamowieniePrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+					       oproznijkoszykPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+					       kontener.add(zlozzamowieniePrzycisk);
+					       kontener.add(oproznijkoszykPrzycisk);
 					}
 				 
-					 
-
-
 					 frame.revalidate();
 					 frame.repaint();
 					 
@@ -428,7 +433,7 @@ public class HibernateOracle {
 						 @Override
 							public void actionPerformed(ActionEvent a) {
 							 
-							 	JPanel myPanel = new JPanel();
+							 	JPanel myPanel = new JPanel();					
 			 	                myPanel.add(new JLabel("Czy na pewno chcesz usunąć dany rekord?"));
 			 	                
 			 	                int result = JOptionPane.showConfirmDialog(null, myPanel, 
@@ -443,10 +448,7 @@ public class HibernateOracle {
 				 	            		 Uzytkownicy pr = new Uzytkownicy();
 			 	 	 	                pr.setId_uzytkownika(idUzytkownika);
 			 	 	 	                //session.delete(pr);
-			 	 	 	                idUzytkownika = -1;
-			 	 	 	                
-
-				 	            		
+			 	 	 	                idUzytkownika = -1;			 	 	 	                				 	            		
 				 	            	 }
 				 	            }catch(Exception e)
 				 	            	 {
@@ -456,6 +458,73 @@ public class HibernateOracle {
 		 	 	 	                
 				 	            	oc.closeDBSession();							 		 	 	 	                	 	 	 	                	 	 	                
 						 }	 	 	 	             
+					 });
+					 
+					 zlozzamowieniePrzycisk.addActionListener(new ActionListener() 
+					 {
+						 @Override
+							public void actionPerformed(ActionEvent a) {		
+							 JTextField pierwszyField = new JTextField(7);
+				                JTextField drugiField = new JTextField(7);
+			            		 
+			 	                JPanel myPanel = new JPanel();
+							 myPanel.add(new JLabel("Miasto wysyłki: "));
+		                		myPanel.add(pierwszyField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Ulica: "));
+		                		myPanel.add(drugiField);
+		                		
+		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		   	                         "Złóż zamówienie", JOptionPane.OK_CANCEL_OPTION);
+		                				                		
+		                		 try {	
+		                			 if (result == JOptionPane.OK_OPTION) {
+		     	                		OracleConnection oc =  OracleConnection.getInstance();
+		     	 	                	oc.createDBSession();
+		     	 	                	Session session = oc.getDBSession();
+		     	                		
+		     	 	                	int koszt = 0;
+		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		     	 	                	
+		     	 	                		koszt+=((Produkt_Koszyk) odp).getPr().getCena() *((Produkt_Koszyk) odp).getIlosc() ;
+		     	 	                			     	 	                		     	 	                	
+		     	 	                	Zamowienia zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika);
+		     	 	                	session.save(zamowienie);
+		     	 	                	
+		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		     	 	                	
+		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(zamowienie.getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), ((Produkt_Koszyk)odp).getIlosc()));
+		     	 	                	
+		     	 	                			     	 	                		     	                				     	                	
+		     	                		oc.closeDBSession();
+		     	                		
+		     	                		koszyk.clear();
+		                			 }
+		                		 }
+		                		 catch(Exception e) {
+		                			 e.printStackTrace();
+		                			 JOptionPane.showMessageDialog(null, "Nie udało się złożyć zamówienia. Błąd: " + e.getMessage());
+		                		 }	 
+						 }
+					 });
+					 
+					 oproznijkoszykPrzycisk.addActionListener(new ActionListener() 
+					 {
+						 @Override
+							public void actionPerformed(ActionEvent a) {							 
+		                			
+							 JPanel myPanel = new JPanel();
+							 myPanel.add(new JLabel("Czy na pewno chcesz opróżnić cały koszyk?"));
+							 int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		   	                         "Opróżnianie koszyka", JOptionPane.OK_CANCEL_OPTION);
+		                		 try {		 
+		                			 if (result == JOptionPane.OK_OPTION) {
+		     	                		koszyk.clear();
+		                			 }
+		                		 }
+		                		 catch(Exception e) {
+		                			 e.printStackTrace();
+		                			 JOptionPane.showMessageDialog(null, "Nie udało się opróżnić koszyka. Błąd: " + e.getMessage());
+		                		 }	 
+						 }
 					 });
 					 
 				}
