@@ -75,9 +75,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		if(this.wiersz!=null) this.dane.addLast(wiersz);
 		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
 		{
-			if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
+			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
+			{
 				this.naglowek.addLast(" ");
-			this.naglowek.addLast(" ");
+				this.naglowek.addLast(" ");				
+			}
 		}
 		Object[] nagl = this.naglowek.toArray();
 		Object[][] dan = new Object[this.dane.size()][];
@@ -86,16 +88,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		JTable jt = new JTable(dan, nagl);
 			
 		if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
-            if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
+			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
             {
             	TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
             	buttonColumn.setCellRenderer(new ButtonRenderer());
             	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+            	
+            	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
+            	buttonColumn2.setCellRenderer(new ButtonRenderer());
+            	buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
             }
-			
-            TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
-            buttonColumn2.setCellRenderer(new ButtonRenderer());
-            buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
         }
 		
 		jt.setPreferredScrollableViewportSize(new Dimension(1000, 400));
@@ -307,6 +309,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Opis: "));
 	                		myPanel.add(trzeciField);
+	                		myPanel.add(new JLabel("Id Kategorii: "));
+	                		myPanel.add(czwartyField);
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
@@ -328,6 +332,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		user.setCena(Double.parseDouble(drugiField.getText()));
 	     	 	                	if(!trzeciField.getText().isEmpty())
 	     	 	                		user.setOpis(trzeciField.getText());
+	     	 	                	if(!czwartyField.getText().isEmpty())
+	     	 	                		user.setKategorie_id_kategorii(Integer.parseInt(czwartyField.getText()));
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
@@ -843,8 +849,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getIlosc()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
-				if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
-					this.dodajKolumne("");
+				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
 			}

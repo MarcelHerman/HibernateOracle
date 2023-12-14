@@ -358,7 +358,7 @@ public class HibernateOracle {
 				                JTextField drugiField = new JTextField(7);
 				                JTextField trzeciField = new JTextField(7);
 				                JTextField czwartyField = new JTextField(7);
-				                JTextField piatyField = new JTextField(7);
+				                //JTextField piatyField = new JTextField(7);
 			            		 
 			 	                JPanel myPanel = new JPanel();
 							 myPanel.add(new JLabel("Nazwa użytkownika: "));
@@ -373,8 +373,8 @@ public class HibernateOracle {
 		                		myPanel.add(new JLabel("E-mail: "));
 		                		myPanel.add(czwartyField);
 		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("Id typu użytkownika: "));
-		                		myPanel.add(piatyField);
+		                		/*myPanel.add(new JLabel("Id typu użytkownika: "));
+		                		myPanel.add(piatyField);*/
 		                		
 		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
@@ -397,8 +397,8 @@ public class HibernateOracle {
 		     	 	                		user.setHaslo(trzeciField.getText());
 		     	 	                	if(!czwartyField.getText().isEmpty())
 		     	 	                		user.setE_mail(czwartyField.getText());
-		     	 	                	if(!piatyField.getText().isEmpty())
-		     	 	                		user.setId_typu_uzytkownika(Integer.parseInt(piatyField.getText()));
+		     	 	                	/*if(!piatyField.getText().isEmpty())
+		     	 	                		user.setId_typu_uzytkownika(Integer.parseInt(piatyField.getText()));*/
 		     	                		session.update(user);
 		     	                		
 		     	                		oc.closeDBSession();
@@ -669,7 +669,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 kontener.add(dodajPrzycisk);
+					 //kontener.add(dodajPrzycisk);  // ustalone że nie dodajemy
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -697,7 +697,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 kontener.add(dodajPrzycisk);
+					 //kontener.add(dodajPrzycisk);  // ustalone że nie dodajemy
 					 frame.revalidate();
 					 frame.repaint();
 				}
