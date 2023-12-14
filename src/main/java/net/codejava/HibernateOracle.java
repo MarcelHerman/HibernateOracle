@@ -263,6 +263,7 @@ public class HibernateOracle {
 				 List<Obiekt_Do_Polecen> entities = null;
 				 nazwaTypu = "null";
 				 koszyk.clear();
+				 idUzytkownika = -1;
 				 
 				 kontener.removeAll();
 				 
@@ -274,9 +275,7 @@ public class HibernateOracle {
 			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+			        
 				 
 				 budSwing.tworzTabeleProdukty(entities);
 			        
@@ -295,12 +294,11 @@ public class HibernateOracle {
 				 
 				 frame.revalidate();
 				 frame.repaint();
-				 
-				 try {
-					 
-				 } catch(Exception e3) {
-					 System.out.println("Wylogowanie sie nie powiodlo");
 				 }
+				 catch (Exception e) {
+			            e.printStackTrace();
+			        }
+				 
 			 }
 		 };
 		 

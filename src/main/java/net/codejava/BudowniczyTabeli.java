@@ -873,6 +873,25 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Id producenta");
 		this.dodajKolumne("Id kategorii");
 		
+		OracleConnection oc =  OracleConnection.getInstance();
+		oc.createDBSession();
+		
+		List<Obiekt_Do_Polecen> fData = null;
+		List<Obiekt_Do_Polecen> fData2 = null;
+		
+		try (Session session = oc.getDBSession()) {
+            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
+            fData = query.getResultList();
+            
+            Query<Obiekt_Do_Polecen> query2 = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+            fData2 = query2.getResultList();
+   		 oc.closeDBSession();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+
+		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
 			this.dodajWiersz();			
@@ -880,7 +899,24 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Produkty) entry).getNazwa().toString());
 			this.dodajKolumne(Double.toString(((Produkty) entry).getCena()));
 			this.dodajKolumne(((Produkty) entry).getOpis().toString());
-			this.dodajKolumne(Integer.toString(((Produkty) entry).getProducenci_id_producenta()));
+			
+			for(Obiekt_Do_Polecen prod: fData) {
+				if(((Producenci)prod).getId_producenta() == ((Produkty) entry).getProducenci_id_producenta())
+				{
+					this.dodajKolumne(((Producenci)prod).getNazwa());
+					break;
+				}
+			}
+			
+			for(Obiekt_Do_Polecen kat: fData2) {
+				if(((Kategorie)kat).getId_Kategorii() == ((Produkty) entry).getKategorie_id_kategorii())
+				{
+					this.dodajKolumne(((Kategorie)kat).getNazwa());
+					break;
+				}
+			}
+			
+
 			this.dodajKolumne(Integer.toString(((Produkty) entry).getKategorie_id_kategorii()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
@@ -1071,16 +1107,17 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
 		
-		List<Obiekt_Do_Polecen> typy = null;
+		List<Obiekt_Do_Polecen> fData = null;
 		
 		try (Session session = oc.getDBSession()) {
             Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
-            typy = query.getResultList();
+            fData = query.getResultList();
             oc.closeDBSession();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
+
 		
 		
 		
@@ -1094,7 +1131,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Uzytkownicy) entry).getHaslo().toString());
 			this.dodajKolumne(((Uzytkownicy) entry).getE_mail().toString());
 			
-			for(Obiekt_Do_Polecen typ: typy) {
+			for(Obiekt_Do_Polecen typ: fData) {
 				if(((Typy_uzytkownika)typ).getId_typu_uzytkownika() == ((Uzytkownicy) entry).getId_typu_uzytkownika() ) {
 					this.dodajKolumne(((Typy_uzytkownika)typ).getNazwa());
 				}
@@ -1124,6 +1161,20 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Id stanu zamowienia");
 		this.dodajKolumne("Id Użytkownika");
 		
+		OracleConnection oc =  OracleConnection.getInstance();
+		oc.createDBSession();
+		
+		List<Obiekt_Do_Polecen> fData = null;
+		
+		try (Session session = oc.getDBSession()) {
+            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+            fData = query.getResultList();
+            oc.closeDBSession();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
 			this.dodajWiersz();			
@@ -1131,7 +1182,17 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Zamowienia) entry).getAdres_wysylki_miasto().toString());
 			this.dodajKolumne(((Zamowienia) entry).getAdres_wysylki_ulica().toString());
 			this.dodajKolumne(Double.toString(((Zamowienia) entry).getKoszt()));
-			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getId_stanu_zamowienia()));
+			
+			for(Obiekt_Do_Polecen stan: fData) {
+				if(((Stany_Zamowienia)stan).getId_Stanu_Zamowienia() == ((Zamowienia)entry).getId_stanu_zamowienia() ) {
+					this.dodajKolumne(((Stany_Zamowienia)stan).getNazwa());
+					break;
+				}
+			}
+			
+
+			
+			
 			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
