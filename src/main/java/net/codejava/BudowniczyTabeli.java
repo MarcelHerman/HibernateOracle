@@ -998,4 +998,32 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         }
     }
 	
+	void tworzTabeleKoszyk(List<Obiekt_Do_Polecen> entities)
+    {
+	
+		HibernateOracle.obj = new Produkt_Koszyk();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+        this.dodajNaglowek();
+
+        this.dodajKolumne("Lp.");
+        this.dodajKolumne("Nazwa");
+        this.dodajKolumne("Cena za sztuke");
+        this.dodajKolumne("Ilosc");
+        this.dodajKolumne("Laczna cena");
+
+        for(Obiekt_Do_Polecen entry: entities)
+        {
+            this.dodajWiersz();
+            this.dodajKolumne(Integer.toString(((Produkt_Koszyk) entry).getPr().getId_produktu()));
+            this.dodajKolumne(((Produkt_Koszyk) entry).getPr().getNazwa());
+            this.dodajKolumne(Double.toString(((Produkt_Koszyk) entry).getPr().getCena()));
+            this.dodajKolumne(Integer.toString(((Produkt_Koszyk) entry).getIlosc()));
+            this.dodajKolumne(Double.toString(((Produkt_Koszyk) entry).getPr().getCena() *((Produkt_Koszyk) entry).getIlosc()));
+            
+			this.dodajKolumne("");
+			this.dodajKolumne("");
+        }
+    }
+	
 }
