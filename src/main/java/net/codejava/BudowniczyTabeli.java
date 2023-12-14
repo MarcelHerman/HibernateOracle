@@ -24,6 +24,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 public interface BudowniczyTabeli {
 	
@@ -1067,15 +1068,39 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("E-mail");
 		this.dodajKolumne("Typ konta");
 		
+		OracleConnection oc =  OracleConnection.getInstance();
+		oc.createDBSession();
+		
+		List<Obiekt_Do_Polecen> typy = null;
+		
+		try (Session session = oc.getDBSession()) {
+            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+            typy = query.getResultList();
+            oc.closeDBSession();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+		
+		
+		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
+			
 			this.dodajWiersz();			
 			this.dodajKolumne(Integer.toString(((Uzytkownicy) entry).getId_uzytkownika()));
 			this.dodajKolumne(((Uzytkownicy) entry).getNazwa_uzytkownika().toString());
 			this.dodajKolumne(((Uzytkownicy) entry).getLogin().toString());
 			this.dodajKolumne(((Uzytkownicy) entry).getHaslo().toString());
 			this.dodajKolumne(((Uzytkownicy) entry).getE_mail().toString());
-			this.dodajKolumne(((Uzytkownicy) entry).getId_typu_uzytkownika());
+			
+			for(Obiekt_Do_Polecen typ: typy) {
+				if(((Typy_uzytkownika)typ).getId_typu_uzytkownika() == ((Uzytkownicy) entry).getId_typu_uzytkownika() ) {
+					this.dodajKolumne(((Typy_uzytkownika)typ).getNazwa());
+				}
+			}
+
+			
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
 				this.dodajKolumne("");
