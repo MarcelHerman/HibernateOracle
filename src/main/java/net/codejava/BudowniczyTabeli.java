@@ -662,6 +662,31 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                			 e.printStackTrace();
 	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować typu użytkownika. Błąd: " + e.getMessage());
 	                		 }
+	 	                }else if(HibernateOracle.obj instanceof Produkt_Koszyk)
+	 	                {
+	                		myPanel.add(new JLabel("Ilosc: "));
+	                		myPanel.add(pierwszyField);             		
+	                		
+	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	   	                         "Edytuj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	                		 try {
+	     	                	if (result == JOptionPane.OK_OPTION) {
+	     	 	                	if(!pierwszyField.getText().isEmpty() && Integer.parseInt(pierwszyField.getText()) > 0)
+	     	 	                	{
+	     	 	                		for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
+	     	 	                			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == id) {
+	     	 	                				((Produkt_Koszyk)pk).setIlosc(Integer.parseInt(pierwszyField.getText()));
+	     	 	                				break;
+	     	 	                			}
+	     	 	                		}
+	     	 	                	}
+	     	 	                		 	 	              	
+	     	                	}
+	                		 }
+	                		 catch(Exception e) {
+	                			 e.printStackTrace();
+	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować wartosci. Błąd: " + e.getMessage());
+	                		 }
 	 	                }
 	                	                             
                      //JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
@@ -725,6 +750,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	                pr.setId_producenta(this.id);
  	 	 	                session.delete(pr);
  	 	                } 
+ 	                	else if(HibernateOracle.obj instanceof Produkt_Koszyk)
+ 	 	                {
+ 	                		for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
+	 	                			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == id) {
+	 	                				HibernateOracle.koszyk.remove(pk);
+	 	                				break;
+	 	                			}
+	 	                		}
+ 	 	                }
  	            		 
  	            		 oc.closeDBSession();
  	            	 } 	            	  
