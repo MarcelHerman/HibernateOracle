@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -404,6 +405,29 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                } 	 
 	                	else if(HibernateOracle.obj instanceof Zamowienia)
 	 	                {
+	                		
+	                		OracleConnection oc =  OracleConnection.getInstance();
+			                oc.createDBSession();
+
+			                List<Obiekt_Do_Polecen> fData = null;
+
+			                try (Session session = oc.getDBSession()) {
+			                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+			                    fData = query.getResultList();
+			                    oc.closeDBSession();
+			                } catch (Exception e) {
+			                    e.printStackTrace();
+			                    System.out.println(e);
+			                }
+			                
+			                String nazwy[] = new String[fData.size()]; 
+			                
+			                for(Obiekt_Do_Polecen stan: fData) {
+			                	nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] = ((Stany_Zamowienia)stan).getNazwa();
+			                }
+			                
+			                JComboBox jombo = new JComboBox(nazwy);
+	                		
 	                		myPanel.add(new JLabel("Miasto wysyłki"));
 	                		myPanel.add(pierwszyField);	    
 	                		myPanel.add(Box.createHorizontalStrut(5));
@@ -411,14 +435,13 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(drugiField);
 	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Stan zamówienia: "));
-	                		myPanel.add(trzeciField);
+	                		myPanel.add(jombo);
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
-	     	                		OracleConnection oc =  OracleConnection.getInstance();
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	                		
@@ -431,8 +454,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		user.setAdres_wysylki_miasto(pierwszyField.getText());
 	     	 	                	if(!drugiField.getText().isEmpty())
 	     	 	                		user.setAdres_wysylki_ulica(drugiField.getText());
-	     	 	                	if(!trzeciField.getText().isEmpty())
-	     	 	                		user.setId_stanu_zamowienia(Integer.parseInt(trzeciField.getText()));
+	     	 	                	
+	     	 	                	user.setId_stanu_zamowienia(jombo.getSelectedIndex()+1);
 	     	 	                	
 	     	                		session.update(user);
 	     	                		

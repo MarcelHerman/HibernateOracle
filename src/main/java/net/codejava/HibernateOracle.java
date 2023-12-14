@@ -22,6 +22,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -1242,11 +1243,10 @@ public class HibernateOracle {
 	                }
 	                else if(obj instanceof Zamowienia) 
 	                {
+		         		
+	                	
 	                	myPanel.add(new JLabel("Id uzytkownika: "));
 		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id stanu zamówienia: "));
-		         		myPanel.add(drugiField);
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Adres wysyłki miasto: "));
 		         		myPanel.add(trzeciField);
@@ -1256,40 +1256,25 @@ public class HibernateOracle {
 		         		myPanel.add(Box.createHorizontalStrut(5));
 		         		myPanel.add(new JLabel("Koszt: "));
 		         		myPanel.add(piatyField);
-		         				         	
-		         		OracleConnection oc =  OracleConnection.getInstance();
-		                oc.createDBSession();
-
-		                List<Obiekt_Do_Polecen> fData = null;
-
-		                try (Session session = oc.getDBSession()) {
-		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
-		                    fData = query.getResultList();
-		                    oc.closeDBSession();
-		                } catch (Exception e) {
-		                    e.printStackTrace();
-		                    System.out.println(e);
-		                }
 		         	        
 		         		
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		                         "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
+
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
 			                		
-			                		OracleConnection oc1 =  OracleConnection.getInstance();
-			 	                	oc1.createDBSession();
-			 	                	Session session = oc1.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
+			 	                	if(pierwszyField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
 			 	                		return;
 			 	                	}
 			 	                				 	                				 	                
-			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), Integer.parseInt(drugiField.getText()), Integer.parseInt(pierwszyField.getText())));
+			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText())));
 			                		
-			                		oc1.closeDBSession();
+			                		oc.closeDBSession();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
