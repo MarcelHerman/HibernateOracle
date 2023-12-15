@@ -380,6 +380,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			                }
 			                
 			                JComboBox jombo = new JComboBox(nazwy);
+			                JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
 			                
 	                		myPanel.add(new JLabel("Nazwa użytkownika: "));
 	                		myPanel.add(pierwszyField);
@@ -395,6 +396,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Typ użytkownika: "));
 	                		myPanel.add(jombo);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(czyUsunietyCheck);
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
@@ -408,7 +411,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
-	     	 	                	
+	     	 	                	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
 	     	 	                	if(!pierwszyField.getText().isEmpty())
 	     	 	                		user.setNazwa_uzytkownika(pierwszyField.getText());
 	     	 	                	if(!drugiField.getText().isEmpty())
@@ -455,6 +458,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			                }
 			                
 			                JComboBox jombo = new JComboBox(nazwy);
+			                JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
 			                
 	                		myPanel.add(new JLabel("Nazwa produktu: "));
 	                		myPanel.add(pierwszyField);
@@ -466,6 +470,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(trzeciField);
 	                		myPanel.add(new JLabel("Kategoria: "));
 	                		myPanel.add(jombo);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(czyUsunietyCheck);
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
@@ -479,7 +485,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
-	     	 	                	
+	     	 	                	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
 	     	 	                	if(!pierwszyField.getText().isEmpty())
 	     	 	                		user.setNazwa(pierwszyField.getText());
 	     	 	                	if(!drugiField.getText().isEmpty())
@@ -609,6 +615,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                } 
 	                	else if(HibernateOracle.obj instanceof Producenci)
 	 	                {
+	                		
+	                		JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
+	                		
 	                		myPanel.add(new JLabel("Nazwa producenta: "));
 	                		myPanel.add(pierwszyField);
 	                		myPanel.add(Box.createHorizontalStrut(5));
@@ -620,6 +629,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		myPanel.add(Box.createHorizontalStrut(5));
 	                		myPanel.add(new JLabel("Ulica: "));
 	                		myPanel.add(czwartyField);
+	                		myPanel.add(Box.createHorizontalStrut(5));
+	                		myPanel.add(czyUsunietyCheck);
 	                		
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj producenta", JOptionPane.OK_CANCEL_OPTION);
@@ -634,7 +645,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                			.setParameter("id", this.id)
 	     	 	                			.uniqueResult();
 	     	 	                	//System.out.println(user.getId_uzytkownika());
-	     	 	                	
+	     	 	                	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
 	     	 	                	if(!pierwszyField.getText().isEmpty())
 	     	 	                		user.setNazwa(pierwszyField.getText());
 	     	 	                	if(!drugiField.getText().isEmpty())
@@ -848,6 +859,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Faktury pr = new Faktury();
  	 	                	pr.setId_faktury(this.id);
  	 	                	session.delete(pr);
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
  	                	else if(HibernateOracle.obj instanceof Kategorie)
@@ -855,37 +867,52 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Kategorie pr = new Kategorie();
  	 	                	pr.setId_Kategorii(this.id);
  	 	                	session.delete(pr);
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
  	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
  	 	                {
- 	 	                	Uzytkownicy pr = new Uzytkownicy();
- 	 	 	                pr.setId_uzytkownika(this.id);
- 	 	 	                session.delete(pr);
+ 	                		Uzytkownicy pr = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
+ 	 	                			.setParameter("id", this.id)
+ 	 	                			.uniqueResult();
+ 	                		
+ 	 	 	             pr.setCzy_usunieto(1);
+	 	 	                session.update(pr);
+	 	 	              tab.setValueAt("TAK", row, 6);
+ 	 	 	                
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Produkty)
- 	 	                {
- 	 	                	Produkty pr = new Produkty();
- 	 	 	                pr.setId_produktu(this.id);
- 	 	 	                session.delete(pr);
+ 	 	                {	
+ 	 	                	Produkty pr = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
+ 	 	                			.setParameter("id", this.id)
+ 	 	                			.uniqueResult();
+ 	 	 	                pr.setCzy_usunieto(1);
+ 	 	 	                
+ 	 	 	                session.update(pr);
+ 	 	 	                tab.setValueAt("TAK", row, 6);
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Zamowienia)
  	 	                {
  	 	                	Zamowienia pr = new Zamowienia();
  	 	 	                pr.setId_zamowienia(this.id);
  	 	 	                session.delete(pr);
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Magazyny)
  	 	                {
  	 	                	Magazyny pr = new Magazyny();
  	 	 	                pr.setId_magazynu(this.id);
  	 	 	                session.delete(pr);
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Producenci)
  	 	                {
- 	                		Producenci pr = new Producenci();
- 	 	 	                pr.setId_producenta(this.id);
- 	 	 	                session.delete(pr);
+ 	                		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
+ 	 	                			.setParameter("id", this.id)
+ 	 	                			.uniqueResult();
+ 	 	 	             pr.setCzy_usunieto(1);
+	 	 	                session.update(pr);
+	 	 	              tab.setValueAt("TAK", row, 5);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Koszyk)
  	 	                {
@@ -895,23 +922,25 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                				break;
 	 	                			}
 	 	                		}
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                }
  	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
  	 	                {
  	                		Produkt_Magazyn pr = new Produkt_Magazyn();
  	 	 	                pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(this.id, this.id2));
  	 	 	                session.delete(pr);
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Zamowienia)
  	 	                {
  	                		Produkt_Zamowienia pr = new Produkt_Zamowienia();
  	 	 	                pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(this.id, this.id2));
  	 	 	                session.delete(pr);
+ 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	            		 
 	            		 oc.closeDBSession();
  	                	
- 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	            	 } 	            	  
  	              }catch(Exception e) {	  
  	            	 JOptionPane.showMessageDialog(null, "Nie udało się usunąć elementu. Błąd: " + e.getMessage());
@@ -1030,7 +1059,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
-		System.out.print("xd");
 		HibernateOracle.obj = new Produkty();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
