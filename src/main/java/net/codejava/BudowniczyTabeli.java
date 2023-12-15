@@ -685,7 +685,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		if(Integer.parseInt(drugiField.getText())<0)
 	     	 	                			throw(new Exception("Nie można dodać ujemnego stanu magazynowego."));
 	     	 	                		else
-	     	 	                			user.setStan_magazynowy(Integer.parseInt(pierwszyField.getText()));
+	     	 	                			user.setStan_magazynowy(Integer.parseInt(drugiField.getText()));
 	     	 	                	
 	     	                		session.update(user);
 	     	                		

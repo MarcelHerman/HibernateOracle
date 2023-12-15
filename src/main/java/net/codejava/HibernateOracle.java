@@ -505,24 +505,100 @@ public class HibernateOracle {
 			                				 
 			                				 if (result2 == JOptionPane.CANCEL_OPTION || trzeciField.getText().isEmpty()) {
 			                					 JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie zostanie dodana.");
-			                					 throw new Exception("Zamówienie nie zostało żłożone");
+			                					 throw new Exception("Zamówienie nie zostało złożone");
 			                				 }
 		                				 }
 		                				 
 		     	                		OracleConnection oc =  OracleConnection.getInstance();
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
+		     	 	                	
+		     	 	                	for(Obiekt_Do_Polecen produkt: koszyk) {
+			     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
+			     	 	                	
+			     	 	                	
+			     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
+		     		 	                			.setParameter("idP", id);
+			     		                	List<Integer> stanMagazynow = query.getResultList();
+			     		                	
+			     		                	int stanMag = 0;
+			     		                	
+			     		                	for(Integer stan: stanMagazynow) {
+			     		                		if(stanMag + stan > ((Produkt_Koszyk)produkt).getIlosc() )
+			     		                		{
+			     		                			stanMag = ((Produkt_Koszyk)produkt).getIlosc();
+			     		                		}else
+			     		                		{
+			     		                			stanMag += stan;
+			     		                		}
+			     		                	}
+			     		                	
+			     		                	if(((Produkt_Koszyk)produkt).getIlosc() > stanMag)
+			     		                		throw new Exception("Niestety nie posiadamy takiej ilości produktu "
+			     		                				+ ((Produkt_Koszyk)produkt).getPr().getNazwa()
+			     		                				+ " w magazynie."
+			     		                				+ "Obecny stan: " +Integer.toString(stanMag));
+		     	 	                	}
 		     	                		
 		     	 	                	int koszt = 0;
-		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		     	 	                	
-		     	 	                		koszt+=((Produkt_Koszyk) odp).getPr().getCena() *((Produkt_Koszyk) odp).getIlosc() ;
+		     	 	                	for(Obiekt_Do_Polecen produkt : koszyk)
+		     	 	                	{
+ 	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
+			     	 	                	
+			     	 	                	
+			     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
+		     		 	                			.setParameter("idP", id);
+			     		                	List<Integer> stanMagazynow = query.getResultList();
+			     		                	
+			     		                	int stanMag = 0;
+			     		                	
+			     		                	for(Integer stan: stanMagazynow) {
+			     		                		if(stanMag + stan > ((Produkt_Koszyk)produkt).getIlosc() )
+			     		                		{
+			     		                			stanMag = ((Produkt_Koszyk)produkt).getIlosc();
+			     		                		}else
+			     		                		{
+			     		                			stanMag += stan;
+			     		                		}
+			     		                	}
+			     		                	
+			     		                	if(((Produkt_Koszyk)produkt).getIlosc() > stanMag)
+			     		                		throw new Exception("Niestety nie posiadamy takiej ilości produktu "
+			     		                				+ ((Produkt_Koszyk)produkt).getPr().getNazwa()
+			     		                				+ " w magazynie."
+			     		                				+ "Obecny stan: " +Integer.toString(stanMag));
+		     	 	                		
+		    	 	                		koszt+=((Produkt_Koszyk) produkt).getPr().getCena() *((Produkt_Koszyk) produkt).getIlosc() ;
+		     	 	                	}
+		     
 		     	 	                			     	 	                		     	 	                	
 		     	 	                	Zamowienia zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika);
 		     	 	                	session.save(zamowienie);
 		     	 	                	
-		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		     	 	                	
-		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(zamowienie.getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), ((Produkt_Koszyk)odp).getIlosc()));
-		     	 	                	
+		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		 
+		     	 	                	{
+		     	 	                		int id = ((Produkt_Koszyk)odp).getPr().getId_produktu();
+		     	 	                		
+					     	 	            Query<Produkt_Magazyn> query = session.createQuery("select pd from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Produkt_Magazyn.class)
+			 		 	                			.setParameter("idP", id);
+			     		                	List<Produkt_Magazyn> stanMagazynow = query.getResultList();
+			     		                	
+			     		                	int iloscProdKoszyk = ((Produkt_Koszyk)odp).getIlosc();
+			     		                	
+			     		                	for(Produkt_Magazyn stan: stanMagazynow) {
+			     		                		if(stan.getStan_magazynowy() >= ((Produkt_Koszyk)odp).getIlosc() )
+			     		                		{	
+			     		                			stan.setStan_magazynowy(stan.getStan_magazynowy() - ((Produkt_Koszyk)odp).getIlosc());
+			     		                		}else
+			     		                		{
+			     		                			((Produkt_Koszyk)odp).setIlosc(((Produkt_Koszyk)odp).getIlosc() - stan.getStan_magazynowy());
+			     		                			stan.setStan_magazynowy(0);
+			     		                		}
+			     		                		session.update(stan);
+			     		                	}
+		     	 	                		
+		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(zamowienie.getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
+		     	 	                	}
 		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), zamowienie.getId_zamowienia()));    	 	                		     	                				     	                	
 		     	                		oc.closeDBSession();
 		     	                		
