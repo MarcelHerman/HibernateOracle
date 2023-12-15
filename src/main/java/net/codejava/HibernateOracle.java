@@ -584,7 +584,7 @@ public class HibernateOracle {
 					 
 					 kontener.add(pane);
 					 
-					 if(nazwaTypu.equals("Administrator") || nazwaTypu.equals("Pracownik"))kontener.add(dodajPrzycisk);						 
+					 if(!(nazwaTypu.equals("Klient")))kontener.add(dodajPrzycisk);						 
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -614,7 +614,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 if(nazwaTypu.equals("Administrator") || nazwaTypu.equals("Pracownik"))kontener.add(dodajPrzycisk);						 
+					 if(!(nazwaTypu.equals("Klient")))kontener.add(dodajPrzycisk);						 
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -854,7 +854,9 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Faktury", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = null;
+			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
+			            else query = session2.createQuery("FROM Faktury", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -866,7 +868,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 if(nazwaTypu.equals("Administrator") || nazwaTypu.equals("Pracownik"))kontener.add(dodajPrzycisk);						 
+					 if(!(nazwaTypu.equals("Klient")))kontener.add(dodajPrzycisk);						 
 					 frame.revalidate();
 					 frame.repaint();
 				}
