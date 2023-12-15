@@ -1,5 +1,6 @@
 package net.codejava;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,13 +14,17 @@ public class Producenci implements Obiekt_Do_Polecen {
 	private String kontakt;
 	private String miasto;
 	private String ulica;
+	@Column(name = "czy_usunieto")
+	private int czy_usunieto;
+	
 	public Producenci() {
 	}
-	public Producenci(String nazwa, String kontakt, String miasto, String ulica) {
+	public Producenci(String nazwa, String kontakt, String miasto, String ulica, int czy_usunieto) {
 		this.nazwa = nazwa;
 		this.kontakt = kontakt;
 		this.miasto = miasto;
 		this.ulica = ulica;
+		this.czy_usunieto = czy_usunieto;
 	}
 	
 	@Id
@@ -54,6 +59,14 @@ public class Producenci implements Obiekt_Do_Polecen {
 	}
 	public void setUlica(String ulica) {
 		this.ulica = ulica;
+	}
+	
+	public int getCzy_usunieto() {
+		return czy_usunieto;
+	}
+
+	public void setCzy_usunieto(int czy_usunieto) {
+		this.czy_usunieto = czy_usunieto;
 	}
 
 }

@@ -1,5 +1,6 @@
 package net.codejava;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +15,17 @@ public class Produkty implements Obiekt_Do_Polecen{
 	private String nazwa;
 	private double cena;
 	private String opis;
+	@Column(name = "czy_usunieto")
+	private int czy_usunieto;
 	
+	public int getCzy_usunieto() {
+		return czy_usunieto;
+	}
+
+	public void setCzy_usunieto(int czy_usunieto) {
+		this.czy_usunieto = czy_usunieto;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "Producenci_id_producenta")
 	private int Producenci_id_producenta;
@@ -24,6 +35,16 @@ public class Produkty implements Obiekt_Do_Polecen{
 	private int Kategorie_id_kategorii;
 
 	public Produkty() {
+	}
+	
+	public Produkty(String nazwa, double cena, String opis, int producenci_id_producenta,
+			int kategorie_id_kategorii, int czy_usunieto) {
+		this.nazwa = nazwa;
+		this.cena = cena;
+		this.opis = opis;
+		Producenci_id_producenta = producenci_id_producenta;
+		Kategorie_id_kategorii = kategorie_id_kategorii;
+		this.czy_usunieto=czy_usunieto;
 	}
 	
 	public Produkty(String nazwa, double cena, String opis, int producenci_id_producenta,
@@ -86,5 +107,5 @@ public class Produkty implements Obiekt_Do_Polecen{
 		Kategorie_id_kategorii = kategorie_id_kategorii;
 	}
 	
-	
+
 }

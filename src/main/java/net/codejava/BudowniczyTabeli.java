@@ -1025,6 +1025,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	
 	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
 	{
+		System.out.print("xd");
 		HibernateOracle.obj = new Produkty();
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
@@ -1036,7 +1037,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Opis");	
 		this.dodajKolumne("Producent");
 		this.dodajKolumne("Kategoria");
-		
+		if((HibernateOracle.nazwaTypu.equals("Administrator")))this.dodajKolumne("Usunięty");
+
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
 		
@@ -1081,9 +1083,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			}
 			
 
-			this.dodajKolumne(Integer.toString(((Produkty) entry).getKategorie_id_kategorii()));
+			//this.dodajKolumne(Integer.toString(((Produkty) entry).getKategorie_id_kategorii()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
+				this.dodajKolumne((((Produkty) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
@@ -1236,6 +1239,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Kontakt");
 		this.dodajKolumne("Miasto");
 		this.dodajKolumne("Ulica");
+		if((HibernateOracle.nazwaTypu.equals("Administrator")))this.dodajKolumne("Usunięty");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -1247,6 +1251,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne(((Producenci) entry).getUlica().toString());
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
+				this.dodajKolumne((((Producenci)entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
@@ -1267,6 +1272,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Hasło");
 		this.dodajKolumne("E-mail");
 		this.dodajKolumne("Typ konta");
+		if((HibernateOracle.nazwaTypu.equals("Administrator")))this.dodajKolumne("Usunięty");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
@@ -1301,6 +1307,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
+				this.dodajKolumne((((Uzytkownicy)entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;

@@ -1032,7 +1032,7 @@ public class HibernateOracle {
 			 	                	}
 			 	                				 	                	
 			 	                
-			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii()));
+			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 'N'));
 			                		
 			                		oc.closeDBSession();
 			                		pokazProduktPrzycisk.doClick();
@@ -1171,7 +1171,7 @@ public class HibernateOracle {
 			 	                		return;
 			 	                	}
 			 	                				 	                				 	                
-			 	                	session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText()));
+			 	                	session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
 			                		
 			                		oc.closeDBSession();
 			                		pokazProducentowPrzycisk.doClick();
@@ -1391,7 +1391,7 @@ public class HibernateOracle {
 			 	                		return;
 			 	                	}
 			 	                				 	                				 	                
-			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika()));
+			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
 			                		
 			                		oc.closeDBSession();
 			                		pokazUzytkownicyPrzycisk.doClick();

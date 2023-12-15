@@ -1,5 +1,6 @@
 package net.codejava;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,6 +16,8 @@ public class Uzytkownicy implements Obiekt_Do_Polecen {
 	private String login;
 	private String haslo;
 	private String e_mail;
+	@Column(name = "czy_usunieto")
+	private int czy_usunieto;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_typu_uzytkownika")
@@ -23,12 +26,13 @@ public class Uzytkownicy implements Obiekt_Do_Polecen {
 	public Uzytkownicy() {
 	}
 	
-	public Uzytkownicy(String nazwa_uzytkownika, String login, String haslo, String e_mail, int id_typu_uzytkownika) {
+	public Uzytkownicy(String nazwa_uzytkownika, String login, String haslo, String e_mail, int id_typu_uzytkownika, int czy_usunieto) {
 		this.id_typu_uzytkownika = id_typu_uzytkownika;
 		this.nazwa_uzytkownika = nazwa_uzytkownika;
 		this.login = login;
 		this.haslo = haslo;
 		this.e_mail = e_mail;
+		this.czy_usunieto = czy_usunieto;
 	}
 	@Id
 	@GeneratedValue(generator = "incrementor")
@@ -79,6 +83,14 @@ public class Uzytkownicy implements Obiekt_Do_Polecen {
 
 	public void setId_typu_uzytkownika(int id_typu_uzytkownika) {
 		this.id_typu_uzytkownika = id_typu_uzytkownika;
+	}
+	
+	public int getCzy_usunieto() {
+		return czy_usunieto;
+	}
+
+	public void setCzy_usunieto(int czy_usunieto) {
+		this.czy_usunieto = czy_usunieto;
 	}
 	
 }
