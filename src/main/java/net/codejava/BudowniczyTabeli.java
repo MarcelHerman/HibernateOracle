@@ -879,6 +879,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
 	     		                	if(!pierwszyField.getText().isEmpty()) {
+	     		                		
+	     		                	if(Integer.parseInt(pierwszyField.getText())<=0)
+				 	                		throw(new Exception("Ilość nie może być ujemna lub równa zeru."));
 	   	     	                  	 OracleConnection oc = OracleConnection.getInstance();
 		     	                	 oc.createDBSession();
 		     	                	 Session session = oc.getDBSession();
@@ -1242,7 +1245,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Ulica wysyłki");
 		this.dodajKolumne("Koszt");
 		this.dodajKolumne("Stan zamowienia");
-		this.dodajKolumne("Id Użytkownika");
+		if(!(HibernateOracle.nazwaTypu.equals("Klient")))this.dodajKolumne("Id Użytkownika");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
@@ -1272,13 +1275,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 					break;
 				}
 			}
-								
-			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+											
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
+				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
+			case("Pracownik"):
+				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 			}
 		}
 	}

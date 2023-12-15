@@ -214,10 +214,12 @@ public class HibernateOracle {
 				                				bar.add(pokazProduktPrzycisk);
 						                		bar.add(pokazZamowieniaPrzycisk);
 				                				bar.add(pokazFakturyPrzycisk);
+						                		bar.add(pokazProduktMagazynPrzycisk);
 				                				break;
 				                			case "Klient":
 				                				bar.add(pokazProduktPrzycisk);
 				                				bar.add(pokazZamowieniaPrzycisk);
+				                				bar.add(pokazFakturyPrzycisk);
 				                			default:
 				                				break;
 				                		}
@@ -582,7 +584,7 @@ public class HibernateOracle {
 					 
 					 kontener.add(pane);
 					 
-					 kontener.add(dodajPrzycisk);
+					 if(nazwaTypu.equals("Administrator") || nazwaTypu.equals("Pracownik"))kontener.add(dodajPrzycisk);						 
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -598,7 +600,9 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Zamowienia", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = null;
+			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
+			            else query = session2.createQuery("FROM Zamowienia", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -610,7 +614,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 kontener.add(dodajPrzycisk);
+					 if(nazwaTypu.equals("Administrator") || nazwaTypu.equals("Pracownik"))kontener.add(dodajPrzycisk);						 
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -862,7 +866,7 @@ public class HibernateOracle {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 kontener.add(dodajPrzycisk);
+					 if(nazwaTypu.equals("Administrator") || nazwaTypu.equals("Pracownik"))kontener.add(dodajPrzycisk);						 
 					 frame.revalidate();
 					 frame.repaint();
 				}
