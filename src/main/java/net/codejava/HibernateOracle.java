@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.service.spi.ServiceException;
 
 public class HibernateOracle {
 	
@@ -173,6 +174,7 @@ public class HibernateOracle {
 	                            oc.closeDBSession();
 	                        } catch (Exception e1) {
 	                            e1.printStackTrace();
+	                            throw new Exception("Nie udalo polaczyc sie z baza danych");
 	                        }
 	                		for(Uzytkownicy uzytkownik: uzytkownicy) {
 			                	if(loginField.getText().equals(uzytkownik.getLogin())) {
@@ -253,7 +255,10 @@ public class HibernateOracle {
 		                }
 	                    
 	                } catch (Exception ex) {
-	                    JOptionPane.showMessageDialog(null, "Podano zle dane logowania.");
+	                	if(ex instanceof ServiceException)
+	                		JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później");
+	                	else
+	                		JOptionPane.showMessageDialog(null, "Podano złe dane logowania. " + ex);
 	                }
 	                ;
 	            }
