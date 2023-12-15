@@ -118,9 +118,13 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
 				if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
 	            {
-	            	TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
-	            	buttonColumn.setCellRenderer(new ButtonRenderer());
-	            	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
+					if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
+					{
+						TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
+						buttonColumn.setCellRenderer(new ButtonRenderer());
+						buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));						
+					}
+	            	
 	            	
 	            	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
 	            	buttonColumn2.setCellRenderer(new ButtonRenderer());
@@ -226,7 +230,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             {
             	if (column == (naglowek.size() - 1)) {
             		label = "Usuń";
-            	} else if(column == (naglowek.size() - 2)) {
+            	} else if(column == (naglowek.size() - 2) ) {
 	            	label = "Edytuj";            		
 	            }      
 	            else{
@@ -235,7 +239,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             }
               
             this.id = Integer.parseInt((String)table.getValueAt(row, 0));
-            if(HibernateOracle.obj instanceof Produkt_Magazyn) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
+            if(HibernateOracle.obj instanceof Produkt_Magazyn || HibernateOracle.obj instanceof Produkt_Zamowienia) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
             button.setText(label);
             isPushed = true;
             tab = table;
@@ -865,8 +869,19 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                			}
 	 	                		}
  	 	                }
+ 	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
+ 	 	                {
+ 	                		Produkt_Magazyn pr = new Produkt_Magazyn();
+ 	 	 	                pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(this.id, this.id2));
+ 	 	 	                session.delete(pr);
+ 	 	                } 
+ 	                	else if(HibernateOracle.obj instanceof Produkt_Zamowienia)
+ 	 	                {
+ 	                		Produkt_Zamowienia pr = new Produkt_Zamowienia();
+ 	 	 	                pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(this.id, this.id2));
+ 	 	 	                session.delete(pr);
+ 	 	                } 
  	            		 
-
  	                	((DefaultTableModel)tab.getModel()).removeRow(row);
 
  	            		 oc.closeDBSession();
