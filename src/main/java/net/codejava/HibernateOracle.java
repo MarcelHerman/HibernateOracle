@@ -1255,7 +1255,7 @@ public class HibernateOracle {
 			 	                	
 			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	
-			 	                	session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(czwartyField.getText())));
+			 	                	session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
 			                		
 			                		oc.closeDBSession();
 			                		pokazProduktZamowieniaPrzycisk.doClick();
