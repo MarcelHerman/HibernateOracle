@@ -86,7 +86,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			}
 		}
 		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null")))
+		{
 			this.naglowek.addLast(" ");
+			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
+		}
+			
 		
 		Object[] nagl = this.naglowek.toArray();
 		Object[][] dan = new Object[this.dane.size()][];
@@ -165,7 +169,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	if (column == (naglowek.size() - 1)) {
             		setText("Dodaj do koszyka"); ;
             	} else if(column == (naglowek.size() - 2)) {
-            		setText("Usuń");           		
+            		if(HibernateOracle.nazwaTypu.equals("Pracownik"))setText("Edytuj");
+            		else setText("Usuń");           		
 	            } else if(column == (naglowek.size()-3)){
 	            	setText("Edytuj");
 	            }
@@ -236,7 +241,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	if (column == (naglowek.size() - 1)) {
             		label = "Dodaj do koszyka";
             	} else if(column == (naglowek.size() - 2)) {
-	            	label = "Usuń";            		
+            		if(HibernateOracle.nazwaTypu.equals("Pracownik"))label = "Edytuj";
+            		else label = "Usuń";         		
 	            } else if(column == (naglowek.size()-3)){
 	            	label = "Edytuj";
 	            }
@@ -1123,6 +1129,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				break;
 			case("Pracownik"):
 				this.dodajKolumne((((Produkty) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
+				this.dodajKolumne("");
 				break;
 			}
 			if(!(HibernateOracle.nazwaTypu.equals("null")))this.dodajKolumne(" ");

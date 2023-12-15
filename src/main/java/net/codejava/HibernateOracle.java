@@ -688,15 +688,14 @@ public class HibernateOracle {
 	 	                	oc.createDBSession();
 	 	                	Session session = oc.getDBSession();
 	 	                	
-	 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 4, 0));	                		
+	 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 4, 0));	 
+	 	                	oc.closeDBSession();               		
 	 	            	 }
 	 	            }catch(Exception e)
 	 	            	 {
-	 	            	System.out.println("Wystapil bład podczas dodawania konta: "+ e.toString());
-	 	            		 
+	 	            	JOptionPane.showMessageDialog(null, "Wystapil bład podczas dodawania konta: " + e.getMessage());	 	            		 
 	 	            }	 	 	                
-	 	            oc.closeDBSession();	
-	 	            System.out.print("dodałem");
+	 	            	
 			 }	 	 	 	             
 		 });
 		 
