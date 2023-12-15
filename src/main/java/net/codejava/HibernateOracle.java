@@ -120,11 +120,13 @@ public class HibernateOracle {
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
 		JButton dodajPrzycisk = new JButton("Dodaj rekord");
+		JButton zalozKontoPrzycisk = new JButton("Zalóż konto");
 		
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
 		bar.add(pokazZalogujPrzycisk);
+		bar.add(zalozKontoPrzycisk);
 		
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
 		
@@ -178,7 +180,7 @@ public class HibernateOracle {
 	                        }
 	                		for(Uzytkownicy uzytkownik: uzytkownicy) {
 			                	if(loginField.getText().equals(uzytkownik.getLogin())) {
-			                		if(hasloField.getText().equals(uzytkownik.getHaslo()))
+			                		if(hasloField.getText().equals(uzytkownik.getHaslo()) && uzytkownik.getCzy_usunieto()==0)
 			                		{
 				                		System.out.println("zalogowano");
 				                		
@@ -190,7 +192,9 @@ public class HibernateOracle {
 			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();                           
 			                                
 			                            pokazZalogujPrzycisk.setVisible(false);
+			                            zalozKontoPrzycisk.setVisible(false);
 				                		bar.remove(pokazZalogujPrzycisk);
+				                		bar.remove(zalozKontoPrzycisk);
 				                		bar.remove(glue);
 			                            
 			                            for(Typy_uzytkownika typ: typyUzytkownika) {
@@ -249,8 +253,7 @@ public class HibernateOracle {
 			                		}
 			                		else
 			                		{
-			                			System.out.println("Podano zle haslo");
-			                			break;
+			                			throw new Exception("");
 			                		}
 			                	}
 	                		}
@@ -260,7 +263,7 @@ public class HibernateOracle {
 	                	if(ex instanceof ServiceException)
 	                		JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później");
 	                	else
-	                		JOptionPane.showMessageDialog(null, "Podano złe dane logowania. " + ex);
+	                		JOptionPane.showMessageDialog(null, "Podano złe dane logowania.");
 	                }
 	                ;
 	            }
@@ -296,7 +299,9 @@ public class HibernateOracle {
 			     kontener.add(pane);
 			     bar.add(glue);
 				 pokazZalogujPrzycisk.setVisible(true);
+				 zalozKontoPrzycisk.setVisible(false);
 				 bar.add(pokazZalogujPrzycisk);
+				 bar.add(zalozKontoPrzycisk);
 				 
 				 bar.revalidate();
 				 bar.repaint();
@@ -451,15 +456,18 @@ public class HibernateOracle {
 				                         "Usuwanie", JOptionPane.OK_CANCEL_OPTION);
 			                			
 				 	            try {
-				 	            	 if (result == JOptionPane.OK_OPTION) {
-				 	            		 akcjaWylogowania.actionPerformed(a);
+				 	            	 if (result == JOptionPane.OK_OPTION) {		
+				 	            		 int idtym = idUzytkownika;
+				 	            		 akcjaWylogowania.actionPerformed(a);		 	            		 
 				 	            		 OracleConnection oc =  OracleConnection.getInstance();
 				 	            		 oc.createDBSession();	                			
 				 	            		 Session session = oc.getDBSession();
-				 	            		 Uzytkownicy pr = new Uzytkownicy();
-			 	 	 	                pr.setId_uzytkownika(idUzytkownika);
-			 	 	 	                //session.delete(pr);
-			 	 	 	                idUzytkownika = -1;			 	 	 	                				 	            		
+				 	            		Uzytkownicy pr = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
+			 	 	                			.setParameter("id", idtym)
+			 	 	                			.uniqueResult();
+			 	                		
+				 	            		pr.setCzy_usunieto(1);
+				 	 	                session.update(pr);
 				 	            	 }
 				 	            }catch(Exception e)
 				 	            	 {
@@ -646,7 +654,52 @@ public class HibernateOracle {
 				}
 		 });
 		 
-
+		 zalozKontoPrzycisk.addActionListener(new ActionListener() 
+		 {
+			 @Override
+				public void actionPerformed(ActionEvent a) {
+				 
+				 JTextField pierwszyField = new JTextField(7);
+	                JTextField drugiField = new JTextField(7);
+	                JTextField trzeciField = new JTextField(7);
+	                JTextField czwartyField = new JTextField(7);
+	                JTextField piatyField = new JTextField(7);
+				 	JPanel myPanel = new JPanel();					
+ 	                myPanel.add(new JLabel("Nazwa użytkownika: "));
+	           		myPanel.add(pierwszyField);
+	           		myPanel.add(Box.createHorizontalStrut(5));
+	           		myPanel.add(new JLabel("Login: "));
+	           		myPanel.add(drugiField);
+	           		myPanel.add(Box.createHorizontalStrut(5));
+	           		myPanel.add(new JLabel("Hasło: "));
+	           		myPanel.add(trzeciField);
+	           		myPanel.add(Box.createHorizontalStrut(5));
+	           		myPanel.add(new JLabel("E-mail: "));
+	           		myPanel.add(czwartyField);
+ 	                int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	                         "Zakładanie konta", JOptionPane.OK_CANCEL_OPTION);
+                			
+	 	            try {
+	 	            	 if (result == JOptionPane.OK_OPTION) {
+	 	            		if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
+	 	            			throw(new Exception("Nie podano wszystkich danych. Konto nie zostało utworzone."));
+	 	                		 	                		 	                	
+	 	                	OracleConnection oc =  OracleConnection.getInstance();
+	 	                	oc.createDBSession();
+	 	                	Session session = oc.getDBSession();
+	 	                	
+	 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 4, 0));	                		
+	 	            	 }
+	 	            }catch(Exception e)
+	 	            	 {
+	 	            	System.out.println("Wystapil bład podczas dodawania konta: "+ e.toString());
+	 	            		 
+	 	            }	 	 	                
+	 	            oc.closeDBSession();	
+	 	            System.out.print("dodałem");
+			 }	 	 	 	             
+		 });
+		 
         pokazProduktPrzycisk.addActionListener(new ActionListener() 
 		 {
 			 @Override
@@ -1208,11 +1261,7 @@ public class HibernateOracle {
 		                         "Dodaj produkt do magazynu", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
+			                					                					                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do magazynu");
@@ -1224,6 +1273,10 @@ public class HibernateOracle {
 			 	                	
 			 	                	if(Integer.parseInt(czwartyField.getText())<=0)
 			 	                		throw(new Exception("Stan faktyczny nie może być ujemny."));
+			 	                	
+			 	                	OracleConnection oc =  OracleConnection.getInstance();
+			 	                	oc.createDBSession();
+			 	                	Session session = oc.getDBSession();
 			 	                	
 			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
