@@ -181,9 +181,7 @@ public class HibernateOracle {
 			                		if(hasloField.getText().equals(uzytkownik.getHaslo()))
 			                		{
 				                		System.out.println("zalogowano");
-				                		pokazZalogujPrzycisk.setVisible(false);
-				                		bar.remove(pokazZalogujPrzycisk);
-				                		bar.remove(glue);
+				                		
 				                		idUzytkownika = uzytkownik.getId_uzytkownika();
 				                		
 				                		oc.createDBSession();
@@ -191,6 +189,10 @@ public class HibernateOracle {
 				                		Query<Typy_uzytkownika> query = session2.createQuery("FROM Typy_uzytkownika", Typy_uzytkownika.class);
 			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();                           
 			                                
+			                            pokazZalogujPrzycisk.setVisible(false);
+				                		bar.remove(pokazZalogujPrzycisk);
+				                		bar.remove(glue);
+			                            
 			                            for(Typy_uzytkownika typ: typyUzytkownika) {
 			                            	if(typ.getId_typu_uzytkownika() == uzytkownik.getId_typu_uzytkownika()) {
 			                            		nazwaTypu = typ.getNazwa();
