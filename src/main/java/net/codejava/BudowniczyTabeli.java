@@ -1284,6 +1284,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				break;
 			case("Pracownik"):
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+				break;
+			case("Klient"):
+				break;
+			default:
+				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+				break;
 			}
 		}
 	}
