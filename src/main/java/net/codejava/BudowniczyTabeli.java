@@ -909,6 +909,26 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		     		                	Produkty user = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
 		     		 	                			.setParameter("id", this.id)
 		     		 	                			.uniqueResult();
+		     		                			
+		     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
+	     		 	                			.setParameter("idP", this.id);
+		     		                	List<Integer> stanMagazynow = query.getResultList();
+		     		                	
+		     		                	int stanMag = 0;
+		     		                	
+		     		                	for(Integer stan: stanMagazynow) {
+		     		                		if(stanMag + stan > (Integer.parseInt(pierwszyField.getText())))
+		     		                		{
+		     		                			stanMag = (Integer.parseInt(pierwszyField.getText()));
+		     		                		}else
+		     		                		{
+		     		                			stanMag += stan;
+		     		                		}
+		     		                	}
+		     		                	
+		     		                	if((Integer.parseInt(pierwszyField.getText())) > stanMag)
+		     		                		throw new Exception("Niestety nie posiadamy takiej ilości produktu w magazynie."
+		     		                				+ "Obecny stan: " +Integer.toString(stanMag));
 		     		                	
 		     		                	Produkt_Koszyk pk = new Produkt_Koszyk(user,Integer.parseInt(pierwszyField.getText()));
 		     		                	HibernateOracle.koszyk.add(pk);
@@ -1266,6 +1286,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Koszt");
 		this.dodajKolumne("Stan zamowienia");
 		if(!(HibernateOracle.nazwaTypu.equals("Klient")))this.dodajKolumne("Id Użytkownika");
+		this.dodajKolumne("Zamówione produkty");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
@@ -1295,20 +1316,34 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 					break;
 				}
 			}
+			List<String> nPr = null;
+			oc.createDBSession();
+			try (Session session = oc.getDBSession()) {
+	            Query<String> query = session.createQuery("SELECT p.nazwa FROM Produkty p, Zamowienia z, Produkt_Zamowienia pz where p.id_produktu = pz.produkt_zamowienia_id.id_produktu and pz.produkt_zamowienia_id.id_zamowienia = z.id_zamowienia and z.id_zamowienia = :id", String.class).setParameter("id", ((Zamowienia) entry).getId_zamowienia());
+	            nPr = query.getResultList();
+	            oc.closeDBSession();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            System.out.println(e);
+	        }
 											
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+				this.dodajKolumne(nPr);
 				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
 			case("Pracownik"):
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+				this.dodajKolumne(nPr);
 				break;
 			case("Klient"):
+				this.dodajKolumne(nPr);
 				break;
 			default:
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
+				this.dodajKolumne(nPr);
 				break;
 			}
 		}
