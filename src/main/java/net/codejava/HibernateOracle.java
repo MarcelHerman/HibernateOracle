@@ -125,8 +125,8 @@ public class HibernateOracle {
 		
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
-		bar.add(pokazZalogujPrzycisk);
 		bar.add(zalozKontoPrzycisk);
+		bar.add(pokazZalogujPrzycisk);
 		
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
 		
@@ -299,9 +299,9 @@ public class HibernateOracle {
 			     kontener.add(pane);
 			     bar.add(glue);
 				 pokazZalogujPrzycisk.setVisible(true);
-				 zalozKontoPrzycisk.setVisible(false);
-				 bar.add(pokazZalogujPrzycisk);
+				 zalozKontoPrzycisk.setVisible(false);				 
 				 bar.add(zalozKontoPrzycisk);
+				 bar.add(pokazZalogujPrzycisk);
 				 
 				 bar.revalidate();
 				 bar.repaint();
