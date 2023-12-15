@@ -308,7 +308,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		kat.setId_Kategorii(this.id);
 	     	                		
 	     	                		if(!pierwszyField.getText().isEmpty())
+	     	                		{
 	     	                			session.update(kat);
+		     	                		tab.setValueAt(pierwszyField.getText(), row, 1);
+	     	                		}
+
 	     	                		
 	     	                		oc.closeDBSession();
 	     	                	}
@@ -716,8 +720,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                			.uniqueResult();	     	 	                	
 	     	 	                	
 	     	 	                	if(!pierwszyField.getText().isEmpty())
-	     	 	                		user.setNazwa(pierwszyField.getText());	     	 	              	
+	     	 	                		user.setNazwa(pierwszyField.getText());	 
 	     	                		session.update(user);
+
 	     	                		
 	     	 	                	
 	     	                		oc.closeDBSession();
