@@ -26,6 +26,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
 public interface BudowniczyTabeli {
@@ -882,11 +883,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	                session.delete(pr);
  	 	                } 
  	            		 
+	            		 oc.closeDBSession();
+ 	                	
  	                	((DefaultTableModel)tab.getModel()).removeRow(row);
-
- 	            		 oc.closeDBSession();
  	            	 } 	            	  
- 	              }catch(Exception e) {	            	  
+ 	              }catch(Exception e) {	  
+ 	            	 JOptionPane.showMessageDialog(null, "Nie udało się usunąć elementu. Błąd: " + e.getMessage());
  	              }           			                	
                  }
                  else if(this.label.equals("Dodaj do koszyka")) {
