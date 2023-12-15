@@ -523,6 +523,9 @@ public class HibernateOracle {
 		     	 	                	for(Obiekt_Do_Polecen produkt: koszyk) {
 			     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
+			     	 	                	if(session.createQuery("select p.czy_usunieto from Produkty p where p.id_produktu = :idP", Integer.class)
+		     		 	                			.setParameter("idP", id)
+		     		 	                			.uniqueResult()==1? true:false)throw new Exception("Przykro nam ale jeden z produktów został usunięty z naszej oferty.");
 			     	 	                	
 			     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
 		     		 	                			.setParameter("idP", id);
@@ -1037,7 +1040,7 @@ public class HibernateOracle {
 			 	                	}
 			 	                				 	                	
 			 	                
-			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 'N'));
+			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
 			                		
 			                		oc.closeDBSession();
 			                		pokazProduktPrzycisk.doClick();
