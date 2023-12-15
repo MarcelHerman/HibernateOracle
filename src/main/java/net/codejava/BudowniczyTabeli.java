@@ -101,8 +101,17 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 1);
         	buttonColumn.setCellRenderer(new ButtonRenderer());
         	buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));
-        	if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
+        	if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Pracownik")) {
     			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
+                {              	
+                	TableColumn buttonColumn3 = jt.getColumnModel().getColumn(naglowek.size() - 2);
+                	buttonColumn3.setCellRenderer(new ButtonRenderer());
+                	buttonColumn3.setCellEditor(new ButtonEditor(new JCheckBox()));
+                }
+    			
+            }else if(HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator"))
+            {
+            	if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
                 {
                 	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 3);
                 	buttonColumn2.setCellRenderer(new ButtonRenderer());
@@ -112,7 +121,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 	buttonColumn3.setCellRenderer(new ButtonRenderer());
                 	buttonColumn3.setCellEditor(new ButtonEditor(new JCheckBox()));
                 }
-    			
             }
 		}
 		else {
@@ -976,10 +984,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                		 }
                 	 }catch(Exception e){
                 		 JOptionPane.showMessageDialog(null, "Nie udało się dodac produktu do zamowienia. Błąd: " + e.getMessage());
-                	 }
-	                	
-	                	
-	                	
+                	 }	                		                		                	
                  }
             }
             isPushed = false;
@@ -1037,7 +1042,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Opis");	
 		this.dodajKolumne("Producent");
 		this.dodajKolumne("Kategoria");
-		if((HibernateOracle.nazwaTypu.equals("Administrator")))this.dodajKolumne("Usunięty");
+		if((HibernateOracle.nazwaTypu.equals("Administrator")) || (HibernateOracle.nazwaTypu.equals("Pracownik")))this.dodajKolumne("Usunięty");
 
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
@@ -1082,13 +1087,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				}
 			}
 			
-
-			//this.dodajKolumne(Integer.toString(((Produkty) entry).getKategorie_id_kategorii()));
 			switch(HibernateOracle.nazwaTypu) {
 			case("Administrator"):
 				this.dodajKolumne((((Produkty) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				this.dodajKolumne("");
 				this.dodajKolumne("");
+				break;
+			case("Pracownik"):
+				this.dodajKolumne((((Produkty) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				break;
 			}
 			if(!(HibernateOracle.nazwaTypu.equals("null")))this.dodajKolumne(" ");
@@ -1239,7 +1245,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Kontakt");
 		this.dodajKolumne("Miasto");
 		this.dodajKolumne("Ulica");
-		if((HibernateOracle.nazwaTypu.equals("Administrator")))this.dodajKolumne("Usunięty");
+		if((HibernateOracle.nazwaTypu.equals("Administrator")) ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))this.dodajKolumne("Usunięty");
 		
 		for(Obiekt_Do_Polecen entry: entities)
 		{
@@ -1254,6 +1260,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				this.dodajKolumne((((Producenci)entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				this.dodajKolumne("");
 				this.dodajKolumne("");
+				break;
+			case("Pracownik"):
+				this.dodajKolumne((((Uzytkownicy)entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				break;
 			}
 		}
@@ -1272,7 +1281,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Hasło");
 		this.dodajKolumne("E-mail");
 		this.dodajKolumne("Typ konta");
-		if((HibernateOracle.nazwaTypu.equals("Administrator")))this.dodajKolumne("Usunięty");
+		if((HibernateOracle.nazwaTypu.equals("Administrator"))  ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))this.dodajKolumne("Usunięty");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
@@ -1310,6 +1319,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 				this.dodajKolumne((((Uzytkownicy)entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				this.dodajKolumne("");
 				this.dodajKolumne("");
+				break;
+			case("Pracownik"):
+				this.dodajKolumne((((Uzytkownicy)entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 				break;
 			}
 		}
