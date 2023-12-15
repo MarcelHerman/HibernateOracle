@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -90,7 +91,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		Object[][] dan = new Object[this.dane.size()][];
 		int i = 0;
 		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
-		JTable jt = new JTable(dan, nagl);
+		
+		DefaultTableModel model = new DefaultTableModel(dan,nagl);
+		
+		JTable jt = new JTable(model);
 			
 		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null"))){
 			TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 1);
@@ -181,6 +185,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         private int id;
         
         private int id2;
+        
+        private JTable tab;
+        
+        private int row;
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -230,6 +238,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             if(HibernateOracle.obj instanceof Produkt_Magazyn) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
             button.setText(label);
             isPushed = true;
+            tab = table;
+            this.row = row;
+            
+            
             return button;
         }
 
@@ -849,6 +861,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                		}
  	 	                }
  	            		 
+
+ 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
+
  	            		 oc.closeDBSession();
  	            	 } 	            	  
  	              }catch(Exception e) {	            	  

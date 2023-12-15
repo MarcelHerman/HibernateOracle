@@ -331,7 +331,7 @@ public class HibernateOracle {
 					JLabel email = new JLabel("E-mail:  " + user.getE_mail());
 					JButton edytujPrzycisk = new JButton("Edytuj konto");
 					JButton usunPrzycisk = new JButton("Usuń konto");
-					JButton zlozzamowieniePrzycisk = new JButton("Złóż zamówienie");
+					JButton zlozZamowieniePrzycisk = new JButton("Złóż zamówienie");
 					JButton oproznijkoszykPrzycisk = new JButton("Opróżnij koszyk");
 					
 					JPanel jp = new JPanel();
@@ -362,9 +362,9 @@ public class HibernateOracle {
 						 JScrollPane pane = new JScrollPane(tabSwing);
 						 pane.setAlignmentX(Component.CENTER_ALIGNMENT);
 					       kontener.add(pane);
-					       zlozzamowieniePrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+					       zlozZamowieniePrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
 					       oproznijkoszykPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
-					       kontener.add(zlozzamowieniePrzycisk);
+					       kontener.add(zlozZamowieniePrzycisk);
 					       kontener.add(oproznijkoszykPrzycisk);
 					}
 				 
@@ -464,7 +464,7 @@ public class HibernateOracle {
 						 }	 	 	 	             
 					 });
 					 
-					 zlozzamowieniePrzycisk.addActionListener(new ActionListener() 
+					 zlozZamowieniePrzycisk.addActionListener(new ActionListener() 
 					 {
 						 @Override
 							public void actionPerformed(ActionEvent a) {		
@@ -952,6 +952,7 @@ public class HibernateOracle {
 			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazProduktPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -985,6 +986,7 @@ public class HibernateOracle {
 			 	                	session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
 			                		
 			                		oc.closeDBSession();
+			                		pokazFakturyPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1015,6 +1017,7 @@ public class HibernateOracle {
 			 	                	session.save(new Kategorie(pierwszyField.getText()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazKategoriePrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1048,6 +1051,7 @@ public class HibernateOracle {
 			 	                	session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazMagazynyPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1087,6 +1091,7 @@ public class HibernateOracle {
 			 	                	session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazProducentowPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1133,6 +1138,7 @@ public class HibernateOracle {
 			 	                	session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
 			                		
 			                		oc.closeDBSession();
+			                		pokazProduktMagazynPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1174,6 +1180,7 @@ public class HibernateOracle {
 			 	                	session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(czwartyField.getText())));
 			                		
 			                		oc.closeDBSession();
+			                		pokazProduktZamowieniaPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1205,6 +1212,7 @@ public class HibernateOracle {
 			 	                	session.save(new Stany_Zamowienia(pierwszyField.getText()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazStanyZamowienPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1236,6 +1244,7 @@ public class HibernateOracle {
 			 	                	session.save(new Typy_uzytkownika(pierwszyField.getText()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazTypyUzytkownikaPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1302,6 +1311,7 @@ public class HibernateOracle {
 			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika()));
 			                		
 			                		oc.closeDBSession();
+			                		pokazUzytkownicyPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1341,6 +1351,7 @@ public class HibernateOracle {
 			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText())));
 			                		
 			                		oc.closeDBSession();
+			                		pokazZamowieniaPrzycisk.doClick();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
