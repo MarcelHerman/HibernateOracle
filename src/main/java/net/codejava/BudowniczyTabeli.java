@@ -82,7 +82,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
 			{
 				this.naglowek.addLast(" ");
-				this.naglowek.addLast(" ");				
+				if(!(HibernateOracle.obj instanceof Zamowienia))this.naglowek.addLast(" ");				
 			}
 		}
 		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null")))
@@ -119,7 +119,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			if (HibernateOracle.nazwaTypu != null && HibernateOracle.nazwaTypu.equals("Administrator")) {
 				if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
 	            {
-					if(!(HibernateOracle.obj instanceof Produkt_Zamowienia))
+					if(!(HibernateOracle.obj instanceof Produkt_Zamowienia) && !(HibernateOracle.obj instanceof Zamowienia))
 					{
 						TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 2);
 						buttonColumn.setCellRenderer(new ButtonRenderer());
@@ -161,6 +161,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            } else if(column == (naglowek.size()-3)){
 	            	setText("Edytuj");
 	            }
+	            else{
+	            	setText((value == null) ? "" : value.toString());
+	            } 
+            }
+            else if(HibernateOracle.obj instanceof Zamowienia)
+            {
+            	if (column == (naglowek.size() - 1)) {
+            		setText("Edytuj");
+            	}    
 	            else{
 	            	setText((value == null) ? "" : value.toString());
 	            } 
@@ -223,6 +232,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            } else if(column == (naglowek.size()-3)){
 	            	label = "Edytuj";
 	            }
+	            else{
+	            	label = (value == null) ? "" : value.toString();
+	            } 
+            }
+            else if(HibernateOracle.obj instanceof Zamowienia)
+            {
+            	if (column == (naglowek.size() - 1)) {
+            		label = "Edytuj";
+            	}    
 	            else{
 	            	label = (value == null) ? "" : value.toString();
 	            } 
@@ -1348,7 +1366,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			case("Administrator"):
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 				this.dodajKolumne(nPr);
-				this.dodajKolumne("");
 				this.dodajKolumne("");
 				break;
 			case("Pracownik"):
