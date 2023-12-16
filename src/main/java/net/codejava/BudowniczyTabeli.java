@@ -90,10 +90,17 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.naglowek.addLast(" ");
 			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
 		}
-		if(HibernateOracle.obj instanceof Zamowienia && !(HibernateOracle.nazwaTypu.equals("null")))
+		if(!(HibernateOracle.nazwaTypu.equals("null")))
 		{
-			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
+			if(HibernateOracle.nazwaTypu.equals("Pracownik"))
+			{
+				if(HibernateOracle.obj instanceof Zamowienia)this.naglowek.addLast(" ");
+				if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+					this.naglowek.addLast(" ");
+				}
+			}
 		}
+
 			
 		
 		Object[] nagl = this.naglowek.toArray();
@@ -155,6 +162,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            	buttonColumn2.setCellRenderer(new ButtonRenderer());
 	            	buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
 				}
+				if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+					TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 1);
+					buttonColumn.setCellRenderer(new ButtonRenderer());
+					buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));		
+				}
 			}
 		}
 
@@ -189,6 +201,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            else{
 	            	setText((value == null) ? "" : value.toString());
 	            } 
+            }
+            else if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+            	
+            	if (column == (naglowek.size() - 1)) {
+            		if(HibernateOracle.nazwaTypu.equals("Pracownik"))setText("Edytuj");
+            	}
             }
             else if(HibernateOracle.obj instanceof Zamowienia)
             {
@@ -261,6 +279,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            else{
 	            	label = (value == null) ? "" : value.toString();
 	            } 
+            }
+            	else if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+            	
+            	if (column == (naglowek.size() - 1)) {
+            		if(HibernateOracle.nazwaTypu.equals("Pracownik"))label = "Edytuj";
+            	}
             }
             else if(HibernateOracle.obj instanceof Zamowienia)
             {
