@@ -642,6 +642,7 @@ public class HibernateOracle {
 		                		 try {		 
 		                			 if (result == JOptionPane.OK_OPTION) {
 		     	                		koszyk.clear();
+		     	                		kontoPrzycisk.doClick();
 		                			 }
 		                		 }
 		                		 catch(Exception e) {
