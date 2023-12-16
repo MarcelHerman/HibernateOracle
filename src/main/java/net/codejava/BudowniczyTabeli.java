@@ -82,14 +82,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
 			{
 				this.naglowek.addLast(" ");
-				if(!(HibernateOracle.obj instanceof Zamowienia))this.naglowek.addLast(" ");				
+				if(!(HibernateOracle.obj instanceof Zamowienia) &&  !(HibernateOracle.obj instanceof Produkt_Zamowienia))this.naglowek.addLast(" ");				
 			}
 		}
+		
 		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null")))
 		{
 			this.naglowek.addLast(" ");
 			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
 		}
+			
 		if(!(HibernateOracle.nazwaTypu.equals("null")))
 		{
 			if(HibernateOracle.nazwaTypu.equals("Pracownik"))
@@ -202,10 +204,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            	setText((value == null) ? "" : value.toString());
 	            } 
             }
-            else if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+            else if(HibernateOracle.obj instanceof Produkt_Magazyn && HibernateOracle.nazwaTypu.equals("Pracownik")) {
             	
             	if (column == (naglowek.size() - 1)) {
-            		if(HibernateOracle.nazwaTypu.equals("Pracownik"))setText("Edytuj");
+            		setText("Edytuj");
             	}
             }
             else if(HibernateOracle.obj instanceof Zamowienia)
