@@ -257,6 +257,7 @@ public class HibernateOracle {
 			                		}
 			                	}
 	                		}
+	                		if(nazwaTypu.equals("null")) throw new Exception("");
 		                }
 	                    
 	                } catch (Exception ex) {
@@ -299,9 +300,10 @@ public class HibernateOracle {
 			     kontener.add(pane);
 			     bar.add(glue);
 				 pokazZalogujPrzycisk.setVisible(true);
-				 zalozKontoPrzycisk.setVisible(false);				 
+				 zalozKontoPrzycisk.setVisible(true);				 
 				 bar.add(zalozKontoPrzycisk);
 				 bar.add(pokazZalogujPrzycisk);
+
 				 
 				 bar.revalidate();
 				 bar.repaint();
