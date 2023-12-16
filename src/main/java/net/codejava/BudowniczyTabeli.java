@@ -90,6 +90,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.naglowek.addLast(" ");
 			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
 		}
+		if(HibernateOracle.obj instanceof Zamowienia && !(HibernateOracle.nazwaTypu.equals("null")))
+		{
+			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
+		}
 			
 		
 		Object[] nagl = this.naglowek.toArray();
@@ -145,7 +149,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            }
 				
 	        }
+			else if(HibernateOracle.nazwaTypu.equals("Pracownik")) {
+				if(HibernateOracle.obj instanceof Zamowienia) {
+	            	TableColumn buttonColumn2 = jt.getColumnModel().getColumn(naglowek.size() - 1);
+	            	buttonColumn2.setCellRenderer(new ButtonRenderer());
+	            	buttonColumn2.setCellEditor(new ButtonEditor(new JCheckBox()));
+				}
+			}
 		}
+
 		
 		jt.setPreferredScrollableViewportSize(new Dimension(1000, 400));
 		return jt;
@@ -543,14 +555,25 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			                
 			                JComboBox jombo = new JComboBox(nazwy);
 	                		
-	                		myPanel.add(new JLabel("Miasto wysyłki"));
-	                		myPanel.add(pierwszyField);	    
-	                		myPanel.add(Box.createHorizontalStrut(5));
-	                		myPanel.add(new JLabel("Ulica wysyłki: "));
-	                		myPanel.add(drugiField);
-	                		myPanel.add(Box.createHorizontalStrut(5));
-	                		myPanel.add(new JLabel("Stan zamówienia: "));
-	                		myPanel.add(jombo);
+			                if(HibernateOracle.nazwaTypu.equals("Pracownik"))
+			                {
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Stan zamówienia: "));
+		                		myPanel.add(jombo);
+			                }
+			                
+			                else
+			                {
+		                		myPanel.add(new JLabel("Miasto wysyłki"));
+		                		myPanel.add(pierwszyField);	    
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Ulica wysyłki: "));
+		                		myPanel.add(drugiField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Stan zamówienia: "));
+		                		myPanel.add(jombo);
+			                }
+
 
 	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 	   	                         "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
