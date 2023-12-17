@@ -84,7 +84,7 @@ public class HibernateOracle {
 		List<Obiekt_Do_Polecen> entities = null;
 		
 		try (Session session2 = oc.getDBSession()) {
-            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0", Obiekt_Do_Polecen.class);
+            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
             entities = query.getResultList();
             oc.closeDBSession();
         } catch (Exception e) {
@@ -171,7 +171,7 @@ public class HibernateOracle {
 	                		oc.createDBSession();
 	                		List<Uzytkownicy> uzytkownicy = null;
 	                		try (Session session2 = oc.getDBSession()) {
-	                            Query<Uzytkownicy> query = session2.createQuery("FROM Uzytkownicy", Uzytkownicy.class);
+	                            Query<Uzytkownicy> query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Uzytkownicy.class);
 	                            uzytkownicy = query.getResultList();
 	                            oc.closeDBSession();
 	                        } catch (Exception e1) {
@@ -188,7 +188,7 @@ public class HibernateOracle {
 				                		
 				                		oc.createDBSession();
 				                		Session session2 = oc.getDBSession();
-				                		Query<Typy_uzytkownika> query = session2.createQuery("FROM Typy_uzytkownika", Typy_uzytkownika.class);
+				                		Query<Typy_uzytkownika> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Typy_uzytkownika.class);
 			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();                           
 			                                
 			                            pokazZalogujPrzycisk.setVisible(false);
@@ -286,7 +286,7 @@ public class HibernateOracle {
 
 				 oc.createDBSession();
 				 try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        
@@ -718,8 +718,8 @@ public class HibernateOracle {
 					try (Session session2 = oc.getDBSession()) {
 						
 			            Query<Obiekt_Do_Polecen> query = null;
-			            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0", Obiekt_Do_Polecen.class); 
-			            else query = session2.createQuery("FROM Produkty", Obiekt_Do_Polecen.class);
+			            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
+			            else query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -749,8 +749,8 @@ public class HibernateOracle {
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = null;
-			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
-			            else query = session2.createQuery("FROM Zamowienia", Obiekt_Do_Polecen.class);
+			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
+			            else query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -778,7 +778,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Uzytkownicy", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -806,7 +806,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -834,7 +834,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -862,7 +862,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Magazyn", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -890,7 +890,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Zamowienia", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Zamowienia order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -918,7 +918,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -946,7 +946,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -974,7 +974,7 @@ public class HibernateOracle {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny", Obiekt_Do_Polecen.class);
+			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -1003,8 +1003,8 @@ public class HibernateOracle {
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = null;
-			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
-			            else query = session2.createQuery("FROM Faktury", Obiekt_Do_Polecen.class);
+			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
+			            else query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
 			            entities = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
