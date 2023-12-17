@@ -659,6 +659,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		
 	     	                			tab.setValueAt(user.getAdres_wysylki_miasto(), row, 1); 	                		
 	     	                			tab.setValueAt(user.getAdres_wysylki_ulica(), row, 2);
+	     	                			tab.setValueAt(((Stany_Zamowienia)fData.get(jombo.getSelectedIndex())).getNazwa(), row, 4);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
