@@ -925,7 +925,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
 	     	 	                			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == id) {
 	     	 	                				((Produkt_Koszyk)pk).setIlosc(Integer.parseInt(pierwszyField.getText()));
-	     	 	                				tab.setValueAt(Integer.parseInt(pierwszyField.getText()), row, 3); 	                		
+	     	 	                				tab.setValueAt(Integer.parseInt(pierwszyField.getText()), row, 3); 	  
+	     	 	                				tab.setValueAt(Integer.parseInt(pierwszyField.getText()) *((Produkt_Koszyk)pk).getPr().getCena() , row, 4);
 	     	 	                				break;
 	     	 	                			}
 	     	 	                		}
