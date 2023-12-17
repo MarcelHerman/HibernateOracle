@@ -357,6 +357,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		session.update(user);
 	     	                			  	 	                	
 	     	                		oc.closeDBSession();
+	     	                		
+	     	                		tab.setValueAt(user.getNIP(),row,1);
 	     	                	}
                 		 }
                 		 catch(Exception e) {
@@ -385,11 +387,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		if(!pierwszyField.getText().isEmpty())
 	     	                		{
 	     	                			session.update(kat);
-		     	                		tab.setValueAt(pierwszyField.getText(), row, 1);
 	     	                		}
 
 	     	                		
 	     	                		oc.closeDBSession();
+	     	                		tab.setValueAt(kat.getNazwa(), row, 1);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -469,6 +471,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
+	     	                		
+	     	                		tab.setValueAt(user.getNazwa_uzytkownika(), row, 1);
+	     	                		tab.setValueAt(user.getLogin(), row, 2);
+	     	                		tab.setValueAt(user.getHaslo(), row, 3);
+	     	                		tab.setValueAt(user.getE_mail(), row, 4);
+	     	                		tab.setValueAt(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getNazwa(), row, 5);
+	     	                		if(user.getCzy_usunieto() == 1)
+	     	                			tab.setValueAt("TAK", row, 6);
+	     	                		else   	                		
+	     	                			tab.setValueAt("NIE", row, 6);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -546,6 +558,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
+	     	                		
+	     	                		tab.setValueAt(user.getNazwa(), row, 1);
+	     	                		tab.setValueAt(user.getCena(), row, 2);
+	     	                		tab.setValueAt(user.getOpis(), row, 3);
+	     	                		tab.setValueAt(((Kategorie)fData.get(jombo.getSelectedIndex())).getNazwa() ,row, 5);
+	     	                		if(user.getCzy_usunieto() == 1)
+	     	                			tab.setValueAt("TAK", row, 6);
+	     	                		else   	                		
+	     	                			tab.setValueAt("NIE", row, 6);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -914,6 +935,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Faktury pr = new Faktury();
  	 	                	pr.setId_faktury(this.id);
  	 	                	session.delete(pr);
+ 	 	                	oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
@@ -922,6 +944,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Kategorie pr = new Kategorie();
  	 	                	pr.setId_Kategorii(this.id);
  	 	                	session.delete(pr);
+ 	 	                	oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
@@ -934,6 +957,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	             pr.setCzy_usunieto(1);
 	 	 	                session.update(pr);
 	 	 	              tab.setValueAt("TAK", row, 6);
+	 	 	            oc.closeDBSession();
  	 	 	                
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Produkty)
@@ -945,12 +969,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	                
  	 	 	                session.update(pr);
  	 	 	                tab.setValueAt("TAK", row, 6);
+ 	 	 	             oc.closeDBSession();
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Zamowienia)
  	 	                {
  	 	                	Zamowienia pr = new Zamowienia();
  	 	 	                pr.setId_zamowienia(this.id);
  	 	 	                session.delete(pr);
+ 	 	 	             oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Magazyny)
@@ -958,6 +984,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	                	Magazyny pr = new Magazyny();
  	 	 	                pr.setId_magazynu(this.id);
  	 	 	                session.delete(pr);
+ 	 	 	             oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Producenci)
@@ -968,6 +995,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	             pr.setCzy_usunieto(1);
 	 	 	                session.update(pr);
 	 	 	              tab.setValueAt("TAK", row, 5);
+	 	 	            oc.closeDBSession();
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Koszyk)
  	 	                {
@@ -977,6 +1005,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                				break;
 	 	                			}
 	 	                		}
+ 	                		oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                }
  	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
@@ -984,6 +1013,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Produkt_Magazyn pr = new Produkt_Magazyn();
  	 	 	                pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(this.id, this.id2));
  	 	 	                session.delete(pr);
+ 	 	 	             oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Zamowienia)
@@ -991,10 +1021,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Produkt_Zamowienia pr = new Produkt_Zamowienia();
  	 	 	                pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(this.id, this.id2));
  	 	 	                session.delete(pr);
+ 	 	 	             oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	            		 
-	            		 oc.closeDBSession();
+	            		 
  	                	
  	            	 } 	            	  
  	              }catch(Exception e) {	  
