@@ -204,10 +204,17 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            	setText((value == null) ? "" : value.toString());
 	            } 
             }
-            else if(HibernateOracle.obj instanceof Produkt_Magazyn && HibernateOracle.nazwaTypu.equals("Pracownik")) {
+            else if(HibernateOracle.obj instanceof Produkt_Magazyn) {
             	
-            	if (column == (naglowek.size() - 1)) {
-            		setText("Edytuj");
+            	if(HibernateOracle.nazwaTypu.equals("Pracownik"))
+            		if (column == (naglowek.size() - 1)) 
+            			setText("Edytuj");
+            		else {}
+            	else if(HibernateOracle.nazwaTypu.equals("Administrator")) {
+            		if (column == (naglowek.size() - 1)) 
+            			setText("Usuń");
+            		if (column == (naglowek.size() - 2)) 
+            			setText("Edytuj");
             	}
             }
             else if(HibernateOracle.obj instanceof Zamowienia)
@@ -286,6 +293,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	
             	if (column == (naglowek.size() - 1)) {
             		if(HibernateOracle.nazwaTypu.equals("Pracownik"))label = "Edytuj";
+            		if(HibernateOracle.nazwaTypu.equals("Administrator"))label = "Usuń";
+            	}
+            	if(column == (naglowek.size() -2)) {
+            		if(HibernateOracle.nazwaTypu.equals("Administrator"))label = "Edytuj";
             	}
             }
             else if(HibernateOracle.obj instanceof Zamowienia)
@@ -358,7 +369,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                			  	 	                	
 	     	                		oc.closeDBSession();
 	     	                		
-	     	                		tab.setValueAt(user.getNIP(),row,1);
+	     	                		tab.setValueAt(user.getNIP(),row,2);
 	     	                	}
                 		 }
                 		 catch(Exception e) {
@@ -645,6 +656,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
+	     	                		
+	     	                			tab.setValueAt(user.getAdres_wysylki_miasto(), row, 1); 	                		
+	     	                			tab.setValueAt(user.getAdres_wysylki_ulica(), row, 2);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -682,6 +696,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
+	     	                		tab.setValueAt(user.getMiasto(), row, 1); 	                		
+     	                			tab.setValueAt(user.getUlica(), row, 2);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -733,6 +749,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		session.update(user);
 	     	                		
 	     	                		oc.closeDBSession();
+	     	                		
+	     	                		tab.setValueAt(user.getNazwa(), row, 1); 	                		
+     	                			tab.setValueAt(user.getKontakt(), row, 2);
+     	                			tab.setValueAt(user.getMiasto(), row, 3); 	                		
+     	                			tab.setValueAt(user.getUlica(), row, 4);
+     	                			if(user.getCzy_usunieto() == 1)
+	     	                			tab.setValueAt("TAK", row, 5);
+	     	                		else   	                		
+	     	                			tab.setValueAt("NIE", row, 5);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -757,34 +782,31 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	oc.createDBSession();
 	     	 	                	Session session = oc.getDBSession();
 	     	 	                	
-	     	 	                	try {	     	
-	     	 	                		session.doWork(connection -> {
-	     	 	                		    // Tutaj możesz bezpośrednio operować na obiekcie java.sql.Connection
-	     	 	                		    Connection connectionxd = connection.unwrap(Connection.class);
-	     	 	                		    // ...
-	     	 	                		    // Wykonaj operacje na jdbcConnection
-	     	 	                		    
-	     	 	                		  DatabaseMetaData metaData = connectionxd.getMetaData();
-	     	 	                		System.out.println(metaData);
-
-		     	 	                	    // Podaj nazwę tabeli, dla której chcesz uzyskać metadane
-		     	 	                	    String tableName = "PRODUKT_M%";
-
-		     	 	                	    // Uzyskaj informacje o kolumnach dla danej tabeli
-		     	 	                	    ResultSet resultSet = metaData.getColumns(null, null, tableName, null);
-		     	 	                	  System.out.println(resultSet);
-		     	 	                	  
-		     	 	                	    // Przejdź przez wyniki i wydrukuj nazwy kolumn
-		     	 	                	    while (resultSet.next()) {
-		     	 	                	        String columnName = resultSet.getString("COLUMN_NAME");
-		     	 	                	        System.out.println("Nazwa kolumny: " + columnName);
-		     	 	                	        // Możesz zebrać te nazwy do listy lub innej struktury danych, aby je wykorzystać później
-		     	 	                	    }
-	     	 	                		});	     	 	                		     	 	             
-	     	 	                	} catch (Exception e) {
-	     	 	                		e.printStackTrace();
-	   	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować produktu w magazynie. Błąd: " + e.getMessage()); // u.produkt_magazyn_id like "+Integer.toString(this.id) + " and u.produkty_Id_Produktu like " + Integer.toString(this.id2)
-	     	 	                	}
+									/*
+									 * try { session.doWork(connection -> { // Tutaj możesz bezpośrednio operować na
+									 * obiekcie java.sql.Connection Connection connectionxd =
+									 * connection.unwrap(Connection.class); // ... // Wykonaj operacje na
+									 * jdbcConnection
+									 * 
+									 * DatabaseMetaData metaData = connectionxd.getMetaData();
+									 * System.out.println(metaData);
+									 * 
+									 * // Podaj nazwę tabeli, dla której chcesz uzyskać metadane String tableName =
+									 * "PRODUKT_M%";
+									 * 
+									 * // Uzyskaj informacje o kolumnach dla danej tabeli ResultSet resultSet =
+									 * metaData.getColumns(null, null, tableName, null);
+									 * System.out.println(resultSet);
+									 * 
+									 * // Przejdź przez wyniki i wydrukuj nazwy kolumn while (resultSet.next()) {
+									 * String columnName = resultSet.getString("COLUMN_NAME");
+									 * System.out.println("Nazwa kolumny: " + columnName); // Możesz zebrać te nazwy
+									 * do listy lub innej struktury danych, aby je wykorzystać później } }); } catch
+									 * (Exception e) { e.printStackTrace(); JOptionPane.showMessageDialog(null,
+									 * "Nie udało się edytować produktu w magazynie. Błąd: " + e.getMessage()); //
+									 * u.produkt_magazyn_id like "+Integer.toString(this.id) + " and
+									 * u.produkty_Id_Produktu like " + Integer.toString(this.id2) }
+									 */
 	     	                		
 	     	 	                	Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(this.id, this.id2);	 	                	
 	     	 	                	Produkt_Magazyn user = (Produkt_Magazyn)session.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
@@ -812,6 +834,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                	System.out.println(user.getProdukt_magazyn_id() + " " + user.getStan_faktyczny() +  " " + user.getStan_magazynowy());
 	     	 	                	
 	     	                		oc.closeDBSession();
+	     	                		
+	     	                		tab.setValueAt(user.getStan_faktyczny(), row, 2); 	                		
+     	                			tab.setValueAt(user.getStan_magazynowy(), row, 3);
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -844,6 +869,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		
 	     	 	                	
 	     	                		oc.closeDBSession();
+	     	                		
 	     	                	}
 	                		 }
 	                		 catch(Exception e) {
@@ -898,6 +924,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	 	                		for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
 	     	 	                			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == id) {
 	     	 	                				((Produkt_Koszyk)pk).setIlosc(Integer.parseInt(pierwszyField.getText()));
+	     	 	                				tab.setValueAt(Integer.parseInt(pierwszyField.getText()), row, 3); 	                		
 	     	 	                				break;
 	     	 	                			}
 	     	 	                		}
