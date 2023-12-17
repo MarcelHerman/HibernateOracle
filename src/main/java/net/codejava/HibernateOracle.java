@@ -434,9 +434,13 @@ public class HibernateOracle {
 		     	 	                		user.setE_mail(czwartyField.getText());
 		     	 	                	/*if(!piatyField.getText().isEmpty())
 		     	 	                		user.setId_typu_uzytkownika(Integer.parseInt(piatyField.getText()));*/
+		     	 	                	
 		     	                		session.update(user);
 		     	                		
 		     	                		oc.closeDBSession();
+		     	                		
+		     	                		kontoPrzycisk.setText(user.getNazwa_uzytkownika());
+		     	                		kontoPrzycisk.doClick();
 		     	                	}
 		                		 }
 		                		 catch(Exception e) {
