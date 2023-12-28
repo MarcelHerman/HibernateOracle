@@ -534,6 +534,8 @@ public class HibernateOracle {
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
 		     	 	                	
+		     	 	                	System.out.println("jedna ");
+		     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen produkt: koszyk) {
 			     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
@@ -565,9 +567,10 @@ public class HibernateOracle {
 		     	 	                	}
 		     	                		
 		     	 	                	int koszt = 0;
+		     	 	                	System.out.println("druga ");
 		     	 	                	for(Obiekt_Do_Polecen produkt : koszyk)
 		     	 	                	{
- 	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
+		     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
 			     	 	                	
 			     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
@@ -595,9 +598,9 @@ public class HibernateOracle {
 		    	 	                		koszt+=((Produkt_Koszyk) produkt).getPr().getCena() *((Produkt_Koszyk) produkt).getIlosc() ;
 		     	 	                	}
 		     
-		     	 	                			     	 	                		     	 	                	
+		     	 	                	System.out.println("trzecia");	     	 	                		     	 	                	
 		     	 	                	Zamowienia zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika);
-		     	 	                	session.save(zamowienie);
+		     	 	                	session.save(zamowienie);		     	 	                	     	 	                	
 		     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		 
 		     	 	                	{
@@ -623,7 +626,8 @@ public class HibernateOracle {
 		     	 	                		
 		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(zamowienie.getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
 		     	 	                	}
-		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), zamowienie.getId_zamowienia()));    	 	                		     	                				     	                	
+		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), zamowienie.getId_zamowienia()));  
+		     	 	                	System.out.println("czwarty");
 		     	                		oc.closeDBSession();
 		     	                		
 		     	                		koszyk.clear();
@@ -695,7 +699,7 @@ public class HibernateOracle {
 	 	                	oc.createDBSession();
 	 	                	Session session = oc.getDBSession();
 	 	                	
-	 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 4, 0));	 
+	 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 3, 0));	 
 	 	                	oc.closeDBSession();               		
 	 	            	 }
 	 	            }catch(Exception e)
