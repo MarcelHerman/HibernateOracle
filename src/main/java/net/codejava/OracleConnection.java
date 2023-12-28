@@ -31,9 +31,9 @@ public class OracleConnection {
 		config = new Configuration();
 		
 		config.setProperty("hibernate.connection.driver_class","oracle.jdbc.OracleDriver");
-		config.setProperty("hibernate.connection.url","jdbc:oracle:thin:@212.33.90.213:1521:xe");
-		config.setProperty("hibernate.connection.username","SBD_ST_PS10_1");
-		config.setProperty("hibernate.connection.password","kotkiwpiwnicy");
+		config.setProperty("hibernate.connection.url","jdbc:oracle:thin:@localhost:1521:xe");
+		config.setProperty("hibernate.connection.username","SYSTEM");
+		config.setProperty("hibernate.connection.password","123");
 		config.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle8iDialect");
 		config.setProperty("hibernate.show_sql","true");
 		
