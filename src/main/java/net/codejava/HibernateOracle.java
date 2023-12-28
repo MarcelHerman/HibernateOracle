@@ -645,7 +645,7 @@ public class HibernateOracle {
 							 myPanel.add(new JLabel("Czy na pewno chcesz opróżnić cały koszyk?"));
 							 int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		   	                         "Opróżnianie koszyka", JOptionPane.OK_CANCEL_OPTION);
-		                		 try {		 
+		                		 try {
 		                			 if (result == JOptionPane.OK_OPTION) {
 		     	                		koszyk.clear();
 		     	                		kontoPrzycisk.doClick();
