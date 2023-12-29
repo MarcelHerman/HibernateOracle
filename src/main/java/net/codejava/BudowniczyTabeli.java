@@ -1459,7 +1459,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Stan zamowienia");
 		if(!(HibernateOracle.nazwaTypu.equals("Klient")))this.dodajKolumne("Id Użytkownika");
 		this.dodajKolumne("Zamówione produkty");
-		this.dodajKolumne("Ozdobne opakowanie");
 		this.dodajKolumne("Notatka");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
@@ -1505,18 +1504,18 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 			case("Administrator"):
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 				this.dodajKolumne(nPr);
+				this.dodajKolumne(((Zamowienia) entry).getOpis());
 				this.dodajKolumne("");
-				break;
-			case("Pracownik"):
-				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
-				this.dodajKolumne(nPr);
-				break;
+				break;	
 			case("Klient"):
 				this.dodajKolumne(nPr);
+			this.dodajKolumne(((Zamowienia) entry).getOpis());
 				break;
+			case("Pracownik"):
 			default:
 				this.dodajKolumne(Integer.toString(((Zamowienia) entry).getUzytkownicy_id_uzytkownika()));
 				this.dodajKolumne(nPr);
+				this.dodajKolumne(((Zamowienia) entry).getOpis());
 				break;
 			}
 		}

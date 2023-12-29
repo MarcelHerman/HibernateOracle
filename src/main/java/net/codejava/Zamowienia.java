@@ -78,6 +78,17 @@ public class Zamowienia implements IZamowieniaI {
 		this.opis = opis;
 	}
 	
+	public Zamowienia(int id, double koszt, String adres_wysylki_miasto, String adres_wysylki_ulica, int id_stanu_zamowienia,
+			int uzytkownicy_id_uzytkownika, String opis) {
+		this.id_zamowienia = id;
+		this.koszt = koszt;
+		this.adres_wysylki_miasto = adres_wysylki_miasto;
+		this.adres_wysylki_ulica = adres_wysylki_ulica;
+		this.id_stanu_zamowienia = id_stanu_zamowienia;
+		this.uzytkownicy_id_uzytkownika = uzytkownicy_id_uzytkownika;
+		this.opis = opis;
+	}
+	
 	@Id
 	@GeneratedValue(generator = "incrementor")
 	@GenericGenerator(name = "incrementor", strategy = "increment")
@@ -137,7 +148,7 @@ abstract class ZamowieniaDekorator extends Zamowienia
 
 	public String getOpis()
 	{
-		return zamowienie.getOpis() + "  " + opis;
+		return zamowienie.getOpis() + opis + "  ";
 	}
 }
 
@@ -151,7 +162,7 @@ class Znizka extends ZamowieniaDekorator
 	
 	@Override
 	public double getKoszt() {	
-		return zamowienie.getKoszt() - zamowienie.getKoszt()*cena;
+		return zamowienie.getKoszt() - (zamowienie.getKoszt()/100)*cena;
 	}
 
 	@Override

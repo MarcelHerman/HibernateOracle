@@ -493,6 +493,8 @@ public class HibernateOracle {
 				                JTextField drugiField = new JTextField(7);
 				                JTextField trzeciField = new JTextField(7);
 				                JCheckBox checkbox = new JCheckBox("Faktura");
+				                JCheckBox drugiCheckbox = new JCheckBox("Opakowanie prezentowe");
+				                JTextField czwartyField = new JTextField(7);
 			            		 
 			 	                JPanel myPanel = new JPanel();
 							 myPanel.add(new JLabel("Miasto wysyłki: "));
@@ -503,7 +505,14 @@ public class HibernateOracle {
 		                		myPanel.add(Box.createHorizontalStrut(5));
 		                		myPanel.add(new JLabel(" "));
 		                		myPanel.add(checkbox);
-		                		checkbox.setSelected(false);		                				                	
+		                		checkbox.setSelected(false);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel(" "));
+		                		myPanel.add(drugiCheckbox);
+		                		checkbox.setSelected(false);	
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Wpisz zniżkę: "));
+		                		myPanel.add(czwartyField);
 		                		
 		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		   	                         "Złóż zamówienie", JOptionPane.OK_CANCEL_OPTION);
@@ -533,9 +542,7 @@ public class HibernateOracle {
 		     	                		OracleConnection oc =  OracleConnection.getInstance();
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
-		     	 	                	
-		     	 	                	System.out.println("jedna ");
-		     	 	                	
+		     	 	                			     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen produkt: koszyk) {
 			     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
@@ -566,8 +573,7 @@ public class HibernateOracle {
 			     		                				+ "Obecny stan: " +Integer.toString(stanMag));
 		     	 	                	}
 		     	                		
-		     	 	                	int koszt = 0;
-		     	 	                	System.out.println("druga ");
+		     	 	                	double koszt = 0;
 		     	 	                	for(Obiekt_Do_Polecen produkt : koszyk)
 		     	 	                	{
 		     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
@@ -598,9 +604,21 @@ public class HibernateOracle {
 		    	 	                		koszt+=((Produkt_Koszyk) produkt).getPr().getCena() *((Produkt_Koszyk) produkt).getIlosc() ;
 		     	 	                	}
 		     
-		     	 	                	System.out.println("trzecia");	     	 	                		     	 	                	
-		     	 	                	Zamowienia zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, null);
-		     	 	                	session.save(zamowienie);		     	 	                	     	 	                	
+		     	 	                	System.out.println("trzecia");	 
+		     	 	                	Zamowienia zamowienie = new Zamowienia();
+		     	 	                	if(!czwartyField.getText().isEmpty())
+		     	 	                	{
+		     	 	                		System.out.println("fdbsdgj");
+		     	 	                		if(drugiCheckbox.isSelected()==true)zamowienie  = new Opakowanie(new Znizka(new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis()), Double.parseDouble(czwartyField.getText())));
+		     	 	                		else zamowienie  = new Znizka(new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis()), Double.parseDouble(czwartyField.getText()));
+		     	 	                	}
+		     	 	                	else 
+		     	 	                		if(drugiCheckbox.isSelected()==true)zamowienie  = new Opakowanie((new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis())));
+		     	 	                		else zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
+		     	 	                	
+		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
+		     	 	                	
+		     	 	                	session.save(zamowienie);		  	 	                	     	 	                	
 		     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		 
 		     	 	                	{
