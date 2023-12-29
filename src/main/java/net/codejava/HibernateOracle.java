@@ -599,7 +599,7 @@ public class HibernateOracle {
 		     	 	                	}
 		     
 		     	 	                	System.out.println("trzecia");	     	 	                		     	 	                	
-		     	 	                	Zamowienia zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika);
+		     	 	                	Zamowienia zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, null);
 		     	 	                	session.save(zamowienie);		     	 	                	     	 	                	
 		     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		 
@@ -1169,11 +1169,11 @@ public class HibernateOracle {
 			 	                	}
 			 	                	
 			 	                	//session.save(new Kategorie(pierwszyField.getText()));
+			 	                	oc.closeDBSession();
 			 	                	
 			 	                	Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
 			 	                	pd.Wykonaj();
-			                		
-			                		oc.closeDBSession();
+			                			                		
 			                		pokazKategoriePrzycisk.doClick();
 			                	}
 		         		 }
@@ -1505,7 +1505,7 @@ public class HibernateOracle {
 			 	                		return;
 			 	                	}
 			 	                				 	                				 	                
-			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText())));
+			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
 			                		
 			                		oc.closeDBSession();
 			                		pokazZamowieniaPrzycisk.doClick();

@@ -14,7 +14,7 @@ public class Polecenie_Dodaj extends Polecenie {
 		oc.createDBSession();
 		Session session = oc.getDBSession();
 		
-		session.createQuery("INSERT INTO " + this.obiekt.getClass().getSimpleName() + " VALUES " + this.obiekt);
+		session.save(this.obiekt);
 		
 		oc.closeDBSession();
 	}

@@ -781,34 +781,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		
 	     	                		OracleConnection oc =  OracleConnection.getInstance();
 	     	 	                	oc.createDBSession();
-	     	 	                	Session session = oc.getDBSession();
-	     	 	                	
-									/*
-									 * try { session.doWork(connection -> { // Tutaj możesz bezpośrednio operować na
-									 * obiekcie java.sql.Connection Connection connectionxd =
-									 * connection.unwrap(Connection.class); // ... // Wykonaj operacje na
-									 * jdbcConnection
-									 * 
-									 * DatabaseMetaData metaData = connectionxd.getMetaData();
-									 * System.out.println(metaData);
-									 * 
-									 * // Podaj nazwę tabeli, dla której chcesz uzyskać metadane String tableName =
-									 * "PRODUKT_M%";
-									 * 
-									 * // Uzyskaj informacje o kolumnach dla danej tabeli ResultSet resultSet =
-									 * metaData.getColumns(null, null, tableName, null);
-									 * System.out.println(resultSet);
-									 * 
-									 * // Przejdź przez wyniki i wydrukuj nazwy kolumn while (resultSet.next()) {
-									 * String columnName = resultSet.getString("COLUMN_NAME");
-									 * System.out.println("Nazwa kolumny: " + columnName); // Możesz zebrać te nazwy
-									 * do listy lub innej struktury danych, aby je wykorzystać później } }); } catch
-									 * (Exception e) { e.printStackTrace(); JOptionPane.showMessageDialog(null,
-									 * "Nie udało się edytować produktu w magazynie. Błąd: " + e.getMessage()); //
-									 * u.produkt_magazyn_id like "+Integer.toString(this.id) + " and
-									 * u.produkty_Id_Produktu like " + Integer.toString(this.id2) }
-									 */
-	     	                		
+	     	 	                	Session session = oc.getDBSession();                     															  
+									 	     	                		
 	     	 	                	Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(this.id, this.id2);	 	                	
 	     	 	                	Produkt_Magazyn user = (Produkt_Magazyn)session.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
 	     	 	                			.setParameter("pr", pr)
@@ -1485,6 +1459,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.dodajKolumne("Stan zamowienia");
 		if(!(HibernateOracle.nazwaTypu.equals("Klient")))this.dodajKolumne("Id Użytkownika");
 		this.dodajKolumne("Zamówione produkty");
+		this.dodajKolumne("Ozdobne opakowanie");
+		this.dodajKolumne("Notatka");
 		
 		OracleConnection oc =  OracleConnection.getInstance();
 		oc.createDBSession();
