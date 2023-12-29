@@ -15,6 +15,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -779,7 +783,11 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 
-					 if(!(nazwaTypu.equals("Klient")))kontener.add(dodajPrzycisk);						 
+					 if(!(nazwaTypu.equals("Klient")))
+					 {
+						 kontener.add(dodajPrzycisk);	
+						 kontener.add(eksportujDoDruku);
+					 }
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -1600,92 +1608,46 @@ public class HibernateOracle extends JFrame {
         eksportujDoDruku.addActionListener(new ActionListener() 
 		 {
 			 @Override
-				public void actionPerformed(ActionEvent a) {
-				 	JTextField pierwszyField = new JTextField(7);
-	                JTextField drugiField = new JTextField(7);
-	                JTextField trzeciField = new JTextField(7);
-	                JTextField czwartyField = new JTextField(7);
-	                JTextField piatyField = new JTextField(7);
-        		 
-	                JPanel myPanel = new JPanel();
-	                
+				public void actionPerformed(ActionEvent a) {				                
 	                if(obj instanceof Produkty) 
 	                {
 	                	OracleConnection oc =  OracleConnection.getInstance();
 		                oc.createDBSession();
 
-		                List<Obiekt_Do_Polecen> fData = null;
-		                List<Obiekt_Do_Polecen> fData2 = null;
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
+				            else query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleProdukty(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_produktow.txt";
+		                 File file = new File(path);
 
-		                try (Session session = oc.getDBSession()) {
-		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
-		                    fData = query.getResultList();
-		                    query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
-		                    fData2 = query.getResultList();
-		                    oc.closeDBSession();
-		                } catch (Exception e) {
-		                    e.printStackTrace();
-		                    System.out.println(e);
-		                }
-		                
-		                String nazwy[] = new String[fData.size()]; 
-		                String nazwy2[] = new String[fData2.size()];
-		                
-		                int i=0;
-		                for(Obiekt_Do_Polecen stan: fData) {
-		                	nazwy[i] = ((Producenci)stan).getNazwa();
-		                	i++;
-		                }
-		                i=0;
-		                for(Obiekt_Do_Polecen stan: fData2) {
-		                	nazwy2[i] = ((Kategorie)stan).getNazwa();
-		                	i++;
-		                }
-		                
-		                JComboBox jombo = new JComboBox(nazwy);
-		                JComboBox jombo2 = new JComboBox(nazwy2);
-               		
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Cena: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Opis: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id producenta: "));
-		         		myPanel.add(jombo);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id kategorii: "));
-		         		myPanel.add(jombo2);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {			                		
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany");
-			 	                		return;
-			 	                	}
-			 	                	double cena = Double.parseDouble(drugiField.getText());
-			 	                	cena = Math.round(cena*100.0)/100.0;
-			 	                	
-			 	                	session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
-			                		
-			                		oc.closeDBSession();
-			                		pokazProduktPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu. Błąd: " + e.getMessage());
-		         		 }
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
+		                	            		         		 
 	                }
+	                /*
 	                else if(obj instanceof Faktury) 
 	                {
 	                	myPanel.add(new JLabel("NIP: "));
@@ -2092,7 +2054,7 @@ public class HibernateOracle extends JFrame {
 		         		 }
 	                }
 	             
-	                			 
+	               */ 			 
 				}
 		 });
        	     
