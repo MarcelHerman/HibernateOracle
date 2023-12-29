@@ -1168,7 +1168,10 @@ public class HibernateOracle {
 			 	                		return;
 			 	                	}
 			 	                	
-			 	                	session.save(new Kategorie(pierwszyField.getText()));
+			 	                	//session.save(new Kategorie(pierwszyField.getText()));
+			 	                	
+			 	                	Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
+			 	                	pd.Wykonaj();
 			                		
 			                		oc.closeDBSession();
 			                		pokazKategoriePrzycisk.doClick();
