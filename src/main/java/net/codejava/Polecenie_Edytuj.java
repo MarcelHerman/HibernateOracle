@@ -17,4 +17,8 @@ public class Polecenie_Edytuj extends Polecenie {
 		oc.closeDBSession();
 	}
 
+	@Override
+    public String toString() {
+        return "Polecenie Edytuj:\t" + super.toString();
+    }
 }

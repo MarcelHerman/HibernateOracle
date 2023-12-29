@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public abstract class Polecenie {
 	protected Obiekt_Do_Polecen obiekt;
-	private LocalDate  data;
+	private LocalDate data_wykonania;
 	private int id_wykonawcy;
 	
 	abstract void Wykonaj();
 	
 	public Polecenie(Obiekt_Do_Polecen obiekt, int id_wykonawcy) {
 		this.obiekt = obiekt;
-		this.data = LocalDate.now();
+		this.data_wykonania = LocalDate.now();
 		this.id_wykonawcy = id_wykonawcy;
 	}
 
@@ -24,11 +24,11 @@ public abstract class Polecenie {
 	}
 
 	public LocalDate getData() {
-		return data;
+		return data_wykonania;
 	}
 
 	public void setData(LocalDate data) {
-		this.data = data;
+		this.data_wykonania = data;
 	}
 
 	public int getId_wykonawcy() {
@@ -38,4 +38,9 @@ public abstract class Polecenie {
 	public void setId_wykonawcy(int id_wykonawcy) {
 		this.id_wykonawcy = id_wykonawcy;
 	}
+	
+	@Override
+    public String toString() {
+        return "Data wykonania: " + data_wykonania + ";\tID wykonawcy: " + id_wykonawcy + ";\tObiekt: " + obiekt.toString();
+    }
 }

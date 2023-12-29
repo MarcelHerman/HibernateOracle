@@ -17,4 +17,8 @@ public class Polecenie_Usun extends Polecenie {
 		oc.closeDBSession();
 	}
 
+	@Override
+    public String toString() {
+        return "Polecenie Usuń:\t" + super.toString();
+    }
 }

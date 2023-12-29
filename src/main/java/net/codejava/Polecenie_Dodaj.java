@@ -17,4 +17,9 @@ public class Polecenie_Dodaj extends Polecenie {
 		
 		oc.closeDBSession();
 	}
+	
+	@Override
+    public String toString() {
+        return "Polecenie Dodaj:\t\t" + super.toString();
+    }
 }
