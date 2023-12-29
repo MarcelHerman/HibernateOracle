@@ -41,6 +41,6 @@ public abstract class Polecenie {
 	
 	@Override
     public String toString() {
-        return "Data wykonania: " + data_wykonania + ";\tID wykonawcy: " + id_wykonawcy + ";\tObiekt: " + obiekt.toString();
+        return "Data wykonania: " + data_wykonania + ";\tID wykonawcy: " + id_wykonawcy + ";\tObiekt: " + obiekt.getClass().getSimpleName();
     }
 }

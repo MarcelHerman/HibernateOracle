@@ -19,6 +19,6 @@ public class Polecenie_Usun extends Polecenie {
 
 	@Override
     public String toString() {
-        return "Polecenie Usuń:\t" + super.toString();
+        return "Polecenie Usuń: " + super.toString();
     }
 }

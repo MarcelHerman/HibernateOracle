@@ -2,6 +2,7 @@ package net.codejava;
 
 import java.util.ArrayList;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -22,17 +23,34 @@ public class Repozytorium_Polecen {
 	}
 	
 	public void saveToFile() {
-		String path = "/../historia_polecen.txt";
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            for (Polecenie polecenie : polecenia) {
-                writer.write(polecenie.toString());
-                writer.newLine();
+		String path = "historia_polecen.txt";
+        File file = new File(path);
+
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                System.out.println("Utworzono nowy plik: " + path);
+            } else {
+                System.out.println("Plik już istnieje: " + path);
             }
-            System.out.println("Zapisano polecenia do pliku: " + path);
+
+            // Używamy konstruktora FileWriter z trybem append (dopisywania)
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                // Kod zapisu do pliku
+                for (Polecenie polecenie : polecenia) {
+                    writer.write(polecenie.toString());
+                    writer.newLine();
+                }
+                System.out.println("Zapisano polecenia do pliku: " + path);
+            } catch (IOException e) {
+                System.err.println("Błąd podczas zapisu do pliku: " + e.getMessage());
+                e.printStackTrace();
+            }
         } catch (IOException e) {
-            System.err.println("Błąd podczas zapisu do pliku: " + e.getMessage());
+            System.err.println("Błąd podczas tworzenia pliku: " + e.getMessage());
             e.printStackTrace();
         }
+    
 	}
 	
 }

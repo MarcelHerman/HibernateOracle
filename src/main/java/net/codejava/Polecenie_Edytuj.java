@@ -19,6 +19,6 @@ public class Polecenie_Edytuj extends Polecenie {
 
 	@Override
     public String toString() {
-        return "Polecenie Edytuj:\t" + super.toString();
+        return "Polecenie Edytuj: " + super.toString();
     }
 }

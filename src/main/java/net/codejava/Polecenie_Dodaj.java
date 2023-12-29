@@ -20,6 +20,6 @@ public class Polecenie_Dodaj extends Polecenie {
 	
 	@Override
     public String toString() {
-        return "Polecenie Dodaj:\t\t" + super.toString();
+        return "Polecenie Dodaj: " + super.toString();
     }
 }

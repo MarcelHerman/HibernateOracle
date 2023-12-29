@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -35,12 +37,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
 
-public class HibernateOracle {
+public class HibernateOracle extends JFrame {
 	
 	public static String nazwaTypu = "null";
 	public static Obiekt_Do_Polecen obj = null;
@@ -101,6 +104,16 @@ public class HibernateOracle {
 		String placeholderPassword = "1";
 		
 		final JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		
+		frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                repo_pol.saveToFile();
+                System.out.println("Okno zostaje zamknięte");
+            }
+        });
 		
 		JPanel kontener = new JPanel();
 		frame.setContentPane(kontener);
