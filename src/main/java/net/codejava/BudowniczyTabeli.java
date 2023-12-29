@@ -66,27 +66,28 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 
 	@Override
 	public Object pobierzTabele(Object ob) {
-		if(this.wiersz!=null) this.dane.addLast(wiersz);
+		if (this.wiersz != null) {
+	        this.dane.addLast(wiersz);
+	    }
 
 	    Object[] nagl = this.naglowek.toArray();
-
 	    Object[][] dan = new Object[this.dane.size()][];
 	    int i = 0;
 	    for (LinkedList<Object> w : this.dane) {
 	        dan[i++] = w.toArray();
 	    }
 
-	    // Stworzenie reprezentacji tekstowej nagłówków
-	    StringBuilder tableStringBuilder = new StringBuilder(Arrays.toString(nagl));
-	    
-	    // Dodanie reprezentacji tekstowej danych
+	    // Tworzenie łańcucha znaków dla nagłówków
+	    String naglowki = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(nagl)) + "\n";
+
+	    // Tworzenie łańcucha znaków dla danych
+	    String daneString = naglowki;
 	    for (Object[] row : dan) {
-	        tableStringBuilder.append(Arrays.toString(row));
+	        String rowString = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(row)) + "\n";
+	        daneString += rowString;
 	    }
 
-	    String table = tableStringBuilder.toString();
-
-	    return table;
+	    return daneString;
 	}
 
 		
