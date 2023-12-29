@@ -615,7 +615,10 @@ public class HibernateOracle {
 		     	 	                			     	 	               
 		     	 	                	if(drugiCheckbox.isSelected()==true)zamowienie = new Opakowanie(zamowienie);
 		     	 	                	
-		     	 	                	if(!piatyField.getText().isEmpty() && piatyField.getText().length() < 150)zamowienie = new Notatka(zamowienie, piatyField.getText());
+		     	 	                	if(!piatyField.getText().isEmpty()) {
+		     	 	                		if(piatyField.getText().length() < 150)zamowienie = new Notatka(zamowienie, piatyField.getText());
+		     	 	                		else throw(new Exception("Podano zbyt długą notatkę - max 150 znaków."));
+		     	 	                	}
 		     	 	                				     	 	                	     	 	                	
 		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
 		     	 	                	
