@@ -46,7 +46,7 @@ public class HibernateOracle {
 	public static Obiekt_Do_Polecen obj = null;
 	public static List<Obiekt_Do_Polecen> koszyk = new ArrayList<Obiekt_Do_Polecen>();
 	
-	private static int idUzytkownika;
+	public static int idUzytkownika;
 	
 	public static Repozytorium_Polecen repo_pol = new Repozytorium_Polecen();
 
@@ -1233,7 +1233,7 @@ public class HibernateOracle {
 			 	                				 	                	
 			 	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
 			 	                	//pd.Wykonaj();
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText())));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()), idUzytkownika));
 			                			                		
 			                		pokazKategoriePrzycisk.doClick();
 			                	}

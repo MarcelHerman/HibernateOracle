@@ -13,4 +13,10 @@ public class Repozytorium_Polecen {
 	public ArrayList<Polecenie> getListaPolecen(){
 		return polecenia;
 	}
+
+	public void setPolecenia(ArrayList<Polecenie> polecenia) {
+		this.polecenia = polecenia;
+	}
+	
+	
 }

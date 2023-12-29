@@ -4,8 +4,8 @@ import org.hibernate.Session;
 
 public class Polecenie_Usun extends Polecenie {
 
-	Polecenie_Usun(Obiekt_Do_Polecen obiekt){
-		super(obiekt);
+	Polecenie_Usun(Obiekt_Do_Polecen obiekt, int id_wykonawcy){
+		super(obiekt, id_wykonawcy);
 	}
 	
 	void Wykonaj() {

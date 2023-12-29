@@ -434,7 +434,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		if(!pierwszyField.getText().isEmpty())
 	     	                		{
 	     	                			//session.update(kat);
-	     	                			HibernateOracle.repo_pol.wykonajPolecenie(new Polecenie_Edytuj(kat));
+	     	                			HibernateOracle.repo_pol.wykonajPolecenie(new Polecenie_Edytuj(kat, HibernateOracle.idUzytkownika));
 	     	                		}
 
 	     	                		
@@ -985,7 +985,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	                	pr.setId_Kategorii(this.id);
  	 	                	//session.delete(pr);
  	 	                	oc.closeDBSession();
- 	 	                	HibernateOracle.repo_pol.wykonajPolecenie(new Polecenie_Usun(pr));
+ 	 	                	HibernateOracle.repo_pol.wykonajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
