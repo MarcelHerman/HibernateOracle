@@ -42,31 +42,396 @@ public interface BudowniczyTabeli {
 
 class BudowniczyTabeliDruk implements BudowniczyTabeli
 {
+	private LinkedList<String> naglowek;
+	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
+	private LinkedList<Object> wiersz;
 
 	@Override
 	public void dodajNaglowek() {
-		// TODO Auto-generated method stub
-		
+		this.naglowek = new LinkedList<String>();	
 	}
 
 	@Override
 	public void dodajKolumne(Object wartosc) {
-		// TODO Auto-generated method stub
-		
+		if(this.wiersz==null)this.naglowek.addLast(wartosc.toString());
+		else this.wiersz.addLast(wartosc);		
 	}
 
 	@Override
 	public void dodajWiersz() {
-		// TODO Auto-generated method stub
-		
+		if(this.wiersz!=null)this.dane.addLast(wiersz);
+		this.wiersz = new LinkedList<Object>();
 	}
 
 	@Override
-	public Object pobierzTabele() {
-		// TODO Auto-generated method stub
-		return null;
+	public Object pobierzTabele()
+	{
+		//if(this.wiersz!=null) this.dane.addLast(wiersz);		
+		
+		Object[] nagl = this.naglowek.toArray();
+		Object[][] dan = new Object[this.dane.size()][];
+		int i = 0;
+		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
+		
+		String table = nagl.toString() + dan.toString();
+				
+		return table;
+	}
+		
+	void tworzTabeleMagazyny(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Magazyny();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Miasto");
+		this.dodajKolumne("Ulica");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Magazyny) entry).getId_magazynu()));
+			this.dodajKolumne(((Magazyny) entry).getMiasto().toString());
+			this.dodajKolumne(((Magazyny) entry).getUlica().toString());			
+		}
 	}
 	
+	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Produkty();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Nazwa");
+		this.dodajKolumne("Cena");
+		this.dodajKolumne("Opis");	
+		this.dodajKolumne("Producent");
+		this.dodajKolumne("Kategoria");
+		if((HibernateOracle.nazwaTypu.equals("Administrator")) || (HibernateOracle.nazwaTypu.equals("Pracownik")))this.dodajKolumne("Usunięty");
+
+		OracleConnection oc =  OracleConnection.getInstance();
+		oc.createDBSession();
+		
+		List<Obiekt_Do_Polecen> fData = null;
+		List<Obiekt_Do_Polecen> fData2 = null;
+		
+		try (Session session = oc.getDBSession()) {
+            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
+            fData = query.getResultList();
+            
+            Query<Obiekt_Do_Polecen> query2 = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+            fData2 = query2.getResultList();
+   		 oc.closeDBSession();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Produkty) entry).getId_produktu()));
+			this.dodajKolumne(((Produkty) entry).getNazwa().toString());
+			this.dodajKolumne(Double.toString(((Produkty) entry).getCena()));
+			this.dodajKolumne(((Produkty) entry).getOpis().toString());
+			
+			for(Obiekt_Do_Polecen prod: fData) {
+				if(((Producenci)prod).getId_producenta() == ((Produkty) entry).getProducenci_id_producenta())
+				{
+					this.dodajKolumne(((Producenci)prod).getNazwa());
+					break;
+				}
+			}
+			
+			for(Obiekt_Do_Polecen kat: fData2) {
+				if(((Kategorie)kat).getId_Kategorii() == ((Produkty) entry).getKategorie_id_kategorii())
+				{
+					this.dodajKolumne(((Kategorie)kat).getNazwa());
+					break;
+				}
+			}						
+		}
+	}
+	
+	void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Kategorie();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Nazwa");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Kategorie) entry).getId_Kategorii()));
+			this.dodajKolumne(((Kategorie) entry).getNazwa().toString());		
+		}
+	}
+	
+	void tworzTabeleFaktury(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Faktury();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Data wystawienia");
+		this.dodajKolumne("NIP");
+		this.dodajKolumne("Id zamówienia");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Faktury) entry).getId_faktury()));
+			this.dodajKolumne(((Faktury) entry).getData_wystawienia().toString());
+			this.dodajKolumne(((Faktury) entry).getNIP().toString());
+			this.dodajKolumne(Integer.toString(((Faktury) entry).getZamowienia_id_zamowienia()));			
+		}
+	}
+	
+	void tworzTabeleProdukt_Magazyn(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Produkt_Magazyn();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Id Magazynu");
+		this.dodajKolumne("Id Produktu");
+		this.dodajKolumne("Stan faktyczny");
+		this.dodajKolumne("Stan magazynowy");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getMagazyn_id()));
+			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getProdukt_id()));			
+			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getStan_faktyczny()));
+			this.dodajKolumne(Integer.toString(((Produkt_Magazyn) entry).getStan_magazynowy()));			
+		}
+	}
+	
+	void tworzTabeleProdukt_Zamowienia(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Produkt_Zamowienia();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Id Zamowienia");
+		this.dodajKolumne("Id Produktu");
+		this.dodajKolumne("Ilosc");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getZamowienieId()));
+			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getProduktId()));
+			this.dodajKolumne(Integer.toString(((Produkt_Zamowienia) entry).getIlosc()));			
+		}
+	}
+	
+	void tworzTabeleStany_Zamowienia(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Stany_Zamowienia();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Id Stanu Zamówienia");
+		this.dodajKolumne("Nazwa");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Stany_Zamowienia) entry).getId_Stanu_Zamowienia()));
+			this.dodajKolumne(((Stany_Zamowienia) entry).getNazwa().toString());
+		}
+	}
+	
+	void tworzTabeleProducenci(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Producenci();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Nazwa");
+		this.dodajKolumne("Kontakt");
+		this.dodajKolumne("Miasto");
+		this.dodajKolumne("Ulica");
+		if((HibernateOracle.nazwaTypu.equals("Administrator")) ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))this.dodajKolumne("Usunięty");
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Producenci) entry).getId_producenta()));
+			this.dodajKolumne(((Producenci) entry).getNazwa().toString());
+			this.dodajKolumne(((Producenci) entry).getKontakt().toString());
+			this.dodajKolumne(((Producenci) entry).getMiasto().toString());
+			this.dodajKolumne(((Producenci) entry).getUlica().toString());			
+		}
+	}
+	
+	void tworzTabeleUzytkownicy(List<Obiekt_Do_Polecen> entities)
+	{	
+		HibernateOracle.obj = new Uzytkownicy();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Nazwa użytkownika");
+		this.dodajKolumne("Login");
+		this.dodajKolumne("Hasło");
+		this.dodajKolumne("E-mail");
+		this.dodajKolumne("Typ konta");
+		if((HibernateOracle.nazwaTypu.equals("Administrator"))  ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))this.dodajKolumne("Usunięty");
+		
+		OracleConnection oc =  OracleConnection.getInstance();
+		oc.createDBSession();
+		
+		List<Obiekt_Do_Polecen> fData = null;
+		
+		try (Session session = oc.getDBSession()) {
+            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+            fData = query.getResultList();
+            oc.closeDBSession();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Uzytkownicy) entry).getId_uzytkownika()));
+			this.dodajKolumne(((Uzytkownicy) entry).getNazwa_uzytkownika().toString());
+			this.dodajKolumne(((Uzytkownicy) entry).getLogin().toString());
+			this.dodajKolumne(((Uzytkownicy) entry).getHaslo().toString());
+			this.dodajKolumne(((Uzytkownicy) entry).getE_mail().toString());
+			
+			for(Obiekt_Do_Polecen typ: fData) {
+				if(((Typy_uzytkownika)typ).getId_typu_uzytkownika() == ((Uzytkownicy) entry).getId_typu_uzytkownika() ) {
+					this.dodajKolumne(((Typy_uzytkownika)typ).getNazwa());
+				}
+			}
+		}
+	}
+
+	void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> entities)
+	{
+		HibernateOracle.obj = new Zamowienia();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+		this.dodajNaglowek();
+		
+		this.dodajKolumne("Lp.");
+		this.dodajKolumne("Miasto wysyłki");
+		this.dodajKolumne("Ulica wysyłki");
+		this.dodajKolumne("Koszt");
+		this.dodajKolumne("Stan zamowienia");
+		if(!(HibernateOracle.nazwaTypu.equals("Klient")))this.dodajKolumne("Id Użytkownika");
+		this.dodajKolumne("Zamówione produkty");
+		this.dodajKolumne("Notatka");
+		
+		OracleConnection oc =  OracleConnection.getInstance();
+		oc.createDBSession();
+		
+		List<Obiekt_Do_Polecen> fData = null;
+		
+		try (Session session = oc.getDBSession()) {
+            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+            fData = query.getResultList();
+            oc.closeDBSession();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+		
+		for(Obiekt_Do_Polecen entry: entities)
+		{
+			this.dodajWiersz();			
+			this.dodajKolumne(Integer.toString(((Zamowienia) entry).getId_zamowienia()));
+			this.dodajKolumne(((Zamowienia) entry).getAdres_wysylki_miasto().toString());
+			this.dodajKolumne(((Zamowienia) entry).getAdres_wysylki_ulica().toString());
+			this.dodajKolumne(Double.toString(((Zamowienia) entry).getKoszt()));
+			
+			for(Obiekt_Do_Polecen stan: fData) {
+				if(((Stany_Zamowienia)stan).getId_Stanu_Zamowienia() == ((Zamowienia)entry).getId_stanu_zamowienia() ) {
+					this.dodajKolumne(((Stany_Zamowienia)stan).getNazwa());
+					break;
+				}
+			}
+			List<String> nPr = null;
+			oc.createDBSession();
+			try (Session session = oc.getDBSession()) {
+	            Query<String> query = session.createQuery("SELECT p.nazwa FROM Produkty p, Zamowienia z, Produkt_Zamowienia pz where p.id_produktu = pz.produkt_zamowienia_id.id_produktu and pz.produkt_zamowienia_id.id_zamowienia = z.id_zamowienia and z.id_zamowienia = :id", String.class).setParameter("id", ((Zamowienia) entry).getId_zamowienia());
+	            nPr = query.getResultList();
+	            oc.closeDBSession();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            System.out.println(e);
+	        }										
+		}
+	}
+	
+	void tworzTabeleTypy_uzytkownika(List<Obiekt_Do_Polecen> entities)
+    {
+		HibernateOracle.obj = new Typy_uzytkownika();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+        this.dodajNaglowek();
+
+        this.dodajKolumne("Lp.");
+        this.dodajKolumne("Nazwa");
+
+        for(Obiekt_Do_Polecen entry: entities)
+        {
+            this.dodajWiersz();
+            this.dodajKolumne(Integer.toString(((Typy_uzytkownika) entry).getId_typu_uzytkownika()));
+            this.dodajKolumne(((Typy_uzytkownika) entry).getNazwa().toString());		
+        }
+    }
+	
+	void tworzTabeleKoszyk(List<Obiekt_Do_Polecen> entities)
+    {
+	
+		HibernateOracle.obj = new Produkt_Koszyk();
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+        this.dodajNaglowek();
+
+        this.dodajKolumne("Lp.");
+        this.dodajKolumne("Nazwa");
+        this.dodajKolumne("Cena za sztuke");
+        this.dodajKolumne("Ilość");
+        this.dodajKolumne("Łączna cena");
+
+        for(Obiekt_Do_Polecen entry: entities)
+        {
+            this.dodajWiersz();
+            this.dodajKolumne(Integer.toString(((Produkt_Koszyk) entry).getPr().getId_produktu()));
+            this.dodajKolumne(((Produkt_Koszyk) entry).getPr().getNazwa());
+            this.dodajKolumne(Double.toString(((Produkt_Koszyk) entry).getPr().getCena()));
+            this.dodajKolumne(Integer.toString(((Produkt_Koszyk) entry).getIlosc()));
+            this.dodajKolumne(Double.toString(((Produkt_Koszyk) entry).getPr().getCena() *((Produkt_Koszyk) entry).getIlosc()));
+            
+			this.dodajKolumne("");
+			this.dodajKolumne("");
+        }
+    }
 }
 
 
@@ -88,11 +453,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	public void dodajWiersz() {
 		if(this.wiersz!=null)this.dane.addLast(wiersz);
 		this.wiersz = new LinkedList<Object>();
-	}
-	
-	public void TworzTabele()
-	{
-		
 	}
 	
 	public void dodajPrzycisk(BudowniczyTabeli budowniczy)
