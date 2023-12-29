@@ -1695,380 +1695,324 @@ public class HibernateOracle extends JFrame {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                /*
+	                
 	                else if(obj instanceof Kategorie) 
 	                {
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);		         			         		
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj kategorię", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Kategoria nie została dodana");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	//session.save(new Kategorie(pierwszyField.getText()));
-			 	                	oc.closeDBSession();
-			 	                				 	                	
-			 	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
-			 	                	//pd.Wykonaj();
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()), idUzytkownika));
-			                			                		
-			                		pokazKategoriePrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać kategorii. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleKategorie(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_katgorii.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Magazyny) 
 	                {
-	                	myPanel.add(new JLabel("Miasto: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Ulica: "));
-		         		myPanel.add(drugiField);		         		
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Magazyn nie został dodany");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
-			                		
-			                		oc.closeDBSession();
-			                		pokazMagazynyPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać magazynu. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleMagazyny(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_magazynow.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Producenci) 
 	                {
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Kontakt: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Miasto: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Ulica: "));
-		         		myPanel.add(czwartyField);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Producent nie został dodany");
-			 	                		return;
-			 	                	}
-			 	                				 	                				 	                
-			 	                	session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
-			                		
-			                		oc.closeDBSession();
-			                		pokazProducentowPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać producenta. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleProducenci(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_producentow.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Produkt_Magazyn)
 	                {
-	                	myPanel.add(new JLabel("Id magazynu: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id produktu: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Stan magazynowy: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Stan faktyczny: "));
-		         		myPanel.add(czwartyField);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj produkt do magazynu", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                					                					                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do magazynu");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	if(Integer.parseInt(trzeciField.getText())<0)
-			 	                		throw(new Exception("Stan magazynowy nie może być ujemny."));
-			 	                	
-			 	                	if(Integer.parseInt(czwartyField.getText())<=0)
-			 	                		throw(new Exception("Stan faktyczny nie może być ujemny."));
-			 	                	
-			 	                	OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			 	                	
-			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
-			 	                	session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
-			                		
-			                		oc.closeDBSession();
-			                		pokazProduktMagazynPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu do magazynu. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Produkt_Magazyn order by id_produkt_magazyn", Obiekt_Do_Polecen.class); //tututki
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleProdukt_Magazyn(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_produkty_magazyn.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Produkt_Zamowienia) 
 	                {
-	                	myPanel.add(new JLabel("Id zamówienia: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id produktu: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Ilość: "));
-		         		myPanel.add(trzeciField);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj produkt do zamówienia", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc = OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do zamówienia.");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	if(Integer.parseInt(trzeciField.getText())<=0)
-			 	                		throw(new Exception("Ilość nie może być ujemna ani równa 0."));
-			 	                	
-			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
-			 	                	
-			 	                	session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
-			                		
-			                		oc.closeDBSession();
-			                		pokazProduktZamowieniaPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu do zamówienia. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Produkt_Zamowienia order by id_produkt_zamowienia", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleProdukt_Zamowienia(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_produkt_zamowienia.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Stany_Zamowienia) 
 	                {
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));		         	
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj stan zamówienia", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Stan zamówienia nie został dodany.");
-			 	                		return;
-			 	                	}
-			 	                				 	                	
-			 	                	session.save(new Stany_Zamowienia(pierwszyField.getText()));
-			                		
-			                		oc.closeDBSession();
-			                		pokazStanyZamowienPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać stanu zamówienia. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleStany_Zamowienia(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_stany_zamowienia.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Typy_uzytkownika) 
 	                {
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));		         	
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Typ użytkownika nie został dodany.");
-			 	                		return;
-			 	                	}
-			 	                				 	                	
-			 	                	session.save(new Typy_uzytkownika(pierwszyField.getText()));
-			                		
-			                		oc.closeDBSession();
-			                		pokazTypyUzytkownikaPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać typu użytkownika. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleTypy_uzytkownika(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_typy_uzytkownika.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Uzytkownicy) 
 	                {
 	                	OracleConnection oc =  OracleConnection.getInstance();
-		                oc.createDBSession();
 
-		                List<Obiekt_Do_Polecen> fData = null;
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleUzytkownicy(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_uzytkownicy.txt";
+		                 File file = new File(path);
 
-		                try (Session session = oc.getDBSession()) {
-		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
-		                    fData = query.getResultList();
-		                    oc.closeDBSession();
-		                } catch (Exception e) {
-		                    e.printStackTrace();
-		                    System.out.println(e);
-		                }
-		                
-		                String nazwy[] = new String[fData.size()]; 
-		                
-		                int i=0;
-		                for(Obiekt_Do_Polecen stan: fData) {
-		                	nazwy[i] = ((Typy_uzytkownika)stan).getNazwa();
-		                	i++;
-		                }
-		                
-		                JComboBox jombo = new JComboBox(nazwy);
-               		
-               		//user.setId_stanu_zamowienia(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
-
-	                	myPanel.add(new JLabel("Nazwa uzytkownika: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Login: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Hasło: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("E-mail: "));
-		         		myPanel.add(czwartyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id typu użytkownika: "));
-               		myPanel.add(jombo);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {			                		
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Użytkownik nie został dodany");
-			 	                		return;
-			 	                	}
-			 	                				 	                				 	                
-			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
-			                		
-			                		oc.closeDBSession();
-			                		pokazUzytkownicyPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać użytkownika. Błąd: " + e.getMessage());
-		         		 }
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	                else if(obj instanceof Zamowienia) 
 	                {		         			                	
-	                	myPanel.add(new JLabel("Id uzytkownika: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Adres wysyłki miasto: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Adres wysyłki ulica: "));
-		         		myPanel.add(czwartyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Koszt: "));
-		         		myPanel.add(piatyField);
-		         	        
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
+	                	OracleConnection oc =  OracleConnection.getInstance();
 
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	double cena = Double.parseDouble(piatyField.getText());
-			 	                	cena = Math.round(cena*100.0)/100.0;
-			 	                	session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
-			                		
-			                		oc.closeDBSession();
-			                		pokazZamowieniaPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać zamówienia. Błąd: " + e.getMessage());
-		         		 }
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class); 
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleZamowienia(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_zamowienia.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
 	             
-	               */ 			 
+	                			 
 				}
 		 });
        	     
