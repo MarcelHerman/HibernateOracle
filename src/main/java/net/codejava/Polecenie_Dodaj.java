@@ -5,7 +5,7 @@ import org.hibernate.Session;
 public class Polecenie_Dodaj extends Polecenie {
 	
 	Polecenie_Dodaj(Obiekt_Do_Polecen obiekt){
-		super.obiekt = obiekt;
+		super(obiekt);
 		//Repozytorium_Polecen.polecenie_Dodaj(obiekt);
 	}
 	

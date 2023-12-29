@@ -3,5 +3,14 @@ package net.codejava;
 import java.util.ArrayList;
 
 public class Repozytorium_Polecen {
-	private ArrayList<Polecenie> Polecenia = new ArrayList<Polecenie>();
+	private ArrayList<Polecenie> polecenia = new ArrayList<Polecenie>();
+	
+	public void wykonajPolecenie(Polecenie polecenie) {
+		polecenie.Wykonaj();
+		polecenia.add(polecenie);
+	}
+	
+	public ArrayList<Polecenie> getListaPolecen(){
+		return polecenia;
+	}
 }
