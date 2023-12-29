@@ -37,7 +37,7 @@ public interface BudowniczyTabeli {
 	
 	public void dodajWiersz();
 	
-	public Object pobierzTabele();
+	public Object pobierzTabele(Object ob);
 }
 
 class BudowniczyTabeliDruk implements BudowniczyTabeli
@@ -64,7 +64,7 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 	}
 
 	@Override
-	public Object pobierzTabele()
+	public Object pobierzTabele(Object ob)
 	{
 		//if(this.wiersz!=null) this.dane.addLast(wiersz);		
 		
@@ -470,7 +470,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	}
 	
 	
-	public Object pobierzTabele()
+	public Object pobierzTabele(Object ob)
 	{
 		if(this.wiersz!=null) this.dane.addLast(wiersz);
 		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
