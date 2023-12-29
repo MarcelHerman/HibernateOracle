@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,19 +65,30 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 	}
 
 	@Override
-	public Object pobierzTabele(Object ob)
-	{
-		//if(this.wiersz!=null) this.dane.addLast(wiersz);		
-		
-		Object[] nagl = this.naglowek.toArray();
-		Object[][] dan = new Object[this.dane.size()][];
-		int i = 0;
-		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
-		
-		String table = nagl.toString() + dan.toString();
-				
-		return table;
+	public Object pobierzTabele(Object ob) {
+		if(this.wiersz!=null) this.dane.addLast(wiersz);
+
+	    Object[] nagl = this.naglowek.toArray();
+
+	    Object[][] dan = new Object[this.dane.size()][];
+	    int i = 0;
+	    for (LinkedList<Object> w : this.dane) {
+	        dan[i++] = w.toArray();
+	    }
+
+	    // Stworzenie reprezentacji tekstowej nagłówków
+	    StringBuilder tableStringBuilder = new StringBuilder(Arrays.toString(nagl));
+	    
+	    // Dodanie reprezentacji tekstowej danych
+	    for (Object[] row : dan) {
+	        tableStringBuilder.append(Arrays.toString(row));
+	    }
+
+	    String table = tableStringBuilder.toString();
+
+	    return table;
 	}
+
 		
 	void tworzTabeleMagazyny(List<Obiekt_Do_Polecen> entities)
 	{
