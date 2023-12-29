@@ -430,14 +430,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     	                		
 	     	                		Kategorie kat = new Kategorie(pierwszyField.getText());
 	     	                		kat.setId_Kategorii(this.id);
-	     	                		
+	     	                		oc.closeDBSession();
 	     	                		if(!pierwszyField.getText().isEmpty())
 	     	                		{
-	     	                			session.update(kat);
+	     	                			//session.update(kat);
+	     	                			HibernateOracle.repo_pol.wykonajPolecenie(new Polecenie_Edytuj(kat));
 	     	                		}
 
 	     	                		
-	     	                		oc.closeDBSession();
+	     	                		//oc.closeDBSession();
 	     	                		tab.setValueAt(kat.getNazwa(), row, 1);
 	     	                	}
 	                		 }
@@ -982,8 +983,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                	{
  	                		Kategorie pr = new Kategorie();
  	 	                	pr.setId_Kategorii(this.id);
- 	 	                	session.delete(pr);
+ 	 	                	//session.delete(pr);
  	 	                	oc.closeDBSession();
+ 	 	                	HibernateOracle.repo_pol.wykonajPolecenie(new Polecenie_Usun(pr));
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
