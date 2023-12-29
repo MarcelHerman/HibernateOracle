@@ -616,6 +616,8 @@ public class HibernateOracle {
 		     	 	                		if(drugiCheckbox.isSelected()==true)zamowienie  = new Opakowanie((new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis())));
 		     	 	                		else zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
 		     	 	                	
+		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100)/100;
+		     	 	                	zamowienie.setKoszt(zaokr);
 		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
 		     	 	                	
 		     	 	                	session.save(zamowienie);		  	 	                	     	 	                	
@@ -1119,9 +1121,10 @@ public class HibernateOracle {
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany");
 			 	                		return;
 			 	                	}
-			 	                				 	                	
-			 	                
-			 	                	session.save(new Produkty(pierwszyField.getText(), Double.parseDouble(drugiField.getText()), trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
+			 	                	double cena = Double.parseDouble(drugiField.getText());
+			 	                	cena = Math.round(cena*100)/100;
+			 	                	
+			 	                	session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
 			                		
 			                		oc.closeDBSession();
 			                		pokazProduktPrzycisk.doClick();
@@ -1522,8 +1525,10 @@ public class HibernateOracle {
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
 			 	                		return;
 			 	                	}
-			 	                				 	                				 	                
-			 	                	session.save(new Zamowienia(Double.parseDouble(piatyField.getText()), trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
+			 	                	
+			 	                	double cena = Double.parseDouble(piatyField.getText());
+			 	                	cena = Math.round(cena*100)/100;
+			 	                	session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
 			                		
 			                		oc.closeDBSession();
 			                		pokazZamowieniaPrzycisk.doClick();
