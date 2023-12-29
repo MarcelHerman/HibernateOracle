@@ -817,7 +817,10 @@ public class HibernateOracle extends JFrame {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 if(!(nazwaTypu.equals("Klient")))kontener.add(dodajPrzycisk);						 
+					 if(!(nazwaTypu.equals("Klient"))){
+						 kontener.add(dodajPrzycisk);	
+						 kontener.add(eksportujDoDruku);
+					 }					 
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -845,7 +848,8 @@ public class HibernateOracle extends JFrame {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 kontener.add(dodajPrzycisk);
+					 kontener.add(dodajPrzycisk);	
+					 kontener.add(eksportujDoDruku);					 
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -874,6 +878,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 kontener.add(dodajPrzycisk);
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -902,6 +907,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 kontener.add(dodajPrzycisk);
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -930,6 +936,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 kontener.add(dodajPrzycisk);
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -958,6 +965,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 kontener.add(dodajPrzycisk);
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -986,6 +994,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 //kontener.add(dodajPrzycisk);  // ustalone że nie dodajemy
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -1014,6 +1023,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 //kontener.add(dodajPrzycisk);  // ustalone że nie dodajemy
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -1042,6 +1052,7 @@ public class HibernateOracle extends JFrame {
 					 
 					 kontener.add(pane);
 					 kontener.add(dodajPrzycisk);
+					 kontener.add(eksportujDoDruku);
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -1100,7 +1111,11 @@ public class HibernateOracle extends JFrame {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 if(!(nazwaTypu.equals("Klient")))kontener.add(dodajPrzycisk);						 
+					 if(!(nazwaTypu.equals("Klient")))
+					 {
+						 kontener.add(dodajPrzycisk);		
+						 kontener.add(eksportujDoDruku);
+					 }
 					 frame.revalidate();
 					 frame.repaint();
 				}
@@ -1616,11 +1631,9 @@ public class HibernateOracle extends JFrame {
 
 		                List<Obiekt_Do_Polecen> entities = null;
 		                
-						try (Session session2 = oc.getDBSession()) {
-							
+						try (Session session2 = oc.getDBSession()) {							
 				            Query<Obiekt_Do_Polecen> query = null;
-				            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
-				            else query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
+				            query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
 				            entities = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
@@ -1657,8 +1670,7 @@ public class HibernateOracle extends JFrame {
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
-				            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class); 
-				            else query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
+				            query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class); 
 				            entities = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
@@ -1666,7 +1678,7 @@ public class HibernateOracle extends JFrame {
 				        }
 		                
 		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleProdukty(entities);
+		                 budDruk.tworzTabeleFaktury(entities);
 		                 String table = (String)budDruk.pobierzTabele(null);
 		                 												 		                 
 		                 String path = "wykaz_faktur.txt";
