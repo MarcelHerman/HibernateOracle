@@ -1,0 +1,4 @@
+Wykaz Produkt_Magazyn z dnia 2023-12-29 22:24:16
+Id Magazynu, Id Produktu, Stan faktyczny, Stan magazynowy
+1, 1, 200, 189
+2, 1, 10, 0

@@ -1,1 +1,4 @@
-[Lp., Nazwa, Cena, Opis, Producent, Kategoria, Usunięty][1, Gumowa kaczuszka, 25.99, Bardzo dobrze się z nią rozmawia, Lighterix, Inne][2, Dildo, 69.69, Jest do dupy, Lighterix, Inne]
+Wykaz Produkty z dnia 2023-12-29 22:25:35
+Lp., Nazwa, Cena, Opis, Producent, Kategoria, Usunięty
+1, Gumowa kaczuszka, 25.99, Bardzo dobrze się z nią rozmawia, Lighterix, Inne
+2, Dildo, 69.69, Jest do dupy, Lighterix, Inne

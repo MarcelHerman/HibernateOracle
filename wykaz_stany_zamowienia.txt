@@ -1,0 +1,6 @@
+Wykaz Stany_Zamowienia z dnia 2023-12-29 22:24:21
+Id Stanu Zamówienia, Nazwa
+1, W Realizacji
+2, W Transporcie
+3, Dostarczone
+4, Anulowane

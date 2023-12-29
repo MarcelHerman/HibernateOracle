@@ -1,0 +1,4 @@
+Wykaz Magazyny z dnia 2023-12-29 22:25:31
+Lp., Miasto, Ulica
+1, Warszawa, Zwierzyniecka
+2, Warszawa, Jasna

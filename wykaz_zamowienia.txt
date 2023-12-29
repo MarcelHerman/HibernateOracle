@@ -1,0 +1,11 @@
+Wykaz Zamowienia z dnia 2023-12-29
+Lp., Miasto wysyłki, Ulica wysyłki, Koszt, Stan zamowienia, Id Użytkownika, Zamówione produkty, Notatka
+2, as, ads, 27.289499999999997, W Realizacji
+4, sds, sdsd, 12.995000000000001, W Realizacji
+5, sdsa, dasd, 13.644750000000002, W Realizacji
+6, csfas, dsads, 27.0, W Realizacji
+7, sadasasdasd, sdasdasd, 25.0, W Realizacji
+8, dsa, dad, 25.99, W Realizacji
+9, dsds, dsds, 13.64, W Realizacji
+10, dsasadadfxsz, sadadassda, 21.06, W Realizacji
+11, ada, da, 16.14, W Realizacji

@@ -1,0 +1,5 @@
+Wykaz Typy_uzytkownika z dnia 2023-12-29 22:25:29
+Lp., Nazwa
+1, Administrator
+2, Pracownik
+3, Klient

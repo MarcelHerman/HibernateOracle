@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +66,7 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 	public void dodajWiersz() {
 		if(this.wiersz!=null)this.dane.addLast(wiersz);
 		this.wiersz = new LinkedList<Object>();
-	}
+	} 
 
 	@Override
 	public Object pobierzTabele(Object ob) {
@@ -81,7 +85,7 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 	    String naglowki = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(nagl)) + "\n";
 
 	    // Tworzenie łańcucha znaków dla danych
-	    String daneString = naglowki;
+	    String daneString = "Wykaz " +HibernateOracle.obj.getClass().getSimpleName() + " z dnia " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +"\n"+ naglowki;
 	    for (Object[] row : dan) {
 	        String rowString = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(row)) + "\n";
 	        daneString += rowString;
