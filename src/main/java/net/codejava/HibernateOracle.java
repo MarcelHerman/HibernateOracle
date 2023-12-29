@@ -1615,8 +1615,7 @@ public class HibernateOracle extends JFrame {
 		                oc.createDBSession();
 
 		                List<Obiekt_Do_Polecen> entities = null;
-						oc.createDBSession();
-						
+		                
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
@@ -1647,41 +1646,44 @@ public class HibernateOracle extends JFrame {
 		                     }
 		                	            		         		 
 	                }
-	                /*
+	                
 	                else if(obj instanceof Faktury) 
 	                {
-	                	myPanel.add(new JLabel("NIP: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id zamówienia: "));
-		         		myPanel.add(drugiField);		         		
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj fakturę", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie została dodana");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
-			                		
-			                		oc.closeDBSession();
-			                		pokazFakturyPrzycisk.doClick();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać faktury. Błąd: " + e.getMessage());
-		         		 }
+	                	OracleConnection oc =  OracleConnection.getInstance();
+
+		                List<Obiekt_Do_Polecen> entities = null;
+						oc.createDBSession();
+						
+						try (Session session2 = oc.getDBSession()) {
+							
+				            Query<Obiekt_Do_Polecen> query = null;
+				            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class); 
+				            else query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
+				            entities = query.getResultList();
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+		                
+		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 budDruk.tworzTabeleProdukty(entities);
+		                 String table = (String)budDruk.pobierzTabele(null);
+		                 												 		                 
+		                 String path = "wykaz_faktur.txt";
+		                 File file = new File(path);
+
+		                		                     
+		                     // Używamy konstruktora FileWriter z trybem append (dopisywania)
+		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		                         // Kod zapisu do pliku
+		                         writer.write(table);		                         
+		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+		                     }
 	                }
+	                /*
 	                else if(obj instanceof Kategorie) 
 	                {
 	                	myPanel.add(new JLabel("Nazwa: "));
