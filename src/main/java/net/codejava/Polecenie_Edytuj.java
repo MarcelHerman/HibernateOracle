@@ -8,7 +8,7 @@ public class Polecenie_Edytuj extends Polecenie {
 		super(obiekt);
 	}
 	
-	void /*??*/ Wykonaj() {
+	void Wykonaj() {
 		OracleConnection oc = OracleConnection.getInstance();
 		oc.createDBSession();
 		Session session = oc.getDBSession();

@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +47,8 @@ public class HibernateOracle {
 	public static List<Obiekt_Do_Polecen> koszyk = new ArrayList<Obiekt_Do_Polecen>();
 	
 	private static int idUzytkownika;
+	
+	public static Repozytorium_Polecen repo_pol = new Repozytorium_Polecen();
 
 	public static void main(String[] args) {
 		
@@ -132,7 +137,7 @@ public class HibernateOracle {
 		
 		budSwing.tworzTabeleProdukty(entities);
 		        
-        JTable tabSwing = budSwing.pobierzTabeleSwing();
+        JTable tabSwing = (JTable)budSwing.pobierzTabele();
         
         JScrollPane pane = new JScrollPane(tabSwing);
         
@@ -293,7 +298,7 @@ public class HibernateOracle {
 				 
 				 budSwing.tworzTabeleProdukty(entities);
 			        
-			     JTable tabSwing = budSwing.pobierzTabeleSwing();
+			     JTable tabSwing = (JTable)budSwing.pobierzTabele();
 			        
 			     JScrollPane pane = new JScrollPane(tabSwing);
 			               
@@ -372,7 +377,7 @@ public class HibernateOracle {
 										
 					if(koszyk.size() != 0) {
 						budSwing.tworzTabeleKoszyk(koszyk); // <- zmienić na inną metodę
-						 JTable tabSwing = budSwing.pobierzTabeleSwing();
+						 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 						 JScrollPane pane = new JScrollPane(tabSwing);
 						 pane.setAlignmentX(Component.CENTER_ALIGNMENT);
 					       kontener.add(pane);
@@ -756,7 +761,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleProdukty(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -787,7 +792,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleZamowienia(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -815,7 +820,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleUzytkownicy(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -843,7 +848,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleKategorie(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -871,7 +876,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleProducenci(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -899,7 +904,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleProdukt_Magazyn(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -927,7 +932,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleProdukt_Zamowienia(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -955,7 +960,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleStany_Zamowienia(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -983,7 +988,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleTypy_uzytkownika(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1011,7 +1016,7 @@ public class HibernateOracle {
 			        }
 					
 					budSwing.tworzTabeleMagazyny(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1040,8 +1045,37 @@ public class HibernateOracle {
 			            e.printStackTrace();
 			        }
 					
+					
+					oc.createDBSession();
+					Session session = oc.getDBSession();
+					try { session.doWork(connection -> { // Tutaj możesz bezpośrednio operować na obiekcie java.sql.Connection 
+						  Connection connectionxd =	connection.unwrap(Connection.class); // ... // Wykonaj operacje na jdbcConnection
+					  
+					  DatabaseMetaData metaData = connectionxd.getMetaData();
+					  System.out.println(metaData);
+					  
+					  // Podaj nazwę tabeli, dla której chcesz uzyskać metadane
+					  String tableName = "PRODUKT_M%";
+					  
+					  // Uzyskaj informacje o kolumnach dla danej tabeli 
+					  ResultSet resultSet =	 metaData.getColumns(null, null, tableName, null);
+					  System.out.println(resultSet);
+					  
+					  // Przejdź przez wyniki i wydrukuj nazwy kolumn 
+					  while (resultSet.next()) {
+					  String columnName = resultSet.getString("COLUMN_NAME");
+					  System.out.println("Nazwa kolumny: " + columnName); // Możesz zebrać te nazwy do listy lub innej struktury danych, aby je wykorzystać później
+					  } }); } catch	(Exception e) 
+					  {
+						  e.printStackTrace(); JOptionPane.showMessageDialog(null,"Nie udało się edytować produktu w magazynie. Błąd: " + e.getMessage());
+					  }
+					  //
+					  //u.produkt_magazyn_id like "+Integer.toString(this.id) + " and u.produkty_Id_Produktu like " + Integer.toString(this.id2) }
+					oc.closeDBSession();
+					
+					
 					budSwing.tworzTabeleFaktury(entities);
-					 JTable tabSwing = budSwing.pobierzTabeleSwing();
+					 JTable tabSwing = (JTable)budSwing.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1196,9 +1230,10 @@ public class HibernateOracle {
 			 	                	
 			 	                	//session.save(new Kategorie(pierwszyField.getText()));
 			 	                	oc.closeDBSession();
-			 	                	
-			 	                	Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
-			 	                	pd.Wykonaj();
+			 	                				 	                	
+			 	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
+			 	                	//pd.Wykonaj();
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText())));
 			                			                		
 			                		pokazKategoriePrzycisk.doClick();
 			                	}

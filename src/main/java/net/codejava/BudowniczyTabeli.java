@@ -36,6 +36,37 @@ public interface BudowniczyTabeli {
 	public void dodajKolumne(Object wartosc);
 	
 	public void dodajWiersz();
+	
+	public Object pobierzTabele();
+}
+
+class BudowniczyTabeliDruk implements BudowniczyTabeli
+{
+
+	@Override
+	public void dodajNaglowek() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dodajKolumne(Object wartosc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dodajWiersz() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object pobierzTabele() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
 
 
@@ -59,6 +90,11 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.wiersz = new LinkedList<Object>();
 	}
 	
+	public void TworzTabele()
+	{
+		
+	}
+	
 	public void dodajPrzycisk(BudowniczyTabeli budowniczy)
 	{
 		/*
@@ -74,7 +110,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	}
 	
 	
-	public JTable pobierzTabeleSwing()
+	public Object pobierzTabele()
 	{
 		if(this.wiersz!=null) this.dane.addLast(wiersz);
 		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
