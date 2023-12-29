@@ -171,7 +171,8 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 					this.dodajKolumne(((Kategorie)kat).getNazwa());
 					break;
 				}
-			}						
+			}
+			this.dodajKolumne((((Produkty) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 		}
 	}
 	
@@ -296,7 +297,8 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 			this.dodajKolumne(((Producenci) entry).getNazwa().toString());
 			this.dodajKolumne(((Producenci) entry).getKontakt().toString());
 			this.dodajKolumne(((Producenci) entry).getMiasto().toString());
-			this.dodajKolumne(((Producenci) entry).getUlica().toString());			
+			this.dodajKolumne(((Producenci) entry).getUlica().toString());		
+			this.dodajKolumne((((Producenci) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 		}
 	}
 	
@@ -344,6 +346,7 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 					this.dodajKolumne(((Typy_uzytkownika)typ).getNazwa());
 				}
 			}
+			this.dodajKolumne((((Uzytkownicy) entry).getCzy_usunieto()==1)? "TAK" : "NIE");
 		}
 	}
 
