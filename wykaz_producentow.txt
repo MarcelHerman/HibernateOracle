@@ -1,3 +1,3 @@
-Wykaz Producenci z dnia 2023-12-29
+Wykaz Producenci z dnia 2023-12-29 22:31:56
 Lp., Nazwa, Kontakt, Miasto, Ulica, Usunięty
-1, Lighterix, 123456789, Warszawa, Polna
+1, Lighterix, 123456789, Warszawa, Polna, NIE

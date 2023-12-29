@@ -1,3 +1,3 @@
-Wykaz Uzytkownicy z dnia 2023-12-29
+Wykaz Uzytkownicy z dnia 2023-12-29 22:32:05
 Lp., Nazwa użytkownika, Login, Hasło, E-mail, Typ konta, Usunięty
-1, admin, ad, ad, ad@ad.ad, Administrator
+1, admin, ad, ad, ad@ad.ad, Administrator, NIE
