@@ -495,6 +495,7 @@ public class HibernateOracle {
 				                JCheckBox checkbox = new JCheckBox("Faktura");
 				                JCheckBox drugiCheckbox = new JCheckBox("Opakowanie prezentowe");
 				                JTextField czwartyField = new JTextField(7);
+				                JTextField piatyField = new JTextField(20);
 			            		 
 			 	                JPanel myPanel = new JPanel();
 							 myPanel.add(new JLabel("Miasto wysyłki: "));
@@ -513,6 +514,9 @@ public class HibernateOracle {
 		                		myPanel.add(Box.createHorizontalStrut(5));
 		                		myPanel.add(new JLabel("Wpisz zniżkę: "));
 		                		myPanel.add(czwartyField);
+		                		myPanel.add(Box.createHorizontalStrut(5));
+		                		myPanel.add(new JLabel("Notatka: "));
+		                		myPanel.add(piatyField);
 		                		
 		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		   	                         "Złóż zamówienie", JOptionPane.OK_CANCEL_OPTION);
@@ -605,20 +609,18 @@ public class HibernateOracle {
 		     	 	                	}
 		     
 		     	 	                	System.out.println("trzecia");	 
-		     	 	                	Zamowienia zamowienie = new Zamowienia();
-		     	 	                	if(!czwartyField.getText().isEmpty())
-		     	 	                	{
-		     	 	                		System.out.println("fdbsdgj");
-		     	 	                		if(drugiCheckbox.isSelected()==true)zamowienie  = new Opakowanie(new Znizka(new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis()), Double.parseDouble(czwartyField.getText())));
-		     	 	                		else zamowienie  = new Znizka(new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis()), Double.parseDouble(czwartyField.getText()));
-		     	 	                	}
-		     	 	                	else 
-		     	 	                		if(drugiCheckbox.isSelected()==true)zamowienie  = new Opakowanie((new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis())));
-		     	 	                		else zamowienie  = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
 		     	 	                	
-		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100)/100;
-		     	 	                	zamowienie.setKoszt(zaokr);
+		     	 	                	Zamowienia zamowienie = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika,"");
+		     	 	                	if(!czwartyField.getText().isEmpty())zamowienie = new Znizka(zamowienie, Double.parseDouble(czwartyField.getText()));		     	 	                		     	 	                	
+		     	 	                			     	 	               
+		     	 	                	if(drugiCheckbox.isSelected()==true)zamowienie = new Opakowanie(zamowienie);
+		     	 	                	
+		     	 	                	if(!piatyField.getText().isEmpty() && piatyField.getText().length() < 150)zamowienie = new Notatka(zamowienie, piatyField.getText());
+		     	 	                				     	 	                	     	 	                	
 		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
+		     	 	                	
+		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100.0)/100.0;
+		     	 	                	zamowienie.setKoszt(zaokr);
 		     	 	                	
 		     	 	                	session.save(zamowienie);		  	 	                	     	 	                	
 		     	 	                	
@@ -1122,7 +1124,7 @@ public class HibernateOracle {
 			 	                		return;
 			 	                	}
 			 	                	double cena = Double.parseDouble(drugiField.getText());
-			 	                	cena = Math.round(cena*100)/100;
+			 	                	cena = Math.round(cena*100.0)/100.0;
 			 	                	
 			 	                	session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
 			                		
@@ -1527,7 +1529,7 @@ public class HibernateOracle {
 			 	                	}
 			 	                	
 			 	                	double cena = Double.parseDouble(piatyField.getText());
-			 	                	cena = Math.round(cena*100)/100;
+			 	                	cena = Math.round(cena*100.0)/100.0;
 			 	                	session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
 			                		
 			                		oc.closeDBSession();

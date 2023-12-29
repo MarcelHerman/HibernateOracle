@@ -148,7 +148,7 @@ abstract class ZamowieniaDekorator extends Zamowienia
 
 	public String getOpis()
 	{
-		return zamowienie.getOpis() + opis + "  ";
+		return zamowienie.getOpis() + opis + ";";
 	}
 }
 
@@ -169,15 +169,14 @@ class Znizka extends ZamowieniaDekorator
 	public String getOpis() {
 		return super.getOpis();
 	}
-
 }
 
 class Notatka extends ZamowieniaDekorator
 {
-	public Notatka(Zamowienia zamowienie) {
+	public Notatka(Zamowienia zamowienie, String notka) {
 		super(zamowienie);
 		this.cena = 2.5;
-		this.opis = "notatka+" + cena + "pln";				
+		this.opis = "notatka+" + cena + "pln:'" + notka+"'";				
 	}
 
 	@Override
