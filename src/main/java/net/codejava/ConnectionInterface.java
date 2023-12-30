@@ -5,7 +5,42 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class OracleConnection {
+public interface ConnectionInterface
+{
+	public void createDBSession();
+	
+	public Session getDBSession();
+	
+	public void closeDBSession();
+}
+
+class ProxyConnection implements ConnectionInterface
+{
+	OracleConnection oc;
+	public void createDBSession()
+	{
+		if(oc == null)
+			oc = OracleConnection.getInstance();
+	}
+	
+	public Session getDBSession()
+	{
+		return oc.getDBSession();
+	}
+	
+	public void closeDBSession()
+	{
+		createDBSession();
+		Session sn = oc.getDBSession();		
+		HibernateOracle.repo_pol.wykonajPolecenia();
+		HibernateOracle.repo_pol.saveToFile();
+		
+		oc = null;
+	}
+}
+
+
+class OracleConnection implements ConnectionInterface{
 	private static OracleConnection instance = null;
 	private static Configuration config;
 	private static SessionFactory sessionFactory;

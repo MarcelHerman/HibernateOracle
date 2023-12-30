@@ -753,6 +753,8 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {				 	
 				 	kontener.removeAll();			 	
+				 	 ProxyConnection pc = new ProxyConnection();
+					 pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -783,7 +785,7 @@ public class HibernateOracle extends JFrame {
 						 kontener.add(eksportujDoDruku);
 					 }
 					 frame.revalidate();
-					 frame.repaint();
+					 frame.repaint();										
 				}
 		 });
         
@@ -1207,7 +1209,7 @@ public class HibernateOracle extends JFrame {
 			 	                	cena = Math.round(cena*100.0)/100.0;
 			 	                	//oc.closeDBSession();
 			 	                	//session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0), idUzytkownika));
 			                		
 			                		pokazProduktPrzycisk.doClick();
 			                	}
@@ -1242,7 +1244,7 @@ public class HibernateOracle extends JFrame {
 			 	                	//oc.closeDBSession();
 			 	                	
 			 	                	//session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())), idUzytkownika));
 
 			                		
 			                		pokazFakturyPrzycisk.doClick();
@@ -1278,7 +1280,7 @@ public class HibernateOracle extends JFrame {
 			 	                				 	                	
 			 	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
 			 	                	//pd.Wykonaj();
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()), idUzytkownika));
 			                			                		
 			                		pokazKategoriePrzycisk.doClick();
 			                	}
@@ -1306,7 +1308,7 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                	//session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Magazyny(pierwszyField.getText(), drugiField.getText()), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Magazyny(pierwszyField.getText(), drugiField.getText()), idUzytkownika));
 
 			                		
 			                		pokazMagazynyPrzycisk.doClick();
@@ -1341,7 +1343,7 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                	//session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0), idUzytkownika));
 
 			                		
 			                		
@@ -1386,7 +1388,7 @@ public class HibernateOracle extends JFrame {
 			 	                			 	                	
 			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	//session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())), idUzytkownika));
 
 			                		
 			                		pokazProduktMagazynPrzycisk.doClick();
@@ -1429,7 +1431,7 @@ public class HibernateOracle extends JFrame {
 			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	
 			 	                	//session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())), idUzytkownika));
 
 			                		
 			                		//oc.closeDBSession();
@@ -1463,7 +1465,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                				 	                	
 			 	                	//session.save(new Stany_Zamowienia(pierwszyField.getText()));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Stany_Zamowienia(pierwszyField.getText()), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Stany_Zamowienia(pierwszyField.getText()), idUzytkownika));
 
 			                		
 			                		//oc.closeDBSession();
@@ -1497,7 +1499,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                				 	                	
 			 	                	//session.save(new Typy_uzytkownika(pierwszyField.getText()));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Typy_uzytkownika(pierwszyField.getText()), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Typy_uzytkownika(pierwszyField.getText()), idUzytkownika));
 
 			                		
 			                		//oc.closeDBSession();
@@ -1566,7 +1568,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                				 	                				 	                
 			 	                	//session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0), idUzytkownika));
 
 			 	                	
 			                		//oc.closeDBSession();
@@ -1610,7 +1612,7 @@ public class HibernateOracle extends JFrame {
 			 	                	double cena = Double.parseDouble(piatyField.getText());
 			 	                	cena = Math.round(cena*100.0)/100.0;
 			 	                	//session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
-			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null), idUzytkownika));
 
 			 	                	
 			                		//oc.closeDBSession();

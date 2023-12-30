@@ -1,3 +1,4 @@
 Polecenie Dodaj: Data wykonania: 2023-12-30;	ID wykonawcy: 1;	Obiekt: Kategorie
 Polecenie Edytuj: Data wykonania: 2023-12-30;	ID wykonawcy: 1;	Obiekt: Kategorie
 Polecenie Usuń: Data wykonania: 2023-12-30;	ID wykonawcy: 1;	Obiekt: Kategorie
+Polecenie Dodaj: Data wykonania: 2023-12-30;	ID wykonawcy: 1;	Obiekt: Produkty
