@@ -47,11 +47,15 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class HibernateOracle extends JFrame {
 	
 	public static String nazwaTypu = "null";
 	public static Obiekt_Do_Polecen obj = null;
 	public static List<Obiekt_Do_Polecen> koszyk = new ArrayList<Obiekt_Do_Polecen>();
+	public static Map<String, List<Obiekt_Do_Polecen>> cache;
 	
 	public static int idUzytkownika;
 	
@@ -62,6 +66,7 @@ public class HibernateOracle extends JFrame {
 		OracleConnection oc =  OracleConnection.getInstance();
 		
 		oc.createDBSession();
+		cache = new HashMap<>();
 		
 		Session session = oc.getDBSession();		
 		
@@ -860,20 +865,23 @@ public class HibernateOracle extends JFrame {
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();			 	
 
-					List<Obiekt_Do_Polecen> entities = null;
-					oc.createDBSession();
-					
-					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
-			            oc.closeDBSession();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+					if(!cache.containsKey("Kategorie")) {
+						oc.createDBSession();						
+						try (Session session2 = oc.getDBSession()) {
+							Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
+							cache.put("Kategorie", query.getResultList());
+							oc.closeDBSession();
+							System.out.println("załadowano do cache");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}	
+					}
+					else
+						System.out.println("Załadowano z cache");
 					
 					//budSwing.tworzTabeleKategorie(entities);
 					
-					dyrektor.tworzTabeleKategorie(entities, budSwing);
+					dyrektor.tworzTabeleKategorie(cache.get("Kategorie"), budSwing);
 					
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
