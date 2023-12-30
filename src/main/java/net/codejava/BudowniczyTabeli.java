@@ -108,7 +108,7 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 
 
 class BudowniczyTabeliSwing implements BudowniczyTabeli
-{
+{	
 	private LinkedList<String> naglowek;
 	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
 	private LinkedList<Object> wiersz;
@@ -310,20 +310,26 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         }
     }
 
-    private class ButtonEditor extends DefaultCellEditor {
+    public class ButtonEditor extends DefaultCellEditor {
         protected JButton button;
 
         private String label;
 
         private boolean isPushed;
         
-        private int id;
+        public int id;
         
-        private int id2;
+        public int id2;
         
-        private JTable tab;
+        public JTable tab;
         
-        private int row;
+        public int row;
+        
+        private IsmiesznyWzorzec wzorzec;
+        
+        public void changeWzorzec(IsmiesznyWzorzec wzorzec) {
+        	this.wzorzec = wzorzec;
+        }
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -411,6 +417,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                JTextField piatyField = new JTextField(7);
             		 
  	                JPanel myPanel = new JPanel();
+ 	                
+ 	                //wzorzec.dodajLogikeEdytowania(this);
 	                
 	                if(HibernateOracle.obj instanceof Faktury)
 	                	{	                	
@@ -449,36 +457,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                	
 	                	else if(HibernateOracle.obj instanceof Kategorie)
 	                	{
-	                		myPanel.add(new JLabel("Nazwa kategorii: "));
-	                		myPanel.add(pierwszyField);
-	                		
-	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
-	                		 try {
-	     	                	if (result == JOptionPane.OK_OPTION) {
-	     	                		
-	     	                		OracleConnection oc =  OracleConnection.getInstance();
-	     	 	                	oc.createDBSession();
-	     	 	                	Session session = oc.getDBSession();
-	     	                		
-	     	                		Kategorie kat = new Kategorie(pierwszyField.getText());
-	     	                		kat.setId_Kategorii(this.id);
-	     	                		oc.closeDBSession();
-	     	                		if(!pierwszyField.getText().isEmpty())
-	     	                		{
-	     	                			//session.update(kat);
-	     	                			HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(kat, HibernateOracle.idUzytkownika));
-	     	                		}
-
-	     	                		
-	     	                		//oc.closeDBSession();
-	     	                		tab.setValueAt(kat.getNazwa(), row, 1);
-	     	                	}
-	                		 }
-	                		 catch(Exception e) {
-	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować kategorii. Błąd: " + e.getMessage());
-	                		 }	                		
+	                		wzorzec.dodajLogikeEdytowania(this);                		
 	                	}
 	                	
 	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
