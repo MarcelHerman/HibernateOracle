@@ -133,10 +133,13 @@ public class HibernateOracle extends JFrame {
 		bar.add(zalozKontoPrzycisk);
 		bar.add(pokazZalogujPrzycisk);
 		
+		BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
+		DyrektorTabel dyrektor = new DyrektorTabel();
 		
 		budSwing.tworzTabeleProdukty(entities);
-		        
+
+		
         JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
         
         JScrollPane pane = new JScrollPane(tabSwing);
@@ -855,8 +858,11 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleKategorie(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleKategorie(entities);
+					
+					dyrektor.tworzTabeleKategorie(entities, budSwing);
+					
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1696,10 +1702,15 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleKategorie(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
-		                 												 		                 
+		                 //BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+		                 //budDruk.tworzTabeleKategorie(entities);
+						
+		                 //String table = (String)budDruk.pobierzTabele(null);
+						
+						dyrektor.tworzTabeleKategorie(entities, budDruk);
+		                 												 		   
+						String table = (String)dyrektor.pobierzTabele();
+						
 		                 String path = "wykaz_katgorii.txt";
 		                 File file = new File(path);
 

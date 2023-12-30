@@ -7,16 +7,9 @@ public class DyrektorTabel {
 	
 	private BudowniczyTabeli builder;
 	
-	public DyrektorTabel(BudowniczyTabeli builder) {
-		this.builder = builder;
-	}
-	
-	public void zmienBuildera(BudowniczyTabeli builder) {
-		this.builder = builder;
-	}
-	
 	public void tworzTabeleKategorie(List<Obiekt_Do_Polecen> entities, BudowniczyTabeli builder)
 	{
+		this.builder = builder;
 		HibernateOracle.obj = new Kategorie();
 		builder.refresh();
 		builder.dodajNaglowek();
