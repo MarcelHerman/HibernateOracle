@@ -114,8 +114,11 @@ public class HibernateOracle extends JFrame {
 		frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                repo_pol.saveToFile();
-                System.out.println("Okno zostaje zamknięte");
+                if(!nazwaTypu.equals("Klient"))
+                {
+                	repo_pol.saveToFile();
+                	System.out.println("Okno zostaje zamknięte");
+                }            	
             }
         });
 		

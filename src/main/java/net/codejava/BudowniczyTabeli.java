@@ -475,61 +475,8 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 		this.wiersz = new LinkedList<Object>();
 	}
 	
-	public void dodajPrzycisk(BudowniczyTabeli budowniczy)
+	public JTable dodajPrzycisk(JTable jt)
 	{
-		/*
-		this.setLayout(new BorderLayout());
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton clickmeButton = new JButton("Click Me");
-		buttonPanel.add(clickmeButton);
-		this.add(buttonPanel,BorderLayout.SOUTH);
-		*/
-		
-		//https://stackoverflow.com/questions/11165807/put-jbutton-in-bottom-right
-	}
-	
-	
-	public Object pobierzTabele(Object ob)
-	{
-		if(this.wiersz!=null) this.dane.addLast(wiersz);
-		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
-		{
-			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
-			{
-				this.naglowek.addLast(" ");
-				if(!(HibernateOracle.obj instanceof Zamowienia) &&  !(HibernateOracle.obj instanceof Produkt_Zamowienia))this.naglowek.addLast(" ");				
-			}
-		}
-		
-		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null")))
-		{
-			this.naglowek.addLast(" ");
-			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
-		}
-			
-		if(!(HibernateOracle.nazwaTypu.equals("null")))
-		{
-			if(HibernateOracle.nazwaTypu.equals("Pracownik"))
-			{
-				if(HibernateOracle.obj instanceof Zamowienia)this.naglowek.addLast(" ");
-				if(HibernateOracle.obj instanceof Produkt_Magazyn) {
-					this.naglowek.addLast(" ");
-				}
-			}
-		}
-
-			
-		
-		Object[] nagl = this.naglowek.toArray();
-		Object[][] dan = new Object[this.dane.size()][];
-		int i = 0;
-		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
-		
-		DefaultTableModel model = new DefaultTableModel(dan,nagl);
-		
-		JTable jt = new JTable(model);
-			
 		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null"))){
 			TableColumn buttonColumn = jt.getColumnModel().getColumn(naglowek.size() - 1);
         	buttonColumn.setCellRenderer(new ButtonRenderer());
@@ -585,9 +532,54 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 					buttonColumn.setCellRenderer(new ButtonRenderer());
 					buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox()));		
 				}
+			}						
+		}
+		return jt;
+	}
+
+	
+	
+	public Object pobierzTabele(Object ob)
+	{
+		if(this.wiersz!=null) this.dane.addLast(wiersz);
+		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
+		{
+			if(!(HibernateOracle.obj instanceof Typy_uzytkownika) && !(HibernateOracle.obj instanceof Stany_Zamowienia))
+			{
+				this.naglowek.addLast(" ");
+				if(!(HibernateOracle.obj instanceof Zamowienia) &&  !(HibernateOracle.obj instanceof Produkt_Zamowienia))this.naglowek.addLast(" ");				
+			}
+		}
+		
+		if(HibernateOracle.obj instanceof Produkty && !(HibernateOracle.nazwaTypu.equals("null")))
+		{
+			this.naglowek.addLast(" ");
+			if(HibernateOracle.nazwaTypu.equals("Pracownik"))this.naglowek.addLast(" ");
+		}
+			
+		if(!(HibernateOracle.nazwaTypu.equals("null")))
+		{
+			if(HibernateOracle.nazwaTypu.equals("Pracownik"))
+			{
+				if(HibernateOracle.obj instanceof Zamowienia)this.naglowek.addLast(" ");
+				if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+					this.naglowek.addLast(" ");
+				}
 			}
 		}
 
+			
+		
+		Object[] nagl = this.naglowek.toArray();
+		Object[][] dan = new Object[this.dane.size()][];
+		int i = 0;
+		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
+		
+		DefaultTableModel model = new DefaultTableModel(dan,nagl);
+		
+		JTable jt = new JTable(model);
+			
+		jt = dodajPrzycisk(jt);
 		
 		jt.setPreferredScrollableViewportSize(new Dimension(1000, 400));
 		return jt;
