@@ -1343,8 +1343,11 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                	//session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Magazyny(pierwszyField.getText(), drugiField.getText()), idUzytkownika));
-
+			 	                	Magazyny nowyMagazyn = new Magazyny(pierwszyField.getText(), drugiField.getText());
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyMagazyn, idUzytkownika));
+			 	                	List<Obiekt_Do_Polecen> lista = cache.get("Magazyny");
+			 	                	lista.add(nowyMagazyn);
+			 	                	cache.put("Magazyny", lista);
 			                		
 			                		pokazMagazynyPrzycisk.doClick();
 			                	}
@@ -1378,8 +1381,11 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                	//session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0), idUzytkownika));
-
+			 	                	Producenci nowyProducent = new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0);
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyProducent, idUzytkownika));
+			 	                	List<Obiekt_Do_Polecen> lista = cache.get("Producenci");
+			 	                	lista.add(nowyProducent);
+			 	                	cache.put("Producenci", lista);
 			                		
 			                		
 			                		pokazProducentowPrzycisk.doClick();
@@ -1500,8 +1506,11 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                				 	                	
 			 	                	//session.save(new Stany_Zamowienia(pierwszyField.getText()));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Stany_Zamowienia(pierwszyField.getText()), idUzytkownika));
-
+			 	                	Stany_Zamowienia nowyStan = new Stany_Zamowienia(pierwszyField.getText());
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyStan, idUzytkownika));
+			 	                	List<Obiekt_Do_Polecen> lista = cache.get("StanyZamowien");
+			 	                	lista.add(nowyStan);
+			 	                	cache.put("StanyZamowien", lista);
 			                		
 			                		//oc.closeDBSession();
 			                		pokazStanyZamowienPrzycisk.doClick();
@@ -1534,7 +1543,11 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                				 	                	
 			 	                	//session.save(new Typy_uzytkownika(pierwszyField.getText()));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Typy_uzytkownika(pierwszyField.getText()), idUzytkownika));
+			 	                	Typy_uzytkownika nowyTyp = new Typy_uzytkownika(pierwszyField.getText());
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyTyp, idUzytkownika));
+			 	                	List<Obiekt_Do_Polecen> lista = cache.get("StanyZamowien");
+			 	                	lista.add(nowyTyp);
+			 	                	cache.put("StanyZamowien", lista);
 
 			                		
 			                		//oc.closeDBSession();
