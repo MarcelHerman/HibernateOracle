@@ -9,9 +9,14 @@ import java.io.IOException;
 public class Repozytorium_Polecen {
 	private ArrayList<Polecenie> polecenia = new ArrayList<Polecenie>();
 	
-	public void wykonajPolecenie(Polecenie polecenie) {
-		polecenie.Wykonaj();
-		polecenia.add(polecenie);
+	public void dodajPolecenie(Polecenie polecenie) {
+		this.polecenia.add(polecenie);
+	}
+	
+	public void wykonajPolecenia() {
+		for(Polecenie polecenie : polecenia) {
+			polecenie.Wykonaj();	
+		}
 	}
 	
 	public ArrayList<Polecenie> getListaPolecen(){
@@ -50,7 +55,7 @@ public class Repozytorium_Polecen {
             System.err.println("Błąd podczas tworzenia pliku: " + e.getMessage());
             e.printStackTrace();
         }
-    
+        this.polecenia = new ArrayList<Polecenie>();
 	}
 	
 }
