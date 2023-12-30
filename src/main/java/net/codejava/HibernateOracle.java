@@ -800,7 +800,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();		 	
+				 	kontener.removeAll();	
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -835,7 +837,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();	
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -865,7 +869,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();	
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 					if(!cache.containsKey("Kategorie")) {
 						oc.createDBSession();						
@@ -900,7 +906,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 				 	if(!cache.containsKey("Producenci")) {
 						oc.createDBSession();
@@ -930,7 +938,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -960,7 +970,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();
@@ -990,7 +1002,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();	
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 				 	if(!cache.containsKey("StanyZamowien")) {
 						oc.createDBSession();
@@ -1020,7 +1034,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 				 	if(!cache.containsKey("TypyUzytkownika")) {
 						oc.createDBSession();
@@ -1050,7 +1066,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();
 
 					if(!cache.containsKey("Magazyny")) {
 						oc.createDBSession();
@@ -1080,7 +1098,9 @@ public class HibernateOracle extends JFrame {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 	kontener.removeAll();			 	
+				 	kontener.removeAll();
+				 	ProxyConnection pc = new ProxyConnection();
+					pc.closeDBSession();		 	
 
 					List<Obiekt_Do_Polecen> entities = null;
 					oc.createDBSession();

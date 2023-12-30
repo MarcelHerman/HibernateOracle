@@ -1,5 +1,7 @@
 package net.codejava;
 
+import javax.swing.JOptionPane;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -30,12 +32,15 @@ class ProxyConnection implements ConnectionInterface
 	
 	public void closeDBSession()
 	{
-		createDBSession();
-		Session sn = oc.getDBSession();		
-		HibernateOracle.repo_pol.wykonajPolecenia();
-		HibernateOracle.repo_pol.saveToFile();
-		
-		oc = null;
+		try
+		{
+			HibernateOracle.repo_pol.wykonajPolecenia();
+			HibernateOracle.repo_pol.saveToFile();
+			oc = null;
+		}catch(Exception e)
+		{
+    		JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później");
+		}	
 	}
 }
 
