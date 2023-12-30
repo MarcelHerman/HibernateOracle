@@ -505,6 +505,10 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	                	pr.setId_Kategorii(this.id);
  	 	                	//session.delete(pr);
  	 	                	oc.closeDBSession();
+ 	 	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
+ 	 	                	//lista.remove(this.id);
+ 	 	                	lista.remove(pr);
+ 	 	                	HibernateOracle.cache.put("Kategorie", lista);
  	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
