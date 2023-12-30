@@ -42,6 +42,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -1317,7 +1318,32 @@ public class HibernateOracle extends JFrame {
 			 	                	lista.add(nowaKategoria);
 			 	                	cache.put("Kategorie", lista);
 			                			                		
-			                		pokazKategoriePrzycisk.doClick();
+			 	                	//pokazKategoriePrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}
+			 	                	
+			 	                	
+			 	                	System.out.println("Już prawie");
+			 	                	((DefaultTableModel)tab.getModel()).addRow(new Object[] {nowaKategoria.getId_Kategorii(), nowaKategoria.getNazwa()});
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);
+			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
+			 	                	frame.repaint();
+			 	                	frame.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
