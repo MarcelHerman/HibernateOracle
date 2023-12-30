@@ -137,10 +137,10 @@ public class HibernateOracle extends JFrame {
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
 		DyrektorTabel dyrektor = new DyrektorTabel();
 		
-		budSwing.tworzTabeleProdukty(entities);
-
+		//budSwing.tworzTabeleProdukty(entities);
+		dyrektor.tworzTabeleProdukty(entities, budSwing);
 		
-        JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+        JTable tabSwing = (JTable)dyrektor.pobierzTabele();
         
         JScrollPane pane = new JScrollPane(tabSwing);
         
@@ -299,9 +299,11 @@ public class HibernateOracle extends JFrame {
 			            oc.closeDBSession();
 			        
 				 
-				 budSwing.tworzTabeleProdukty(entities);
-			        
-			     JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+				 //budSwing.tworzTabeleProdukty(entities);
+			       
+			     dyrektor.tworzTabeleProdukty(entities, budSwing);
+			     
+			     JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 			        
 			     JScrollPane pane = new JScrollPane(tabSwing);
 			               
@@ -379,8 +381,11 @@ public class HibernateOracle extends JFrame {
 			        kontener.add(jp);       					
 										
 					if(koszyk.size() != 0) {
-						budSwing.tworzTabeleKoszyk(koszyk); // <- zmienić na inną metodę
-						 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+						//budSwing.tworzTabeleKoszyk(koszyk); // <- zmienić na inną metodę
+						dyrektor.tworzTabeleKoszyk(koszyk, budSwing);
+						
+						 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
+						 
 						 JScrollPane pane = new JScrollPane(tabSwing);
 						 pane.setAlignmentX(Component.CENTER_ALIGNMENT);
 					       kontener.add(pane);
@@ -763,8 +768,11 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleProdukty(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleProdukty(entities);
+					dyrektor.tworzTabeleProdukty(entities, budSwing);
+					
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
+					 
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -798,8 +806,10 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleZamowienia(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleZamowienia(entities);
+					dyrektor.tworzTabeleZamowienia(entities, budSwing);
+					
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -829,8 +839,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleUzytkownicy(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleUzytkownicy(entities);
+					dyrektor.tworzTabeleUzytkownicy(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -890,8 +901,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleProducenci(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleProducenci(entities);
+					dyrektor.tworzTabeleProducenci(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -919,8 +931,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleProdukt_Magazyn(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleProdukt_Magazyn(entities);
+					dyrektor.tworzTabeleProdukt_Magazyn(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -948,8 +961,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleProdukt_Zamowienia(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleProdukt_Zamowienia(entities);
+					dyrektor.tworzTabeleProdukt_Zamowienia(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -977,8 +991,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleStany_Zamowienia(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleStany_Zamowienia(entities);
+					dyrektor.tworzTabeleStany_Zamowienia(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1006,8 +1021,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleTypy_uzytkownika(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleTypy_uzytkownika(entities);
+					dyrektor.tworzTabeleTypy_uzytkownika(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1035,8 +1051,9 @@ public class HibernateOracle extends JFrame {
 			            e.printStackTrace();
 			        }
 					
-					budSwing.tworzTabeleMagazyny(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleMagazyny(entities);
+					dyrektor.tworzTabeleMagazyny(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1095,8 +1112,9 @@ public class HibernateOracle extends JFrame {
 					oc.closeDBSession();
 					
 					
-					budSwing.tworzTabeleFaktury(entities);
-					 JTable tabSwing = (JTable)budSwing.pobierzTabele(null);
+					//budSwing.tworzTabeleFaktury(entities);
+					dyrektor.tworzTabeleFaktury(entities, budSwing);
+					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
@@ -1629,9 +1647,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleProdukty(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleProdukty(entities);
+						dyrektor.tworzTabeleProdukty(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produktow.txt";
 		                 File file = new File(path);
@@ -1666,9 +1684,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleFaktury(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleFaktury(entities);
+						dyrektor.tworzTabeleFaktury(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_faktur.txt";
 		                 File file = new File(path);
@@ -1742,9 +1760,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleMagazyny(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleMagazyny(entities);
+						dyrektor.tworzTabeleMagazyny(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_magazynow.txt";
 		                 File file = new File(path);
@@ -1777,9 +1795,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleProducenci(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleProducenci(entities);
+						dyrektor.tworzTabeleProducenci(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_producentow.txt";
 		                 File file = new File(path);
@@ -1812,9 +1830,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleProdukt_Magazyn(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleProdukt_Magazyn(entities);
+						dyrektor.tworzTabeleProdukt_Magazyn(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produkty_magazyn.txt";
 		                 File file = new File(path);
@@ -1847,9 +1865,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleProdukt_Zamowienia(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleProdukt_Zamowienia(entities);
+						dyrektor.tworzTabeleProdukt_Zamowienia(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produkt_zamowienia.txt";
 		                 File file = new File(path);
@@ -1882,9 +1900,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleStany_Zamowienia(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleStany_Zamowienia(entities);
+						dyrektor.tworzTabeleStany_Zamowienia(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_stany_zamowienia.txt";
 		                 File file = new File(path);
@@ -1916,10 +1934,10 @@ public class HibernateOracle extends JFrame {
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
-		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleTypy_uzytkownika(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+
+		                 //budDruk.tworzTabeleTypy_uzytkownika(entities);
+						dyrektor.tworzTabeleTypy_uzytkownika(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_typy_uzytkownika.txt";
 		                 File file = new File(path);
@@ -1952,9 +1970,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleUzytkownicy(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleUzytkownicy(entities);
+						dyrektor.tworzTabeleUzytkownicy(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_uzytkownicy.txt";
 		                 File file = new File(path);
@@ -1987,9 +2005,9 @@ public class HibernateOracle extends JFrame {
 				            e.printStackTrace();
 				        }
 		                
-		                 BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 budDruk.tworzTabeleZamowienia(entities);
-		                 String table = (String)budDruk.pobierzTabele(null);
+		                 //budDruk.tworzTabeleZamowienia(entities);
+						dyrektor.tworzTabeleZamowienia(entities, budDruk);
+		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_zamowienia.txt";
 		                 File file = new File(path);
