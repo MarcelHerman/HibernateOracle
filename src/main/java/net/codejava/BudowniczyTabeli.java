@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -134,6 +135,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	public void dodajWiersz() {
 		if(this.wiersz!=null)this.dane.addLast(wiersz);
 		this.wiersz = new LinkedList<Object>();
+	}
+	
+	public JTable dodajRekord(JTable tab, Obiekt_Do_Polecen obiekt) {
+		((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Kategorie)obiekt).getId_Kategorii(), ((Kategorie)obiekt).getNazwa()});
+		tab = dodajPrzycisk(tab);
+		return tab;
 	}
 	
 	public JTable dodajPrzycisk(JTable jt)
@@ -325,7 +332,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         
         public int row;
 
-        public ButtonEditor(JCheckBox checkBox) {
+        public JTable getTab() {
+			return tab;
+		}
+
+		public void setTab(JTable tab) {
+			this.tab = tab;
+		}
+
+		public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
             button = new JButton();
             button.setOpaque(true);
@@ -486,7 +501,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 			
  	              try {
  	            	 if (result == JOptionPane.OK_OPTION) {
- 	            		OracleConnection oc =  OracleConnection.getInstance();
+ 	            		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
  	                	oc.createDBSession();	                			
  	                	Session session = oc.getDBSession();
  	            		
@@ -506,7 +521,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	                	//session.delete(pr);
  	 	                	oc.closeDBSession();
  	 	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
- 	 	                	lista.remove(this.id-1);
+ 	 	                	lista.remove(this.row);
  	 	                	HibernateOracle.cache.put("Kategorie", lista);
  	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
@@ -542,7 +557,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	                session.delete(pr);
  	 	 	             oc.closeDBSession();
  	 	 	          List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-	                	lista.remove(this.id-1);
+	                	lista.remove(this.row);
 	                	HibernateOracle.cache.put("Magazyny", lista);
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 	 
@@ -559,15 +574,20 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
- 	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");		//padaka zaczyna się tutaj
- 	                		for (Obiekt_Do_Polecen element : lista) {
- 	                			Producenci pom = (Producenci) element;
- 	                		    if (pom == pr) {
- 	                		    	pom.setCzy_usunieto(1);
- 	                		    	element = pom;
- 	                		        break;
+ 	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
+
+ 	                		for (int i = 0; i < lista.size(); i++) {
+ 	                		    Obiekt_Do_Polecen element = lista.get(i);
+ 	                		    if (element instanceof Producenci) {
+ 	                		        Producenci pom = (Producenci) element;
+ 	                		        if (pom.equals(pr)) {
+ 	                		            pom.setCzy_usunieto(1);
+ 	                		            lista.set(i, pom); // Zaktualizuj element w liście
+ 	                		            break;
+ 	                		        }
  	                		    }
- 	                		}		//padaka kończy się tutaj
+ 	                		}
+
  	                		HibernateOracle.cache.put("Producenci", lista);
  	 	 	             pr.setCzy_usunieto(1);
 	 	 	                session.update(pr);
@@ -634,7 +654,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     		                		
 	     		                	if(Integer.parseInt(pierwszyField.getText())<=0)
 				 	                		throw(new Exception("Ilość nie może być ujemna lub równa zeru."));
-	   	     	                  	 OracleConnection oc = OracleConnection.getInstance();
+	   	     	                  	 PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		     	                	 oc.createDBSession();
 		     	                	 Session session = oc.getDBSession();
 		     	                	 

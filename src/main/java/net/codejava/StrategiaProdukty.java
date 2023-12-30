@@ -15,7 +15,7 @@ import org.hibernate.query.Query;
 
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
-public class StrategiaProdukty implements IsmiesznyWzorzec {
+public class StrategiaProdukty implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
@@ -27,7 +27,7 @@ public class StrategiaProdukty implements IsmiesznyWzorzec {
 		 
          JPanel myPanel = new JPanel();
 
-		OracleConnection oc =  OracleConnection.getInstance();
+		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
         oc.createDBSession();
 
         List<Obiekt_Do_Polecen> fData = null;

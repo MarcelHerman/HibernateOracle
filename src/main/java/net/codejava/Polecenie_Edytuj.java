@@ -9,7 +9,7 @@ public class Polecenie_Edytuj extends Polecenie {
 	}
 	
 	void Wykonaj() {
-		OracleConnection oc = OracleConnection.getInstance();
+		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
 		Session session = oc.getDBSession();
 		

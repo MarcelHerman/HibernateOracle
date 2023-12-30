@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
-public class StrategiaProdukt_Koszyk implements IsmiesznyWzorzec{
+public class StrategiaProdukt_Koszyk implements IStrategia{
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {

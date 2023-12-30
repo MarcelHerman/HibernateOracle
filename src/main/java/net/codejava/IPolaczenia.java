@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public interface ConnectionInterface
+public interface IPolaczenia
 {
 	public void createDBSession();
 	
@@ -16,13 +16,13 @@ public interface ConnectionInterface
 	public void closeDBSession();
 }
 
-class ProxyConnection implements ConnectionInterface
+class PolaczenieProxy implements IPolaczenia
 {
-	OracleConnection oc;
+	PolaczenieOracle oc;
 	public void createDBSession()
 	{
 		if(oc == null)
-			oc = OracleConnection.getInstance();
+			oc = PolaczenieOracle.getInstance();
 	}
 	
 	public Session getDBSession()
@@ -45,22 +45,22 @@ class ProxyConnection implements ConnectionInterface
 }
 
 
-class OracleConnection implements ConnectionInterface{
-	private static OracleConnection instance = null;
+class PolaczenieOracle implements IPolaczenia{
+	private static PolaczenieOracle instance = null;
 	private static Configuration config;
 	private static SessionFactory sessionFactory;
 	private static Session session;
 	private static Transaction transaction;
 	
-	private OracleConnection() {}
+	private PolaczenieOracle() {}
 	
-	public static OracleConnection getInstance() 
+	public static PolaczenieOracle getInstance() 
 	{
 		if(instance==null)
 		{
-			synchronized(OracleConnection.class)
+			synchronized(PolaczenieOracle.class)
 			{
-				if(instance==null) instance = new OracleConnection();
+				if(instance==null) instance = new PolaczenieOracle();
 			}		
 		}			
 		return instance;

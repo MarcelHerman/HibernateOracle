@@ -62,11 +62,11 @@ public class HibernateOracle extends JFrame {
 	
 	public static Repozytorium_Polecen repo_pol = new Repozytorium_Polecen();
 	
-	public static IsmiesznyWzorzec wzorzec;
+	public static IStrategia wzorzec;
 
 	public static void main(String[] args) {
 		
-		OracleConnection oc =  OracleConnection.getInstance();
+		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		
 		oc.createDBSession();
 		cache = new HashMap<>();
@@ -437,7 +437,7 @@ public class HibernateOracle extends JFrame {
 		                		 try {
 		     	                	if (result == JOptionPane.OK_OPTION) {
 		     	                		
-		     	                		OracleConnection oc =  OracleConnection.getInstance();
+		     	                		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
 		     	                		
@@ -486,7 +486,7 @@ public class HibernateOracle extends JFrame {
 				 	            	 if (result == JOptionPane.OK_OPTION) {		
 				 	            		 int idtym = idUzytkownika;
 				 	            		 akcjaWylogowania.actionPerformed(a);		 	            		 
-				 	            		 OracleConnection oc =  OracleConnection.getInstance();
+				 	            		 PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 				 	            		 oc.createDBSession();	                			
 				 	            		 Session session = oc.getDBSession();
 				 	            		Uzytkownicy pr = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
@@ -564,7 +564,7 @@ public class HibernateOracle extends JFrame {
 			                				 }
 		                				 }
 		                				 
-		     	                		OracleConnection oc =  OracleConnection.getInstance();
+		     	                		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
 		     	 	                			     	 	                	
@@ -741,7 +741,7 @@ public class HibernateOracle extends JFrame {
 	 	            		if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
 	 	            			throw(new Exception("Nie podano wszystkich danych. Konto nie zostało utworzone."));
 	 	                		 	                		 	                	
-	 	                	OracleConnection oc =  OracleConnection.getInstance();
+	 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 	 	                	oc.createDBSession();
 	 	                	Session session = oc.getDBSession();
 	 	                	
@@ -761,7 +761,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {				 	
 				 	kontener.removeAll();			 	
-				 	 ProxyConnection pc = new ProxyConnection();
+				 	 PolaczenieProxy pc = new PolaczenieProxy();
 					 pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
@@ -802,7 +802,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();	
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
@@ -839,7 +839,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();	
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
@@ -871,7 +871,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();	
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 					if(!cache.containsKey("Kategorie")) {
@@ -908,7 +908,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 				 	if(!cache.containsKey("Producenci")) {
@@ -940,7 +940,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
@@ -972,7 +972,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 					List<Obiekt_Do_Polecen> entities = null;
@@ -1004,7 +1004,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();	
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 				 	if(!cache.containsKey("StanyZamowien")) {
@@ -1036,7 +1036,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 				 	if(!cache.containsKey("TypyUzytkownika")) {
@@ -1068,7 +1068,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
 					if(!cache.containsKey("Magazyny")) {
@@ -1100,7 +1100,7 @@ public class HibernateOracle extends JFrame {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();
-				 	ProxyConnection pc = new ProxyConnection();
+				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();		 	
 
 					List<Obiekt_Do_Polecen> entities = null;
@@ -1175,7 +1175,7 @@ public class HibernateOracle extends JFrame {
 	                
 	                if(obj instanceof Produkty) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		                oc.createDBSession();
 
 		                List<Obiekt_Do_Polecen> fData = null;
@@ -1330,11 +1330,12 @@ public class HibernateOracle extends JFrame {
 			 	                	        kontener.removeAll();
 			 	                	        break;
 			 	                	    }
-			 	                	}
-			 	                	
+			 	                	}		 	                	
 			 	                	
 			 	                	System.out.println("Już prawie");
-			 	                	((DefaultTableModel)tab.getModel()).addRow(new Object[] {nowaKategoria.getId_Kategorii(), nowaKategoria.getNazwa()});
+			 	                	//((DefaultTableModel)tab.getModel()).addRow(new Object[] {nowaKategoria.getId_Kategorii(), nowaKategoria.getNazwa()});
+			 	                	nowaKategoria.setId_Kategorii(((Kategorie)lista.get(lista.size()-2)).getId_Kategorii()+1);
+			 	                	tab = budSwing.dodajRekord(tab, nowaKategoria);
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
 			 	                	kontener.add(dodajPrzycisk);
@@ -1587,7 +1588,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Uzytkownicy) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		                oc.createDBSession();
 
 		                List<Obiekt_Do_Polecen> fData = null;
@@ -1709,7 +1710,7 @@ public class HibernateOracle extends JFrame {
 				public void actionPerformed(ActionEvent a) {				                
 	                if(obj instanceof Produkty) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		                oc.createDBSession();
 
 		                List<Obiekt_Do_Polecen> entities = null;
@@ -1745,7 +1746,7 @@ public class HibernateOracle extends JFrame {
 	                
 	                else if(obj instanceof Faktury) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1781,7 +1782,7 @@ public class HibernateOracle extends JFrame {
 	                
 	                else if(obj instanceof Kategorie) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1821,7 +1822,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Magazyny) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1856,7 +1857,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Producenci) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1891,7 +1892,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Produkt_Magazyn)
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1926,7 +1927,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Produkt_Zamowienia) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1961,7 +1962,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Stany_Zamowienia) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -1996,7 +1997,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Typy_uzytkownika) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -2031,7 +2032,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Uzytkownicy) 
 	                {
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();
@@ -2066,7 +2067,7 @@ public class HibernateOracle extends JFrame {
 	                }
 	                else if(obj instanceof Zamowienia) 
 	                {		         			                	
-	                	OracleConnection oc =  OracleConnection.getInstance();
+	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
 		                List<Obiekt_Do_Polecen> entities = null;
 						oc.createDBSession();

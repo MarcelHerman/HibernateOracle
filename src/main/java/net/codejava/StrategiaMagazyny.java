@@ -10,7 +10,7 @@ import org.hibernate.Session;
 
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
-public class StrategiaMagazyny implements IsmiesznyWzorzec {
+public class StrategiaMagazyny implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
@@ -31,7 +31,7 @@ public class StrategiaMagazyny implements IsmiesznyWzorzec {
 		 try {
          	if (result == JOptionPane.OK_OPTION) {
          		
-         		OracleConnection oc =  OracleConnection.getInstance();
+         		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
               	oc.createDBSession();
               	Session session = oc.getDBSession();
          		

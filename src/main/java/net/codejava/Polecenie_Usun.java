@@ -9,7 +9,7 @@ public class Polecenie_Usun extends Polecenie {
 	}
 	
 	void Wykonaj() {
-		OracleConnection oc = OracleConnection.getInstance();
+		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
 		Session session = oc.getDBSession();
 		

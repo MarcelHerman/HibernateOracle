@@ -55,7 +55,7 @@ public class DyrektorTabel {
 		builder.dodajKolumne("Kategoria");
 		if((HibernateOracle.nazwaTypu.equals("Administrator")) || (HibernateOracle.nazwaTypu.equals("Pracownik")))builder.dodajKolumne("Usunięty");
 
-		OracleConnection oc =  OracleConnection.getInstance();
+		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		oc.createDBSession();
 		
 		List<Obiekt_Do_Polecen> fData = null;
@@ -301,7 +301,7 @@ public class DyrektorTabel {
 		builder.dodajKolumne("Typ konta");
 		if((HibernateOracle.nazwaTypu.equals("Administrator"))  ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))builder.dodajKolumne("Usunięty");
 		
-		OracleConnection oc =  OracleConnection.getInstance();
+		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		oc.createDBSession();
 		
 		List<Obiekt_Do_Polecen> fData = null;
@@ -360,7 +360,7 @@ public class DyrektorTabel {
 		builder.dodajKolumne("Zamówione produkty");
 		builder.dodajKolumne("Notatka");
 		
-		OracleConnection oc =  OracleConnection.getInstance();
+		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		oc.createDBSession();
 		
 		List<Obiekt_Do_Polecen> fData = null;
