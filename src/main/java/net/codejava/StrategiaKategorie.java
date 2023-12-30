@@ -10,7 +10,7 @@ import org.hibernate.Session;
 
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
-public class StanKategorii implements IsmiesznyWzorzec {
+public class StrategiaKategorie implements IsmiesznyWzorzec {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {

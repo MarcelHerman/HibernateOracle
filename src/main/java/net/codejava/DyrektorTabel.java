@@ -14,6 +14,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Magazyny();
+		HibernateOracle.wzorzec = new StrategiaMagazyny();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -42,6 +43,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Produkty();
+		HibernateOracle.wzorzec = new StrategiaProdukty();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -115,7 +117,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Kategorie();
-		HibernateOracle.wzorzec = new StanKategorii();
+		HibernateOracle.wzorzec = new StrategiaKategorie();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -141,6 +143,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Faktury();
+		HibernateOracle.wzorzec = new StrategiaFaktury();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -169,6 +172,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Produkt_Magazyn();
+		HibernateOracle.wzorzec = new StrategiaProdukt_Magazyn();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -197,6 +201,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Produkt_Zamowienia();
+		HibernateOracle.wzorzec = null;
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -223,6 +228,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Stany_Zamowienia();
+		HibernateOracle.wzorzec = new StrategiaStany_Zamowienia();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -247,6 +253,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Producenci();
+		HibernateOracle.wzorzec = new StrategiaProducenci();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -282,6 +289,7 @@ public class DyrektorTabel {
 	{	
 		this.builder = builder;
 		HibernateOracle.obj = new Uzytkownicy();
+		HibernateOracle.wzorzec = new StrategiaUzytkownicy();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -339,6 +347,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Zamowienia();
+		HibernateOracle.wzorzec = new StrategiaZamowienia();
 		builder.refresh();
 		builder.dodajNaglowek();
 		
@@ -415,6 +424,7 @@ public class DyrektorTabel {
     {
 		this.builder = builder;
 		HibernateOracle.obj = new Typy_uzytkownika();
+		HibernateOracle.wzorzec = null;
 		builder.refresh();
 		builder.dodajNaglowek();
 
