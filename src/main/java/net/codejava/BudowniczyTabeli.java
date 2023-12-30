@@ -324,12 +324,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
         public JTable tab;
         
         public int row;
-        
-        private IsmiesznyWzorzec wzorzec;
-        
-        public void changeWzorzec(IsmiesznyWzorzec wzorzec) {
-        	this.wzorzec = wzorzec;
-        }
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -457,7 +451,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	                	
 	                	else if(HibernateOracle.obj instanceof Kategorie)
 	                	{
-	                		wzorzec.dodajLogikeEdytowania(this);                		
+	                		HibernateOracle.wzorzec.dodajLogikeEdytowania(this);                		
 	                	}
 	                	
 	                	else if(HibernateOracle.obj instanceof Uzytkownicy)

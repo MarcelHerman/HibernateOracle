@@ -115,6 +115,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Kategorie();
+		HibernateOracle.wzorzec = new StanKategorii();
 		builder.refresh();
 		builder.dodajNaglowek();
 		

@@ -60,6 +60,8 @@ public class HibernateOracle extends JFrame {
 	public static int idUzytkownika;
 	
 	public static Repozytorium_Polecen repo_pol = new Repozytorium_Polecen();
+	
+	public static IsmiesznyWzorzec wzorzec;
 
 	public static void main(String[] args) {
 		
