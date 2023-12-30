@@ -63,27 +63,7 @@ public class HibernateOracle extends JFrame {
 		
 		oc.createDBSession();
 		
-		Session session = oc.getDBSession();
-		
-		//session.save(new Kategorie("Plytki"));
-		//session.save(new Zamowienia(15.25,"testFaktur","Hallera",1,1));
-		//session.save(new Producenci("Biedronka","238989","Bialystok","Pogodna"));
-		//session.save(new Produkty("wiadro 2000",52.32,"jeszcze fajniejsze",1,1));
-		//session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(2,3),3));
-		//session.save(new Magazyny("Skieblewo","Piotrkowa"));
-		//session.save(new Produkt_Magazyn(new Produkt_Magazyn_Id(1,3),2,2));
-		//session.save(new Faktury("05-10-23","232312",3));
-		
-		//session.save(new Faktury(LocalDate.now(),"232312",3));
-		
-		//session.save(new Typy_uzytkownika("Administrator"));
-		//session.save(new Typy_uzytkownika("Pracownik"));
-		//session.save(new Typy_uzytkownika("Klient"));
-		
-		//session.save(new Uzytkownicy("Mariusz", "admin","admin", "admin@wp.pl", 2));
-		//session.save(new Uzytkownicy("Pawel", "pracownik","pracownik", "pracownik@wp.pl", 3));
-		//session.save(new Uzytkownicy("Leokadia", "uzytkownik","uzytkownik", "admin@wp.pl", 4));
-		
+		Session session = oc.getDBSession();		
 		
 		try
 		{
@@ -1191,8 +1171,8 @@ public class HibernateOracle extends JFrame {
 		                         "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {			                		
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
 			 	                	{
@@ -1201,10 +1181,10 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                	double cena = Double.parseDouble(drugiField.getText());
 			 	                	cena = Math.round(cena*100.0)/100.0;
-			 	                	
-			 	                	session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
+			 	                	//oc.closeDBSession();
+			 	                	//session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0), idUzytkownika));
 			                		
-			                		oc.closeDBSession();
 			                		pokazProduktPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1226,19 +1206,21 @@ public class HibernateOracle extends JFrame {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			                		//OracleConnection oc =  OracleConnection.getInstance();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie została dodana");
 			 	                		return;
 			 	                	}
+			 	                	//oc.closeDBSession();
 			 	                	
-			 	                	session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
+			 	                	//session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
 			                		pokazFakturyPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1257,9 +1239,9 @@ public class HibernateOracle extends JFrame {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			                		//OracleConnection oc =  OracleConnection.getInstance();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty())
 			 	                	{
@@ -1268,7 +1250,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                	
 			 	                	//session.save(new Kategorie(pierwszyField.getText()));
-			 	                	oc.closeDBSession();
+			 	                	//oc.closeDBSession();
 			 	                				 	                	
 			 	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
 			 	                	//pd.Wykonaj();
@@ -1293,21 +1275,16 @@ public class HibernateOracle extends JFrame {
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		                         "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
+			                	if (result == JOptionPane.OK_OPTION) {			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Magazyn nie został dodany");
 			 	                		return;
 			 	                	}
-			 	                	
-			 	                	session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
+			 	                	//session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Magazyny(pierwszyField.getText(), drugiField.getText()), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
 			                		pokazMagazynyPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1333,21 +1310,17 @@ public class HibernateOracle extends JFrame {
 		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
 		                         "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			                		
+			                	if (result == JOptionPane.OK_OPTION) {			                					                			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
 			 	                	{
 			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Producent nie został dodany");
 			 	                		return;
 			 	                	}
-			 	                				 	                				 	                
-			 	                	session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
+			 	                	//session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
+			                		
 			                		pokazProducentowPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1386,15 +1359,12 @@ public class HibernateOracle extends JFrame {
 			 	                	
 			 	                	if(Integer.parseInt(czwartyField.getText())<=0)
 			 	                		throw(new Exception("Stan faktyczny nie może być ujemny."));
-			 	                	
-			 	                	OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
-			 	                	
+			 	                			 	                	
 			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
-			 	                	session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
+			 	                	//session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
 			                		pokazProduktMagazynPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1419,9 +1389,9 @@ public class HibernateOracle extends JFrame {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc = OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			                		//OracleConnection oc = OracleConnection.getInstance();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
 			 	                	{
@@ -1434,9 +1404,11 @@ public class HibernateOracle extends JFrame {
 			 	                	
 			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	
-			 	                	session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
+			 	                	//session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
+			                		//oc.closeDBSession();
 			                		pokazProduktZamowieniaPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1456,9 +1428,9 @@ public class HibernateOracle extends JFrame {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			                		//OracleConnection oc =  OracleConnection.getInstance();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty())
 			 	                	{
@@ -1466,9 +1438,11 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                				 	                	
-			 	                	session.save(new Stany_Zamowienia(pierwszyField.getText()));
+			 	                	//session.save(new Stany_Zamowienia(pierwszyField.getText()));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Stany_Zamowienia(pierwszyField.getText()), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
+			                		//oc.closeDBSession();
 			                		pokazStanyZamowienPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1488,9 +1462,9 @@ public class HibernateOracle extends JFrame {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 			                		
-			                		OracleConnection oc =  OracleConnection.getInstance();
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			                		//OracleConnection oc =  OracleConnection.getInstance();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty())
 			 	                	{
@@ -1498,9 +1472,11 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                				 	                	
-			 	                	session.save(new Typy_uzytkownika(pierwszyField.getText()));
+			 	                	//session.save(new Typy_uzytkownika(pierwszyField.getText()));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Typy_uzytkownika(pierwszyField.getText()), idUzytkownika));
+
 			                		
-			                		oc.closeDBSession();
+			                		//oc.closeDBSession();
 			                		pokazTypyUzytkownikaPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1556,8 +1532,8 @@ public class HibernateOracle extends JFrame {
 		                         "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {			                		
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
 			 	                	{
@@ -1565,9 +1541,11 @@ public class HibernateOracle extends JFrame {
 			 	                		return;
 			 	                	}
 			 	                				 	                				 	                
-			 	                	session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
-			                		
-			                		oc.closeDBSession();
+			 	                	//session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0), idUzytkownika));
+
+			 	                	
+			                		//oc.closeDBSession();
 			                		pokazUzytkownicyPrzycisk.doClick();
 			                	}
 		         		 }
@@ -1596,8 +1574,8 @@ public class HibernateOracle extends JFrame {
 		         		 try {
 			                	if (result == JOptionPane.OK_OPTION) {
 
-			 	                	oc.createDBSession();
-			 	                	Session session = oc.getDBSession();
+			 	                	//oc.createDBSession();
+			 	                	//Session session = oc.getDBSession();
 			                		
 			 	                	if(pierwszyField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
 			 	                	{
@@ -1607,9 +1585,11 @@ public class HibernateOracle extends JFrame {
 			 	                	
 			 	                	double cena = Double.parseDouble(piatyField.getText());
 			 	                	cena = Math.round(cena*100.0)/100.0;
-			 	                	session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
-			                		
-			                		oc.closeDBSession();
+			 	                	//session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
+			 	                	repo_pol.wykonajPolecenie(new Polecenie_Dodaj(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null), idUzytkownika));
+
+			 	                	
+			                		//oc.closeDBSession();
 			                		pokazZamowieniaPrzycisk.doClick();
 			                	}
 		         		 }
