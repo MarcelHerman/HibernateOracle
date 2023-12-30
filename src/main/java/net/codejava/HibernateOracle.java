@@ -871,13 +871,13 @@ public class HibernateOracle extends JFrame {
 							Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
 							cache.put("Kategorie", query.getResultList());
 							oc.closeDBSession();
-							System.out.println("załadowano do cache");
+							//System.out.println("załadowano do cache");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}	
 					}
-					else
-						System.out.println("Załadowano z cache");
+					/*else
+						System.out.println("Załadowano z cache");*/
 					
 					//budSwing.tworzTabeleKategorie(entities);
 					
@@ -900,19 +900,19 @@ public class HibernateOracle extends JFrame {
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();			 	
 
-					List<Obiekt_Do_Polecen> entities = null;
-					oc.createDBSession();
-					
-					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
-			            oc.closeDBSession();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+				 	if(!cache.containsKey("Producenci")) {
+						oc.createDBSession();
+						try (Session session2 = oc.getDBSession()) {
+				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
+				            cache.put("Producenci", query.getResultList());
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+				 	}
 					
 					//budSwing.tworzTabeleProducenci(entities);
-					dyrektor.tworzTabeleProducenci(entities, budSwing);
+					dyrektor.tworzTabeleProducenci(cache.get("Producenci"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -990,19 +990,19 @@ public class HibernateOracle extends JFrame {
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();			 	
 
-					List<Obiekt_Do_Polecen> entities = null;
-					oc.createDBSession();
-					
-					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
-			            oc.closeDBSession();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+				 	if(!cache.containsKey("StanyZamowien")) {
+						oc.createDBSession();
+						try (Session session2 = oc.getDBSession()) {
+				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
+				            cache.put("StanyZamowien",query.getResultList());
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+				 	}
 					
 					//budSwing.tworzTabeleStany_Zamowienia(entities);
-					dyrektor.tworzTabeleStany_Zamowienia(entities, budSwing);
+					dyrektor.tworzTabeleStany_Zamowienia(cache.get("StanyZamowien"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1020,19 +1020,19 @@ public class HibernateOracle extends JFrame {
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();			 	
 
-					List<Obiekt_Do_Polecen> entities = null;
-					oc.createDBSession();
-					
-					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
-			            oc.closeDBSession();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+				 	if(!cache.containsKey("TypyUzytkownika")) {
+						oc.createDBSession();
+						try (Session session2 = oc.getDBSession()) {
+				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
+				            cache.put("TypyUzytkownika", query.getResultList());
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+				 	}
 					
 					//budSwing.tworzTabeleTypy_uzytkownika(entities);
-					dyrektor.tworzTabeleTypy_uzytkownika(entities, budSwing);
+					dyrektor.tworzTabeleTypy_uzytkownika(cache.get("TypyUzytkownika"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1050,19 +1050,19 @@ public class HibernateOracle extends JFrame {
 				public void actionPerformed(ActionEvent a) {
 				 	kontener.removeAll();			 	
 
-					List<Obiekt_Do_Polecen> entities = null;
-					oc.createDBSession();
-					
-					try (Session session2 = oc.getDBSession()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
-			            oc.closeDBSession();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+					if(!cache.containsKey("Magazyny")) {
+						oc.createDBSession();
+						try (Session session2 = oc.getDBSession()) {
+				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class);
+				            cache.put("Magazyny", query.getResultList());
+				            oc.closeDBSession();
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				        }
+					}
 					
 					//budSwing.tworzTabeleMagazyny(entities);
-					dyrektor.tworzTabeleMagazyny(entities, budSwing);
+					dyrektor.tworzTabeleMagazyny(cache.get("Magazyny"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1288,7 +1288,12 @@ public class HibernateOracle extends JFrame {
 			 	                				 	                	
 			 	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
 			 	                	//pd.Wykonaj();
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()), idUzytkownika));
+			 	                	Kategorie nowaKategoria = new Kategorie(pierwszyField.getText());
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowaKategoria, idUzytkownika));
+			 	                	
+			 	                	List<Obiekt_Do_Polecen> lista = cache.get("Kategorie");
+			 	                	lista.add(nowaKategoria);
+			 	                	cache.put("Kategorie", lista);
 			                			                		
 			                		pokazKategoriePrzycisk.doClick();
 			                	}
