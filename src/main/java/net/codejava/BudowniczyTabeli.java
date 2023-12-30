@@ -43,6 +43,10 @@ public interface BudowniczyTabeli {
 	public void dodajWiersz();
 	
 	public Object pobierzTabele(Object ob);
+	
+	public void refresh();
+	
+	public void dodajKolumnyPrzyciskow();
 }
 
 class BudowniczyTabeliDruk implements BudowniczyTabeli
@@ -51,6 +55,13 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
 	private LinkedList<Object> wiersz;
 
+	public void refresh() {
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+	}
+	
+	public void dodajKolumnyPrzyciskow() {}
+	
 	@Override
 	public void dodajNaglowek() {
 		this.naglowek = new LinkedList<String>();	
@@ -460,7 +471,23 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	private LinkedList<String> naglowek;
 	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
 	private LinkedList<Object> wiersz;
+	
+	public void dodajKolumnyPrzyciskow() {
+		switch(HibernateOracle.nazwaTypu) {
+		case("Administrator"):
+			this.dodajKolumne("");
+			this.dodajKolumne("");
+			break;
+		default:
+			break;
+		}
+	}
 
+	public void refresh() {
+		this.wiersz = null;
+		this.dane =  new LinkedList<LinkedList<Object>>();
+	}
+	
 	public void dodajNaglowek() {
 		this.naglowek = new LinkedList<String>();
 	}
