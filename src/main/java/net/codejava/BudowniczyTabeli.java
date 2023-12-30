@@ -541,6 +541,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	 	                pr.setId_zamowienia(this.id);
  	 	 	                session.delete(pr);
  	 	 	             oc.closeDBSession();
+ 	 	 	          List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
+	                	lista.remove(this.id-1);
+	                	HibernateOracle.cache.put("Magazyny", lista);
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Magazyny)
@@ -556,6 +559,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
+ 	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");		//padaka zaczyna się tutaj
+ 	                		for (Obiekt_Do_Polecen element : lista) {
+ 	                			Producenci pom = (Producenci) element;
+ 	                		    if (pom == pr) {
+ 	                		    	pom.setCzy_usunieto(1);
+ 	                		    	element = pom;
+ 	                		        break;
+ 	                		    }
+ 	                		}		//padaka kończy się tutaj
+ 	                		HibernateOracle.cache.put("Producenci", lista);
  	 	 	             pr.setCzy_usunieto(1);
 	 	 	                session.update(pr);
 	 	 	              tab.setValueAt("TAK", row, 5);
