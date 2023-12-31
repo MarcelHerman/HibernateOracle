@@ -24,15 +24,10 @@ public class StrategiaKategorie implements IStrategia {
 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
                 "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {
-         		
-         		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-              	oc.createDBSession();
-              	Session session = oc.getDBSession();
-         		
+         	if (result == JOptionPane.OK_OPTION) {         		
          		Kategorie kat = new Kategorie(pierwszyField.getText());
          		kat.setId_Kategorii(bt.id);
-         		oc.closeDBSession();
+         		
          		if(!pierwszyField.getText().isEmpty())
          		{
          			//session.update(kat);
