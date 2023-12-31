@@ -1276,7 +1276,6 @@ public class HibernateOracle extends JFrame {
 			 	                	
 			 	                	//session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
 			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())), idUzytkownika));
-
 			                		
 			                		pokazFakturyPrzycisk.doClick();
 			                	}
@@ -1332,10 +1331,10 @@ public class HibernateOracle extends JFrame {
 			 	                	    }
 			 	                	}		 	                	
 			 	                	
-			 	                	System.out.println("Już prawie");
 			 	                	//((DefaultTableModel)tab.getModel()).addRow(new Object[] {nowaKategoria.getId_Kategorii(), nowaKategoria.getNazwa()});
 			 	                	nowaKategoria.setId_Kategorii(((Kategorie)lista.get(lista.size()-2)).getId_Kategorii()+1);
-			 	                	tab = budSwing.dodajRekord(tab, nowaKategoria);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Kategorie)nowaKategoria).getId_Kategorii(), ((Kategorie)nowaKategoria).getNazwa()});
+
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
 			 	                	kontener.add(dodajPrzycisk);

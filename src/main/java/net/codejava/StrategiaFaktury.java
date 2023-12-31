@@ -39,6 +39,7 @@ public class StrategiaFaktury implements IStrategia {
               	if(!pierwszyField.getText().isEmpty())
               		user.setNIP(pierwszyField.getText());	     	 	              	
          		session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          			  	 	                	
          		oc.closeDBSession();
          		

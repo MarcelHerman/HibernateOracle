@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -135,12 +136,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	public void dodajWiersz() {
 		if(this.wiersz!=null)this.dane.addLast(wiersz);
 		this.wiersz = new LinkedList<Object>();
-	}
-	
-	public JTable dodajRekord(JTable tab, Obiekt_Do_Polecen obiekt) {
-		((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Kategorie)obiekt).getId_Kategorii(), ((Kategorie)obiekt).getNazwa()});
-		tab = dodajPrzycisk(tab);
-		return tab;
 	}
 	
 	public JTable dodajPrzycisk(JTable jt)
@@ -404,7 +399,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	            } 
             }
               
-            this.id = Integer.parseInt((String)table.getValueAt(row, 0));
+            this.id = Integer.parseInt((table.getValueAt(row, 0)).toString());
             if(HibernateOracle.obj instanceof Produkt_Magazyn || HibernateOracle.obj instanceof Produkt_Zamowienia) this.id2=Integer.parseInt((String)table.getValueAt(row, 1));
             button.setText(label);
             isPushed = true;
@@ -417,80 +412,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
         public Object getCellEditorValue() {
             if (isPushed) {
-            	 if (this.label.equals("Edytuj")) { //normalna składnia
-            		// Kod dla przycisku "Edytuj"
-                 	JTextField pierwszyField = new JTextField(7);
-	                JTextField drugiField = new JTextField(7);
-	                JTextField trzeciField = new JTextField(7);
-	                JTextField czwartyField = new JTextField(7);
-	                JTextField piatyField = new JTextField(7);
-            		 
- 	                JPanel myPanel = new JPanel();
- 	                
- 	               HibernateOracle.wzorzec.dodajLogikeEdytowania(this);  
-	                
-	                if(HibernateOracle.obj instanceof Faktury)
-	                	{	                	
- 	                	
-	                	}
-	                	
-	                	else if(HibernateOracle.obj instanceof Kategorie)
-	                	{              		
-	                	}
-	                	
-	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
-	 	                {} 	 
-	                	else if(HibernateOracle.obj instanceof Produkty)
-	 	                {} 	 
-	                	else if(HibernateOracle.obj instanceof Zamowienia)
-	 	                {} 	 
-	                	else if(HibernateOracle.obj instanceof Magazyny)
-	 	                {} 
-	                	else if(HibernateOracle.obj instanceof Producenci)
-	 	                {} 
-	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
-	 	                {}
-	                	else if(HibernateOracle.obj instanceof Stany_Zamowienia)
-	 	                {}
-	                
-	                	else if(HibernateOracle.obj instanceof Typy_uzytkownika)
-	 	                {/*
-	                		myPanel.add(new JLabel("Nazwa: "));
-	                		myPanel.add(pierwszyField);             		
-	                		
-	                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
-	                		 try {
-	     	                	if (result == JOptionPane.OK_OPTION) {
-	     	                		
-	     	                		OracleConnection oc =  OracleConnection.getInstance();
-	     	 	                	oc.createDBSession();
-	     	 	                	Session session = oc.getDBSession();
-	     	                		
-	     	 	                	 	 	                	
-	     	 	                	Typy_uzytkownika user = (Typy_uzytkownika)session.createQuery("select u from Typy_uzytkownika u where u.id_typu_uzytkownika = :id")
-	     	 	                			.setParameter("id", this.id)
-	     	 	                			.uniqueResult();
-	     	 	                	//System.out.println(user.getId_uzytkownika());
-	     	 	                	
-	     	 	                	if(!pierwszyField.getText().isEmpty())
-	     	 	                		user.setNazwa(pierwszyField.getText());	     	 	              	
-	     	                		session.update(user);
-	     	                		
-	     	 	                	
-	     	                		oc.closeDBSession();
-	     	                	}
-	                		 }
-	                		 catch(Exception e) {
-	                			 e.printStackTrace();
-	                			 JOptionPane.showMessageDialog(null, "Nie udało się edytować typu użytkownika. Błąd: " + e.getMessage());
-	                		 }*/
-	 	                }else if(HibernateOracle.obj instanceof Produkt_Koszyk)
-	 	                {}
-	                	                             
-                     //JOptionPane.showMessageDialog(button, "Kliknięto przycisk Edytuj");
-                     
-                 } else if ("Usuń".equals(this.label)) { //składnia Yody
+            	 if (this.label.equals("Edytuj"))  HibernateOracle.wzorzec.dodajLogikeEdytowania(this);  // Kod dla przycisku "Edytuj"
+                	                      
+                  else if ("Usuń".equals(this.label)) { 
                      // Kod dla przycisku "Usuń"
                 	                       	 
                 	JPanel myPanel = new JPanel();
@@ -519,7 +443,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Kategorie pr = new Kategorie();
  	 	                	pr.setId_Kategorii(this.id);
  	 	                	//session.delete(pr);
- 	 	                	oc.closeDBSession();
+ 	 	                	//oc.closeDBSession();
  	 	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
  	 	                	lista.remove(this.row);
  	 	                	HibernateOracle.cache.put("Kategorie", lista);
@@ -574,21 +498,24 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
- 	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
+ 	                		List<Obiekt_Do_Polecen> staraLista = HibernateOracle.cache.get("Producenci");
+ 	                		List<Obiekt_Do_Polecen> nowaLista = new ArrayList<Obiekt_Do_Polecen>();
 
- 	                		for (int i = 0; i < lista.size(); i++) {
- 	                		    Obiekt_Do_Polecen element = lista.get(i);
+ 	                		for (Obiekt_Do_Polecen element : staraLista) {
  	                		    if (element instanceof Producenci) {
  	                		        Producenci pom = (Producenci) element;
  	                		        if (pom.equals(pr)) {
  	                		            pom.setCzy_usunieto(1);
- 	                		            lista.set(i, pom); // Zaktualizuj element w liście
- 	                		            break;
+ 	                		            nowaLista.add(pom); // Dodaj zaktualizowany obiekt do nowej listy
+ 	                		        } else {
+ 	                		            nowaLista.add(element); // Dodaj niezmieniony obiekt do nowej listy
  	                		        }
+ 	                		    } else {
+ 	                		        nowaLista.add(element); // Dodaj obiekty innego typu do nowej listy
  	                		    }
  	                		}
 
- 	                		HibernateOracle.cache.put("Producenci", lista);
+ 	                		HibernateOracle.cache.put("Producenci", nowaLista);
  	 	 	             pr.setCzy_usunieto(1);
 	 	 	                session.update(pr);
 	 	 	              tab.setValueAt("TAK", row, 5);
