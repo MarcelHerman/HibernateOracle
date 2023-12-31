@@ -1335,7 +1335,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}		 	                	
 			 	                	
 			 	                	nowaKategoria.setId_Kategorii(((Kategorie)lista.get(lista.size()-2)).getId_Kategorii()+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Kategorie)nowaKategoria).getId_Kategorii(), ((Kategorie)nowaKategoria).getNazwa()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Kategorie)nowaKategoria).getId_Kategorii()), ((Kategorie)nowaKategoria).getNazwa()});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1390,7 +1390,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}		 	                	
 			 	                	
 			 	                	nowyMagazyn.setId_magazynu(((Magazyny)lista.get(lista.size()-2)).getId_magazynu()+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Magazyny)nowyMagazyn).getId_magazynu(), ((Magazyny)nowyMagazyn).getMiasto(), ((Magazyny)nowyMagazyn).getUlica()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Magazyny)nowyMagazyn).getId_magazynu()), ((Magazyny)nowyMagazyn).getMiasto(), ((Magazyny)nowyMagazyn).getUlica()});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1451,7 +1451,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}		 	                	
 			 	                	
 			 	                	nowyProducent.setId_producenta(((Producenci)lista.get(lista.size()-2)).getId_producenta()+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Producenci)nowyProducent).getId_producenta(), ((Producenci)nowyProducent).getNazwa(), ((Producenci)nowyProducent).getKontakt(), ((Producenci)nowyProducent).getMiasto(), ((Producenci)nowyProducent).getUlica(), ((Producenci)nowyProducent).getCzy_usunieto()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Producenci)nowyProducent).getId_producenta()), ((Producenci)nowyProducent).getNazwa(), ((Producenci)nowyProducent).getKontakt(), ((Producenci)nowyProducent).getMiasto(), ((Producenci)nowyProducent).getUlica(), (((Producenci)nowyProducent).getCzy_usunieto() == 1)?"TAK":"NIE"});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1518,7 +1518,7 @@ public class HibernateOracle extends JFrame {
 			 	                	    }
 			 	                	}		 	                	
 			 	                	
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Produkt_Magazyn)nowyPM).getMagazyn_id(), ((Produkt_Magazyn)nowyPM).getProdukt_id(), ((Produkt_Magazyn)nowyPM).getStan_faktyczny(), ((Produkt_Magazyn)nowyPM).getStan_magazynowy()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkt_Magazyn)nowyPM).getMagazyn_id()), Integer.toString(((Produkt_Magazyn)nowyPM).getProdukt_id()), Integer.toString(((Produkt_Magazyn)nowyPM).getStan_faktyczny()), Integer.toString(((Produkt_Magazyn)nowyPM).getStan_magazynowy())});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1585,7 +1585,7 @@ public class HibernateOracle extends JFrame {
 			 	                	    }
 			 	                	}		 	                	
 			 	                	
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Produkt_Zamowienia)nowyPZ).getZamowienieId(), ((Produkt_Zamowienia)nowyPZ).getProduktId(), ((Produkt_Zamowienia)nowyPZ).getIlosc()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkt_Zamowienia)nowyPZ).getZamowienieId()), Integer.toString(((Produkt_Zamowienia)nowyPZ).getProduktId()), Integer.toString(((Produkt_Zamowienia)nowyPZ).getIlosc())});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1644,7 +1644,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}		 	                	
 			 	                	
 			 	                	nowyStan.setId_Stanu_Zamowienia(((Stany_Zamowienia)lista.get(lista.size()-2)).getId_Stanu_Zamowienia()+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Stany_Zamowienia)nowyStan).getId_Stanu_Zamowienia(), ((Stany_Zamowienia)nowyStan).getNazwa()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Stany_Zamowienia)nowyStan).getId_Stanu_Zamowienia()), ((Stany_Zamowienia)nowyStan).getNazwa()});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1704,7 +1704,7 @@ public class HibernateOracle extends JFrame {
 			 	                	}		 	                	
 			 	                	
 			 	                	nowyTyp.setId_typu_uzytkownika(((Typy_uzytkownika)lista.get(lista.size()-2)).getId_typu_uzytkownika()+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Typy_uzytkownika)nowyTyp).getId_typu_uzytkownika(), ((Typy_uzytkownika)nowyTyp).getNazwa()});
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Typy_uzytkownika)nowyTyp).getId_typu_uzytkownika()), ((Typy_uzytkownika)nowyTyp).getNazwa()});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1795,10 +1795,35 @@ public class HibernateOracle extends JFrame {
 			 	                	        kontener.removeAll();
 			 	                	        break;
 			 	                	    }
-			 	                	}		 	                	
+			 	                	}		 	
+			 	                	
+			 					 	if(!cache.containsKey("TypyUzytkownika")) {
+			 							oc.createDBSession();
+			 							try (Session session2 = oc.getDBSession()) {
+			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
+			 					            cache.put("TypyUzytkownika", query.getResultList());
+			 					            oc.closeDBSession();
+			 					        } catch (Exception e) {
+			 					            e.printStackTrace();
+			 					        }
+			 					 	}
+			 	                	
+			 					 	List<Obiekt_Do_Polecen> cash = cache.get("TypyUzytkownika");
+			 					 	String nazwa = "Default";
+
+			 					 	
 			 	                	int id = (int) ((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0);
 			 	                	nowyUzytkownik.setId_uzytkownika(id+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Uzytkownicy)nowyUzytkownik).getId_uzytkownika(), ((Uzytkownicy)nowyUzytkownik).getNazwa_uzytkownika(), ((Uzytkownicy)nowyUzytkownik).getLogin(),  ((Uzytkownicy)nowyUzytkownik).getHaslo(), ((Uzytkownicy)nowyUzytkownik).getE_mail(),  ((Uzytkownicy)nowyUzytkownik).getId_typu_uzytkownika(),  ((Uzytkownicy)nowyUzytkownik).getCzy_usunieto()});
+			 	                	
+			 					 	for(Obiekt_Do_Polecen entity: cash) {
+			 					 		Typy_uzytkownika ent = (Typy_uzytkownika)entity;
+			 					 		if(ent.getId_typu_uzytkownika() == nowyUzytkownik.getId_typu_uzytkownika()) {
+			 					 			nazwa =ent.getNazwa();
+			 					 			break;
+			 					 		}
+			 					 	}
+			 	                	
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Uzytkownicy)nowyUzytkownik).getId_uzytkownika()), ((Uzytkownicy)nowyUzytkownik).getNazwa_uzytkownika(), ((Uzytkownicy)nowyUzytkownik).getLogin(),  ((Uzytkownicy)nowyUzytkownik).getHaslo(), ((Uzytkownicy)nowyUzytkownik).getE_mail(),  nazwa,  ((((Uzytkownicy)nowyUzytkownik).getCzy_usunieto()) == 1)? "TAK":"NIE"});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
@@ -1862,10 +1887,35 @@ public class HibernateOracle extends JFrame {
 			 	                	        kontener.removeAll();
 			 	                	        break;
 			 	                	    }
-			 	                	}		 	                	
+			 	                	}	
+			 	                	
+			 	                	if(!cache.containsKey("StanyZamowien")) {
+			 							oc.createDBSession();
+			 							try (Session session2 = oc.getDBSession()) {
+			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
+			 					            cache.put("StanyZamowien",query.getResultList());
+			 					            oc.closeDBSession();
+			 					        } catch (Exception e) {
+			 					            e.printStackTrace();
+			 					        }
+			 					 	}
+			 	                	List<Obiekt_Do_Polecen> cash = cache.get("StanyZamowien");
+			 	                	String nazwa = "Default";
+			 	                	
 			 	                	int id = (int) ((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0);
 			 	                	noweZamowienie.setId_zamowienia(id+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Zamowienia)noweZamowienie).getId_zamowienia(), ((Zamowienia)noweZamowienie).getAdres_wysylki_miasto(), ((Zamowienia)noweZamowienie).getAdres_wysylki_ulica(),  ((Zamowienia)noweZamowienie).getKoszt(), ((Zamowienia)noweZamowienie).getId_stanu_zamowienia(),  ((Zamowienia)noweZamowienie).getUzytkownicy_id_uzytkownika(), null,  ((Zamowienia)noweZamowienie).getOpis()});
+			 	                	
+			 	                	for(Obiekt_Do_Polecen entities: cash) {
+			 	                		Stany_Zamowienia ent = (Stany_Zamowienia) entities;
+			 	                		
+			 	                		if(ent.getId_Stanu_Zamowienia() == noweZamowienie.getId_stanu_zamowienia())
+			 	                		{
+			 	                			nazwa = ent.getNazwa();
+			 	                		}
+			 	                				
+			 	                	}
+			 	                	
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Zamowienia)noweZamowienie).getId_zamowienia()), ((Zamowienia)noweZamowienie).getAdres_wysylki_miasto(), ((Zamowienia)noweZamowienie).getAdres_wysylki_ulica(),  Double.toString(((Zamowienia)noweZamowienie).getKoszt()), nazwa,  Integer.toString(((Zamowienia)noweZamowienie).getUzytkownicy_id_uzytkownika()), null,  ((Zamowienia)noweZamowienie).getOpis()});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
