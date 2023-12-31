@@ -77,6 +77,8 @@ public class StrategiaProdukty implements IStrategia {
               	Produkty user = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
               			.setParameter("id", bt.id)
               			.uniqueResult();
+              	
+         		oc.closeDBSession();
               	//System.out.println(user.getId_uzytkownika());
               	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
               	if(!pierwszyField.getText().isEmpty())
@@ -92,9 +94,8 @@ public class StrategiaProdukty implements IStrategia {
               		user.setKategorie_id_kategorii(Integer.parseInt(czwartyField.getText()));
               	
               	user.setKategorie_id_kategorii(((Kategorie)fData.get(jombo.getSelectedIndex())).getId_Kategorii());
-         		session.update(user);
-         		
-         		oc.closeDBSession();
+         		//session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
          		bt.tab.setValueAt(user.getNazwa(), bt.row, 1);
          		bt.tab.setValueAt(user.getCena(), bt.row, 2);
