@@ -517,28 +517,32 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		oc.closeDBSession();
  	                		
  	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
- 	                		List<Obiekt_Do_Polecen> nowaLista = new ArrayList<>();
+ 	                		int index = -1;
+
+ 	                		for (int i = 0; i < lista.size(); i++) {
+ 	                		    Obiekt_Do_Polecen element = lista.get(i);
+ 	                		    Producenci pom = (Producenci) element;
+ 	                		    System.out.println("przed modyfikacją:" + pom.getCzy_usunieto() + "\n");
+
+ 	                		    // Porównanie na podstawie identyfikatora lub innego kryterium
+ 	                		    if (pom.getId_producenta() == pr.getId_producenta()) {
+ 	                		        pom.setCzy_usunieto(1);
+ 	                		        index = i;
+ 	                		        System.out.println("po modyfikacji:" + pom.getCzy_usunieto() + "\n");
+ 	                		        break;
+ 	                		    }
+ 	                		}
+
+ 	                		if (index != -1) {
+ 	                		    lista.set(index, lista.get(index));
+ 	                		}
 
  	                		for (Obiekt_Do_Polecen element : lista) {
  	                		    Producenci pom = (Producenci) element;
- 	                		    if (pom == pr) {
- 	                		        pom.setCzy_usunieto(1);
- 	                		    }
- 	                		    nowaLista.add(pom);
+ 	                		    System.out.println("po wyjściu z pętli:" + pom.getCzy_usunieto() + "\n");
  	                		}
- 	                		
- 	                		String output = "";
- 	                		if (nowaLista != null) {
- 	                		    for (Obiekt_Do_Polecen element : nowaLista) {
- 	                		        Producenci pom = (Producenci) element;
- 	                		        output = output + "ID: " + pom.getId_producenta() + ", Nazwa: " + pom.getNazwa() + ", Czy usunięto: " + pom.getCzy_usunieto() + "\n";
- 	                		    }
- 	                		    System.out.println(output);
- 	                		} else {
- 	                		    System.out.println("Lista 'Producenci' jest pusta lub nie istnieje w cache.");
- 	                		} 
 
- 	                		HibernateOracle.cache.put("Producenci", nowaLista);
+ 	                		HibernateOracle.cache.put("Producenci", lista);
  	 	 	             pr.setCzy_usunieto(1);
 	 	 	                //session.update(pr);
 		 	                HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));

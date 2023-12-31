@@ -1326,24 +1326,24 @@ public class HibernateOracle extends JFrame {
 			 	                	{
 			 	                		if (component instanceof JScrollPane) {
 			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	       System.out.print(kontener.getComponent(0) + "\n");
+			 	                            System.out.print(kontener.getComponent(1)+ "\n");
+			 	                            System.out.print(kontener.getComponent(2)+ "\n");
 			 	                	        kontener.removeAll();
 			 	                	        break;
 			 	                	    }
 			 	                	}		 	                	
 			 	                	
-			 	                	//((DefaultTableModel)tab.getModel()).addRow(new Object[] {nowaKategoria.getId_Kategorii(), nowaKategoria.getNazwa()});
 			 	                	nowaKategoria.setId_Kategorii(((Kategorie)lista.get(lista.size()-2)).getId_Kategorii()+1);
 			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Kategorie)nowaKategoria).getId_Kategorii(), ((Kategorie)nowaKategoria).getNazwa()});
 
 			 	                	JScrollPane pane = new JScrollPane(tab);
 			 	                	kontener.add(pane);
 			 	                	kontener.add(dodajPrzycisk);
-			 						kontener.add(eksportujDoDruku);
-			 	                	
+			 						kontener.add(eksportujDoDruku);			 	                	
 			 	                	kontener.repaint();	
 			 	                	kontener.revalidate();
-			 	                	frame.repaint();
-			 	                	frame.revalidate();
+			 	                	
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1375,7 +1375,29 @@ public class HibernateOracle extends JFrame {
 			 	                	lista.add(nowyMagazyn);
 			 	                	cache.put("Magazyny", lista);
 			                		
-			                		pokazMagazynyPrzycisk.doClick();
+			                		//pokazMagazynyPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	
+			 	                	nowyMagazyn.setId_magazynu(((Magazyny)lista.get(lista.size()-2)).getId_magazynu()+1);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Magazyny)nowyMagazyn).getId_magazynu(), ((Magazyny)nowyMagazyn).getMiasto(), ((Magazyny)nowyMagazyn).getUlica()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1414,7 +1436,29 @@ public class HibernateOracle extends JFrame {
 			 	                	cache.put("Producenci", lista);
 			                		
 			                		
-			                		pokazProducentowPrzycisk.doClick();
+			                		//pokazProducentowPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	
+			 	                	nowyProducent.setId_producenta(((Producenci)lista.get(lista.size()-2)).getId_producenta()+1);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Producenci)nowyProducent).getId_producenta(), ((Producenci)nowyProducent).getNazwa(), ((Producenci)nowyProducent).getKontakt(), ((Producenci)nowyProducent).getMiasto(), ((Producenci)nowyProducent).getUlica(), ((Producenci)nowyProducent).getCzy_usunieto()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1455,10 +1499,33 @@ public class HibernateOracle extends JFrame {
 			 	                			 	                	
 			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	//session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())), idUzytkownika));
+			 	                	
+			 	                	Produkt_Magazyn nowyPM = new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText()));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyPM, idUzytkownika));
 
 			                		
-			                		pokazProduktMagazynPrzycisk.doClick();
+			                		//pokazProduktMagazynPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Produkt_Magazyn)nowyPM).getMagazyn_id(), ((Produkt_Magazyn)nowyPM).getProdukt_id(), ((Produkt_Magazyn)nowyPM).getStan_faktyczny(), ((Produkt_Magazyn)nowyPM).getStan_magazynowy()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1497,12 +1564,35 @@ public class HibernateOracle extends JFrame {
 			 	                	
 			 	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
 			 	                	
+			 	                	Produkt_Zamowienia nowyPZ = new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText()));
+			 	                	
 			 	                	//session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())), idUzytkownika));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyPZ, idUzytkownika));
 
 			                		
 			                		//oc.closeDBSession();
-			                		pokazProduktZamowieniaPrzycisk.doClick();
+			                		//pokazProduktZamowieniaPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Produkt_Zamowienia)nowyPZ).getZamowienieId(), ((Produkt_Zamowienia)nowyPZ).getProduktId(), ((Produkt_Zamowienia)nowyPZ).getIlosc()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1539,7 +1629,29 @@ public class HibernateOracle extends JFrame {
 			 	                	cache.put("StanyZamowien", lista);
 			                		
 			                		//oc.closeDBSession();
-			                		pokazStanyZamowienPrzycisk.doClick();
+			                		//pokazStanyZamowienPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	
+			 	                	nowyStan.setId_Stanu_Zamowienia(((Stany_Zamowienia)lista.get(lista.size()-2)).getId_Stanu_Zamowienia()+1);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Stany_Zamowienia)nowyStan).getId_Stanu_Zamowienia(), ((Stany_Zamowienia)nowyStan).getNazwa()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1577,7 +1689,29 @@ public class HibernateOracle extends JFrame {
 
 			                		
 			                		//oc.closeDBSession();
-			                		pokazTypyUzytkownikaPrzycisk.doClick();
+			                		//pokazTypyUzytkownikaPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	
+			 	                	nowyTyp.setId_typu_uzytkownika(((Typy_uzytkownika)lista.get(lista.size()-2)).getId_typu_uzytkownika()+1);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Typy_uzytkownika)nowyTyp).getId_typu_uzytkownika(), ((Typy_uzytkownika)nowyTyp).getNazwa()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1642,11 +1776,36 @@ public class HibernateOracle extends JFrame {
 			 	                	}
 			 	                				 	                				 	                
 			 	                	//session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0), idUzytkownika));
+			 	                	
+			 	                	Uzytkownicy nowyUzytkownik = new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0);
+			 	                	
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, idUzytkownika));
 
 			 	                	
 			                		//oc.closeDBSession();
-			                		pokazUzytkownicyPrzycisk.doClick();
+			                		//pokazUzytkownicyPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	int id = (int) ((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0);
+			 	                	nowyUzytkownik.setId_uzytkownika(id+1);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Uzytkownicy)nowyUzytkownik).getId_uzytkownika(), ((Uzytkownicy)nowyUzytkownik).getNazwa_uzytkownika(), ((Uzytkownicy)nowyUzytkownik).getLogin(),  ((Uzytkownicy)nowyUzytkownik).getHaslo(), ((Uzytkownicy)nowyUzytkownik).getE_mail(),  ((Uzytkownicy)nowyUzytkownik).getId_typu_uzytkownika(),  ((Uzytkownicy)nowyUzytkownik).getCzy_usunieto()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1686,11 +1845,34 @@ public class HibernateOracle extends JFrame {
 			 	                	double cena = Double.parseDouble(piatyField.getText());
 			 	                	cena = Math.round(cena*100.0)/100.0;
 			 	                	//session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null), idUzytkownika));
+			 	                	Zamowienia noweZamowienie = new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null);
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, idUzytkownika));
 
 			 	                	
 			                		//oc.closeDBSession();
-			                		pokazZamowieniaPrzycisk.doClick();
+			                		//pokazZamowieniaPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	                	
+			 	                	int id = (int) ((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0);
+			 	                	noweZamowienie.setId_zamowienia(id+1);
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {((Zamowienia)noweZamowienie).getId_zamowienia(), ((Zamowienia)noweZamowienie).getAdres_wysylki_miasto(), ((Zamowienia)noweZamowienie).getAdres_wysylki_ulica(),  ((Zamowienia)noweZamowienie).getKoszt(), ((Zamowienia)noweZamowienie).getId_stanu_zamowienia(),  ((Zamowienia)noweZamowienie).getUzytkownicy_id_uzytkownika(), null,  ((Zamowienia)noweZamowienie).getOpis()});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
