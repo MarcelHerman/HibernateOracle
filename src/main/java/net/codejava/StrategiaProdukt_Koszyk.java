@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
@@ -19,7 +20,7 @@ public class StrategiaProdukt_Koszyk implements IStrategia{
 		myPanel.add(pierwszyField);             		
 		
 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-                "Edytuj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
+                "Edytuj koszyk", JOptionPane.OK_CANCEL_OPTION);
 		 try {
          	if (result == JOptionPane.OK_OPTION) {
               	if(!pierwszyField.getText().isEmpty() && Integer.parseInt(pierwszyField.getText()) > 0)
@@ -47,9 +48,18 @@ public class StrategiaProdukt_Koszyk implements IStrategia{
 	}
 
 	@Override
-	public void dodajLogikeUsuwania() {
-		// TODO Auto-generated method stub
+	public void dodajLogikeUsuwania(ButtonEditor br) {
+ 		for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
+ 			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == br.id) {
+ 				HibernateOracle.koszyk.remove(pk);
+ 				break;
+ 			}
+ 		}
+		//oc.closeDBSession();
+  	((DefaultTableModel)br.tab.getModel()).removeRow(br.row);
+  }
+	
+	public void dodajLogikeDodawania(JPanel kontener){
 		
 	}
-
 }

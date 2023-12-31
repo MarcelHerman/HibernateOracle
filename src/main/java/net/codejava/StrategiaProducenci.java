@@ -1,13 +1,18 @@
 package net.codejava;
 
+import java.awt.Component;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
 
@@ -107,9 +112,117 @@ public class StrategiaProducenci implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania() {
-		// TODO Auto-generated method stub
+	public void dodajLogikeUsuwania(ButtonEditor br) {
 		
+		PolaczenieOracle oc = PolaczenieOracle.getInstance();
+ 		oc.createDBSession();	                			
+      	Session session = oc.getDBSession();
+ 		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
+      			.setParameter("id", br.id)
+      			.uniqueResult();
+ 		oc.closeDBSession();
+ 		
+ 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
+
+ 		for (int i = 0; i < lista.size(); i++) {
+ 		    Obiekt_Do_Polecen element = lista.get(i);
+ 		    Producenci pom = (Producenci) element;
+ 		    //System.out.println("przed modyfikacją:" + pom.getCzy_usunieto() + "\n");
+
+ 		    if (pom.getId_producenta() == pr.getId_producenta()) {
+ 		        pom.setCzy_usunieto(1);
+ 		        //System.out.println("po modyfikacji:" + pom.getCzy_usunieto() + "\n");
+ 		        break;
+ 		    }
+ 		}
+
+ 		/*for (Obiekt_Do_Polecen element : lista) {
+ 		    Producenci pom = (Producenci) element;
+ 		    System.out.println("po wyjściu z pętli:" + pom.getCzy_usunieto() + "\n");
+ 		}*/
+
+ 		HibernateOracle.cache.put("Producenci", lista);
+        pr.setCzy_usunieto(1);
+          //session.update(pr);
+         HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
+
+        br.tab.setValueAt("TAK", br.row, 5);
+      //oc.closeDBSession();
+	}
+	
+	public void dodajLogikeDodawania(JPanel kontener) {
+		
+     	JTextField pierwszyField = new JTextField(7);
+        JTextField drugiField = new JTextField(7);
+        JTextField trzeciField = new JTextField(7);
+        JTextField czwartyField = new JTextField(7);
+		 
+         JPanel myPanel = new JPanel();
+
+    	myPanel.add(new JLabel("Nazwa: "));
+ 		myPanel.add(pierwszyField);
+ 		myPanel.add(Box.createHorizontalStrut(5));
+ 		myPanel.add(new JLabel("Kontakt: "));
+ 		myPanel.add(drugiField);
+ 		myPanel.add(Box.createHorizontalStrut(5));
+ 		myPanel.add(new JLabel("Miasto: "));
+ 		myPanel.add(trzeciField);
+ 		myPanel.add(Box.createHorizontalStrut(5));
+ 		myPanel.add(new JLabel("Ulica: "));
+ 		myPanel.add(czwartyField);
+ 		
+ 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+                 "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
+ 		 try {
+            	if (result == JOptionPane.OK_OPTION) {			                					                			                		
+	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
+	                	{
+	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Producent nie został dodany");
+	                		return;
+	                	}
+	                	//session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
+	                	Producenci nowyProducent = new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0);
+	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyProducent, HibernateOracle.idUzytkownika));
+	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
+	                	lista.add(nowyProducent);
+	                	HibernateOracle.cache.put("Producenci", lista);
+            		
+            		
+            		//pokazProducentowPrzycisk.doClick();
+	                	
+	                	Component[] components = kontener.getComponents();
+	                	JTable tab = null;
+	                	JButton dodajPrzycisk = null;
+	                	JButton eksportujDoDruku = null;
+	                			
+	                	
+	                	for(Component component : components)
+	                	{
+	                		if (component instanceof JScrollPane) {
+	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+	                	        dodajPrzycisk = (JButton)kontener.getComponent(1);
+	                	        eksportujDoDruku = (JButton)kontener.getComponent(2);
+	                	        kontener.removeAll();
+	                	        break;
+	                	    }
+	                	}		 	                	
+	                	
+	                	nowyProducent.setId_producenta(((Producenci)lista.get(lista.size()-2)).getId_producenta()+1);
+	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Producenci)nowyProducent).getId_producenta()), ((Producenci)nowyProducent).getNazwa(), ((Producenci)nowyProducent).getKontakt(), ((Producenci)nowyProducent).getMiasto(), ((Producenci)nowyProducent).getUlica(), (((Producenci)nowyProducent).getCzy_usunieto() == 1)?"TAK":"NIE"});
+
+	                	JScrollPane pane = new JScrollPane(tab);
+	                	kontener.add(pane);
+	                	kontener.add(dodajPrzycisk);
+						kontener.add(eksportujDoDruku);			 	                	
+	                	kontener.repaint();	
+	                	kontener.revalidate();
+            	}
+ 		 }
+ 		 catch(Exception e) {
+ 			 e.printStackTrace();
+ 			 JOptionPane.showMessageDialog(null, "Nie udało się dodać producenta. Błąd: " + e.getMessage());
+ 		 }
+    
 	}
 
 }
