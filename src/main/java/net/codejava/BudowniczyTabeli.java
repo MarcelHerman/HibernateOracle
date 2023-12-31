@@ -426,15 +426,16 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	              try {
  	            	 if (result == JOptionPane.OK_OPTION) {
  	            		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
- 	                	oc.createDBSession();	                			
- 	                	Session session = oc.getDBSession();
+ 	                	//oc.createDBSession();	                			
+ 	                	//Session session = oc.getDBSession();
  	            		
  	                	if(HibernateOracle.obj instanceof Faktury)
  	                	{
  	                		Faktury pr = new Faktury();
  	 	                	pr.setId_faktury(this.id);
- 	 	                	session.delete(pr);
- 	 	                	oc.closeDBSession();
+ 	 	                	//session.delete(pr);
+ 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+ 	 	                	//oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	                	}
  	                	
@@ -453,51 +454,68 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                	
  	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
  	 	                {
+ 	 	                	oc.createDBSession();	                			
+ 	 	                	Session session = oc.getDBSession();
  	                		Uzytkownicy pr = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
- 	                		
+ 	 	                	oc.closeDBSession();
+ 	               	 
  	 	 	             pr.setCzy_usunieto(1);
-	 	 	                session.update(pr);
+	 	 	                //session.update(pr);
+	 	                 HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
+
 	 	 	              tab.setValueAt("TAK", row, 6);
-	 	 	            oc.closeDBSession();
+	 	 	            //oc.closeDBSession();
  	 	 	                
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Produkty)
  	 	                {	
+ 	                		oc.createDBSession();	                			
+ 	 	                	Session session = oc.getDBSession();
  	 	                	Produkty pr = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
+ 	 	                	oc.closeDBSession();
+
  	 	 	                pr.setCzy_usunieto(1);
  	 	 	                
- 	 	 	                session.update(pr);
+ 	 	 	                //session.update(pr);
+ 		 	                HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
  	 	 	                tab.setValueAt("TAK", row, 6);
- 	 	 	             oc.closeDBSession();
+ 	 	 	             //oc.closeDBSession();
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Zamowienia)
  	 	                {
  	 	                	Zamowienia pr = new Zamowienia();
  	 	 	                pr.setId_zamowienia(this.id);
- 	 	 	                session.delete(pr);
- 	 	 	             oc.closeDBSession();
- 	 	 	          List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-	                	lista.remove(this.row);
-	                	HibernateOracle.cache.put("Magazyny", lista);
+ 	 	 	                //session.delete(pr);
+ 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+ 	 	 	             //oc.closeDBSession();
+ 	 	 	             List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
+ 	 	 	             lista.remove(this.row);
+ 	 	 	             HibernateOracle.cache.put("Magazyny", lista);
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Magazyny)
  	 	                {
  	 	                	Magazyny pr = new Magazyny();
  	 	 	                pr.setId_magazynu(this.id);
- 	 	 	                session.delete(pr);
- 	 	 	             oc.closeDBSession();
+ 	 	 	                //session.delete(pr);
+ 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+
+ 	 	 	             //oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Producenci)
  	 	                {
+ 	                		oc.createDBSession();	                			
+ 	 	                	Session session = oc.getDBSession();
  	                		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
+ 	                		oc.closeDBSession();
+ 	                		
  	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
  	                		List<Obiekt_Do_Polecen> nowaLista = new ArrayList<>();
 
@@ -508,12 +526,25 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		    }
  	                		    nowaLista.add(pom);
  	                		}
+ 	                		
+ 	                		String output = "";
+ 	                		if (nowaLista != null) {
+ 	                		    for (Obiekt_Do_Polecen element : nowaLista) {
+ 	                		        Producenci pom = (Producenci) element;
+ 	                		        output = output + "ID: " + pom.getId_producenta() + ", Nazwa: " + pom.getNazwa() + ", Czy usunięto: " + pom.getCzy_usunieto() + "\n";
+ 	                		    }
+ 	                		    System.out.println(output);
+ 	                		} else {
+ 	                		    System.out.println("Lista 'Producenci' jest pusta lub nie istnieje w cache.");
+ 	                		} 
 
  	                		HibernateOracle.cache.put("Producenci", nowaLista);
  	 	 	             pr.setCzy_usunieto(1);
-	 	 	                session.update(pr);
+	 	 	                //session.update(pr);
+		 	                HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
+
 	 	 	              tab.setValueAt("TAK", row, 5);
-	 	 	            oc.closeDBSession();
+	 	 	            //oc.closeDBSession();
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Koszyk)
  	 	                {
@@ -523,23 +554,26 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 	 	                				break;
 	 	                			}
 	 	                		}
- 	                		oc.closeDBSession();
+ 	                		//oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                }
  	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
  	 	                {
  	                		Produkt_Magazyn pr = new Produkt_Magazyn();
  	 	 	                pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(this.id, this.id2));
- 	 	 	                session.delete(pr);
- 	 	 	             oc.closeDBSession();
+ 	 	 	                //session.delete(pr);
+ 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+
+ 	 	 	             //oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Zamowienia)
  	 	                {
  	                		Produkt_Zamowienia pr = new Produkt_Zamowienia();
  	 	 	                pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(this.id, this.id2));
- 	 	 	                session.delete(pr);
- 	 	 	             oc.closeDBSession();
+ 	 	 	                //session.delete(pr);
+ 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+ 	 	 	            // oc.closeDBSession();
  	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
  	 	                } 	            		 	            			                	
  	            	 } 	            	  
