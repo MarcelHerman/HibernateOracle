@@ -454,48 +454,18 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                	
  	                	else if(HibernateOracle.obj instanceof Uzytkownicy)
  	 	                {
- 	 	                	oc.createDBSession();	                			
- 	 	                	Session session = oc.getDBSession();
- 	                		Uzytkownicy pr = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
- 	 	                			.setParameter("id", this.id)
- 	 	                			.uniqueResult();
- 	 	                	oc.closeDBSession();
- 	               	 
- 	 	 	             pr.setCzy_usunieto(1);
-	 	 	                //session.update(pr);
-	 	                 HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
-
-	 	 	              tab.setValueAt("TAK", row, 6);
+ 	 	                	
 	 	 	            //oc.closeDBSession();
  	 	 	                
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Produkty)
  	 	                {	
- 	                		oc.createDBSession();	                			
- 	 	                	Session session = oc.getDBSession();
- 	 	                	Produkty pr = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
- 	 	                			.setParameter("id", this.id)
- 	 	                			.uniqueResult();
- 	 	                	oc.closeDBSession();
-
- 	 	 	                pr.setCzy_usunieto(1);
- 	 	 	                
- 	 	 	                //session.update(pr);
- 		 	                HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
- 	 	 	                tab.setValueAt("TAK", row, 6);
+ 	                		
  	 	 	             //oc.closeDBSession();
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Zamowienia)
  	 	                {
- 	 	                	Zamowienia pr = new Zamowienia();
- 	 	 	                pr.setId_zamowienia(this.id);
- 	 	 	                //session.delete(pr);
- 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
- 	 	 	             //oc.closeDBSession();
- 	 	 	             List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
- 	 	 	             lista.remove(this.row);
- 	 	 	             HibernateOracle.cache.put("Magazyny", lista);
- 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
+ 	 	                	
  	 	                } 	 
  	                	else if(HibernateOracle.obj instanceof Magazyny)
  	 	                {
@@ -559,13 +529,7 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	                }
  	                	else if(HibernateOracle.obj instanceof Produkt_Magazyn)
  	 	                {
- 	                		Produkt_Magazyn pr = new Produkt_Magazyn();
- 	 	 	                pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(this.id, this.id2));
- 	 	 	                //session.delete(pr);
- 	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-
- 	 	 	             //oc.closeDBSession();
- 	 	                	((DefaultTableModel)tab.getModel()).removeRow(row);
+ 	                		
  	 	                } 
  	                	else if(HibernateOracle.obj instanceof Produkt_Zamowienia)
  	 	                {

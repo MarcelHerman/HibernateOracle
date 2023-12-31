@@ -49,10 +49,13 @@ public class StrategiaStany_Zamowienia implements IStrategia {
 		
 	}
 
-	@Override
-	public void dodajLogikeUsuwania() {
-		// TODO Auto-generated method stub
-		
+	
+	public void dodajLogikeUsuwania(ButtonEditor bt) {
+		//brak implementacji 
+	}
+	
+	public void dodajLogikeDodawania(JPanel kontener) {
+		//brak implementacji
 	}
 
 }

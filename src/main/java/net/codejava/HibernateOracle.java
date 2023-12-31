@@ -1174,157 +1174,8 @@ public class HibernateOracle extends JFrame {
 	                JPanel myPanel = new JPanel();
 	                
 	                if(obj instanceof Produkty) 
-	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		                oc.createDBSession();
-
-		                List<Obiekt_Do_Polecen> fData = null;
-		                List<Obiekt_Do_Polecen> fData2 = null;
-
-		                try (Session session = oc.getDBSession()) {
-		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
-		                    fData = query.getResultList();
-		                    query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
-		                    fData2 = query.getResultList();
-		                    oc.closeDBSession();
-		                } catch (Exception e) {
-		                    e.printStackTrace();
-		                    System.out.println(e);
-		                }
-		                
-		                String nazwy[] = new String[fData.size()]; 
-		                String nazwy2[] = new String[fData2.size()];
-		                
-		                int i=0;
-		                for(Obiekt_Do_Polecen stan: fData) {
-		                	nazwy[i] = ((Producenci)stan).getNazwa();
-		                	i++;
-		                }
-		                i=0;
-		                for(Obiekt_Do_Polecen stan: fData2) {
-		                	nazwy2[i] = ((Kategorie)stan).getNazwa();
-		                	i++;
-		                }
-		                
-		                JComboBox jombo = new JComboBox(nazwy);
-		                JComboBox jombo2 = new JComboBox(nazwy2);
-                		
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Cena: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Opis: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id producenta: "));
-		         		myPanel.add(jombo);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id kategorii: "));
-		         		myPanel.add(jombo2);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {			                		
-			 	                	//oc.createDBSession();
-			 	                	//Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany");
-			 	                		return;
-			 	                	}
-			 	                	double cena = Double.parseDouble(drugiField.getText());
-			 	                	cena = Math.round(cena*100.0)/100.0;
-			 	                	//oc.closeDBSession();
-			 	                	//session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
-			 	                	
-			 	                	Produkty nowyProdukt = new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0); 
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyProdukt, idUzytkownika));
-			                		
-			                		//pokazProduktPrzycisk.doClick();
-			 	                	
-			 	                	Component[] components = kontener.getComponents();
-			 	                	JTable tab = null;
-			 	                	
-			 	                	for(Component component : components)
-			 	                	{
-			 	                		if (component instanceof JScrollPane) {
-			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
-			 	                	        kontener.removeAll();
-			 	                	        break;
-			 	                	    }
-			 	                	}		 	
-			 	                	
-			 					 	if(!cache.containsKey("Kategorie")) {
-			 							oc.createDBSession();
-			 							try (Session session2 = oc.getDBSession()) {
-			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
-			 					            cache.put("Kategorie", query.getResultList());
-			 					            oc.closeDBSession();
-			 					        } catch (Exception e) {
-			 					            e.printStackTrace();
-			 					        }
-			 					 	}
-			 	                	
-			 					 	List<Obiekt_Do_Polecen> cash = cache.get("Kategorie");
-			 					 	String nazwa = "Default";
-
-			 					 	
-			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
-			 	                	nowyProdukt.setId_produktu(id+1);
-			 	                	
-			 					 	for(Obiekt_Do_Polecen entity: cash) {
-			 					 		Kategorie ent = (Kategorie)entity;
-			 					 		if(ent.getId_Kategorii() == nowyProdukt.getKategorie_id_kategorii()) {
-			 					 			nazwa =ent.getNazwa();
-			 					 			break;
-			 					 		}
-			 					 	}
-			 					 	
-			 					 	
-			 					 	if(!cache.containsKey("Producenci")) {
-			 							oc.createDBSession();
-			 							try (Session session2 = oc.getDBSession()) {
-			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
-			 					            cache.put("Producenci", query.getResultList());
-			 					            oc.closeDBSession();
-			 					        } catch (Exception e) {
-			 					            e.printStackTrace();
-			 					        }
-			 					 	}
-			 	                	
-			 					 	List<Obiekt_Do_Polecen> cash2 = cache.get("Producenci");
-			 					 	String nazwa2 = "Default";
-			 					 				 	                	
-			 					 	for(Obiekt_Do_Polecen entity: cash2) {
-			 					 		Producenci ent = (Producenci)entity;
-			 					 		if(ent.getId_producenta() == nowyProdukt.getProducenci_id_producenta()) {
-			 					 			nazwa2 =ent.getNazwa();
-			 					 			break;
-			 					 		}
-			 					 	}
-			 	                	if(nazwaTypu.equals("Klient"))((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkty)nowyProdukt).getId_produktu()), ((Produkty)nowyProdukt).getNazwa(), Double.toString(((Produkty)nowyProdukt).getCena()),  ((Produkty)nowyProdukt).getOpis(), nazwa2,  nazwa});
-			 	                	else ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkty)nowyProdukt).getId_produktu()), ((Produkty)nowyProdukt).getNazwa(), Double.toString(((Produkty)nowyProdukt).getCena()),  ((Produkty)nowyProdukt).getOpis(), nazwa2,  nazwa,  ((((Produkty)nowyProdukt).getCzy_usunieto()) == 1)? "TAK":"NIE"});
-
-			 	                	JScrollPane pane = new JScrollPane(tab);
-			 	                	kontener.add(pane);
-			 	                	kontener.add(dodajPrzycisk);
-			 						kontener.add(eksportujDoDruku);			 	                	
-			 	                	kontener.repaint();	
-			 	                	kontener.revalidate();
-			 	                	
-			 	                	
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu. Błąd: " + e.getMessage());
-		         		 }
-	                }
-	                else if(obj instanceof Faktury) 
+	                {}
+	                else if(obj instanceof Faktury) //fuck tury
 	                {
 	                	myPanel.add(new JLabel("NIP: "));
 		         		myPanel.add(pierwszyField);
@@ -1567,72 +1418,7 @@ public class HibernateOracle extends JFrame {
 		         		 }
 	                }
 	                else if(obj instanceof Produkt_Magazyn)
-	                {
-	                	myPanel.add(new JLabel("Id magazynu: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id produktu: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Stan magazynowy: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Stan faktyczny: "));
-		         		myPanel.add(czwartyField);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj produkt do magazynu", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                					                					                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do magazynu");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	if(Integer.parseInt(trzeciField.getText())<0)
-			 	                		throw(new Exception("Stan magazynowy nie może być ujemny."));
-			 	                	
-			 	                	if(Integer.parseInt(czwartyField.getText())<=0)
-			 	                		throw(new Exception("Stan faktyczny nie może być ujemny."));
-			 	                			 	                	
-			 	                	Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
-			 	                	//session.save(new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText())));
-			 	                	
-			 	                	Produkt_Magazyn nowyPM = new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()), Integer.parseInt(czwartyField.getText()));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyPM, idUzytkownika));
-
-			                		
-			                		//pokazProduktMagazynPrzycisk.doClick();
-			 	                	
-			 	                	Component[] components = kontener.getComponents();
-			 	                	JTable tab = null;
-			 	                	
-			 	                	for(Component component : components)
-			 	                	{
-			 	                		if (component instanceof JScrollPane) {
-			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
-			 	                	        kontener.removeAll();
-			 	                	        break;
-			 	                	    }
-			 	                	}		 	                	
-			 	                	
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkt_Magazyn)nowyPM).getMagazyn_id()), Integer.toString(((Produkt_Magazyn)nowyPM).getProdukt_id()), Integer.toString(((Produkt_Magazyn)nowyPM).getStan_faktyczny()), Integer.toString(((Produkt_Magazyn)nowyPM).getStan_magazynowy())});
-
-			 	                	JScrollPane pane = new JScrollPane(tab);
-			 	                	kontener.add(pane);
-			 	                	kontener.add(dodajPrzycisk);
-			 						kontener.add(eksportujDoDruku);			 	                	
-			 	                	kontener.repaint();	
-			 	                	kontener.revalidate();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu do magazynu. Błąd: " + e.getMessage());
-		         		 }
-	                }
+	                {}
 	                else if(obj instanceof Produkt_Zamowienia) 
 	                {
 	                	myPanel.add(new JLabel("Id zamówienia: "));
@@ -1701,64 +1487,48 @@ public class HibernateOracle extends JFrame {
 		         		 }
 	                }
 	                else if(obj instanceof Stany_Zamowienia) 
-	                {
-	                	myPanel.add(new JLabel("Nazwa: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));		         	
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj stan zamówienia", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-			                		
-			                		//OracleConnection oc =  OracleConnection.getInstance();
-			 	                	//oc.createDBSession();
-			 	                	//Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Stan zamówienia nie został dodany.");
-			 	                		return;
-			 	                	}
-			 	                				 	                	
-			 	                	//session.save(new Stany_Zamowienia(pierwszyField.getText()));
-			 	                	Stany_Zamowienia nowyStan = new Stany_Zamowienia(pierwszyField.getText());
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyStan, idUzytkownika));
-			 	                	List<Obiekt_Do_Polecen> lista = cache.get("StanyZamowien");
-			 	                	lista.add(nowyStan);
-			 	                	cache.put("StanyZamowien", lista);
-			                		
-			                		//oc.closeDBSession();
-			                		//pokazStanyZamowienPrzycisk.doClick();
-			 	                	
-			 	                	Component[] components = kontener.getComponents();
-			 	                	JTable tab = null;
-			 	                	
-			 	                	for(Component component : components)
-			 	                	{
-			 	                		if (component instanceof JScrollPane) {
-			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
-			 	                	        kontener.removeAll();
-			 	                	        break;
-			 	                	    }
-			 	                	}		 	                	
-			 	                	
-			 	                	nowyStan.setId_Stanu_Zamowienia(((Stany_Zamowienia)lista.get(lista.size()-2)).getId_Stanu_Zamowienia()+1);
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Stany_Zamowienia)nowyStan).getId_Stanu_Zamowienia()), ((Stany_Zamowienia)nowyStan).getNazwa()});
-
-			 	                	JScrollPane pane = new JScrollPane(tab);
-			 	                	kontener.add(pane);
-			 	                	kontener.add(dodajPrzycisk);
-			 						kontener.add(eksportujDoDruku);			 	                	
-			 	                	kontener.repaint();	
-			 	                	kontener.revalidate();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać stanu zamówienia. Błąd: " + e.getMessage());
-		         		 }
-	                }
+					{
+					/*
+					 * myPanel.add(new JLabel("Nazwa: ")); myPanel.add(pierwszyField);
+					 * myPanel.add(Box.createHorizontalStrut(5));
+					 * 
+					 * int result = JOptionPane.showConfirmDialog(null, myPanel,
+					 * "Dodaj stan zamówienia", JOptionPane.OK_CANCEL_OPTION); try { if (result ==
+					 * JOptionPane.OK_OPTION) {
+					 * 
+					 * //OracleConnection oc = OracleConnection.getInstance();
+					 * //oc.createDBSession(); //Session session = oc.getDBSession();
+					 * 
+					 * if(pierwszyField.getText().isEmpty()) { JOptionPane.showMessageDialog(null,
+					 * "Nie podano wszystkich danych. Stan zamówienia nie został dodany."); return;
+					 * }
+					 * 
+					 * //session.save(new Stany_Zamowienia(pierwszyField.getText()));
+					 * Stany_Zamowienia nowyStan = new Stany_Zamowienia(pierwszyField.getText());
+					 * repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyStan, idUzytkownika));
+					 * List<Obiekt_Do_Polecen> lista = cache.get("StanyZamowien");
+					 * lista.add(nowyStan); cache.put("StanyZamowien", lista);
+					 * 
+					 * //oc.closeDBSession(); //pokazStanyZamowienPrzycisk.doClick();
+					 * 
+					 * Component[] components = kontener.getComponents(); JTable tab = null;
+					 * 
+					 * for(Component component : components) { if (component instanceof JScrollPane)
+					 * { tab = (JTable) (((JScrollPane)component).getViewport().getView());
+					 * kontener.removeAll(); break; } }
+					 * 
+					 * nowyStan.setId_Stanu_Zamowienia(((Stany_Zamowienia)lista.get(lista.size()-2))
+					 * .getId_Stanu_Zamowienia()+1); ((DefaultTableModel)tab.getModel()).addRow(new
+					 * Object[]
+					 * {Integer.toString(((Stany_Zamowienia)nowyStan).getId_Stanu_Zamowienia()),
+					 * ((Stany_Zamowienia)nowyStan).getNazwa()});
+					 * 
+					 * JScrollPane pane = new JScrollPane(tab); kontener.add(pane);
+					 * kontener.add(dodajPrzycisk); kontener.add(eksportujDoDruku);
+					 * kontener.repaint(); kontener.revalidate(); } } catch(Exception e) {
+					 * e.printStackTrace(); JOptionPane.showMessageDialog(null,
+					 * "Nie udało się dodać stanu zamówienia. Błąd: " + e.getMessage()); }
+					 */}
 	                else if(obj instanceof Typy_uzytkownika) 
 	                {
 	                	myPanel.add(new JLabel("Nazwa: "));
@@ -1820,216 +1590,9 @@ public class HibernateOracle extends JFrame {
 		         		 }
 	                }
 	                else if(obj instanceof Uzytkownicy) 
-	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		                oc.createDBSession();
-
-		                List<Obiekt_Do_Polecen> fData = null;
-
-		                try (Session session = oc.getDBSession()) {
-		                    Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
-		                    fData = query.getResultList();
-		                    oc.closeDBSession();
-		                } catch (Exception e) {
-		                    e.printStackTrace();
-		                    System.out.println(e);
-		                }
-		                
-		                String nazwy[] = new String[fData.size()]; 
-		                
-		                int i=0;
-		                for(Obiekt_Do_Polecen stan: fData) {
-		                	nazwy[i] = ((Typy_uzytkownika)stan).getNazwa();
-		                	i++;
-		                }
-		                
-		                JComboBox jombo = new JComboBox(nazwy);
-                		
-                		//user.setId_stanu_zamowienia(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
-
-	                	myPanel.add(new JLabel("Nazwa uzytkownika: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Login: "));
-		         		myPanel.add(drugiField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Hasło: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("E-mail: "));
-		         		myPanel.add(czwartyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Id typu użytkownika: "));
-                		myPanel.add(jombo);
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {			                		
-			 	                	//oc.createDBSession();
-			 	                	//Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Użytkownik nie został dodany");
-			 	                		return;
-			 	                	}
-			 	                				 	                				 	                
-			 	                	//session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0));
-			 	                	
-			 	                	Uzytkownicy nowyUzytkownik = new Uzytkownicy(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0);
-			 	                	
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, idUzytkownika));
-
-			 	                	
-			                		//oc.closeDBSession();
-			                		//pokazUzytkownicyPrzycisk.doClick();
-			 	                	
-			 	                	Component[] components = kontener.getComponents();
-			 	                	JTable tab = null;
-			 	                	
-			 	                	for(Component component : components)
-			 	                	{
-			 	                		if (component instanceof JScrollPane) {
-			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
-			 	                	        kontener.removeAll();
-			 	                	        break;
-			 	                	    }
-			 	                	}		 	
-			 	                	
-			 					 	if(!cache.containsKey("TypyUzytkownika")) {
-			 							oc.createDBSession();
-			 							try (Session session2 = oc.getDBSession()) {
-			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
-			 					            cache.put("TypyUzytkownika", query.getResultList());
-			 					            oc.closeDBSession();
-			 					        } catch (Exception e) {
-			 					            e.printStackTrace();
-			 					        }
-			 					 	}
-			 	                	
-			 					 	List<Obiekt_Do_Polecen> cash = cache.get("TypyUzytkownika");
-			 					 	String nazwa = "Default";
-
-			 					 	
-			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
-			 	                	nowyUzytkownik.setId_uzytkownika(id+1);
-			 	                	
-			 					 	for(Obiekt_Do_Polecen entity: cash) {
-			 					 		Typy_uzytkownika ent = (Typy_uzytkownika)entity;
-			 					 		if(ent.getId_typu_uzytkownika() == nowyUzytkownik.getId_typu_uzytkownika()) {
-			 					 			nazwa =ent.getNazwa();
-			 					 			break;
-			 					 		}
-			 					 	}
-			 	                	
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Uzytkownicy)nowyUzytkownik).getId_uzytkownika()), ((Uzytkownicy)nowyUzytkownik).getNazwa_uzytkownika(), ((Uzytkownicy)nowyUzytkownik).getLogin(),  ((Uzytkownicy)nowyUzytkownik).getHaslo(), ((Uzytkownicy)nowyUzytkownik).getE_mail(),  nazwa,  ((((Uzytkownicy)nowyUzytkownik).getCzy_usunieto()) == 1)? "TAK":"NIE"});
-
-			 	                	JScrollPane pane = new JScrollPane(tab);
-			 	                	kontener.add(pane);
-			 	                	kontener.add(dodajPrzycisk);
-			 						kontener.add(eksportujDoDruku);			 	                	
-			 	                	kontener.repaint();	
-			 	                	kontener.revalidate();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać użytkownika. Błąd: " + e.getMessage());
-		         		 }
-	                }
+	                {}
 	                else if(obj instanceof Zamowienia) 
-	                {		         			                	
-	                	myPanel.add(new JLabel("Id uzytkownika: "));
-		         		myPanel.add(pierwszyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Adres wysyłki miasto: "));
-		         		myPanel.add(trzeciField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Adres wysyłki ulica: "));
-		         		myPanel.add(czwartyField);
-		         		myPanel.add(Box.createHorizontalStrut(5));
-		         		myPanel.add(new JLabel("Koszt: "));
-		         		myPanel.add(piatyField);
-		         	        
-		         		
-		         		int result = JOptionPane.showConfirmDialog(null, myPanel, 
-		                         "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
-		         		 try {
-			                	if (result == JOptionPane.OK_OPTION) {
-
-			 	                	//oc.createDBSession();
-			 	                	//Session session = oc.getDBSession();
-			                		
-			 	                	if(pierwszyField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty() || piatyField.getText().isEmpty())
-			 	                	{
-			 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
-			 	                		return;
-			 	                	}
-			 	                	
-			 	                	double cena = Double.parseDouble(piatyField.getText());
-			 	                	cena = Math.round(cena*100.0)/100.0;
-			 	                	//session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
-			 	                	Zamowienia noweZamowienie = new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null);
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, idUzytkownika));
-
-			 	                	
-			                		//oc.closeDBSession();
-			                		//pokazZamowieniaPrzycisk.doClick();
-			 	                	
-			 	                	Component[] components = kontener.getComponents();
-			 	                	JTable tab = null;
-			 	                	
-			 	                	for(Component component : components)
-			 	                	{
-			 	                		if (component instanceof JScrollPane) {
-			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
-			 	                	        kontener.removeAll();
-			 	                	        break;
-			 	                	    }
-			 	                	}	
-			 	                	
-			 	                	if(!cache.containsKey("StanyZamowien")) {
-			 							oc.createDBSession();
-			 							try (Session session2 = oc.getDBSession()) {
-			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
-			 					            cache.put("StanyZamowien",query.getResultList());
-			 					            oc.closeDBSession();
-			 					        } catch (Exception e) {
-			 					            e.printStackTrace();
-			 					        }
-			 					 	}
-			 	                	List<Obiekt_Do_Polecen> cash = cache.get("StanyZamowien");
-			 	                	String nazwa = "Default";
-			 	                	
-			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
-			 	                	noweZamowienie.setId_zamowienia(id+1);
-			 	                	
-			 	                	for(Obiekt_Do_Polecen entities: cash) {
-			 	                		Stany_Zamowienia ent = (Stany_Zamowienia) entities;
-			 	                		
-			 	                		if(ent.getId_Stanu_Zamowienia() == noweZamowienie.getId_stanu_zamowienia())
-			 	                		{
-			 	                			nazwa = ent.getNazwa();
-			 	                		}
-			 	                				
-			 	                	}
-			 	                	
-			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Zamowienia)noweZamowienie).getId_zamowienia()), ((Zamowienia)noweZamowienie).getAdres_wysylki_miasto(), ((Zamowienia)noweZamowienie).getAdres_wysylki_ulica(),  Double.toString(((Zamowienia)noweZamowienie).getKoszt()), nazwa,  Integer.toString(((Zamowienia)noweZamowienie).getUzytkownicy_id_uzytkownika()), null,  ((Zamowienia)noweZamowienie).getOpis()});
-
-			 	                	JScrollPane pane = new JScrollPane(tab);
-			 	                	kontener.add(pane);
-			 	                	kontener.add(dodajPrzycisk);
-			 						kontener.add(eksportujDoDruku);			 	                	
-			 	                	kontener.repaint();	
-			 	                	kontener.revalidate();
-			                	}
-		         		 }
-		         		 catch(Exception e) {
-		         			 e.printStackTrace();
-		         			 JOptionPane.showMessageDialog(null, "Nie udało się dodać zamówienia. Błąd: " + e.getMessage());
-		         		 }
-	                }
+	                {}
 	             
 	                			 
 				}
