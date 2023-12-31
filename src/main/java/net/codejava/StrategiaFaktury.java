@@ -35,15 +35,17 @@ public class StrategiaFaktury implements IStrategia {
               			.setParameter("id", bt.id)
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
-              	
+         		oc.closeDBSession();
+
               	if(!pierwszyField.getText().isEmpty())
               		user.setNIP(pierwszyField.getText());	     	 	              	
          		//session.update(user);
          		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		System.out.println("Strategia");
          			  	 	                	
-         		oc.closeDBSession();
-         		
+         		System.out.println("Strategia2");
          		bt.tab.setValueAt(user.getNIP(),bt.row,2);
+         		System.out.println("Strategia3");
          	}
 	 }
 	 catch(Exception e) {

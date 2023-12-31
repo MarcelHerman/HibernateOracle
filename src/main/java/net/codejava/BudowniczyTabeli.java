@@ -498,21 +498,15 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		Producenci pr = (Producenci)session.createQuery("select u from Producenci u where u.id_producenta = :id")
  	 	                			.setParameter("id", this.id)
  	 	                			.uniqueResult();
- 	                		List<Obiekt_Do_Polecen> staraLista = HibernateOracle.cache.get("Producenci");
- 	                		List<Obiekt_Do_Polecen> nowaLista = new ArrayList<Obiekt_Do_Polecen>();
+ 	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
+ 	                		List<Obiekt_Do_Polecen> nowaLista = new ArrayList<>();
 
- 	                		for (Obiekt_Do_Polecen element : staraLista) {
- 	                		    if (element instanceof Producenci) {
- 	                		        Producenci pom = (Producenci) element;
- 	                		        if (pom.equals(pr)) {
- 	                		            pom.setCzy_usunieto(1);
- 	                		            nowaLista.add(pom); // Dodaj zaktualizowany obiekt do nowej listy
- 	                		        } else {
- 	                		            nowaLista.add(element); // Dodaj niezmieniony obiekt do nowej listy
- 	                		        }
- 	                		    } else {
- 	                		        nowaLista.add(element); // Dodaj obiekty innego typu do nowej listy
+ 	                		for (Obiekt_Do_Polecen element : lista) {
+ 	                		    Producenci pom = (Producenci) element;
+ 	                		    if (pom == pr) {
+ 	                		        pom.setCzy_usunieto(1);
  	                		    }
+ 	                		    nowaLista.add(pom);
  	                		}
 
  	                		HibernateOracle.cache.put("Producenci", nowaLista);
