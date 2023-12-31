@@ -501,6 +501,9 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	 	                {
  	 	                	Magazyny pr = new Magazyny();
  	 	 	                pr.setId_magazynu(this.id);
+ 	 	 	             List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
+	 	                	lista.remove(this.row);
+	 	                	HibernateOracle.cache.put("Magazyny", lista);
  	 	 	                //session.delete(pr);
  	 	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
@@ -523,7 +526,6 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		    Producenci pom = (Producenci) element;
  	                		    //System.out.println("przed modyfikacją:" + pom.getCzy_usunieto() + "\n");
 
- 	                		    // Porównanie na podstawie identyfikatora lub innego kryterium
  	                		    if (pom.getId_producenta() == pr.getId_producenta()) {
  	                		        pom.setCzy_usunieto(1);
  	                		        //System.out.println("po modyfikacji:" + pom.getCzy_usunieto() + "\n");
