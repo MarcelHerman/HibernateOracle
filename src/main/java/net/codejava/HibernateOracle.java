@@ -1240,9 +1240,83 @@ public class HibernateOracle extends JFrame {
 			 	                	cena = Math.round(cena*100.0)/100.0;
 			 	                	//oc.closeDBSession();
 			 	                	//session.save(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0), idUzytkownika));
+			 	                	
+			 	                	Produkty nowyProdukt = new Produkty(pierwszyField.getText(), cena, trzeciField.getText(), ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(), ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0); 
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyProdukt, idUzytkownika));
 			                		
-			                		pokazProduktPrzycisk.doClick();
+			                		//pokazProduktPrzycisk.doClick();
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		 	
+			 	                	
+			 					 	if(!cache.containsKey("Kategorie")) {
+			 							oc.createDBSession();
+			 							try (Session session2 = oc.getDBSession()) {
+			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
+			 					            cache.put("Kategorie", query.getResultList());
+			 					            oc.closeDBSession();
+			 					        } catch (Exception e) {
+			 					            e.printStackTrace();
+			 					        }
+			 					 	}
+			 	                	
+			 					 	List<Obiekt_Do_Polecen> cash = cache.get("Kategorie");
+			 					 	String nazwa = "Default";
+
+			 					 	
+			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
+			 	                	nowyProdukt.setId_produktu(id+1);
+			 	                	
+			 					 	for(Obiekt_Do_Polecen entity: cash) {
+			 					 		Kategorie ent = (Kategorie)entity;
+			 					 		if(ent.getId_Kategorii() == nowyProdukt.getKategorie_id_kategorii()) {
+			 					 			nazwa =ent.getNazwa();
+			 					 			break;
+			 					 		}
+			 					 	}
+			 					 	
+			 					 	
+			 					 	if(!cache.containsKey("Producenci")) {
+			 							oc.createDBSession();
+			 							try (Session session2 = oc.getDBSession()) {
+			 					            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
+			 					            cache.put("Producenci", query.getResultList());
+			 					            oc.closeDBSession();
+			 					        } catch (Exception e) {
+			 					            e.printStackTrace();
+			 					        }
+			 					 	}
+			 	                	
+			 					 	List<Obiekt_Do_Polecen> cash2 = cache.get("Producenci");
+			 					 	String nazwa2 = "Default";
+			 					 				 	                	
+			 					 	for(Obiekt_Do_Polecen entity: cash2) {
+			 					 		Producenci ent = (Producenci)entity;
+			 					 		if(ent.getId_producenta() == nowyProdukt.getProducenci_id_producenta()) {
+			 					 			nazwa2 =ent.getNazwa();
+			 					 			break;
+			 					 		}
+			 					 	}
+			 	                	if(nazwaTypu.equals("Klient"))((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkty)nowyProdukt).getId_produktu()), ((Produkty)nowyProdukt).getNazwa(), Double.toString(((Produkty)nowyProdukt).getCena()),  ((Produkty)nowyProdukt).getOpis(), nazwa2,  nazwa});
+			 	                	else ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Produkty)nowyProdukt).getId_produktu()), ((Produkty)nowyProdukt).getNazwa(), Double.toString(((Produkty)nowyProdukt).getCena()),  ((Produkty)nowyProdukt).getOpis(), nazwa2,  nazwa,  ((((Produkty)nowyProdukt).getCzy_usunieto()) == 1)? "TAK":"NIE"});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
+			 	                	
+			 	                	
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1275,9 +1349,35 @@ public class HibernateOracle extends JFrame {
 			 	                	//oc.closeDBSession();
 			 	                	
 			 	                	//session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
-			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())), idUzytkownika));
+			 	                	
+			 	                	Faktury nowaFaktura = new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText()));
+			 	                	repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowaFaktura, idUzytkownika));
 			                		
-			                		pokazFakturyPrzycisk.doClick();
+			                		//pokazFakturyPrzycisk.doClick();
+			 	                
+			 	                	
+			 	                	Component[] components = kontener.getComponents();
+			 	                	JTable tab = null;
+			 	                	
+			 	                	for(Component component : components)
+			 	                	{
+			 	                		if (component instanceof JScrollPane) {
+			 	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+			 	                	        kontener.removeAll();
+			 	                	        break;
+			 	                	    }
+			 	                	}		
+			 	                	
+			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
+
+			 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Faktury)nowaFaktura).getId_faktury()), ((Faktury)nowaFaktura).getData_wystawienia(), ((Faktury)nowaFaktura).getNIP(), Integer.toString(((Faktury)nowaFaktura).getZamowienia_id_zamowienia())});
+
+			 	                	JScrollPane pane = new JScrollPane(tab);
+			 	                	kontener.add(pane);
+			 	                	kontener.add(dodajPrzycisk);
+			 						kontener.add(eksportujDoDruku);			 	                	
+			 	                	kontener.repaint();	
+			 	                	kontener.revalidate();
 			                	}
 		         		 }
 		         		 catch(Exception e) {
@@ -1812,7 +1912,7 @@ public class HibernateOracle extends JFrame {
 			 					 	String nazwa = "Default";
 
 			 					 	
-			 	                	int id = (int) ((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0);
+			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
 			 	                	nowyUzytkownik.setId_uzytkownika(id+1);
 			 	                	
 			 					 	for(Obiekt_Do_Polecen entity: cash) {
@@ -1902,7 +2002,7 @@ public class HibernateOracle extends JFrame {
 			 	                	List<Obiekt_Do_Polecen> cash = cache.get("StanyZamowien");
 			 	                	String nazwa = "Default";
 			 	                	
-			 	                	int id = (int) ((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0);
+			 	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
 			 	                	noweZamowienie.setId_zamowienia(id+1);
 			 	                	
 			 	                	for(Obiekt_Do_Polecen entities: cash) {
