@@ -124,7 +124,9 @@ public class StrategiaFaktury implements IStrategia {
 	                	    }
 	                	}		
 	                	
-	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString());
+	                	int id = Integer.parseInt(((DefaultTableModel)tab.getModel()).getValueAt(((DefaultTableModel)tab.getModel()).getRowCount()-1, 0).toString()) + 1;
+	                	
+	                	nowaFaktura.setId_faktury(id);
 
 	           		    ((DefaultTableModel)tab.getModel()).addRow(new Object[] {Integer.toString(((Faktury)nowaFaktura).getId_faktury()), ((Faktury)nowaFaktura).getData_wystawienia(), ((Faktury)nowaFaktura).getNIP(), Integer.toString(((Faktury)nowaFaktura).getZamowienia_id_zamowienia())});
 

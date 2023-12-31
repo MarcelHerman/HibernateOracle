@@ -415,7 +415,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
             	 if (this.label.equals("Edytuj"))  HibernateOracle.wzorzec.dodajLogikeEdytowania(this);  // Kod dla przycisku "Edytuj"
                 	                      
                   else if ("Usuń".equals(this.label)) {
-                	  HibernateOracle.wzorzec.dodajLogikeEdytowania(this);
+                	  JPanel myPanel = new JPanel();
+                      myPanel.add(new JLabel("Czy na pewno chcesz usunąć dany rekord?"));
+
+                     int result = JOptionPane.showConfirmDialog(null, myPanel, 
+                              "Usuwanie", JOptionPane.OK_CANCEL_OPTION);
+                     if (result == JOptionPane.OK_OPTION)HibernateOracle.wzorzec.dodajLogikeUsuwania(this);
                   }
                  else if(this.label.equals("Dodaj do koszyka")) {
                 	 //Przycisk Dodaj do koszyka
@@ -430,14 +435,14 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
                 	 
 
 	                	 JPanel myPanel = new JPanel();
-	                	 JLabel labelek = new JLabel("Podaj ilosc");
+	                	 JLabel labelek = new JLabel("Podaj ilość");
 	                	 JTextField pierwszyField = new JTextField(7);
 	                	 
 	                	 myPanel.add(labelek);
 	                	 myPanel.add(pierwszyField);
 	                	
 	                	int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	   	                         "Edytuj typ użytkownika", JOptionPane.OK_CANCEL_OPTION);
+	   	                         "Dodawanie do koszyka", JOptionPane.OK_CANCEL_OPTION);
 	                		 try {
 	     	                	if (result == JOptionPane.OK_OPTION) {
 	     	                		
