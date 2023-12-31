@@ -36,7 +36,7 @@ public class StrategiaKategorie implements IStrategia {
          			//session.update(kat);
          			HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(kat, HibernateOracle.idUzytkownika));
          			//dodać cache
-             		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
+             		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
 
              		for (int i = 0; i < lista.size(); i++) {
              		    Obiekt_Do_Polecen element = lista.get(i);
@@ -48,7 +48,7 @@ public class StrategiaKategorie implements IStrategia {
              		    }
              		}
 
-             		HibernateOracle.cache.put("Magazyny", lista);
+             		HibernateOracle.cache.put("Kategorie", lista);
          		}
          		
          		//oc.closeDBSession();
