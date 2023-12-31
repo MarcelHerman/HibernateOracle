@@ -52,6 +52,9 @@ public class StrategiaProducenci implements IStrategia {
               			.setParameter("id", bt.id)
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
+              	
+              	oc.closeDBSession();
+              	
               	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
               	if(!pierwszyField.getText().isEmpty())
               		user.setNazwa(pierwszyField.getText());
@@ -61,9 +64,9 @@ public class StrategiaProducenci implements IStrategia {
               		user.setMiasto(trzeciField.getText());
               	if(!czwartyField.getText().isEmpty())
               		user.setUlica(czwartyField.getText());
-         		session.update(user);
+         		//session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
-         		oc.closeDBSession();
          		
          		bt.tab.setValueAt(user.getNazwa(), bt.row, 1); 	                		
      			bt.tab.setValueAt(user.getKontakt(), bt.row, 2);

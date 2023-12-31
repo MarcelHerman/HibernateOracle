@@ -39,15 +39,15 @@ public class StrategiaMagazyny implements IStrategia {
               			.setParameter("id", bt.id)
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
-              	
+              	oc.closeDBSession();
               	if(!pierwszyField.getText().isEmpty())
               		user.setMiasto(pierwszyField.getText());
               	if(!drugiField.getText().isEmpty())
               		user.setUlica(drugiField.getText());
               	
-         		session.update(user);
+         		//session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
-         		oc.closeDBSession();
          		bt.tab.setValueAt(user.getMiasto(), bt.row, 1); 	                		
      			bt.tab.setValueAt(user.getUlica(), bt.row, 2);
          	}

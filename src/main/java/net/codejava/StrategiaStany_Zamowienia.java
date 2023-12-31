@@ -15,10 +15,7 @@ public class StrategiaStany_Zamowienia implements IStrategia {
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
      	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
-		 
+
          JPanel myPanel = new JPanel();
 		myPanel.add(new JLabel("Nazwa: "));
 		myPanel.add(pierwszyField);             		
@@ -35,14 +32,12 @@ public class StrategiaStany_Zamowienia implements IStrategia {
               	Stany_Zamowienia user = (Stany_Zamowienia)session.createQuery("select u from Stany_Zamowienia u where u.id_Stanu_Zamowienia = :id")
               			.setParameter("id", bt.id)
               			.uniqueResult();	     	 	                	
-              	
+              	oc.closeDBSession();
               	if(!pierwszyField.getText().isEmpty())
               		user.setNazwa(pierwszyField.getText());	 
-         		session.update(user);
+         		//session.update(user);
 
-         		
-              	
-         		oc.closeDBSession();
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
          	}
 		 }

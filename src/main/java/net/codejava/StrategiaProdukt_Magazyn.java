@@ -42,6 +42,7 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
               	
+              	oc.closeDBSession();
               	
               	if(!pierwszyField.getText().isEmpty())
               		if(Integer.parseInt(pierwszyField.getText())<0)
@@ -55,13 +56,13 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
               		else
               			user.setStan_magazynowy(Integer.parseInt(drugiField.getText()));
               	
-         		session.update(user);
-         		
+         		//session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
               	
               	
               	System.out.println(user.getProdukt_magazyn_id() + " " + user.getStan_faktyczny() +  " " + user.getStan_magazynowy());
               	
-         		oc.closeDBSession();
+         		
          		
          		bt.tab.setValueAt(user.getStan_faktyczny(), bt.row, 2); 	                		
      			bt.tab.setValueAt(user.getStan_magazynowy(), bt.row, 3);

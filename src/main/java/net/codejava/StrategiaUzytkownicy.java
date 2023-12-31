@@ -81,6 +81,8 @@ public class StrategiaUzytkownicy implements IStrategia{
               			.setParameter("id", bt.id)
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
+              	oc.closeDBSession();
+              	
               	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
               	if(!pierwszyField.getText().isEmpty())
               		user.setNazwa_uzytkownika(pierwszyField.getText());
@@ -92,9 +94,9 @@ public class StrategiaUzytkownicy implements IStrategia{
               		user.setE_mail(czwartyField.getText());
               	user.setId_typu_uzytkownika(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
               	
-         		session.update(user);
+         		//session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
-         		oc.closeDBSession();
          		
          		bt.tab.setValueAt(user.getNazwa_uzytkownika(), bt.row, 1);
          		bt.tab.setValueAt(user.getLogin(), bt.row, 2);

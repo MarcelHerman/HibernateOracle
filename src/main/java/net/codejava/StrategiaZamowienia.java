@@ -83,6 +83,7 @@ public class StrategiaZamowienia implements IStrategia {
               			.setParameter("id", bt.id)
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
+              	oc.closeDBSession();
               	
               	if(!pierwszyField.getText().isEmpty())
               		user.setAdres_wysylki_miasto(pierwszyField.getText());
@@ -91,9 +92,9 @@ public class StrategiaZamowienia implements IStrategia {
               	
               	user.setId_stanu_zamowienia(((Stany_Zamowienia)fData.get(jombo.getSelectedIndex())).getId_Stanu_Zamowienia());
               	
-         		session.update(user);
+         		//session.update(user);
+         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
-         		oc.closeDBSession();
          		
          			bt.tab.setValueAt(user.getAdres_wysylki_miasto(), bt.row, 1); 	                		
          			bt.tab.setValueAt(user.getAdres_wysylki_ulica(), bt.row, 2);

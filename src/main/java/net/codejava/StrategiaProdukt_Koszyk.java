@@ -13,9 +13,6 @@ public class StrategiaProdukt_Koszyk implements IStrategia{
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
      	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
 		 
          JPanel myPanel = new JPanel();
 		myPanel.add(new JLabel("Ilosc: "));
