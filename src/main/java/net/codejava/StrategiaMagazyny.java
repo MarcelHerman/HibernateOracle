@@ -1,5 +1,7 @@
 package net.codejava;
 
+import java.util.List;
+
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,6 +40,8 @@ public class StrategiaMagazyny implements IStrategia {
               	Magazyny user = (Magazyny)session.createQuery("select u from Magazyny u where u.id_magazynu = :id")
               			.setParameter("id", bt.id)
               			.uniqueResult();
+              	
+              	int szukany = user.getId_magazynu();
               	//System.out.println(user.getId_uzytkownika());
               	oc.closeDBSession();
               	if(!pierwszyField.getText().isEmpty())
@@ -47,6 +51,21 @@ public class StrategiaMagazyny implements IStrategia {
               	
          		//session.update(user);
          		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		//dodać cache
+         		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
+
+         		for (int i = 0; i < lista.size(); i++) {
+         		    Obiekt_Do_Polecen element = lista.get(i);
+         		   Magazyny pom = (Magazyny) element;
+
+         		    if (pom.getId_magazynu() == szukany) {
+         		        pom.setMiasto(user.getMiasto());
+         		        pom.setUlica(user.getUlica());
+         		        break;
+         		    }
+         		}
+
+         		HibernateOracle.cache.put("Magazyny", lista);
          		
          		bt.tab.setValueAt(user.getMiasto(), bt.row, 1); 	                		
      			bt.tab.setValueAt(user.getUlica(), bt.row, 2);

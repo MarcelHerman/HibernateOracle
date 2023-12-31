@@ -1,5 +1,7 @@
 package net.codejava;
 
+import java.util.List;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,14 +28,28 @@ public class StrategiaKategorie implements IStrategia {
 		 try {
          	if (result == JOptionPane.OK_OPTION) {         		
          		Kategorie kat = new Kategorie(pierwszyField.getText());
+         		
          		kat.setId_Kategorii(bt.id);
          		
          		if(!pierwszyField.getText().isEmpty())
          		{
          			//session.update(kat);
          			HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(kat, HibernateOracle.idUzytkownika));
-         		}
+         			//dodać cache
+             		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
 
+             		for (int i = 0; i < lista.size(); i++) {
+             		    Obiekt_Do_Polecen element = lista.get(i);
+             		   Kategorie pom = (Kategorie) element;
+
+             		    if (pom.getId_Kategorii() == bt.id) {
+             		        pom.setNazwa(kat.getNazwa());
+             		        break;
+             		    }
+             		}
+
+             		HibernateOracle.cache.put("Magazyny", lista);
+         		}
          		
          		//oc.closeDBSession();
          		bt.tab.setValueAt(kat.getNazwa(), bt.row, 1);

@@ -517,30 +517,24 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
  	                		oc.closeDBSession();
  	                		
  	                		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
- 	                		int index = -1;
 
  	                		for (int i = 0; i < lista.size(); i++) {
  	                		    Obiekt_Do_Polecen element = lista.get(i);
  	                		    Producenci pom = (Producenci) element;
- 	                		    System.out.println("przed modyfikacją:" + pom.getCzy_usunieto() + "\n");
+ 	                		    //System.out.println("przed modyfikacją:" + pom.getCzy_usunieto() + "\n");
 
  	                		    // Porównanie na podstawie identyfikatora lub innego kryterium
  	                		    if (pom.getId_producenta() == pr.getId_producenta()) {
  	                		        pom.setCzy_usunieto(1);
- 	                		        index = i;
- 	                		        System.out.println("po modyfikacji:" + pom.getCzy_usunieto() + "\n");
+ 	                		        //System.out.println("po modyfikacji:" + pom.getCzy_usunieto() + "\n");
  	                		        break;
  	                		    }
  	                		}
 
- 	                		if (index != -1) {
- 	                		    lista.set(index, lista.get(index));
- 	                		}
-
- 	                		for (Obiekt_Do_Polecen element : lista) {
+ 	                		/*for (Obiekt_Do_Polecen element : lista) {
  	                		    Producenci pom = (Producenci) element;
  	                		    System.out.println("po wyjściu z pętli:" + pom.getCzy_usunieto() + "\n");
- 	                		}
+ 	                		}*/
 
  	                		HibernateOracle.cache.put("Producenci", lista);
  	 	 	             pr.setCzy_usunieto(1);

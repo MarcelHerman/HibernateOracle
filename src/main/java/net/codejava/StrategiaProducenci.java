@@ -1,5 +1,7 @@
 package net.codejava;
 
+import java.util.List;
+
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -53,6 +55,7 @@ public class StrategiaProducenci implements IStrategia {
               			.uniqueResult();
               	//System.out.println(user.getId_uzytkownika());
               	
+              	int szukany = user.getId_producenta();
               	oc.closeDBSession();
               	
               	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
@@ -66,7 +69,24 @@ public class StrategiaProducenci implements IStrategia {
               		user.setUlica(czwartyField.getText());
          		//session.update(user);
          		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
-         		
+     			//dodać cache
+         		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
+
+         		for (int i = 0; i < lista.size(); i++) {
+         		    Obiekt_Do_Polecen element = lista.get(i);
+         		    Producenci pom = (Producenci) element;
+
+         		    if (pom.getId_producenta() == szukany) {
+         		        pom.setNazwa(user.getNazwa());
+         		        pom.setKontakt(user.getKontakt());
+                  		pom.setMiasto(user.getMiasto());
+                      	pom.setUlica(user.getUlica());
+                      	pom.setCzy_usunieto(user.getCzy_usunieto());
+         		        break;
+         		    }
+         		}
+
+         		HibernateOracle.cache.put("Producenci", lista);
          		
          		bt.tab.setValueAt(user.getNazwa(), bt.row, 1); 	                		
      			bt.tab.setValueAt(user.getKontakt(), bt.row, 2);
