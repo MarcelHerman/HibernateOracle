@@ -201,7 +201,7 @@ public class DyrektorTabel {
 	{
 		this.builder = builder;
 		HibernateOracle.obj = new Produkt_Zamowienia();
-		HibernateOracle.wzorzec = null;
+		HibernateOracle.wzorzec = new StrategiaProdukt_Zamowienia();
 		builder.refresh();
 		builder.dodajNaglowek();
 		

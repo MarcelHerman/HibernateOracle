@@ -82,10 +82,6 @@ public class StrategiaKategorie implements IStrategia {
 	public void dodajLogikeDodawania(JPanel kontener) {
 
 	 	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
-        JTextField piatyField = new JTextField(7);
 		 
         JPanel myPanel = new JPanel();
 		
