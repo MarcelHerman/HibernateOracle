@@ -13,23 +13,23 @@ public class StrategiaProdukt_Koszyk implements IStrategia{
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-     	JTextField pierwszyField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
 		 
-         JPanel myPanel = new JPanel();
-		myPanel.add(new JLabel("Ilosc: "));
-		myPanel.add(pierwszyField);             		
+         JPanel panel = new JPanel();
+		panel.add(new JLabel("Ilosc: "));
+		panel.add(pierwszePole);             		
 		
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                 "Edytuj koszyk", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {
-              	if(!pierwszyField.getText().isEmpty() && Integer.parseInt(pierwszyField.getText()) > 0)
+         	if (wynik == JOptionPane.OK_OPTION) {
+              	if(!pierwszePole.getText().isEmpty() && Integer.parseInt(pierwszePole.getText()) > 0)
               	{
               		for(Obiekt_Do_Polecen pk: HibernateOracle.koszyk) {
               			if(((Produkt_Koszyk)pk).getPr().getId_produktu() == bt.id) {
-              				((Produkt_Koszyk)pk).setIlosc(Integer.parseInt(pierwszyField.getText()));
-              				bt.tab.setValueAt(Integer.parseInt(pierwszyField.getText()), bt.row, 3); 	  
-              				bt.tab.setValueAt(Integer.parseInt(pierwszyField.getText()) *((Produkt_Koszyk)pk).getPr().getCena() , bt.row, 4);
+              				((Produkt_Koszyk)pk).setIlosc(Integer.parseInt(pierwszePole.getText()));
+              				bt.tab.setValueAt(Integer.parseInt(pierwszePole.getText()), bt.row, 3); 	  
+              				bt.tab.setValueAt(Integer.parseInt(pierwszePole.getText()) *((Produkt_Koszyk)pk).getPr().getCena() , bt.row, 4);
               				break;
               			}
               		}
