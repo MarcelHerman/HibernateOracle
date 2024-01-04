@@ -22,17 +22,17 @@ public class StrategiaFaktury implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-     	JTextField pierwszyField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
 		 
-         JPanel myPanel = new JPanel();
+         JPanel panel = new JPanel();
 		
-    	myPanel.add(new JLabel("NIP: "));
-		myPanel.add(pierwszyField);             		
+    	panel.add(new JLabel("NIP: "));
+		panel.add(pierwszePole);             		
 		
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                 "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {
+         	if (wynik == JOptionPane.OK_OPTION) {
          		
          		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
               	oc.createDBSession();
@@ -44,10 +44,10 @@ public class StrategiaFaktury implements IStrategia {
               			.uniqueResult();
          		oc.closeDBSession();
 
-              	if(!pierwszyField.getText().isEmpty())
-              		user.setNIP(pierwszyField.getText());	     	 	              	
+              	if(!pierwszePole.getText().isEmpty())
+              		user.setNIP(pierwszePole.getText());	     	 	              	
          		//session.update(user);
-         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          			  	 	                	
          		bt.tab.setValueAt(user.getNIP(),bt.row,2);
          	}
@@ -65,7 +65,7 @@ public class StrategiaFaktury implements IStrategia {
  		Faktury pr = new Faktury();
       	pr.setId_faktury(br.id);
       	//session.delete(pr);
-      	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+      	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
       	//oc.closeDBSession();
       	((DefaultTableModel)br.tab.getModel()).removeRow(br.row);
  	
@@ -73,50 +73,50 @@ public class StrategiaFaktury implements IStrategia {
 	
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-	 	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
+	 	JTextField pierwszePole = new JTextField(7);
+        JTextField drugiePole = new JTextField(7);
 		 
-        JPanel myPanel = new JPanel();
+        JPanel panel = new JPanel();
 		
-    	myPanel.add(new JLabel("NIP: "));
- 		myPanel.add(pierwszyField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Id zamówienia: "));
- 		myPanel.add(drugiField);		         		
+    	panel.add(new JLabel("NIP: "));
+ 		panel.add(pierwszePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Id zamówienia: "));
+ 		panel.add(drugiePole);		         		
  		
- 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+ 		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                  "Dodaj fakturę", JOptionPane.OK_CANCEL_OPTION);
  		 try {
-            	if (result == JOptionPane.OK_OPTION) {
+            	if (wynik == JOptionPane.OK_OPTION) {
             		
             		//OracleConnection oc =  OracleConnection.getInstance();
 	                	//oc.createDBSession();
 	                	//Session session = oc.getDBSession();
             		
-	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
+	                	if(pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty())
 	                	{
 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie została dodana");
 	                		return;
 	                	}
 	                	//oc.closeDBSession();
 	                	
-	                	//session.save(new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText())));
+	                	//session.save(new Faktury(LocalDate.now(), pierwszePole.getText(), Integer.parseInt(drugiePole.getText())));
 	                	
-	                	Faktury nowaFaktura = new Faktury(LocalDate.now(), pierwszyField.getText(), Integer.parseInt(drugiField.getText()));
-	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowaFaktura, HibernateOracle.idUzytkownika));
+	                	Faktury nowaFaktura = new Faktury(LocalDate.now(), pierwszePole.getText(), Integer.parseInt(drugiePole.getText()));
+	                	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowaFaktura, HibernateOracle.idUzytkownika));
             		
             		//pokazFakturyPrzycisk.doClick();
 	                
 	                	
-	                	Component[] components = kontener.getComponents();
+	                	Component[] komponenty = kontener.getComponents();
 	                	JTable tab = null;
 	                	JButton dodajPrzycisk = null;
 	                	JButton eksportujDoDruku = null;
 	                	
-	                	for(Component component : components)
+	                	for(Component komponent : komponenty)
 	                	{
-	                		if (component instanceof JScrollPane) {
-	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+	                		if (komponent instanceof JScrollPane) {
+	                	        tab = (JTable) (((JScrollPane)komponent).getViewport().getView());
 	                	        dodajPrzycisk = (JButton) kontener.getComponent(1);
 	                	        eksportujDoDruku = (JButton) kontener.getComponent(2);
 	                	        kontener.removeAll();

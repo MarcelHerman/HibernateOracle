@@ -60,7 +60,7 @@ public class HibernateOracle extends JFrame {
 	
 	public static int idUzytkownika;
 	
-	public static Repozytorium_Polecen repo_pol = new Repozytorium_Polecen();
+	public static Repozytorium_Polecen repoPolecen = new Repozytorium_Polecen();
 	
 	public static IStrategia wzorzec;
 
@@ -81,11 +81,11 @@ public class HibernateOracle extends JFrame {
             System.out.println("Blad dodania tablicy");
 		}
 		
-		List<Obiekt_Do_Polecen> entities = null;
+		List<Obiekt_Do_Polecen> obiekty = null;
 		
 		try (Session session2 = oc.getDBSession()) {
             Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
-            entities = query.getResultList();
+            obiekty = query.getResultList();
             oc.closeDBSession();
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class HibernateOracle extends JFrame {
             public void windowClosing(WindowEvent e) {
                 if(!nazwaTypu.equals("Klient"))
                 {
-                	repo_pol.saveToFile();
+                	repoPolecen.saveToFile();
                 	System.out.println("Okno zostaje zamknięte");
                 }            	
             }
@@ -145,8 +145,8 @@ public class HibernateOracle extends JFrame {
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();		 
 		DyrektorTabel dyrektor = new DyrektorTabel();
 		
-		//budSwing.tworzTabeleProdukty(entities);
-		dyrektor.tworzTabeleProdukty(entities, budSwing);
+		//budSwing.tworzTabeleProdukty(obiekty);
+		dyrektor.tworzTabeleProdukty(obiekty, budSwing);
 		
         JTable tabSwing = (JTable)dyrektor.pobierzTabele();
         
@@ -290,7 +290,7 @@ public class HibernateOracle extends JFrame {
 			 
 			 public void actionPerformed(ActionEvent a)
 			 {
-				 List<Obiekt_Do_Polecen> entities = null;
+				 List<Obiekt_Do_Polecen> obiekty = null;
 				 nazwaTypu = "null";
 				 koszyk.clear();
 				 idUzytkownika = -1;
@@ -303,13 +303,13 @@ public class HibernateOracle extends JFrame {
 				 oc.createDBSession();
 				 try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        
 				 
-				 //budSwing.tworzTabeleProdukty(entities);
+				 //budSwing.tworzTabeleProdukty(obiekty);
 			       
-			     dyrektor.tworzTabeleProdukty(entities, budSwing);
+			     dyrektor.tworzTabeleProdukty(obiekty, budSwing);
 			     
 			     JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 			        
@@ -764,7 +764,7 @@ public class HibernateOracle extends JFrame {
 				 	 PolaczenieProxy pc = new PolaczenieProxy();
 					 pc.closeDBSession();
 
-					List<Obiekt_Do_Polecen> entities = null;
+					List<Obiekt_Do_Polecen> obiekty = null;
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
@@ -772,14 +772,14 @@ public class HibernateOracle extends JFrame {
 			            Query<Obiekt_Do_Polecen> query = null;
 			            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
 			            else query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
 					
-					//budSwing.tworzTabeleProdukty(entities);
-					dyrektor.tworzTabeleProdukty(entities, budSwing);
+					//budSwing.tworzTabeleProdukty(obiekty);
+					dyrektor.tworzTabeleProdukty(obiekty, budSwing);
 					
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 
@@ -805,21 +805,21 @@ public class HibernateOracle extends JFrame {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-					List<Obiekt_Do_Polecen> entities = null;
+					List<Obiekt_Do_Polecen> obiekty = null;
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = null;
 			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
 			            else query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
 					
-					//budSwing.tworzTabeleZamowienia(entities);
-					dyrektor.tworzTabeleZamowienia(entities, budSwing);
+					//budSwing.tworzTabeleZamowienia(obiekty);
+					dyrektor.tworzTabeleZamowienia(obiekty, budSwing);
 					
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
@@ -842,19 +842,19 @@ public class HibernateOracle extends JFrame {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-					List<Obiekt_Do_Polecen> entities = null;
+					List<Obiekt_Do_Polecen> obiekty = null;
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
 					
-					//budSwing.tworzTabeleUzytkownicy(entities);
-					dyrektor.tworzTabeleUzytkownicy(entities, budSwing);
+					//budSwing.tworzTabeleUzytkownicy(obiekty);
+					dyrektor.tworzTabeleUzytkownicy(obiekty, budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -888,7 +888,7 @@ public class HibernateOracle extends JFrame {
 					/*else
 						System.out.println("Załadowano z cache");*/
 					
-					//budSwing.tworzTabeleKategorie(entities);
+					//budSwing.tworzTabeleKategorie(obiekty);
 					
 					dyrektor.tworzTabeleKategorie(cache.get("Kategorie"), budSwing);
 					
@@ -922,7 +922,7 @@ public class HibernateOracle extends JFrame {
 				        }
 				 	}
 					
-					//budSwing.tworzTabeleProducenci(entities);
+					//budSwing.tworzTabeleProducenci(obiekty);
 					dyrektor.tworzTabeleProducenci(cache.get("Producenci"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
@@ -943,19 +943,19 @@ public class HibernateOracle extends JFrame {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-					List<Obiekt_Do_Polecen> entities = null;
+					List<Obiekt_Do_Polecen> obiekty = null;
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
 					
-					//budSwing.tworzTabeleProdukt_Magazyn(entities);
-					dyrektor.tworzTabeleProdukt_Magazyn(entities, budSwing);
+					//budSwing.tworzTabeleProdukt_Magazyn(obiekty);
+					dyrektor.tworzTabeleProdukt_Magazyn(obiekty, budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -975,19 +975,19 @@ public class HibernateOracle extends JFrame {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-					List<Obiekt_Do_Polecen> entities = null;
+					List<Obiekt_Do_Polecen> obiekty = null;
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Zamowienia order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
 					
-					//budSwing.tworzTabeleProdukt_Zamowienia(entities);
-					dyrektor.tworzTabeleProdukt_Zamowienia(entities, budSwing);
+					//budSwing.tworzTabeleProdukt_Zamowienia(obiekty);
+					dyrektor.tworzTabeleProdukt_Zamowienia(obiekty, budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1018,7 +1018,7 @@ public class HibernateOracle extends JFrame {
 				        }
 				 	}
 					
-					//budSwing.tworzTabeleStany_Zamowienia(entities);
+					//budSwing.tworzTabeleStany_Zamowienia(obiekty);
 					dyrektor.tworzTabeleStany_Zamowienia(cache.get("StanyZamowien"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
@@ -1050,7 +1050,7 @@ public class HibernateOracle extends JFrame {
 				        }
 				 	}
 					
-					//budSwing.tworzTabeleTypy_uzytkownika(entities);
+					//budSwing.tworzTabeleTypy_uzytkownika(obiekty);
 					dyrektor.tworzTabeleTypy_uzytkownika(cache.get("TypyUzytkownika"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
@@ -1082,7 +1082,7 @@ public class HibernateOracle extends JFrame {
 				        }
 					}
 					
-					//budSwing.tworzTabeleMagazyny(entities);
+					//budSwing.tworzTabeleMagazyny(obiekty);
 					dyrektor.tworzTabeleMagazyny(cache.get("Magazyny"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
@@ -1103,14 +1103,14 @@ public class HibernateOracle extends JFrame {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();		 	
 
-					List<Obiekt_Do_Polecen> entities = null;
+					List<Obiekt_Do_Polecen> obiekty = null;
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = null;
 			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
 			            else query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
-			            entities = query.getResultList();
+			            obiekty = query.getResultList();
 			            oc.closeDBSession();
 			        } catch (Exception e) {
 			            e.printStackTrace();
@@ -1145,8 +1145,8 @@ public class HibernateOracle extends JFrame {
 					oc.closeDBSession();
 					
 					
-					//budSwing.tworzTabeleFaktury(entities);
-					dyrektor.tworzTabeleFaktury(entities, budSwing);
+					//budSwing.tworzTabeleFaktury(obiekty);
+					dyrektor.tworzTabeleFaktury(obiekty, budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1178,19 +1178,19 @@ public class HibernateOracle extends JFrame {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		                oc.createDBSession();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 		                
 						try (Session session2 = oc.getDBSession()) {							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleProdukty(entities);
-						dyrektor.tworzTabeleProdukty(entities, budDruk);
+		                 //budDruk.tworzTabeleProdukty(obiekty);
+						dyrektor.tworzTabeleProdukty(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produktow.txt";
@@ -1213,21 +1213,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleFaktury(entities);
-						dyrektor.tworzTabeleFaktury(entities, budDruk);
+		                 //budDruk.tworzTabeleFaktury(obiekty);
+						dyrektor.tworzTabeleFaktury(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_faktur.txt";
@@ -1249,25 +1249,25 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
 		                 //BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-		                 //budDruk.tworzTabeleKategorie(entities);
+		                 //budDruk.tworzTabeleKategorie(obiekty);
 						
 		                 //String table = (String)budDruk.pobierzTabele(null);
 						
-						dyrektor.tworzTabeleKategorie(entities, budDruk);
+						dyrektor.tworzTabeleKategorie(obiekty, budDruk);
 		                 												 		   
 						String table = (String)dyrektor.pobierzTabele();
 						
@@ -1289,21 +1289,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleMagazyny(entities);
-						dyrektor.tworzTabeleMagazyny(entities, budDruk);
+		                 //budDruk.tworzTabeleMagazyny(obiekty);
+						dyrektor.tworzTabeleMagazyny(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_magazynow.txt";
@@ -1324,21 +1324,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleProducenci(entities);
-						dyrektor.tworzTabeleProducenci(entities, budDruk);
+		                 //budDruk.tworzTabeleProducenci(obiekty);
+						dyrektor.tworzTabeleProducenci(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_producentow.txt";
@@ -1359,21 +1359,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class); //tututki
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleProdukt_Magazyn(entities);
-						dyrektor.tworzTabeleProdukt_Magazyn(entities, budDruk);
+		                 //budDruk.tworzTabeleProdukt_Magazyn(obiekty);
+						dyrektor.tworzTabeleProdukt_Magazyn(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produkty_magazyn.txt";
@@ -1394,21 +1394,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Produkt_Zamowienia  order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleProdukt_Zamowienia(entities);
-						dyrektor.tworzTabeleProdukt_Zamowienia(entities, budDruk);
+		                 //budDruk.tworzTabeleProdukt_Zamowienia(obiekty);
+						dyrektor.tworzTabeleProdukt_Zamowienia(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produkt_zamowienia.txt";
@@ -1429,21 +1429,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleStany_Zamowienia(entities);
-						dyrektor.tworzTabeleStany_Zamowienia(entities, budDruk);
+		                 //budDruk.tworzTabeleStany_Zamowienia(obiekty);
+						dyrektor.tworzTabeleStany_Zamowienia(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_stany_zamowienia.txt";
@@ -1464,21 +1464,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 
-		                 //budDruk.tworzTabeleTypy_uzytkownika(entities);
-						dyrektor.tworzTabeleTypy_uzytkownika(entities, budDruk);
+		                 //budDruk.tworzTabeleTypy_uzytkownika(obiekty);
+						dyrektor.tworzTabeleTypy_uzytkownika(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_typy_uzytkownika.txt";
@@ -1499,21 +1499,21 @@ public class HibernateOracle extends JFrame {
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleUzytkownicy(entities);
-						dyrektor.tworzTabeleUzytkownicy(entities, budDruk);
+		                 //budDruk.tworzTabeleUzytkownicy(obiekty);
+						dyrektor.tworzTabeleUzytkownicy(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_uzytkownicy.txt";
@@ -1534,21 +1534,21 @@ public class HibernateOracle extends JFrame {
 	                {		         			                	
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
-		                List<Obiekt_Do_Polecen> entities = null;
+		                List<Obiekt_Do_Polecen> obiekty = null;
 						oc.createDBSession();
 						
 						try (Session session2 = oc.getDBSession()) {
 							
 				            Query<Obiekt_Do_Polecen> query = null;
 				            query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class); 
-				            entities = query.getResultList();
+				            obiekty = query.getResultList();
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
 		                
-		                 //budDruk.tworzTabeleZamowienia(entities);
-						dyrektor.tworzTabeleZamowienia(entities, budDruk);
+		                 //budDruk.tworzTabeleZamowienia(obiekty);
+						dyrektor.tworzTabeleZamowienia(obiekty, budDruk);
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_zamowienia.txt";

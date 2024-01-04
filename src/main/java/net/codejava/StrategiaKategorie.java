@@ -21,24 +21,24 @@ public class StrategiaKategorie implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-     	JTextField pierwszyField = new JTextField(7);
-         JPanel myPanel = new JPanel();
+     	JTextField pierwszePole = new JTextField(7);
+         JPanel panel = new JPanel();
 		
-		myPanel.add(new JLabel("Nazwa kategorii: "));
-		myPanel.add(pierwszyField);
+		panel.add(new JLabel("Nazwa kategorii: "));
+		panel.add(pierwszePole);
 		
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                 "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {         		
-         		Kategorie kat = new Kategorie(pierwszyField.getText());
+         	if (wynik == JOptionPane.OK_OPTION) {         		
+         		Kategorie kat = new Kategorie(pierwszePole.getText());
          		
          		kat.setId_Kategorii(bt.id);
          		
-         		if(!pierwszyField.getText().isEmpty())
+         		if(!pierwszePole.getText().isEmpty())
          		{
          			//session.update(kat);
-         			HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(kat, HibernateOracle.idUzytkownika));
+         			HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(kat, HibernateOracle.idUzytkownika));
          			//dodać cache
              		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
 
@@ -75,41 +75,41 @@ public class StrategiaKategorie implements IStrategia {
       	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
       	lista.remove(br.row);
       	HibernateOracle.cache.put("Kategorie", lista);
-      	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+      	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
       	((DefaultTableModel)br.tab.getModel()).removeRow(br.row);
 	}
 	
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-	 	JTextField pierwszyField = new JTextField(7);
+	 	JTextField pierwszePole = new JTextField(7);
 		 
-        JPanel myPanel = new JPanel();
+        JPanel panel = new JPanel();
 		
-    	myPanel.add(new JLabel("Nazwa: "));
- 		myPanel.add(pierwszyField);		         			         		
+    	panel.add(new JLabel("Nazwa: "));
+ 		panel.add(pierwszePole);		         			         		
  		
- 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+ 		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                  "Dodaj kategorię", JOptionPane.OK_CANCEL_OPTION);
  		 try {
-            	if (result == JOptionPane.OK_OPTION) {
+            	if (wynik == JOptionPane.OK_OPTION) {
             		
             		//OracleConnection oc =  OracleConnection.getInstance();
 	                	//oc.createDBSession();
 	                	//Session session = oc.getDBSession();
             		
-	                	if(pierwszyField.getText().isEmpty())
+	                	if(pierwszePole.getText().isEmpty())
 	                	{
 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Kategoria nie została dodana");
 	                		return;
 	                	}
 	                	
-	                	//session.save(new Kategorie(pierwszyField.getText()));
+	                	//session.save(new Kategorie(pierwszePole.getText()));
 	                	//oc.closeDBSession();
 	                				 	                	
-	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszyField.getText()));
+	                	//Polecenie_Dodaj pd = new Polecenie_Dodaj(new Kategorie(pierwszePole.getText()));
 	                	//pd.Wykonaj();
-	                	Kategorie nowaKategoria = new Kategorie(pierwszyField.getText());
-	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowaKategoria, HibernateOracle.idUzytkownika));
+	                	Kategorie nowaKategoria = new Kategorie(pierwszePole.getText());
+	                	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowaKategoria, HibernateOracle.idUzytkownika));
 	                	
 	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
 	                	lista.add(nowaKategoria);
@@ -117,15 +117,15 @@ public class StrategiaKategorie implements IStrategia {
             			                		
 	                	//pokazKategoriePrzycisk.doClick();
 	                	
-	                	Component[] components = kontener.getComponents();
+	                	Component[] komponenty = kontener.getComponents();
 	                	JTable tab = null;
 	                	JButton dodajPrzycisk = null;
 	                	JButton eksportujDoDruku = null;
 	                	
-	                	for(Component component : components)
+	                	for(Component komponent : komponenty)
 	                	{
-	                		if (component instanceof JScrollPane) {
-	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+	                		if (komponent instanceof JScrollPane) {
+	                	        tab = (JTable) (((JScrollPane)komponent).getViewport().getView());
 	                	        dodajPrzycisk = (JButton) kontener.getComponent(1);
 	                	        eksportujDoDruku = (JButton) kontener.getComponent(2);
 	                	        kontener.removeAll();

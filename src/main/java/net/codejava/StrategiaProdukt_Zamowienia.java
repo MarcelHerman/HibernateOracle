@@ -26,7 +26,7 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
 		Produkt_Zamowienia pr = new Produkt_Zamowienia();
            pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(bt.id, bt.id2));
            //session.delete(pr);
-      	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+      	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
        // oc.closeDBSession();
       	((DefaultTableModel)bt.tab.getModel()).removeRow(bt.row);
 		
@@ -35,61 +35,61 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
 	@Override
 	public void dodajLogikeDodawania(JPanel kontener) {
 		
-	 	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
-        JTextField piatyField = new JTextField(7);
+	 	JTextField pierwszePole = new JTextField(7);
+        JTextField drugiePole = new JTextField(7);
+        JTextField trzeciePole = new JTextField(7);
+        JTextField czwartePole = new JTextField(7);
+        JTextField piatePole = new JTextField(7);
 		 
-        JPanel myPanel = new JPanel();
+        JPanel panel = new JPanel();
         
-		myPanel.add(new JLabel("Id zamówienia: "));
- 		myPanel.add(pierwszyField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Id produktu: "));
- 		myPanel.add(drugiField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Ilość: "));
- 		myPanel.add(trzeciField);
+		panel.add(new JLabel("Id zamówienia: "));
+ 		panel.add(pierwszePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Id produktu: "));
+ 		panel.add(drugiePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Ilość: "));
+ 		panel.add(trzeciePole);
  		
- 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+ 		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                  "Dodaj produkt do zamówienia", JOptionPane.OK_CANCEL_OPTION);
  		 try {
-            	if (result == JOptionPane.OK_OPTION) {
+            	if (wynik == JOptionPane.OK_OPTION) {
             		
             		//OracleConnection oc = OracleConnection.getInstance();
 	                	//oc.createDBSession();
 	                	//Session session = oc.getDBSession();
             		
-	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty())
+	                	if(pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty() || trzeciePole.getText().isEmpty())
 	                	{
 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany do zamówienia.");
 	                		return;
 	                	}
 	                	
-	                	if(Integer.parseInt(trzeciField.getText())<=0)
+	                	if(Integer.parseInt(trzeciePole.getText())<=0)
 	                		throw(new Exception("Ilość nie może być ujemna ani równa 0."));
 	                	
-	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszyField.getText()), Integer.parseInt(drugiField.getText()));
+	                	Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszePole.getText()), Integer.parseInt(drugiePole.getText()));
 	                	
-	                	Produkt_Zamowienia nowyPZ = new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText()));
+	                	Produkt_Zamowienia nowyPZ = new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciePole.getText()));
 	                	
-	                	//session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciField.getText())));
-	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyPZ, HibernateOracle.idUzytkownika));
+	                	//session.save(new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciePole.getText())));
+	                	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyPZ, HibernateOracle.idUzytkownika));
 
             		
             		//oc.closeDBSession();
             		//pokazProduktZamowieniaPrzycisk.doClick();
 	                	
-	                	Component[] components = kontener.getComponents();
+	                	Component[] komponenty = kontener.getComponents();
 	                	JTable tab = null;
 	                	JButton dodajPrzycisk = null;
 	                	JButton eksportujDoDruku = null;
 	                	
-	                	for(Component component : components)
+	                	for(Component komponent : komponenty)
 	                	{
-	                		if (component instanceof JScrollPane) {
-	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+	                		if (komponent instanceof JScrollPane) {
+	                	        tab = (JTable) (((JScrollPane)komponent).getViewport().getView());
 	                	        dodajPrzycisk = (JButton) kontener.getComponent(1);
 	                	        eksportujDoDruku = (JButton) kontener.getComponent(2);
 	                	        kontener.removeAll();

@@ -20,22 +20,22 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
-		JTextField pierwszyField = new JTextField(7);
-		JTextField drugiField = new JTextField(7);
-		JTextField trzeciField = new JTextField(7);
-		JTextField czwartyField = new JTextField(7);
+		JTextField pierwszePole = new JTextField(7);
+		JTextField drugiePole = new JTextField(7);
+		JTextField trzeciePole = new JTextField(7);
+		JTextField czwartePole = new JTextField(7);
 
-		JPanel myPanel = new JPanel();
-		myPanel.add(new JLabel("Stan faktyczny: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Stan magazynowy: "));
-		myPanel.add(drugiField);
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("Stan faktyczny: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Stan magazynowy: "));
+		panel.add(drugiePole);
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, "Edytuj produkt w magazynie",
+		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj produkt w magazynie",
 				JOptionPane.OK_CANCEL_OPTION); // ??
 		try {
-			if (result == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) {
 
 				PolaczenieOracle oc = PolaczenieOracle.getInstance();
 				oc.createDBSession();
@@ -49,20 +49,20 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 				oc.closeDBSession();
 
-				if (!pierwszyField.getText().isEmpty())
-					if (Integer.parseInt(pierwszyField.getText()) < 0)
+				if (!pierwszePole.getText().isEmpty())
+					if (Integer.parseInt(pierwszePole.getText()) < 0)
 						throw (new Exception("Nie można dodać ujemnego stanu faktycznego."));
 					else
-						user.setStan_faktyczny(Integer.parseInt(pierwszyField.getText()));
+						user.setStan_faktyczny(Integer.parseInt(pierwszePole.getText()));
 
-				if (!drugiField.getText().isEmpty())
-					if (Integer.parseInt(drugiField.getText()) < 0)
+				if (!drugiePole.getText().isEmpty())
+					if (Integer.parseInt(drugiePole.getText()) < 0)
 						throw (new Exception("Nie można dodać ujemnego stanu magazynowego."));
 					else
-						user.setStan_magazynowy(Integer.parseInt(drugiField.getText()));
+						user.setStan_magazynowy(Integer.parseInt(drugiePole.getText()));
 
 				// session.update(user);
-				HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				System.out.println(user.getProdukt_magazyn_id() + " " + user.getStan_faktyczny() + " "
 						+ user.getStan_magazynowy());
@@ -81,68 +81,68 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 		Produkt_Magazyn pr = new Produkt_Magazyn();
 		pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(bt.id, bt.id2));
 		// session.delete(pr);
-		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 		// oc.closeDBSession();
 		((DefaultTableModel) bt.tab.getModel()).removeRow(bt.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		JTextField pierwszyField = new JTextField(7);
-		JTextField drugiField = new JTextField(7);
-		JTextField trzeciField = new JTextField(7);
-		JTextField czwartyField = new JTextField(7);
-		JPanel myPanel = new JPanel();
+		JTextField pierwszePole = new JTextField(7);
+		JTextField drugiePole = new JTextField(7);
+		JTextField trzeciePole = new JTextField(7);
+		JTextField czwartePole = new JTextField(7);
+		JPanel panel = new JPanel();
 
-		myPanel.add(new JLabel("Id magazynu: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Id produktu: "));
-		myPanel.add(drugiField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Stan magazynowy: "));
-		myPanel.add(trzeciField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Stan faktyczny: "));
-		myPanel.add(czwartyField);
+		panel.add(new JLabel("Id magazynu: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Id produktu: "));
+		panel.add(drugiePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Stan magazynowy: "));
+		panel.add(trzeciePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Stan faktyczny: "));
+		panel.add(czwartePole);
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, "Dodaj produkt do magazynu",
+		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj produkt do magazynu",
 				JOptionPane.OK_CANCEL_OPTION);
 		try {
-			if (result == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) {
 
-				if (pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty()
-						|| trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty()) {
+				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
+						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null,
 							"Nie podano wszystkich danych. Produkt nie został dodany do magazynu");
 					return;
 				}
 
-				if (Integer.parseInt(trzeciField.getText()) < 0)
+				if (Integer.parseInt(trzeciePole.getText()) < 0)
 					throw (new Exception("Stan magazynowy nie może być ujemny."));
 
-				if (Integer.parseInt(czwartyField.getText()) <= 0)
+				if (Integer.parseInt(czwartePole.getText()) <= 0)
 					throw (new Exception("Stan faktyczny nie może być ujemny."));
 
-				Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszyField.getText()),
-						Integer.parseInt(drugiField.getText()));
+				Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszePole.getText()),
+						Integer.parseInt(drugiePole.getText()));
 				// session.save(new Produkt_Magazyn(idpm,
-				// Integer.parseInt(trzeciField.getText()),
-				// Integer.parseInt(czwartyField.getText())));
+				// Integer.parseInt(trzeciePole.getText()),
+				// Integer.parseInt(czwartePole.getText())));
 
-				Produkt_Magazyn nowyPM = new Produkt_Magazyn(idpm, Integer.parseInt(trzeciField.getText()),
-						Integer.parseInt(czwartyField.getText()));
-				HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyPM, HibernateOracle.idUzytkownika));
+				Produkt_Magazyn nowyPM = new Produkt_Magazyn(idpm, Integer.parseInt(trzeciePole.getText()),
+						Integer.parseInt(czwartePole.getText()));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyPM, HibernateOracle.idUzytkownika));
 
 				// pokazProduktMagazynPrzycisk.doClick();
 
-				Component[] components = kontener.getComponents();
+				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;
 
 				JButton dodajPrzycisk = null;
 				JButton eksportujDoDruku = null;
-				for (Component component : components) {
-					if (component instanceof JScrollPane) {
-						tab = (JTable) (((JScrollPane) component).getViewport().getView());
+				for (Component komponent : komponenty) {
+					if (komponent instanceof JScrollPane) {
+						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
 						dodajPrzycisk = (JButton) kontener.getComponent(1);
 						eksportujDoDruku = (JButton) kontener.getComponent(2);
 						kontener.removeAll();

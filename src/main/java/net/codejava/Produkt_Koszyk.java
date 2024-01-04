@@ -2,22 +2,22 @@ package net.codejava;
 
 public class Produkt_Koszyk implements Obiekt_Do_Polecen{
 	
-	Produkty pr;
+	Produkty produkt;
 	private int ilosc;
 	
 	public Produkt_Koszyk() {}
 	public Produkt_Koszyk(Produkty pr, int ilosc)
 	{
-		this.pr=pr;
+		this.produkt=pr;
 		this.ilosc=ilosc;
 	}
 
 	public Produkty getPr() {
-		return pr;
+		return produkt;
 	}
 
 	public void setPr(Produkty pr) {
-		this.pr = pr;
+		this.produkt = pr;
 	}
 
 	public int getIlosc() {

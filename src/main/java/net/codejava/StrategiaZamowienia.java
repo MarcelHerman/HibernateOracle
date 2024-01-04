@@ -24,12 +24,12 @@ public class StrategiaZamowienia implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
-		JTextField pierwszyField = new JTextField(7);
-		JTextField drugiField = new JTextField(7);
-		JTextField trzeciField = new JTextField(7);
-		JTextField czwartyField = new JTextField(7);
+		JTextField pierwszePole = new JTextField(7);
+		JTextField drugiePole = new JTextField(7);
+		JTextField trzeciePole = new JTextField(7);
+		JTextField czwartePole = new JTextField(7);
 
-		JPanel myPanel = new JPanel();
+		JPanel panel = new JPanel();
 
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
@@ -58,25 +58,25 @@ public class StrategiaZamowienia implements IStrategia {
 		JComboBox jombo = new JComboBox(nazwy);
 
 		if (HibernateOracle.nazwaTypu.equals("Pracownik")) {
-			myPanel.add(Box.createHorizontalStrut(5));
-			myPanel.add(new JLabel("Stan zamówienia: "));
-			myPanel.add(jombo);
+			panel.add(Box.createHorizontalStrut(5));
+			panel.add(new JLabel("Stan zamówienia: "));
+			panel.add(jombo);
 		}
 
 		else {
-			myPanel.add(new JLabel("Miasto wysyłki"));
-			myPanel.add(pierwszyField);
-			myPanel.add(Box.createHorizontalStrut(5));
-			myPanel.add(new JLabel("Ulica wysyłki: "));
-			myPanel.add(drugiField);
-			myPanel.add(Box.createHorizontalStrut(5));
-			myPanel.add(new JLabel("Stan zamówienia: "));
-			myPanel.add(jombo);
+			panel.add(new JLabel("Miasto wysyłki"));
+			panel.add(pierwszePole);
+			panel.add(Box.createHorizontalStrut(5));
+			panel.add(new JLabel("Ulica wysyłki: "));
+			panel.add(drugiePole);
+			panel.add(Box.createHorizontalStrut(5));
+			panel.add(new JLabel("Stan zamówienia: "));
+			panel.add(jombo);
 		}
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		try {
-			if (result == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) {
 
 				oc.createDBSession();
 				Session session = oc.getDBSession();
@@ -87,16 +87,16 @@ public class StrategiaZamowienia implements IStrategia {
 				// System.out.println(user.getId_uzytkownika());
 				oc.closeDBSession();
 
-				if (!pierwszyField.getText().isEmpty())
-					user.setAdres_wysylki_miasto(pierwszyField.getText());
-				if (!drugiField.getText().isEmpty())
-					user.setAdres_wysylki_ulica(drugiField.getText());
+				if (!pierwszePole.getText().isEmpty())
+					user.setAdres_wysylki_miasto(pierwszePole.getText());
+				if (!drugiePole.getText().isEmpty())
+					user.setAdres_wysylki_ulica(drugiePole.getText());
 
 				user.setId_stanu_zamowienia(
 						((Stany_Zamowienia) fData.get(jombo.getSelectedIndex())).getId_Stanu_Zamowienia());
 
 				// session.update(user);
-				HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getAdres_wysylki_miasto(), bt.row, 1);
 				bt.tab.setValueAt(user.getAdres_wysylki_ulica(), bt.row, 2);
@@ -113,7 +113,7 @@ public class StrategiaZamowienia implements IStrategia {
 		Zamowienia pr = new Zamowienia();
 		pr.setId_zamowienia(bt.id);
 		// session.delete(pr);
-		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 		// oc.closeDBSession();
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
@@ -123,56 +123,56 @@ public class StrategiaZamowienia implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		JTextField pierwszyField = new JTextField(7);
-		JTextField drugiField = new JTextField(7);
-		JTextField trzeciField = new JTextField(7);
-		JTextField czwartyField = new JTextField(7);
+		JTextField pierwszePole = new JTextField(7);
+		JTextField drugiePole = new JTextField(7);
+		JTextField trzeciePole = new JTextField(7);
+		JTextField czwartePole = new JTextField(7);
 		JTextField piatyField = new JTextField(7);
-		JPanel myPanel = new JPanel();
+		JPanel panel = new JPanel();
 
-		myPanel.add(new JLabel("Id uzytkownika: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Adres wysyłki miasto: "));
-		myPanel.add(trzeciField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Adres wysyłki ulica: "));
-		myPanel.add(czwartyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Koszt: "));
-		myPanel.add(piatyField);
+		panel.add(new JLabel("Id uzytkownika: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Adres wysyłki miasto: "));
+		panel.add(trzeciePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Adres wysyłki ulica: "));
+		panel.add(czwartePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Koszt: "));
+		panel.add(piatyField);
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		try {
-			if (result == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) {
 
 //oc.createDBSession();
 //Session session = oc.getDBSession();
 
-				if (pierwszyField.getText().isEmpty() || trzeciField.getText().isEmpty()
-						|| czwartyField.getText().isEmpty() || piatyField.getText().isEmpty()) {
+				if (pierwszePole.getText().isEmpty() || trzeciePole.getText().isEmpty()
+						|| czwartePole.getText().isEmpty() || piatyField.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
 					return;
 				}
 
 				double cena = Double.parseDouble(piatyField.getText());
 				cena = Math.round(cena * 100.0) / 100.0;
-//session.save(new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1, Integer.parseInt(pierwszyField.getText()), null));
-				Zamowienia noweZamowienie = new Zamowienia(cena, trzeciField.getText(), czwartyField.getText(), 1,
-						Integer.parseInt(pierwszyField.getText()), null);
-				HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, HibernateOracle.idUzytkownika));
+//session.save(new Zamowienia(cena, trzeciePole.getText(), czwartePole.getText(), 1, Integer.parseInt(pierwszePole.getText()), null));
+				Zamowienia noweZamowienie = new Zamowienia(cena, trzeciePole.getText(), czwartePole.getText(), 1,
+						Integer.parseInt(pierwszePole.getText()), null);
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, HibernateOracle.idUzytkownika));
 
 //oc.closeDBSession();
 //pokazZamowieniaPrzycisk.doClick();
 
-				Component[] components = kontener.getComponents();
+				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;
 
 				JButton dodajPrzycisk = null;
 				JButton eksportujDoDruku = null;
-				for (Component component : components) {
-					if (component instanceof JScrollPane) {
-						tab = (JTable) (((JScrollPane) component).getViewport().getView());
+				for (Component komponent : komponenty) {
+					if (komponent instanceof JScrollPane) {
+						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
             	        dodajPrzycisk = (JButton)kontener.getComponent(1);
             	        eksportujDoDruku = (JButton)kontener.getComponent(2);
 						kontener.removeAll();

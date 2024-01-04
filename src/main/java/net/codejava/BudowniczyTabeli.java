@@ -87,19 +87,19 @@ class BudowniczyTabeliDruk implements BudowniczyTabeli
 	        this.dane.addLast(wiersz);
 	    }
 
-	    Object[] nagl = this.naglowek.toArray();
-	    Object[][] dan = new Object[this.dane.size()][];
+	    Object[] naglowek = this.naglowek.toArray();
+	    Object[][] dane = new Object[this.dane.size()][];
 	    int i = 0;
 	    for (LinkedList<Object> w : this.dane) {
-	        dan[i++] = w.toArray();
+	        dane[i++] = w.toArray();
 	    }
 
 	    // Tworzenie łańcucha znaków dla nagłówków
-	    String naglowki = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(nagl)) + "\n";
+	    String naglowki = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(naglowek)) + "\n";
 
 	    // Tworzenie łańcucha znaków dla danych
 	    String daneString = "Wykaz " +HibernateOracle.obj.getClass().getSimpleName() + " z dnia " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +"\n"+ naglowki;
-	    for (Object[] row : dan) {
+	    for (Object[] row : dane) {
 	        String rowString = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(row)) + "\n";
 	        daneString += rowString;
 	    }
@@ -233,12 +233,12 @@ class BudowniczyTabeliSwing implements BudowniczyTabeli
 
 			
 		
-		Object[] nagl = this.naglowek.toArray();
-		Object[][] dan = new Object[this.dane.size()][];
+		Object[] naglowek = this.naglowek.toArray();
+		Object[][] dane = new Object[this.dane.size()][];
 		int i = 0;
-		for(LinkedList<Object> w:this.dane) dan[i++]=w.toArray();
+		for(LinkedList<Object> w:this.dane) dane[i++]=w.toArray();
 		
-		DefaultTableModel model = new DefaultTableModel(dan,nagl);
+		DefaultTableModel model = new DefaultTableModel(dane,naglowek);
 		
 		JTable jt = new JTable(model);
 			

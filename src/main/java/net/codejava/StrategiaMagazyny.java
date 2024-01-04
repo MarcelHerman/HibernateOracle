@@ -22,21 +22,21 @@ public class StrategiaMagazyny implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-     	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
+        JTextField drugiePole = new JTextField(7);
 		 
-         JPanel myPanel = new JPanel();
+         JPanel panel = new JPanel();
 
-		myPanel.add(new JLabel("Miasto: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Ulica: "));
-		myPanel.add(drugiField);
+		panel.add(new JLabel("Miasto: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Ulica: "));
+		panel.add(drugiePole);
 		
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                 "Edytuj magazyn", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {
+         	if (wynik == JOptionPane.OK_OPTION) {
          		
          		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
               	oc.createDBSession();
@@ -49,13 +49,13 @@ public class StrategiaMagazyny implements IStrategia {
               	int szukany = user.getId_magazynu();
               	//System.out.println(user.getId_uzytkownika());
               	oc.closeDBSession();
-              	if(!pierwszyField.getText().isEmpty())
-              		user.setMiasto(pierwszyField.getText());
-              	if(!drugiField.getText().isEmpty())
-              		user.setUlica(drugiField.getText());
+              	if(!pierwszePole.getText().isEmpty())
+              		user.setMiasto(pierwszePole.getText());
+              	if(!drugiePole.getText().isEmpty())
+              		user.setUlica(drugiePole.getText());
               	
          		//session.update(user);
-         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		//dodać cache
          		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
 
@@ -93,7 +93,7 @@ public class StrategiaMagazyny implements IStrategia {
      	lista.remove(br.row);
      	HibernateOracle.cache.put("Magazyny", lista);
            //session.delete(pr);
-      	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
+      	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
         //oc.closeDBSession();
       	((DefaultTableModel)br.tab.getModel()).removeRow(br.row);
@@ -101,47 +101,47 @@ public class StrategiaMagazyny implements IStrategia {
 	
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-     	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
+        JTextField drugiePole = new JTextField(7);
+        JTextField trzeciePole = new JTextField(7);
+        JTextField czwartePole = new JTextField(7);
 		 
-         JPanel myPanel = new JPanel();
+         JPanel panel = new JPanel();
 		
-    	myPanel.add(new JLabel("Miasto: "));
- 		myPanel.add(pierwszyField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Ulica: "));
- 		myPanel.add(drugiField);		         		
+    	panel.add(new JLabel("Miasto: "));
+ 		panel.add(pierwszePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Ulica: "));
+ 		panel.add(drugiePole);		         		
  		
- 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+ 		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                  "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);
  		 try {
-            	if (result == JOptionPane.OK_OPTION) {			                		
-	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
+            	if (wynik == JOptionPane.OK_OPTION) {			                		
+	                	if(pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty())
 	                	{
 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Magazyn nie został dodany");
 	                		return;
 	                	}
-	                	//session.save(new Magazyny(pierwszyField.getText(), drugiField.getText()));
-	                	Magazyny nowyMagazyn = new Magazyny(pierwszyField.getText(), drugiField.getText());
-	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyMagazyn, HibernateOracle.idUzytkownika));
+	                	//session.save(new Magazyny(pierwszePole.getText(), drugiePole.getText()));
+	                	Magazyny nowyMagazyn = new Magazyny(pierwszePole.getText(), drugiePole.getText());
+	                	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyMagazyn, HibernateOracle.idUzytkownika));
 	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
 	                	lista.add(nowyMagazyn);
 	                	HibernateOracle.cache.put("Magazyny", lista);
             		
             		//pokazMagazynyPrzycisk.doClick();
 	                	
-	                	Component[] components = kontener.getComponents();
+	                	Component[] komponenty = kontener.getComponents();
 	                	JTable tab = null;
 	                	JButton dodajPrzycisk = null;
 	                	JButton eksportujDoDruku = null;
 	                			
 	                	
-	                	for(Component component : components)
+	                	for(Component komponent : komponenty)
 	                	{
-	                		if (component instanceof JScrollPane) {
-	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+	                		if (komponent instanceof JScrollPane) {
+	                	        tab = (JTable) (((JScrollPane)komponent).getViewport().getView());
 	                	        dodajPrzycisk = (JButton) kontener.getComponent(1);
 	                	        eksportujDoDruku = (JButton) kontener.getComponent(2);
 	                	        

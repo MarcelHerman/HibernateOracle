@@ -23,33 +23,33 @@ public class StrategiaProducenci implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-     	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
+        JTextField drugiePole = new JTextField(7);
+        JTextField trzeciePole = new JTextField(7);
+        JTextField czwartePole = new JTextField(7);
 		 
-         JPanel myPanel = new JPanel();
+         JPanel panel = new JPanel();
 		
 		JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
 		
-		myPanel.add(new JLabel("Nazwa producenta: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Kontakt: "));
-		myPanel.add(drugiField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Miasto: "));
-		myPanel.add(trzeciField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Ulica: "));
-		myPanel.add(czwartyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(czyUsunietyCheck);
+		panel.add(new JLabel("Nazwa producenta: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Kontakt: "));
+		panel.add(drugiePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Miasto: "));
+		panel.add(trzeciePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Ulica: "));
+		panel.add(czwartePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(czyUsunietyCheck);
 		
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                 "Edytuj producenta", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {
+         	if (wynik == JOptionPane.OK_OPTION) {
          		
          		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
               	oc.createDBSession();
@@ -64,16 +64,16 @@ public class StrategiaProducenci implements IStrategia {
               	oc.closeDBSession();
               	
               	user.setCzy_usunieto(czyUsunietyCheck.isSelected()?1:0);
-              	if(!pierwszyField.getText().isEmpty())
-              		user.setNazwa(pierwszyField.getText());
-              	if(!drugiField.getText().isEmpty())
-              		user.setKontakt(drugiField.getText());
-              	if(!trzeciField.getText().isEmpty())
-              		user.setMiasto(trzeciField.getText());
-              	if(!czwartyField.getText().isEmpty())
-              		user.setUlica(czwartyField.getText());
+              	if(!pierwszePole.getText().isEmpty())
+              		user.setNazwa(pierwszePole.getText());
+              	if(!drugiePole.getText().isEmpty())
+              		user.setKontakt(drugiePole.getText());
+              	if(!trzeciePole.getText().isEmpty())
+              		user.setMiasto(trzeciePole.getText());
+              	if(!czwartePole.getText().isEmpty())
+              		user.setUlica(czwartePole.getText());
          		//session.update(user);
-         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
      			//dodać cache
          		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
 
@@ -144,7 +144,7 @@ public class StrategiaProducenci implements IStrategia {
  		HibernateOracle.cache.put("Producenci", lista);
         pr.setCzy_usunieto(1);
           //session.update(pr);
-         HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
+         HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
         br.tab.setValueAt("TAK", br.row, 5);
       //oc.closeDBSession();
@@ -152,37 +152,37 @@ public class StrategiaProducenci implements IStrategia {
 	
 	public void dodajLogikeDodawania(JPanel kontener) {
 		
-     	JTextField pierwszyField = new JTextField(7);
-        JTextField drugiField = new JTextField(7);
-        JTextField trzeciField = new JTextField(7);
-        JTextField czwartyField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
+        JTextField drugiePole = new JTextField(7);
+        JTextField trzeciePole = new JTextField(7);
+        JTextField czwartePole = new JTextField(7);
 		 
-         JPanel myPanel = new JPanel();
+         JPanel panel = new JPanel();
 
-    	myPanel.add(new JLabel("Nazwa: "));
- 		myPanel.add(pierwszyField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Kontakt: "));
- 		myPanel.add(drugiField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Miasto: "));
- 		myPanel.add(trzeciField);
- 		myPanel.add(Box.createHorizontalStrut(5));
- 		myPanel.add(new JLabel("Ulica: "));
- 		myPanel.add(czwartyField);
+    	panel.add(new JLabel("Nazwa: "));
+ 		panel.add(pierwszePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Kontakt: "));
+ 		panel.add(drugiePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Miasto: "));
+ 		panel.add(trzeciePole);
+ 		panel.add(Box.createHorizontalStrut(5));
+ 		panel.add(new JLabel("Ulica: "));
+ 		panel.add(czwartePole);
  		
- 		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+ 		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                  "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
  		 try {
-            	if (result == JOptionPane.OK_OPTION) {			                					                			                		
-	                	if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty() || trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty())
+            	if (wynik == JOptionPane.OK_OPTION) {			                					                			                		
+	                	if(pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty() || trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty())
 	                	{
 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Producent nie został dodany");
 	                		return;
 	                	}
-	                	//session.save(new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0));
-	                	Producenci nowyProducent = new Producenci(pierwszyField.getText(), drugiField.getText(), trzeciField.getText(), czwartyField.getText(), 0);
-	                	HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyProducent, HibernateOracle.idUzytkownika));
+	                	//session.save(new Producenci(pierwszePole.getText(), drugiePole.getText(), trzeciePole.getText(), czwartePole.getText(), 0));
+	                	Producenci nowyProducent = new Producenci(pierwszePole.getText(), drugiePole.getText(), trzeciePole.getText(), czwartePole.getText(), 0);
+	                	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyProducent, HibernateOracle.idUzytkownika));
 	                	List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
 	                	lista.add(nowyProducent);
 	                	HibernateOracle.cache.put("Producenci", lista);
@@ -190,16 +190,16 @@ public class StrategiaProducenci implements IStrategia {
             		
             		//pokazProducentowPrzycisk.doClick();
 	                	
-	                	Component[] components = kontener.getComponents();
+	                	Component[] komponenty = kontener.getComponents();
 	                	JTable tab = null;
 	                	JButton dodajPrzycisk = null;
 	                	JButton eksportujDoDruku = null;
 	                			
 	                	
-	                	for(Component component : components)
+	                	for(Component komponent : komponenty)
 	                	{
-	                		if (component instanceof JScrollPane) {
-	                	        tab = (JTable) (((JScrollPane)component).getViewport().getView());
+	                		if (komponent instanceof JScrollPane) {
+	                	        tab = (JTable) (((JScrollPane)komponent).getViewport().getView());
 	                	        dodajPrzycisk = (JButton)kontener.getComponent(1);
 	                	        eksportujDoDruku = (JButton)kontener.getComponent(2);
 	                	        kontener.removeAll();

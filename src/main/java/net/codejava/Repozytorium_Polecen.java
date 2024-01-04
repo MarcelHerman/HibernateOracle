@@ -28,15 +28,15 @@ public class Repozytorium_Polecen {
 	}
 	
 	public void saveToFile() {
-		String path = "historia_polecen.txt";
-        File file = new File(path);
+		String sciezka = "historia_polecen.txt";
+        File file = new File(sciezka);
 
         try {
             if (!file.exists()) {
                 file.createNewFile();
-                System.out.println("Utworzono nowy plik: " + path);
+                System.out.println("Utworzono nowy plik: " + sciezka);
             } else {
-                System.out.println("Plik już istnieje: " + path);
+                System.out.println("Plik już istnieje: " + sciezka);
             }
 
             // Używamy konstruktora FileWriter z trybem append (dopisywania)
@@ -46,7 +46,7 @@ public class Repozytorium_Polecen {
                     writer.write(polecenie.toString());
                     writer.newLine();
                 }
-                System.out.println("Zapisano polecenia do pliku: " + path);
+                System.out.println("Zapisano polecenia do pliku: " + sciezka);
             } catch (IOException e) {
                 System.err.println("Błąd podczas zapisu do pliku: " + e.getMessage());
                 e.printStackTrace();

@@ -34,8 +34,8 @@ class PolaczenieProxy implements IPolaczenia
 	{
 		try
 		{
-			HibernateOracle.repo_pol.wykonajPolecenia();
-			HibernateOracle.repo_pol.saveToFile();
+			HibernateOracle.repoPolecen.wykonajPolecenia();
+			HibernateOracle.repoPolecen.saveToFile();
 			oc = null;
 		}catch(Exception e)
 		{

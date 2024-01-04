@@ -24,12 +24,12 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		JTextField pierwszyField = new JTextField(7);
-		JTextField drugiField = new JTextField(7);
-		JTextField trzeciField = new JTextField(7);
-		JTextField czwartyField = new JTextField(7);
+		JTextField pierwszePole = new JTextField(7);
+		JTextField drugiePole = new JTextField(7);
+		JTextField trzeciePole = new JTextField(7);
+		JTextField czwartePole = new JTextField(7);
 
-		JPanel myPanel = new JPanel();
+		JPanel panel = new JPanel();
 
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
@@ -58,26 +58,26 @@ public class StrategiaUzytkownicy implements IStrategia {
 		JComboBox jombo = new JComboBox(nazwy);
 		JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
 
-		myPanel.add(new JLabel("Nazwa użytkownika: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Login: "));
-		myPanel.add(drugiField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Hasło: "));
-		myPanel.add(trzeciField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("E-mail: "));
-		myPanel.add(czwartyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Typ użytkownika: "));
-		myPanel.add(jombo);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(czyUsunietyCheck);
+		panel.add(new JLabel("Nazwa użytkownika: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Login: "));
+		panel.add(drugiePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Hasło: "));
+		panel.add(trzeciePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("E-mail: "));
+		panel.add(czwartePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Typ użytkownika: "));
+		panel.add(jombo);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(czyUsunietyCheck);
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
-			if (result == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) {
 
 				oc.createDBSession();
 				Session session = oc.getDBSession();
@@ -89,19 +89,19 @@ public class StrategiaUzytkownicy implements IStrategia {
 				oc.closeDBSession();
 
 				user.setCzy_usunieto(czyUsunietyCheck.isSelected() ? 1 : 0);
-				if (!pierwszyField.getText().isEmpty())
-					user.setNazwa_uzytkownika(pierwszyField.getText());
-				if (!drugiField.getText().isEmpty())
-					user.setLogin(drugiField.getText());
-				if (!trzeciField.getText().isEmpty())
-					user.setHaslo(trzeciField.getText());
-				if (!czwartyField.getText().isEmpty())
-					user.setE_mail(czwartyField.getText());
+				if (!pierwszePole.getText().isEmpty())
+					user.setNazwa_uzytkownika(pierwszePole.getText());
+				if (!drugiePole.getText().isEmpty())
+					user.setLogin(drugiePole.getText());
+				if (!trzeciePole.getText().isEmpty())
+					user.setHaslo(trzeciePole.getText());
+				if (!czwartePole.getText().isEmpty())
+					user.setE_mail(czwartePole.getText());
 				user.setId_typu_uzytkownika(
 						((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
 
 				// session.update(user);
-				HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getNazwa_uzytkownika(), bt.row, 1);
 				bt.tab.setValueAt(user.getLogin(), bt.row, 2);
@@ -130,17 +130,17 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 		pr.setCzy_usunieto(1);
 		// session.update(pr);
-		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
+		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
 		bt.tab.setValueAt("TAK", bt.row, 6);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		JTextField pierwszyField = new JTextField(7);
-		JTextField drugiField = new JTextField(7);
-		JTextField trzeciField = new JTextField(7);
-		JTextField czwartyField = new JTextField(7);
-		JPanel myPanel = new JPanel();
+		JTextField pierwszePole = new JTextField(7);
+		JTextField drugiePole = new JTextField(7);
+		JTextField trzeciePole = new JTextField(7);
+		JTextField czwartePole = new JTextField(7);
+		JPanel panel = new JPanel();
 
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
@@ -168,55 +168,55 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 		// user.setId_stanu_zamowienia(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
 
-		myPanel.add(new JLabel("Nazwa uzytkownika: "));
-		myPanel.add(pierwszyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Login: "));
-		myPanel.add(drugiField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Hasło: "));
-		myPanel.add(trzeciField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("E-mail: "));
-		myPanel.add(czwartyField);
-		myPanel.add(Box.createHorizontalStrut(5));
-		myPanel.add(new JLabel("Id typu użytkownika: "));
-		myPanel.add(jombo);
+		panel.add(new JLabel("Nazwa uzytkownika: "));
+		panel.add(pierwszePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Login: "));
+		panel.add(drugiePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Hasło: "));
+		panel.add(trzeciePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("E-mail: "));
+		panel.add(czwartePole);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(new JLabel("Id typu użytkownika: "));
+		panel.add(jombo);
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel, "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
-			if (result == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) {
 				// oc.createDBSession();
 				// Session session = oc.getDBSession();
 
-				if (pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty()
-						|| trzeciField.getText().isEmpty() || czwartyField.getText().isEmpty()) {
+				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
+						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Użytkownik nie został dodany");
 					return;
 				}
 
-				// session.save(new Uzytkownicy(pierwszyField.getText(), drugiField.getText(),
-				// trzeciField.getText(), czwartyField.getText(),
+				// session.save(new Uzytkownicy(pierwszePole.getText(), drugiePole.getText(),
+				// trzeciePole.getText(), czwartePole.getText(),
 				// ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(),
 				// 0));
 
-				Uzytkownicy nowyUzytkownik = new Uzytkownicy(pierwszyField.getText(), drugiField.getText(),
-						trzeciField.getText(), czwartyField.getText(),
+				Uzytkownicy nowyUzytkownik = new Uzytkownicy(pierwszePole.getText(), drugiePole.getText(),
+						trzeciePole.getText(), czwartePole.getText(),
 						((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0);
 
-				HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));
 
 				// oc.closeDBSession();
 				// pokazUzytkownicyPrzycisk.doClick();
 
-				Component[] components = kontener.getComponents();
+				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;
 
 				JButton dodajPrzycisk = null;
 				JButton eksportujDoDruku = null;
-				for (Component component : components) {
-					if (component instanceof JScrollPane) {
-						tab = (JTable) (((JScrollPane) component).getViewport().getView());
+				for (Component komponent : komponenty) {
+					if (komponent instanceof JScrollPane) {
+						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
             	        dodajPrzycisk = (JButton)kontener.getComponent(1);
             	        eksportujDoDruku = (JButton)kontener.getComponent(2);
 						kontener.removeAll();

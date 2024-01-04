@@ -14,16 +14,16 @@ public class StrategiaStany_Zamowienia implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
-     	JTextField pierwszyField = new JTextField(7);
+     	JTextField pierwszePole = new JTextField(7);
 
-         JPanel myPanel = new JPanel();
-		myPanel.add(new JLabel("Nazwa: "));
-		myPanel.add(pierwszyField);             		
+         JPanel panel = new JPanel();
+		panel.add(new JLabel("Nazwa: "));
+		panel.add(pierwszePole);             		
 		
-		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		int wynik = JOptionPane.showConfirmDialog(null, panel, 
                 "Edytuj stan zamówienia", JOptionPane.OK_CANCEL_OPTION);
 		 try {
-         	if (result == JOptionPane.OK_OPTION) {
+         	if (wynik == JOptionPane.OK_OPTION) {
          		
          		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
               	oc.createDBSession();
@@ -33,11 +33,11 @@ public class StrategiaStany_Zamowienia implements IStrategia {
               			.setParameter("id", bt.id)
               			.uniqueResult();	     	 	                	
               	oc.closeDBSession();
-              	if(!pierwszyField.getText().isEmpty())
-              		user.setNazwa(pierwszyField.getText());	 
+              	if(!pierwszePole.getText().isEmpty())
+              		user.setNazwa(pierwszePole.getText());	 
          		//session.update(user);
 
-         		HibernateOracle.repo_pol.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
          		
          	}
 		 }
