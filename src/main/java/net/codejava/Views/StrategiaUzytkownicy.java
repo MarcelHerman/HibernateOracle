@@ -1,4 +1,4 @@
-package net.codejava;
+package net.codejava.Views;
 
 import net.codejava.Models.*;
 import java.awt.Component;
@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import net.codejava.HibernateOracle;
+import net.codejava.IStrategia;
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
 public class StrategiaUzytkownicy implements IStrategia {
@@ -50,8 +52,6 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 		int i = 0;
 		for (Obiekt_Do_Polecen stan : fData) {
-			// nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] =
-			// ((Stany_Zamowienia)stan).getNazwa();
 			nazwy[i] = ((Typy_uzytkownika) stan).getNazwa();
 			i++;
 		}
@@ -86,7 +86,6 @@ public class StrategiaUzytkownicy implements IStrategia {
 				Uzytkownicy user = (Uzytkownicy) session
 						.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
 						.setParameter("id", bt.id).uniqueResult();
-				// System.out.println(user.getId_uzytkownika());
 				oc.closeDBSession();
 
 				user.setCzy_usunieto(czyUsunietyCheck.isSelected() ? 1 : 0);
@@ -101,7 +100,6 @@ public class StrategiaUzytkownicy implements IStrategia {
 				user.setId_typu_uzytkownika(
 						((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
 
-				// session.update(user);
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getNazwa_uzytkownika(), bt.row, 1);
@@ -130,7 +128,6 @@ public class StrategiaUzytkownicy implements IStrategia {
 		oc.closeDBSession();
 
 		pr.setCzy_usunieto(1);
-		// session.update(pr);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
 		bt.tab.setValueAt("TAK", bt.row, 6);
@@ -167,8 +164,6 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 		JComboBox jombo = new JComboBox(nazwy);
 
-		// user.setId_stanu_zamowienia(((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
-
 		panel.add(new JLabel("Nazwa uzytkownika: "));
 		panel.add(pierwszePole);
 		panel.add(Box.createHorizontalStrut(5));
@@ -187,8 +182,6 @@ public class StrategiaUzytkownicy implements IStrategia {
 		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				// oc.createDBSession();
-				// Session session = oc.getDBSession();
 
 				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
 						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
@@ -196,19 +189,12 @@ public class StrategiaUzytkownicy implements IStrategia {
 					return;
 				}
 
-				// session.save(new Uzytkownicy(pierwszePole.getText(), drugiePole.getText(),
-				// trzeciePole.getText(), czwartePole.getText(),
-				// ((Typy_uzytkownika)fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(),
-				// 0));
-
 				Uzytkownicy nowyUzytkownik = new Uzytkownicy(pierwszePole.getText(), drugiePole.getText(),
 						trzeciePole.getText(), czwartePole.getText(),
 						((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0);
 
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));
-
-				// oc.closeDBSession();
-				// pokazUzytkownicyPrzycisk.doClick();
+				HibernateOracle.repoPolecen
+						.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));
 
 				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;
@@ -218,8 +204,8 @@ public class StrategiaUzytkownicy implements IStrategia {
 				for (Component komponent : komponenty) {
 					if (komponent instanceof JScrollPane) {
 						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
-            	        dodajPrzycisk = (JButton)kontener.getComponent(1);
-            	        eksportujDoDruku = (JButton)kontener.getComponent(2);
+						dodajPrzycisk = (JButton) kontener.getComponent(1);
+						eksportujDoDruku = (JButton) kontener.getComponent(2);
 						kontener.removeAll();
 						break;
 					}

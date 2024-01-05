@@ -1,4 +1,4 @@
-package net.codejava;
+package net.codejava.Views;
 
 import net.codejava.Models.*;
 import java.awt.Component;
@@ -18,6 +18,8 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import net.codejava.HibernateOracle;
+import net.codejava.IStrategia;
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
 public class StrategiaZamowienia implements IStrategia {
@@ -50,8 +52,6 @@ public class StrategiaZamowienia implements IStrategia {
 
 		int i = 0;
 		for (Obiekt_Do_Polecen stan : fData) {
-			// nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] =
-			// ((Stany_Zamowienia)stan).getNazwa();
 			nazwy[i] = ((Stany_Zamowienia) stan).getNazwa();
 			i++;
 		}
@@ -85,7 +85,6 @@ public class StrategiaZamowienia implements IStrategia {
 				Zamowienia user = (Zamowienia) session
 						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", bt.id)
 						.uniqueResult();
-				// System.out.println(user.getId_uzytkownika());
 				oc.closeDBSession();
 
 				if (!pierwszePole.getText().isEmpty())
@@ -96,7 +95,6 @@ public class StrategiaZamowienia implements IStrategia {
 				user.setId_stanu_zamowienia(
 						((Stany_Zamowienia) fData.get(jombo.getSelectedIndex())).getId_Stanu_Zamowienia());
 
-				// session.update(user);
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getAdres_wysylki_miasto(), bt.row, 1);
@@ -113,9 +111,8 @@ public class StrategiaZamowienia implements IStrategia {
 	public void dodajLogikeUsuwania(ButtonEditor bt) {
 		Zamowienia pr = new Zamowienia();
 		pr.setId_zamowienia(bt.id);
-		// session.delete(pr);
+
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		// oc.closeDBSession();
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
 		lista.remove(bt.row);
@@ -147,9 +144,6 @@ public class StrategiaZamowienia implements IStrategia {
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
-//oc.createDBSession();
-//Session session = oc.getDBSession();
-
 				if (pierwszePole.getText().isEmpty() || trzeciePole.getText().isEmpty()
 						|| czwartePole.getText().isEmpty() || piatyField.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
@@ -158,13 +152,10 @@ public class StrategiaZamowienia implements IStrategia {
 
 				double cena = Double.parseDouble(piatyField.getText());
 				cena = Math.round(cena * 100.0) / 100.0;
-//session.save(new Zamowienia(cena, trzeciePole.getText(), czwartePole.getText(), 1, Integer.parseInt(pierwszePole.getText()), null));
 				Zamowienia noweZamowienie = new Zamowienia(cena, trzeciePole.getText(), czwartePole.getText(), 1,
 						Integer.parseInt(pierwszePole.getText()), null);
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, HibernateOracle.idUzytkownika));
-
-//oc.closeDBSession();
-//pokazZamowieniaPrzycisk.doClick();
+				HibernateOracle.repoPolecen
+						.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, HibernateOracle.idUzytkownika));
 
 				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;
@@ -174,8 +165,8 @@ public class StrategiaZamowienia implements IStrategia {
 				for (Component komponent : komponenty) {
 					if (komponent instanceof JScrollPane) {
 						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
-            	        dodajPrzycisk = (JButton)kontener.getComponent(1);
-            	        eksportujDoDruku = (JButton)kontener.getComponent(2);
+						dodajPrzycisk = (JButton) kontener.getComponent(1);
+						eksportujDoDruku = (JButton) kontener.getComponent(2);
 						kontener.removeAll();
 						break;
 					}

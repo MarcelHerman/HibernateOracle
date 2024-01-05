@@ -1,4 +1,4 @@
-package net.codejava;
+package net.codejava.Views;
 
 import net.codejava.Models.*;
 import java.awt.Component;
@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
 
+import net.codejava.HibernateOracle;
+import net.codejava.IStrategia;
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
 public class StrategiaProdukt_Magazyn implements IStrategia {
@@ -46,7 +48,6 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 				Produkt_Magazyn user = (Produkt_Magazyn) session
 						.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
 						.setParameter("pr", pr).uniqueResult();
-				// System.out.println(user.getId_uzytkownika());
 
 				oc.closeDBSession();
 
@@ -62,7 +63,6 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 					else
 						user.setStan_magazynowy(Integer.parseInt(drugiePole.getText()));
 
-				// session.update(user);
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				System.out.println(user.getProdukt_magazyn_id() + " " + user.getStan_faktyczny() + " "
@@ -81,9 +81,7 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 	public void dodajLogikeUsuwania(ButtonEditor bt) {
 		Produkt_Magazyn pr = new Produkt_Magazyn();
 		pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(bt.id, bt.id2));
-		// session.delete(pr);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		// oc.closeDBSession();
 		((DefaultTableModel) bt.tab.getModel()).removeRow(bt.row);
 	}
 
@@ -126,15 +124,11 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 				Produkt_Magazyn_Id idpm = new Produkt_Magazyn_Id(Integer.parseInt(pierwszePole.getText()),
 						Integer.parseInt(drugiePole.getText()));
-				// session.save(new Produkt_Magazyn(idpm,
-				// Integer.parseInt(trzeciePole.getText()),
-				// Integer.parseInt(czwartePole.getText())));
+
 
 				Produkt_Magazyn nowyPM = new Produkt_Magazyn(idpm, Integer.parseInt(trzeciePole.getText()),
 						Integer.parseInt(czwartePole.getText()));
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyPM, HibernateOracle.idUzytkownika));
-
-				// pokazProduktMagazynPrzycisk.doClick();
 
 				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;

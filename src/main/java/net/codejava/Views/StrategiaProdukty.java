@@ -1,4 +1,4 @@
-package net.codejava;
+package net.codejava.Views;
 
 import net.codejava.Models.*;
 import java.awt.Component;
@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import net.codejava.HibernateOracle;
+import net.codejava.IStrategia;
 import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
 public class StrategiaProdukty implements IStrategia {
@@ -51,8 +53,7 @@ public class StrategiaProdukty implements IStrategia {
 
 		int i = 0;
 		for (Obiekt_Do_Polecen stan : fData) {
-			// nazwy[((Stany_Zamowienia)stan).getId_Stanu_Zamowienia()-1] =
-			// ((Stany_Zamowienia)stan).getNazwa();
+
 			nazwy[i] = ((Kategorie) stan).getNazwa();
 			i++;
 		}
@@ -84,7 +85,7 @@ public class StrategiaProdukty implements IStrategia {
 						.setParameter("id", bt.id).uniqueResult();
 
 				oc.closeDBSession();
-				// System.out.println(user.getId_uzytkownika());
+
 				user.setCzy_usunieto(czyUsunietyCheck.isSelected() ? 1 : 0);
 				if (!pierwszePole.getText().isEmpty())
 					user.setNazwa(pierwszePole.getText());
@@ -99,7 +100,7 @@ public class StrategiaProdukty implements IStrategia {
 					user.setKategorie_id_kategorii(Integer.parseInt(czwartePole.getText()));
 
 				user.setKategorie_id_kategorii(((Kategorie) fData.get(jombo.getSelectedIndex())).getId_Kategorii());
-				// session.update(user);
+
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getNazwa(), bt.row, 1);
@@ -127,7 +128,6 @@ public class StrategiaProdukty implements IStrategia {
 		oc.closeDBSession();
 		pr.setCzy_usunieto(1);
 
-		// session.update(pr);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 		bt.tab.setValueAt("TAK", bt.row, 6);
 	}
@@ -190,8 +190,6 @@ public class StrategiaProdukty implements IStrategia {
 		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				// oc.createDBSession();
-				// Session session = oc.getDBSession();
 
 				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
 						|| trzeciePole.getText().isEmpty()) {
@@ -200,19 +198,12 @@ public class StrategiaProdukty implements IStrategia {
 				}
 				double cena = Double.parseDouble(drugiePole.getText());
 				cena = Math.round(cena * 100.0) / 100.0;
-				// oc.closeDBSession();
-				// session.save(new Produkty(pierwszePole.getText(), cena,
-				// trzeciePole.getText(),
-				// ((Producenci)fData.get(jombo.getSelectedIndex())).getId_producenta(),
-				// ((Kategorie)fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0));
 
 				Produkty nowyProdukt = new Produkty(pierwszePole.getText(), cena, trzeciePole.getText(),
 						((Producenci) fData.get(jombo.getSelectedIndex())).getId_producenta(),
 						((Kategorie) fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyProdukt, HibernateOracle.idUzytkownika));
-
-				// pokazProduktPrzycisk.doClick();
 
 				Component[] komponenty = kontener.getComponents();
 				JTable tab = null;
