@@ -1,6 +1,8 @@
 package net.codejava.Views;
 
 import net.codejava.Models.*;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+
 import java.awt.Component;
 import java.util.List;
 
@@ -19,8 +21,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
-import net.codejava.IStrategia;
-import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
 
 public class StrategiaZamowienia implements IStrategia {
 

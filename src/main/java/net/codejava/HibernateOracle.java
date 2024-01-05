@@ -1,6 +1,11 @@
 package net.codejava;
 
+import net.codejava.Controllers.DyrektorTabel;
 import net.codejava.Models.*;
+import net.codejava.Views.BudowniczyTabeliDruk;
+import net.codejava.Views.BudowniczyTabeliSwing;
+import net.codejava.Views.IStrategia;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;

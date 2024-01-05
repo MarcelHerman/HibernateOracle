@@ -1,9 +1,9 @@
-package net.codejava;
+package net.codejava.Views;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import net.codejava.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 public interface IStrategia {
 	public void dodajLogikeEdytowania(ButtonEditor bt);

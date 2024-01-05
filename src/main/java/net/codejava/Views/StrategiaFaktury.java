@@ -1,6 +1,8 @@
 package net.codejava.Views;
 
 import net.codejava.Models.*;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+
 import java.awt.Component;
 import java.time.LocalDate;
 
@@ -17,7 +19,6 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
 import net.codejava.HibernateOracle;
-import net.codejava.IStrategia;
 
 public class StrategiaFaktury implements IStrategia {
 

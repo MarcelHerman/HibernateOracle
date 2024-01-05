@@ -1,6 +1,8 @@
-package net.codejava;
+package net.codejava.Controllers;
 
+import net.codejava.HibernateOracle;
 import net.codejava.Models.*;
+import net.codejava.Views.BudowniczyTabeli;
 import net.codejava.Views.StrategiaFaktury;
 import net.codejava.Views.StrategiaKategorie;
 import net.codejava.Views.StrategiaMagazyny;
@@ -51,7 +53,7 @@ public class DyrektorTabel {
 		}
 	}
 	
-	void tworzTabeleProdukty(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
+	public void tworzTabeleProdukty(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Produkty();
@@ -355,7 +357,7 @@ public class DyrektorTabel {
 		}
 	}
 	
-	void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
+	public void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Zamowienia();
