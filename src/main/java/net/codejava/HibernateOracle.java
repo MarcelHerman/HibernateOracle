@@ -92,10 +92,7 @@ public class HibernateOracle extends JFrame {
             e.printStackTrace();
         }
 		//oc.closeDBSession();			 
-		
-		String placeholderLogin = "xd";
-		String placeholderPassword = "1";
-		
+			
 		final JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

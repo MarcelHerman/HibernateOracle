@@ -1,6 +1,5 @@
-package net.codejava;
+package net.codejava.Models;
 
-import net.codejava.Models.*;
 import java.time.LocalDate;
 
 public abstract class Polecenie {
@@ -8,7 +7,7 @@ public abstract class Polecenie {
 	private LocalDate data_wykonania;
 	private int id_wykonawcy;
 	
-	abstract void Wykonaj();
+	public abstract void Wykonaj();
 	
 	public Polecenie(Obiekt_Do_Polecen obiekt, int id_wykonawcy) {
 		this.obiekt = obiekt;

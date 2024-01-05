@@ -5,8 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import net.codejava.Producenci;
-
 public class PolaczenieOracle implements IPolaczenia{
 	private static PolaczenieOracle instance = null;
 	private static Configuration config;

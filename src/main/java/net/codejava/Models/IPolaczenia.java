@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import net.codejava.HibernateOracle;
-import net.codejava.Producenci;
 
 public interface IPolaczenia
 {

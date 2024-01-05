@@ -64,6 +64,4 @@ public class Faktury implements Obiekt_Do_Polecen{
 	public void setZamowienia_id_zamowienia(int zamowienia_id_zamowienia) {
 		this.zamowienia_id_zamowienia = zamowienia_id_zamowienia;
 	}
-	
-	
 }

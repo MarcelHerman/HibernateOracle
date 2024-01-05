@@ -1,6 +1,5 @@
-package net.codejava;
+package net.codejava.Models;
 
-import net.codejava.Models.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

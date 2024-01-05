@@ -1,15 +1,14 @@
-package net.codejava;
+package net.codejava.Models;
 
-import net.codejava.Models.*;
 import org.hibernate.Session;
 
 public class Polecenie_Edytuj extends Polecenie {
 	
-	Polecenie_Edytuj(Obiekt_Do_Polecen obiekt, int id_wykonawcy){
+	public Polecenie_Edytuj(Obiekt_Do_Polecen obiekt, int id_wykonawcy){
 		super(obiekt, id_wykonawcy);
 	}
 	
-	void Wykonaj() {
+	public void Wykonaj() {
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
 		Session session = oc.getDBSession();

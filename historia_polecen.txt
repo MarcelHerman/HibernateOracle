@@ -75,3 +75,7 @@ Polecenie Dodaj: Data wykonania: 2023-12-31;	ID wykonawcy: 1;	Obiekt: Zamowienia
 Polecenie Dodaj: Data wykonania: 2023-12-31;	ID wykonawcy: 1;	Obiekt: Produkty
 Polecenie Dodaj: Data wykonania: 2023-12-31;	ID wykonawcy: 1;	Obiekt: Faktury
 Polecenie Usuń: Data wykonania: 2023-12-31;	ID wykonawcy: 1;	Obiekt: Faktury
+Polecenie Dodaj: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia
+Polecenie Usuń: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia
+Polecenie Dodaj: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia
+Polecenie Usuń: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia

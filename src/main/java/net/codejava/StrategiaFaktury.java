@@ -48,7 +48,7 @@ public class StrategiaFaktury implements IStrategia {
               	if(!pierwszePole.getText().isEmpty())
               		user.setNIP(pierwszePole.getText());	     	 	              	
          		//session.update(user);
-         		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+         		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika)); 
          			  	 	                	
          		bt.tab.setValueAt(user.getNIP(),bt.row,2);
          	}
@@ -62,14 +62,12 @@ public class StrategiaFaktury implements IStrategia {
 
 	@Override
 	public void dodajLogikeUsuwania(ButtonEditor br) {
-
+		
  		Faktury pr = new Faktury();
       	pr.setId_faktury(br.id);
-      	//session.delete(pr);
       	HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-      	//oc.closeDBSession();
       	((DefaultTableModel)br.tab.getModel()).removeRow(br.row);
- 	
+      	
 	}
 	
 	public void dodajLogikeDodawania(JPanel kontener) {
