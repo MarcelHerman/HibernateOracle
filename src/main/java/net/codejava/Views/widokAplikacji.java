@@ -62,14 +62,6 @@ import net.codejava.Models.Znizka;
 
 public class widokAplikacji {
 	
-	public Map<String, List<Obiekt_Do_Polecen>> cache = HibernateOracle.cache;
-	public String nazwaTypu = HibernateOracle.nazwaTypu;
-	public Repozytorium_Polecen repoPolecen = HibernateOracle.repoPolecen;
-	public int idUzytkownika = HibernateOracle.idUzytkownika;
-	public List<Obiekt_Do_Polecen> koszyk = HibernateOracle.koszyk;
-	public Obiekt_Do_Polecen obj = HibernateOracle.obj;
-	public IStrategia strategia = HibernateOracle.wzorzec;
-	
 	public void Inicjalizuj() {
 
 
@@ -77,7 +69,7 @@ public class widokAplikacji {
 		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		
 		oc.createDBSession();
-		cache = new HashMap<>();
+		HibernateOracle.cache = new HashMap<>();
 		
 		Session session = oc.getDBSession();		
 		
@@ -107,9 +99,9 @@ public class widokAplikacji {
 		frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if(!nazwaTypu.equals("Klient"))
+                if(!HibernateOracle.nazwaTypu.equals("Klient"))
                 {
-                	repoPolecen.saveToFile();
+                	HibernateOracle.repoPolecen.saveToFile();
                 	System.out.println("Okno zostaje zamknięte");
                 }            	
             }
@@ -205,7 +197,7 @@ public class widokAplikacji {
 			                		{
 				                		System.out.println("zalogowano");
 				                		
-				                		idUzytkownika = uzytkownik.getId_uzytkownika();
+				                		HibernateOracle.idUzytkownika = uzytkownik.getId_uzytkownika();
 				                		
 				                		oc.createDBSession();
 				                		Session session2 = oc.getDBSession();
@@ -220,12 +212,12 @@ public class widokAplikacji {
 			                            
 			                            for(Typy_uzytkownika typ: typyUzytkownika) {
 			                            	if(typ.getId_typu_uzytkownika() == uzytkownik.getId_typu_uzytkownika()) {
-			                            		nazwaTypu = typ.getNazwa();
+			                            		HibernateOracle.nazwaTypu = typ.getNazwa();
 			                            		break;
 			                            	}
 			                            }
 				                		
-				                		switch(nazwaTypu) {
+				                		switch(HibernateOracle.nazwaTypu) {
 				                			case "Administrator":
 						                		bar.add(pokazProduktPrzycisk);
 						                		bar.add(pokazZamowieniaPrzycisk);
@@ -278,7 +270,7 @@ public class widokAplikacji {
 			                		}
 			                	}
 	                		}
-	                		if(nazwaTypu.equals("null")) throw new Exception("");
+	                		if(HibernateOracle.nazwaTypu.equals("null")) throw new Exception("");
 		                }
 	                    
 	                } catch (Exception ex) {
@@ -296,9 +288,9 @@ public class widokAplikacji {
 			 public void actionPerformed(ActionEvent a)
 			 {
 				 List<Obiekt_Do_Polecen> obiekty = null;
-				 nazwaTypu = "null";
-				 koszyk.clear();
-				 idUzytkownika = -1;
+				 HibernateOracle.nazwaTypu = "null";
+				 HibernateOracle.koszyk.clear();
+				 HibernateOracle.idUzytkownika = -1;
 				 
 				 kontener.removeAll();
 				 
@@ -354,7 +346,7 @@ public class widokAplikacji {
 					oc.createDBSession();
 					
 					try (Session session2 = oc.getDBSession()) {
-						user = (Uzytkownicy)session2.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+ idUzytkownika)
+						user = (Uzytkownicy)session2.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+ HibernateOracle.idUzytkownika)
 	 	                			.uniqueResult();			            			            
 			            oc.closeDBSession();
 			        } catch (Exception e) {
@@ -393,9 +385,9 @@ public class widokAplikacji {
 			        jp.add(usunPrzycisk);
 			        kontener.add(jp);       					
 										
-					if(koszyk.size() != 0) {
+					if(HibernateOracle.koszyk.size() != 0) {
 						//budSwing.tworzTabeleKoszyk(koszyk); // <- zmienić na inną metodę
-						dyrektor.tworzTabeleKoszyk(koszyk, budSwing);
+						dyrektor.tworzTabeleKoszyk(HibernateOracle.koszyk, budSwing);
 						
 						 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 						 
@@ -446,7 +438,7 @@ public class widokAplikacji {
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
 		     	                		
-		     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(idUzytkownika))
+		     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(HibernateOracle.idUzytkownika))
 		     	 	                			.uniqueResult();
 		     	 	                	//System.out.println(user.getId_uzytkownika());
 		     	 	                	
@@ -489,7 +481,7 @@ public class widokAplikacji {
 			                			
 				 	            try {
 				 	            	 if (result == JOptionPane.OK_OPTION) {		
-				 	            		 int idtym = idUzytkownika;
+				 	            		 int idtym = HibernateOracle.idUzytkownika;
 				 	            		 akcjaWylogowania.actionPerformed(a);		 	            		 
 				 	            		 PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 				 	            		 oc.createDBSession();	                			
@@ -573,7 +565,7 @@ public class widokAplikacji {
 		     	 	                	oc.createDBSession();
 		     	 	                	Session session = oc.getDBSession();
 		     	 	                			     	 	                	
-		     	 	                	for(Obiekt_Do_Polecen produkt: koszyk) {
+		     	 	                	for(Obiekt_Do_Polecen produkt: HibernateOracle.koszyk) {
 			     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
 			     	 	                	if(session.createQuery("select p.czy_usunieto from Produkty p where p.id_produktu = :idP", Integer.class)
@@ -604,7 +596,7 @@ public class widokAplikacji {
 		     	 	                	}
 		     	                		
 		     	 	                	double koszt = 0;
-		     	 	                	for(Obiekt_Do_Polecen produkt : koszyk)
+		     	 	                	for(Obiekt_Do_Polecen produkt : HibernateOracle.koszyk)
 		     	 	                	{
 		     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
@@ -636,7 +628,7 @@ public class widokAplikacji {
 		     
 		     	 	                	System.out.println("trzecia");	 
 		     	 	                	
-		     	 	                	Zamowienia zamowienie = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika,"");
+		     	 	                	Zamowienia zamowienie = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika,"");
 		     	 	                	if(!czwartyField.getText().isEmpty())zamowienie = new Znizka(zamowienie, Double.parseDouble(czwartyField.getText()));		     	 	                		     	 	                	
 		     	 	                			     	 	               
 		     	 	                	if(drugiCheckbox.isSelected()==true)zamowienie = new Opakowanie(zamowienie);
@@ -646,14 +638,14 @@ public class widokAplikacji {
 		     	 	                		else throw(new Exception("Podano zbyt długą notatkę - max 150 znaków."));
 		     	 	                	}
 		     	 	                				     	 	                	     	 	                	
-		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, idUzytkownika, zamowienie.getOpis());
+		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
 		     	 	                	
 		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100.0)/100.0;
 		     	 	                	zamowienie.setKoszt(zaokr);
 		     	 	                	
 		     	 	                	session.save(zamowienie);		  	 	                	     	 	                	
 		     	 	                	
-		     	 	                	for(Obiekt_Do_Polecen odp : koszyk)		 
+		     	 	                	for(Obiekt_Do_Polecen odp : HibernateOracle.koszyk)		 
 		     	 	                	{
 		     	 	                		int id = ((Produkt_Koszyk)odp).getPr().getId_produktu();
 		     	 	                		
@@ -681,7 +673,7 @@ public class widokAplikacji {
 		     	 	                	System.out.println("czwarty");
 		     	                		oc.closeDBSession();
 		     	                		
-		     	                		koszyk.clear();
+		     	                		HibernateOracle.koszyk.clear();
 		                			 }
 		                		 }
 		                		 catch(Exception e) {
@@ -702,7 +694,7 @@ public class widokAplikacji {
 		   	                         "Opróżnianie koszyka", JOptionPane.OK_CANCEL_OPTION);
 		                		 try {
 		                			 if (result == JOptionPane.OK_OPTION) {
-		     	                		koszyk.clear();
+		                				 HibernateOracle.koszyk.clear();
 		     	                		kontoPrzycisk.doClick();
 		                			 }
 		                		 }
@@ -775,7 +767,7 @@ public class widokAplikacji {
 					try (Session session2 = oc.getDBSession()) {
 						
 			            Query<Obiekt_Do_Polecen> query = null;
-			            if((nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
+			            if((HibernateOracle.nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
 			            else query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
 			            obiekty = query.getResultList();
 			            oc.closeDBSession();
@@ -792,7 +784,7 @@ public class widokAplikacji {
 					 
 					 kontener.add(pane);
 					 
-					 if(!(nazwaTypu.equals("Klient")))
+					 if(!(HibernateOracle.nazwaTypu.equals("Klient")))
 					 {
 						 kontener.add(dodajPrzycisk);	
 						 kontener.add(eksportujDoDruku);
@@ -815,7 +807,7 @@ public class widokAplikacji {
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = null;
-			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
+			            if(HibernateOracle.nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia", Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
 			            else query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class);
 			            obiekty = query.getResultList();
 			            oc.closeDBSession();
@@ -830,7 +822,7 @@ public class widokAplikacji {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 if(!(nazwaTypu.equals("Klient"))){
+					 if(!(HibernateOracle.nazwaTypu.equals("Klient"))){
 						 kontener.add(dodajPrzycisk);	
 						 kontener.add(eksportujDoDruku);
 					 }					 
@@ -879,11 +871,11 @@ public class widokAplikacji {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-					if(!cache.containsKey("Kategorie")) {
+					if(!HibernateOracle.cache.containsKey("Kategorie")) {
 						oc.createDBSession();						
 						try (Session session2 = oc.getDBSession()) {
 							Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
-							cache.put("Kategorie", query.getResultList());
+							HibernateOracle.cache.put("Kategorie", query.getResultList());
 							oc.closeDBSession();
 							//System.out.println("załadowano do cache");
 						} catch (Exception e) {
@@ -895,7 +887,7 @@ public class widokAplikacji {
 					
 					//budSwing.tworzTabeleKategorie(obiekty);
 					
-					dyrektor.tworzTabeleKategorie(cache.get("Kategorie"), budSwing);
+					dyrektor.tworzTabeleKategorie(HibernateOracle.cache.get("Kategorie"), budSwing);
 					
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
@@ -916,11 +908,11 @@ public class widokAplikacji {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-				 	if(!cache.containsKey("Producenci")) {
+				 	if(!HibernateOracle.cache.containsKey("Producenci")) {
 						oc.createDBSession();
 						try (Session session2 = oc.getDBSession()) {
 				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
-				            cache.put("Producenci", query.getResultList());
+				            HibernateOracle.cache.put("Producenci", query.getResultList());
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
@@ -928,7 +920,7 @@ public class widokAplikacji {
 				 	}
 					
 					//budSwing.tworzTabeleProducenci(obiekty);
-					dyrektor.tworzTabeleProducenci(cache.get("Producenci"), budSwing);
+					dyrektor.tworzTabeleProducenci(HibernateOracle.cache.get("Producenci"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1012,11 +1004,11 @@ public class widokAplikacji {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-				 	if(!cache.containsKey("StanyZamowien")) {
+				 	if(!HibernateOracle.cache.containsKey("StanyZamowien")) {
 						oc.createDBSession();
 						try (Session session2 = oc.getDBSession()) {
 				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
-				            cache.put("StanyZamowien",query.getResultList());
+				            HibernateOracle.cache.put("StanyZamowien",query.getResultList());
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
@@ -1024,7 +1016,7 @@ public class widokAplikacji {
 				 	}
 					
 					//budSwing.tworzTabeleStany_Zamowienia(obiekty);
-					dyrektor.tworzTabeleStany_Zamowienia(cache.get("StanyZamowien"), budSwing);
+					dyrektor.tworzTabeleStany_Zamowienia(HibernateOracle.cache.get("StanyZamowien"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1044,11 +1036,11 @@ public class widokAplikacji {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-				 	if(!cache.containsKey("TypyUzytkownika")) {
+				 	if(!HibernateOracle.cache.containsKey("TypyUzytkownika")) {
 						oc.createDBSession();
 						try (Session session2 = oc.getDBSession()) {
 				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
-				            cache.put("TypyUzytkownika", query.getResultList());
+				            HibernateOracle.cache.put("TypyUzytkownika", query.getResultList());
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
@@ -1056,7 +1048,7 @@ public class widokAplikacji {
 				 	}
 					
 					//budSwing.tworzTabeleTypy_uzytkownika(obiekty);
-					dyrektor.tworzTabeleTypy_uzytkownika(cache.get("TypyUzytkownika"), budSwing);
+					dyrektor.tworzTabeleTypy_uzytkownika(HibernateOracle.cache.get("TypyUzytkownika"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1076,11 +1068,11 @@ public class widokAplikacji {
 				 	PolaczenieProxy pc = new PolaczenieProxy();
 					pc.closeDBSession();
 
-					if(!cache.containsKey("Magazyny")) {
+					if(!HibernateOracle.cache.containsKey("Magazyny")) {
 						oc.createDBSession();
 						try (Session session2 = oc.getDBSession()) {
 				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class);
-				            cache.put("Magazyny", query.getResultList());
+				            HibernateOracle.cache.put("Magazyny", query.getResultList());
 				            oc.closeDBSession();
 				        } catch (Exception e) {
 				            e.printStackTrace();
@@ -1088,7 +1080,7 @@ public class widokAplikacji {
 					}
 					
 					//budSwing.tworzTabeleMagazyny(obiekty);
-					dyrektor.tworzTabeleMagazyny(cache.get("Magazyny"), budSwing);
+					dyrektor.tworzTabeleMagazyny(HibernateOracle.cache.get("Magazyny"), budSwing);
 					 JTable tabSwing = (JTable)dyrektor.pobierzTabele();
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
@@ -1113,7 +1105,7 @@ public class widokAplikacji {
 					
 					try (Session session2 = oc.getDBSession()) {
 			            Query<Obiekt_Do_Polecen> query = null;
-			            if(nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury", Obiekt_Do_Polecen.class).setParameter("id", idUzytkownika);
+			            if(HibernateOracle.nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury", Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
 			            else query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
 			            obiekty = query.getResultList();
 			            oc.closeDBSession();
@@ -1156,7 +1148,7 @@ public class widokAplikacji {
 					 JScrollPane pane = new JScrollPane(tabSwing);					 
 					 
 					 kontener.add(pane);
-					 if(!(nazwaTypu.equals("Klient")))
+					 if(!(HibernateOracle.nazwaTypu.equals("Klient")))
 					 {
 						 kontener.add(dodajPrzycisk);		
 						 kontener.add(eksportujDoDruku);
@@ -1170,7 +1162,7 @@ public class widokAplikacji {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {
-				 strategia.dodajLogikeDodawania(kontener);
+				 HibernateOracle.wzorzec.dodajLogikeDodawania(kontener);
 			 }
 		 });
         
@@ -1178,7 +1170,7 @@ public class widokAplikacji {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {				                
-	                if(obj instanceof Produkty) 
+	                if(HibernateOracle.obj instanceof Produkty) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		                oc.createDBSession();
@@ -1214,7 +1206,7 @@ public class widokAplikacji {
 		                	            		         		 
 	                }
 	                
-	                else if(obj instanceof Faktury) 
+	                else if(HibernateOracle.obj instanceof Faktury) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1250,7 +1242,7 @@ public class widokAplikacji {
 		                     }
 	                }
 	                
-	                else if(obj instanceof Kategorie) 
+	                else if(HibernateOracle.obj instanceof Kategorie) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1290,7 +1282,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Magazyny) 
+	                else if(HibernateOracle.obj instanceof Magazyny) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1325,7 +1317,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Producenci) 
+	                else if(HibernateOracle.obj instanceof Producenci) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1360,7 +1352,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Produkt_Magazyn)
+	                else if(HibernateOracle.obj instanceof Produkt_Magazyn)
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1395,7 +1387,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Produkt_Zamowienia) 
+	                else if(HibernateOracle.obj instanceof Produkt_Zamowienia) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1430,7 +1422,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Stany_Zamowienia) 
+	                else if(HibernateOracle.obj instanceof Stany_Zamowienia) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1465,7 +1457,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Typy_uzytkownika) 
+	                else if(HibernateOracle.obj instanceof Typy_uzytkownika) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1500,7 +1492,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Uzytkownicy) 
+	                else if(HibernateOracle.obj instanceof Uzytkownicy) 
 	                {
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
@@ -1535,7 +1527,7 @@ public class widokAplikacji {
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(obj instanceof Zamowienia) 
+	                else if(HibernateOracle.obj instanceof Zamowienia) 
 	                {		         			                	
 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 
