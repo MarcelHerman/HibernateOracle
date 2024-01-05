@@ -1,5 +1,6 @@
 package net.codejava;
 
+import net.codejava.Models.*;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;

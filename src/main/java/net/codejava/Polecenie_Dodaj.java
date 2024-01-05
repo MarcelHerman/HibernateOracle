@@ -1,5 +1,6 @@
 package net.codejava;
 
+import net.codejava.Models.*;
 import org.hibernate.Session;
 
 public class Polecenie_Dodaj extends Polecenie {

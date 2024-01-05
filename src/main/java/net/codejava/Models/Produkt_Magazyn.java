@@ -1,4 +1,4 @@
-package net.codejava;
+package net.codejava.Models;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;

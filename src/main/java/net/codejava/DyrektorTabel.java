@@ -1,5 +1,6 @@
 package net.codejava;
 
+import net.codejava.Models.*;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -1,4 +1,5 @@
 package net.codejava;
+import net.codejava.Models.*;
 
 public class Produkt_Koszyk implements Obiekt_Do_Polecen{
 	

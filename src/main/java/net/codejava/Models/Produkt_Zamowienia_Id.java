@@ -1,4 +1,4 @@
-package net.codejava;
+package net.codejava.Models;
 
 import java.io.Serializable;
 

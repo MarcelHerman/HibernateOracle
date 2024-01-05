@@ -1,4 +1,5 @@
 package net.codejava;
+import net.codejava.Models.*;
 
 import java.awt.Component;
 import java.awt.Dimension;

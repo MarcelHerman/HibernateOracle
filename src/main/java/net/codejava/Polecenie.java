@@ -1,5 +1,6 @@
 package net.codejava;
 
+import net.codejava.Models.*;
 import java.time.LocalDate;
 
 public abstract class Polecenie {

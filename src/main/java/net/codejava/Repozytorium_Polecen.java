@@ -1,5 +1,6 @@
 package net.codejava;
 
+import net.codejava.Models.*;
 import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.File;
