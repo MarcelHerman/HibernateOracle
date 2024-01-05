@@ -1,7 +1,6 @@
 package net.codejava.Views;
 
 import javax.swing.JPanel;
-import javax.swing.JTable;
 
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 

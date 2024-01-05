@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +62,6 @@ import net.codejava.Models.Znizka;
 public class widokAplikacji {
 	
 	public void Inicjalizuj() {
-
-
 		
 		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
 		
@@ -1565,9 +1562,7 @@ public class widokAplikacji {
 	             
 	                			 
 				}
-		 });
-       	     
-    
+		 });       	        
 	}
 
 }

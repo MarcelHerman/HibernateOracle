@@ -15,8 +15,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.hibernate.Session;
-
 import net.codejava.HibernateOracle;
 
 public class StrategiaKategorie implements IStrategia {

@@ -39,8 +39,6 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
 		JTextField pierwszePole = new JTextField(7);
 		JTextField drugiePole = new JTextField(7);
 		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-		JTextField piatePole = new JTextField(7);
 
 		JPanel panel = new JPanel();
 

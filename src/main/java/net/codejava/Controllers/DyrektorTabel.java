@@ -7,6 +7,7 @@ import net.codejava.Views.StrategiaFaktury;
 import net.codejava.Views.StrategiaKategorie;
 import net.codejava.Views.StrategiaMagazyny;
 import net.codejava.Views.StrategiaProducenci;
+import net.codejava.Views.StrategiaProdukt_Koszyk;
 import net.codejava.Views.StrategiaProdukt_Magazyn;
 import net.codejava.Views.StrategiaProdukt_Zamowienia;
 import net.codejava.Views.StrategiaProdukty;
@@ -14,7 +15,6 @@ import net.codejava.Views.StrategiaStany_Zamowienia;
 import net.codejava.Views.StrategiaUzytkownicy;
 import net.codejava.Views.StrategiaZamowienia;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -462,6 +462,7 @@ public class DyrektorTabel {
 	public void tworzTabeleKoszyk(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
     {
 		HibernateOracle.obj = new Produkt_Koszyk();
+		HibernateOracle.wzorzec = new StrategiaProdukt_Koszyk();
 		this.budowniczy = budowniczy;
 		budowniczy.refresh();
 		budowniczy.dodajNaglowek();

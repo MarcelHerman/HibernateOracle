@@ -29,8 +29,6 @@ public class StrategiaZamowienia implements IStrategia {
 
 		JTextField pierwszePole = new JTextField(7);
 		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
 
 		JPanel panel = new JPanel();
 
@@ -125,34 +123,33 @@ public class StrategiaZamowienia implements IStrategia {
 		JTextField drugiePole = new JTextField(7);
 		JTextField trzeciePole = new JTextField(7);
 		JTextField czwartePole = new JTextField(7);
-		JTextField piatyField = new JTextField(7);
 		JPanel panel = new JPanel();
 
 		panel.add(new JLabel("Id uzytkownika: "));
 		panel.add(pierwszePole);
 		panel.add(Box.createHorizontalStrut(5));
 		panel.add(new JLabel("Adres wysyłki miasto: "));
-		panel.add(trzeciePole);
+		panel.add(drugiePole);
 		panel.add(Box.createHorizontalStrut(5));
 		panel.add(new JLabel("Adres wysyłki ulica: "));
-		panel.add(czwartePole);
+		panel.add(trzeciePole);
 		panel.add(Box.createHorizontalStrut(5));
 		panel.add(new JLabel("Koszt: "));
-		panel.add(piatyField);
+		panel.add(czwartePole);
 
 		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
-				if (pierwszePole.getText().isEmpty() || trzeciePole.getText().isEmpty()
-						|| czwartePole.getText().isEmpty() || piatyField.getText().isEmpty()) {
+				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
+						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
 					return;
 				}
 
-				double cena = Double.parseDouble(piatyField.getText());
+				double cena = Double.parseDouble(czwartePole.getText());
 				cena = Math.round(cena * 100.0) / 100.0;
-				Zamowienia noweZamowienie = new Zamowienia(cena, trzeciePole.getText(), czwartePole.getText(), 1,
+				Zamowienia noweZamowienie = new Zamowienia(cena, drugiePole.getText(), trzeciePole.getText(), 1,
 						Integer.parseInt(pierwszePole.getText()), null);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, HibernateOracle.idUzytkownika));

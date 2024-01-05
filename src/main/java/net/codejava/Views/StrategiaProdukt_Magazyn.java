@@ -25,8 +25,6 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 		JTextField pierwszePole = new JTextField(7);
 		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
 
 		JPanel panel = new JPanel();
 		panel.add(new JLabel("Stan faktyczny: "));

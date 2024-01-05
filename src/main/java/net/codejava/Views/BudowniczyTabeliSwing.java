@@ -33,7 +33,6 @@ import net.codejava.Models.Produkty;
 import net.codejava.Models.Stany_Zamowienia;
 import net.codejava.Models.Typy_uzytkownika;
 import net.codejava.Models.Zamowienia;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 public class BudowniczyTabeliSwing implements BudowniczyTabeli
 {	
