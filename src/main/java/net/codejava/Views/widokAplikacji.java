@@ -1114,9 +1114,9 @@ public class widokAplikacji {
 					oc.createDBSession();
 					Session session = oc.getDBSession();
 					try { session.doWork(connection -> { // Tutaj możesz bezpośrednio operować na obiekcie java.sql.Connection 
-						  Connection connectionxd =	connection.unwrap(Connection.class); // ... // Wykonaj operacje na jdbcConnection
+						  Connection connection2 =	connection.unwrap(Connection.class); // ... // Wykonaj operacje na jdbcConnection
 					  
-					  DatabaseMetaData metaData = connectionxd.getMetaData();
+					  DatabaseMetaData metaData = connection2.getMetaData();
 					  System.out.println(metaData);
 					  
 					  // Podaj nazwę tabeli, dla której chcesz uzyskać metadane

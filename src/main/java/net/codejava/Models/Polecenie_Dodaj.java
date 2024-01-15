@@ -8,14 +8,8 @@ public class Polecenie_Dodaj extends Polecenie {
 		super(obiekt, id_wykonawcy);
 	}
 	
-	public void Wykonaj() {
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-		Session session = oc.getDBSession();
-		
-		session.save(this.obiekt);
-		
-		oc.closeDBSession();
+	public void operacjaPolecenia() {
+		session.save(this.obiekt);		
 	}
 	
 	@Override

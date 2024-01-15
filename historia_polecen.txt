@@ -79,3 +79,7 @@ Polecenie Dodaj: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Za
 Polecenie Usuń: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia
 Polecenie Dodaj: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia
 Polecenie Usuń: Data wykonania: 2024-01-05;	ID wykonawcy: 1;	Obiekt: Produkt_Zamowienia
+Polecenie Edytuj: Data wykonania: 2024-01-15;	ID wykonawcy: 1;	Obiekt: Produkty
+Polecenie Dodaj: Data wykonania: 2024-01-15;	ID wykonawcy: 1;	Obiekt: Kategorie
+Polecenie Edytuj: Data wykonania: 2024-01-15;	ID wykonawcy: 1;	Obiekt: Kategorie
+Polecenie Usuń: Data wykonania: 2024-01-15;	ID wykonawcy: 1;	Obiekt: Kategorie

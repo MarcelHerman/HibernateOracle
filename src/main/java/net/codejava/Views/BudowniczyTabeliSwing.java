@@ -150,13 +150,11 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 			if(HibernateOracle.nazwaTypu.equals("Pracownik"))
 			{
 				if(HibernateOracle.obj instanceof Zamowienia)this.naglowek.addLast(" ");
-				if(HibernateOracle.obj instanceof Produkt_Magazyn) {
+				else if(HibernateOracle.obj instanceof Produkt_Magazyn) {
 					this.naglowek.addLast(" ");
 				}
 			}
-		}
-
-			
+		}		
 		
 		Object[] naglowek = this.naglowek.toArray();
 		Object[][] dane = new Object[this.dane.size()][];
@@ -172,6 +170,7 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 		jt.setPreferredScrollableViewportSize(new Dimension(1000, 400));
 		return jt;
 	}
+	
 	
 	private class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() {

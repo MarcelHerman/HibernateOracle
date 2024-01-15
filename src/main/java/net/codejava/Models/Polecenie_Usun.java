@@ -8,13 +8,8 @@ public class Polecenie_Usun extends Polecenie {
 		super(obiekt, id_wykonawcy);
 	}
 	
-	public void Wykonaj() {
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-		Session session = oc.getDBSession();
-		
+	public void operacjaPolecenia() {		
 		session.delete(this.obiekt);
-		oc.closeDBSession();
 	}
 
 	@Override

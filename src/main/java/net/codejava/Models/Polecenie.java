@@ -2,12 +2,24 @@ package net.codejava.Models;
 
 import java.time.LocalDate;
 
+import org.hibernate.Session;
+
 public abstract class Polecenie {
 	protected Obiekt_Do_Polecen obiekt;
 	private LocalDate data_wykonania;
 	private int id_wykonawcy;
+	PolaczenieOracle oc;
+	Session session;
 	
-	public abstract void Wykonaj();
+	public void Wykonaj(){
+		oc = PolaczenieOracle.getInstance();
+		oc.createDBSession();
+		session = oc.getDBSession();
+		operacjaPolecenia();
+		oc.closeDBSession();
+	}
+	
+	public abstract void operacjaPolecenia();
 	
 	public Polecenie(Obiekt_Do_Polecen obiekt, int id_wykonawcy) {
 		this.obiekt = obiekt;
