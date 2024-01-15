@@ -1,6 +1,7 @@
 package net.codejava.Views;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,9 +46,9 @@ public class BudowniczyOkienka {
 		panel.add(Box.createHorizontalStrut(5));
 	}
 	
-	public LinkedList<JTextField> zwrocPolaTekstowe()
+	public ArrayList<JTextField> zwrocPolaTekstowe()
 	{
-		LinkedList<JTextField> lista = new LinkedList<JTextField>();
+		ArrayList<JTextField> lista = new ArrayList<JTextField>();
 		
 		Component[] komponenty = panel.getComponents();	
 

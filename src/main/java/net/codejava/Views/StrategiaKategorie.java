@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -16,21 +17,24 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.DyrektorOkienek;
 
 public class StrategiaKategorie implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
-		JTextField pierwszePole = new JTextField(7);
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("Nazwa kategorii: "));
-		panel.add(pierwszePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
+		//JPanel panel = budowniczy.zwrocOkienka();
+		dyrektorOkienek.okienkoKategoriiEdytuj();
+		
+		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
+				
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				
+				JTextField pierwszePole = pola.get(0);
+				
 				Kategorie kat = new Kategorie(pierwszePole.getText());
 
 				kat.setId_Kategorii(bt.id);
