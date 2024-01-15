@@ -9,12 +9,12 @@ import javax.swing.JTextField;
 import net.codejava.Views.BudowniczyOkienka;
 
 public class DyrektorOkienek {
-	BudowniczyOkienka budowniczy;
+	BudowniczyOkienka budowniczy = new BudowniczyOkienka();
 	
 
 	public void okienkoKategoriiEdytuj() {
+		budowniczy.refresh();
 		budowniczy.dodajLabel("Nazwa kategorii: ");
-
 	}
 	
 	public JPanel zwrocOkno() {

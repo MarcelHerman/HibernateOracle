@@ -17,10 +17,10 @@ import javax.swing.JTextField;
 
 public class BudowniczyOkienka {
 
-	JPanel panel;
+	JPanel panel = new JPanel();
 	
 	public JPanel zwrocOkno()
-	{
+	{		
 		return panel;
 	}
 	
@@ -59,5 +59,10 @@ public class BudowniczyOkienka {
 		}
 		
 		return lista;
+	}
+	
+	public void refresh()
+	{
+		panel = new JPanel();
 	}
 }
