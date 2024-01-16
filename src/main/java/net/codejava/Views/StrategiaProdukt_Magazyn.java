@@ -25,7 +25,7 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Stan fucktyczny: ", TypPola.label, "Stan magazynowy: ");
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Stan faktyczny: ", TypPola.label, "Stan magazynowy: ");
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj produkt w magazynie",

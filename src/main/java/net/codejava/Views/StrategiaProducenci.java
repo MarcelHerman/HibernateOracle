@@ -124,7 +124,7 @@ public class StrategiaProducenci implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa produktcenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica");
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica");
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
