@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -19,27 +20,20 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaMagazyny implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
 
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("Miasto: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Ulica: "));
-		panel.add(drugiePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj magazyn", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj magazyn", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-
+				
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				PolaczenieOracle oc = PolaczenieOracle.getInstance();
 				oc.createDBSession();
 				Session session = oc.getDBSession();
@@ -50,10 +44,10 @@ public class StrategiaMagazyny implements IStrategia {
 				int szukany = user.getId_magazynu();
 
 				oc.closeDBSession();
-				if (!pierwszePole.getText().isEmpty())
-					user.setMiasto(pierwszePole.getText());
-				if (!drugiePole.getText().isEmpty())
-					user.setUlica(drugiePole.getText());
+				if (!pola.get(0).getText().isEmpty())
+					user.setMiasto(pola.get(0).getText());
+				if (!pola.get(1).getText().isEmpty())
+					user.setUlica(pola.get(1).getText());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 				List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
@@ -95,26 +89,18 @@ public class StrategiaMagazyny implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
 
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("Miasto: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Ulica: "));
-		panel.add(drugiePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Magazyn nie został dodany");
 					return;
 				}
-				Magazyny nowyMagazyn = new Magazyny(pierwszePole.getText(), drugiePole.getText());
+				Magazyny nowyMagazyn = new Magazyny(pola.get(0).getText(), pola.get(1).getText());
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyMagazyn, HibernateOracle.idUzytkownika));
 				List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");

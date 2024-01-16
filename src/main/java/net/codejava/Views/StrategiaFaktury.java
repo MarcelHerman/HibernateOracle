@@ -5,6 +5,7 @@ import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -19,20 +20,16 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaFaktury implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-
-		JTextField pierwszePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("NIP: "));
-		panel.add(pierwszePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
@@ -44,8 +41,10 @@ public class StrategiaFaktury implements IStrategia {
 						.setParameter("id", bt.id).uniqueResult();
 				oc.closeDBSession();
 
-				if (!pierwszePole.getText().isEmpty())
-					user.setNIP(pierwszePole.getText());
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				
+				if (!pola.get(0).getText().isEmpty())
+					user.setNIP(pola.get(0).getText());
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getNIP(), bt.row, 2);
@@ -68,28 +67,20 @@ public class StrategiaFaktury implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ", TypPola.label, "Id zamówienia");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
 
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("NIP: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Id zamówienia: "));
-		panel.add(drugiePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj fakturę", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj fakturę", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie została dodana");
 					return;
 				}
 
-				Faktury nowaFaktura = new Faktury(LocalDate.now(), pierwszePole.getText(),
-						Integer.parseInt(drugiePole.getText()));
+				Faktury nowaFaktura = new Faktury(LocalDate.now(), pola.get(0).getText(),
+						Integer.parseInt(pola.get(1).getText()));
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowaFaktura, HibernateOracle.idUzytkownika));
 

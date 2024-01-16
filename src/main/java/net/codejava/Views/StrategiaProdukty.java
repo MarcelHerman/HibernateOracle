@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -22,22 +23,15 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaProdukty implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
+		
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
-
 		List<Obiekt_Do_Polecen> fData = null;
 
 		try (Session session = oc.getDBSession()) {
@@ -53,28 +47,14 @@ public class StrategiaProdukty implements IStrategia {
 
 		int i = 0;
 		for (Obiekt_Do_Polecen stan : fData) {
-
 			nazwy[i] = ((Kategorie) stan).getNazwa();
 			i++;
 		}
-
-		JComboBox jombo = new JComboBox(nazwy);
-		JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
-
-		panel.add(new JLabel("Nazwa produktu: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Cena: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Opis: "));
-		panel.add(trzeciePole);
-		panel.add(new JLabel("Kategoria: "));
-		panel.add(jombo);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(czyUsunietyCheck);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
+		
+		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
@@ -86,27 +66,29 @@ public class StrategiaProdukty implements IStrategia {
 
 				oc.closeDBSession();
 
-				user.setCzy_usunieto(czyUsunietyCheck.isSelected() ? 1 : 0);
-				if (!pierwszePole.getText().isEmpty())
-					user.setNazwa(pierwszePole.getText());
-				if (!drugiePole.getText().isEmpty())
-					if (Double.parseDouble(drugiePole.getText()) <= 0)
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				
+				user.setCzy_usunieto(((JCheckBox)okno.getComponent(4)).isSelected() ? 1 : 0);
+				if (!pola.get(0).getText().isEmpty())
+					user.setNazwa(pola.get(0).getText());
+				if (!pola.get(1).getText().isEmpty())
+					if (Double.parseDouble(pola.get(1).getText()) <= 0)
 						throw (new Exception("Nie można dodać ujemnej ceny, ani ceny równej 0"));
 					else
-						user.setCena(Double.parseDouble(drugiePole.getText()));
-				if (!trzeciePole.getText().isEmpty())
-					user.setOpis(trzeciePole.getText());
-				if (!czwartePole.getText().isEmpty())
-					user.setKategorie_id_kategorii(Integer.parseInt(czwartePole.getText()));
+						user.setCena(Double.parseDouble(pola.get(1).getText()));
+				if (!pola.get(2).getText().isEmpty())
+					user.setOpis(pola.get(2).getText());
+				if (!pola.get(3).getText().isEmpty())
+					user.setKategorie_id_kategorii(Integer.parseInt(pola.get(3).getText()));
 
-				user.setKategorie_id_kategorii(((Kategorie) fData.get(jombo.getSelectedIndex())).getId_Kategorii());
+				user.setKategorie_id_kategorii(((Kategorie) fData.get(((JComboBox)okno.getComponent(3)).getSelectedIndex())).getId_Kategorii());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getNazwa(), bt.row, 1);
 				bt.tab.setValueAt(user.getCena(), bt.row, 2);
 				bt.tab.setValueAt(user.getOpis(), bt.row, 3);
-				bt.tab.setValueAt(((Kategorie) fData.get(jombo.getSelectedIndex())).getNazwa(), bt.row, 5);
+				bt.tab.setValueAt(((Kategorie) fData.get(((JComboBox)okno.getComponent(3)).getSelectedIndex())).getNazwa(), bt.row, 5);
 				if (user.getCzy_usunieto() == 1)
 					bt.tab.setValueAt("TAK", bt.row, 6);
 				else
@@ -133,17 +115,11 @@ public class StrategiaProdukty implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JPanel panel = new JPanel();
-
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-
 		List<Obiekt_Do_Polecen> fData = null;
 		List<Obiekt_Do_Polecen> fData2 = null;
-
+		
+		PolaczenieOracle oc = PolaczenieOracle.getInstance();
+		oc.createDBSession();
 		try (Session session = oc.getDBSession()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
@@ -154,7 +130,7 @@ public class StrategiaProdukty implements IStrategia {
 			e.printStackTrace();
 			System.out.println(e);
 		}
-
+		
 		String nazwy[] = new String[fData.size()];
 		String nazwy2[] = new String[fData2.size()];
 
@@ -168,40 +144,27 @@ public class StrategiaProdukty implements IStrategia {
 			nazwy2[i] = ((Kategorie) stan).getNazwa();
 			i++;
 		}
-
-		JComboBox jombo = new JComboBox(nazwy);
-		JComboBox jombo2 = new JComboBox(nazwy2);
-
-		panel.add(new JLabel("Nazwa: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Cena: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Opis: "));
-		panel.add(trzeciePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Id producenta: "));
-		panel.add(jombo);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Id kategorii: "));
-		panel.add(jombo2);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
+		
+		dyrektorOkienek.stworzOkno(new String[][] {nazwy, nazwy2}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.combobox, 2);
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
-						|| trzeciePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()
+						|| pola.get(2).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Produkt nie został dodany");
 					return;
 				}
-				double cena = Double.parseDouble(drugiePole.getText());
+				double cena = Double.parseDouble(pola.get(1).getText());
 				cena = Math.round(cena * 100.0) / 100.0;
 
-				Produkty nowyProdukt = new Produkty(pierwszePole.getText(), cena, trzeciePole.getText(),
-						((Producenci) fData.get(jombo.getSelectedIndex())).getId_producenta(),
-						((Kategorie) fData2.get(jombo2.getSelectedIndex())).getId_Kategorii(), 0);
+				Produkty nowyProdukt = new Produkty(pola.get(1).getText(), cena, pola.get(2).getText(),
+						((Producenci) fData.get(((JComboBox)okno.getComponent(3)).getSelectedIndex())).getId_producenta(),
+						((Kategorie) fData2.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getId_Kategorii(), 0);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyProdukt, HibernateOracle.idUzytkownika));
 
