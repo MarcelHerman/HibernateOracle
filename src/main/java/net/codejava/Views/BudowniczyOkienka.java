@@ -61,7 +61,7 @@ public class BudowniczyOkienka {
 		return lista;
 	}
 	
-	public void refresh()
+	public void zresetuj()
 	{
 		panel = new JPanel();
 	}

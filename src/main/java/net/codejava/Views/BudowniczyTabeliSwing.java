@@ -44,7 +44,7 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 			this.dodajKolumne("");
 	}
 
-	public void refresh() {
+	public void zresetuj() {
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 	}

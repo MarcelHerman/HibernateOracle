@@ -79,16 +79,16 @@ public class StrategiaKategorie implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-		JTextField pierwszePole = new JTextField(7);
+		dyrektorOkienek.okienkoKategoriiDodaj();
 
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("Nazwa: "));
-		panel.add(pierwszePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj kategorię", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Dodaj kategorię", JOptionPane.OK_CANCEL_OPTION);
 		try {
-			if (wynik == JOptionPane.OK_OPTION) {
+			if (wynik == JOptionPane.OK_OPTION) { 
+				
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				
+				JTextField pierwszePole = pola.get(0);
+				
 				if (pierwszePole.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Kategoria nie została dodana");
 					return;

@@ -10,11 +10,16 @@ import net.codejava.Views.BudowniczyOkienka;
 
 public class DyrektorOkienek {
 	BudowniczyOkienka budowniczy = new BudowniczyOkienka();
-	
 
 	public void okienkoKategoriiEdytuj() {
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajLabel("Nazwa kategorii: ");
+	}
+	
+	public void okienkoKategoriiDodaj()
+	{
+		budowniczy.zresetuj();
+		budowniczy.dodajLabel("Nazwa");	
 	}
 	
 	public JPanel zwrocOkno() {

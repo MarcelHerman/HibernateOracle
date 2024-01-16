@@ -10,7 +10,7 @@ public interface BudowniczyTabeli {
 	
 	public Object pobierzTabele(Object ob);
 	
-	public void refresh();
+	public void zresetuj();
 	
 	public void dodajKolumnePrzycisku();
 }

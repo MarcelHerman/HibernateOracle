@@ -29,7 +29,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Magazyny();
 		HibernateOracle.wzorzec = new StrategiaMagazyny();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -58,7 +58,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Produkty();
 		HibernateOracle.wzorzec = new StrategiaProdukty();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -132,7 +132,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Kategorie();
 		HibernateOracle.wzorzec = new StrategiaKategorie();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -158,7 +158,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Faktury();
 		HibernateOracle.wzorzec = new StrategiaFaktury();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -187,7 +187,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Produkt_Magazyn();
 		HibernateOracle.wzorzec = new StrategiaProdukt_Magazyn();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Id Magazynu");
@@ -216,7 +216,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Produkt_Zamowienia();
 		HibernateOracle.wzorzec = new StrategiaProdukt_Zamowienia();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Id Zamowienia");
@@ -243,7 +243,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Stany_Zamowienia();
 		HibernateOracle.wzorzec = new StrategiaStany_Zamowienia();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Id Stanu Zamówienia");
@@ -268,7 +268,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Producenci();
 		HibernateOracle.wzorzec = new StrategiaProducenci();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -304,7 +304,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Uzytkownicy();
 		HibernateOracle.wzorzec = new StrategiaUzytkownicy();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -362,7 +362,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Zamowienia();
 		HibernateOracle.wzorzec = new StrategiaZamowienia();
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
 		budowniczy.dodajKolumne("Lp.");
@@ -439,7 +439,7 @@ public class DyrektorTabel {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obj = new Typy_uzytkownika();
 		HibernateOracle.wzorzec = null;
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 
 		budowniczy.dodajKolumne("Lp.");
@@ -464,7 +464,7 @@ public class DyrektorTabel {
 		HibernateOracle.obj = new Produkt_Koszyk();
 		HibernateOracle.wzorzec = new StrategiaProdukt_Koszyk();
 		this.budowniczy = budowniczy;
-		budowniczy.refresh();
+		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 
 		budowniczy.dodajKolumne("Lp.");

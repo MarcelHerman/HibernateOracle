@@ -13,7 +13,7 @@ public class BudowniczyTabeliDruk implements BudowniczyTabeli
 	private LinkedList<LinkedList<Object>> dane = new LinkedList<LinkedList<Object>>();
 	private LinkedList<Object> wiersz;
 
-	public void refresh() {
+	public void zresetuj() {
 		this.wiersz = null;
 		this.dane =  new LinkedList<LinkedList<Object>>();
 	}
