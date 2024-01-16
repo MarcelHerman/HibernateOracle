@@ -1,4 +1,4 @@
-package net.codejava.Views;
+package net.codejava.Controllers;
 
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import net.codejava.HibernateOracle;
-import net.codejava.Controllers.TypPola;
 
 public class StrategiaProdukt_Koszyk implements IStrategia {
 

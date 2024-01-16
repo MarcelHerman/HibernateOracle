@@ -1,4 +1,4 @@
-package net.codejava.Views;
+package net.codejava.Controllers;
 
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
@@ -17,8 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import net.codejava.HibernateOracle;
-import net.codejava.Controllers.DyrektorOkienek;
-import net.codejava.Controllers.TypPola;
 
 public class StrategiaKategorie implements IStrategia {
 
@@ -27,13 +25,7 @@ public class StrategiaKategorie implements IStrategia {
 
 		//JPanel panel = budowniczy.zwrocOkienka();
 		//dyrektorOkienek.okienkoKategoriiEdytuj();
-		dyrektorOkienek.stworzOkno(
-			    new String[][]{{"WAKE ME UP", "(wake me up inside)", "I CAN'T WAKE UP", "(wake me up inside)", "SAVE ME"}},
-			    TypPola.label, "Nazwa kategorii: ",
-			    TypPola.checkbox, "test",
-			    TypPola.combobox, 1
-			);
-
+		dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");
 		
 		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		try {

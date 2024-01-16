@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 
 public class BudowniczyOkienka {
 
-	JPanel panel = new JPanel();
+	private JPanel panel = new JPanel();
 	
 	public JPanel zwrocOkno()
 	{		

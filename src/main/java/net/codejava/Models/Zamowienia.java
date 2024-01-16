@@ -11,15 +11,10 @@ interface IZamowienia extends Obiekt_Do_Polecen
 {
 	 public String getOpis();
 	 public double getKoszt();
-}
-
-interface IZamowieniaI extends IZamowienia
-{
-	public int getId_zamowienia();
+	 
+	 public int getId_zamowienia();
 
 	public void setId_zamowienia(int id_zamowienia);
-
-	public double getKoszt();
 
 	public void setKoszt(double koszt);
 
@@ -44,7 +39,7 @@ interface IZamowieniaI extends IZamowienia
 
 
 @Entity
-public class Zamowienia implements IZamowieniaI {
+public class Zamowienia implements IZamowienia {
 	private int id_zamowienia;
 	private double koszt;
 	private String adres_wysylki_miasto;

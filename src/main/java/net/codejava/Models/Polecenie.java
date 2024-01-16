@@ -8,8 +8,8 @@ public abstract class Polecenie {
 	protected Obiekt_Do_Polecen obiekt;
 	private LocalDate data_wykonania;
 	private int id_wykonawcy;
-	PolaczenieOracle oc;
-	Session session;
+	protected PolaczenieOracle oc;
+	protected Session session;
 	
 	public void Wykonaj(){
 		oc = PolaczenieOracle.getInstance();

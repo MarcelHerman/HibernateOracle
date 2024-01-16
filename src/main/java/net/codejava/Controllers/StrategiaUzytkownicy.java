@@ -1,4 +1,4 @@
-package net.codejava.Views;
+package net.codejava.Controllers;
 
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
@@ -23,7 +23,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
-import net.codejava.Controllers.TypPola;
 
 public class StrategiaUzytkownicy implements IStrategia {
 

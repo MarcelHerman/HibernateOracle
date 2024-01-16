@@ -1,4 +1,4 @@
-package net.codejava.Views;
+package net.codejava.Controllers;
 
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import org.hibernate.Session;
 
 import net.codejava.HibernateOracle;
-import net.codejava.Controllers.TypPola;
 
 public class StrategiaStany_Zamowienia implements IStrategia {
 

@@ -3,17 +3,6 @@ package net.codejava.Controllers;
 import net.codejava.HibernateOracle;
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeli;
-import net.codejava.Views.StrategiaFaktury;
-import net.codejava.Views.StrategiaKategorie;
-import net.codejava.Views.StrategiaMagazyny;
-import net.codejava.Views.StrategiaProducenci;
-import net.codejava.Views.StrategiaProdukt_Koszyk;
-import net.codejava.Views.StrategiaProdukt_Magazyn;
-import net.codejava.Views.StrategiaProdukt_Zamowienia;
-import net.codejava.Views.StrategiaProdukty;
-import net.codejava.Views.StrategiaStany_Zamowienia;
-import net.codejava.Views.StrategiaUzytkownicy;
-import net.codejava.Views.StrategiaZamowienia;
 
 import java.util.List;
 

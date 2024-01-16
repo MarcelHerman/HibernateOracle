@@ -6,10 +6,11 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.codejava.Models.TypPola;
 import net.codejava.Views.BudowniczyOkienka;
 
 public class DyrektorOkienek {
-	BudowniczyOkienka budowniczy = new BudowniczyOkienka();
+	private BudowniczyOkienka budowniczy = new BudowniczyOkienka();
 
 	public void stworzOkno(String[][] tab, Object... args) {
         budowniczy.zresetuj();
