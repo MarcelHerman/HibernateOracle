@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -21,17 +22,12 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaZamowienia implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
 
@@ -54,29 +50,17 @@ public class StrategiaZamowienia implements IStrategia {
 			i++;
 		}
 
-		JComboBox jombo = new JComboBox(nazwy);
+		if (HibernateOracle.nazwaTypu.equals("Pracownik"))
+			dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.combobox, 1);
+		else
+			dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Ulica wysyłki: ", TypPola.label, "Miasto wysyłki: ", TypPola.combobox, 1);
+		JPanel okno = dyrektorOkienek.zwrocOkno();
 
-		if (HibernateOracle.nazwaTypu.equals("Pracownik")) {
-			panel.add(Box.createHorizontalStrut(5));
-			panel.add(new JLabel("Stan zamówienia: "));
-			panel.add(jombo);
-		}
-
-		else {
-			panel.add(new JLabel("Miasto wysyłki"));
-			panel.add(pierwszePole);
-			panel.add(Box.createHorizontalStrut(5));
-			panel.add(new JLabel("Ulica wysyłki: "));
-			panel.add(drugiePole);
-			panel.add(Box.createHorizontalStrut(5));
-			panel.add(new JLabel("Stan zamówienia: "));
-			panel.add(jombo);
-		}
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				oc.createDBSession();
 				Session session = oc.getDBSession();
 
@@ -85,19 +69,19 @@ public class StrategiaZamowienia implements IStrategia {
 						.uniqueResult();
 				oc.closeDBSession();
 
-				if (!pierwszePole.getText().isEmpty())
-					user.setAdres_wysylki_miasto(pierwszePole.getText());
-				if (!drugiePole.getText().isEmpty())
-					user.setAdres_wysylki_ulica(drugiePole.getText());
+				if (!pola.get(0).getText().isEmpty())
+					user.setAdres_wysylki_miasto(pola.get(0).getText());
+				if (!pola.get(1).getText().isEmpty())
+					user.setAdres_wysylki_ulica(pola.get(1).getText());
 
 				user.setId_stanu_zamowienia(
-						((Stany_Zamowienia) fData.get(jombo.getSelectedIndex())).getId_Stanu_Zamowienia());
+						((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(2)).getSelectedIndex())).getId_Stanu_Zamowienia());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getAdres_wysylki_miasto(), bt.row, 1);
 				bt.tab.setValueAt(user.getAdres_wysylki_ulica(), bt.row, 2);
-				bt.tab.setValueAt(((Stany_Zamowienia) fData.get(jombo.getSelectedIndex())).getNazwa(), bt.row, 4);
+				bt.tab.setValueAt(((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(2)).getSelectedIndex())).getNazwa(), bt.row, 4);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,38 +103,25 @@ public class StrategiaZamowienia implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-		JPanel panel = new JPanel();
+		
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Id użytkownika: ", TypPola.label, "Adres wysyłki miasto: ", TypPola.label, "Adres wysyłki ulica: ", TypPola.label, "Koszt: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
 
-		panel.add(new JLabel("Id uzytkownika: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Adres wysyłki miasto: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Adres wysyłki ulica: "));
-		panel.add(trzeciePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Koszt: "));
-		panel.add(czwartePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
-						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()
+						|| pola.get(2).getText().isEmpty() || pola.get(3).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało dodane");
 					return;
 				}
 
-				double cena = Double.parseDouble(czwartePole.getText());
+				double cena = Double.parseDouble(pola.get(3).getText());
 				cena = Math.round(cena * 100.0) / 100.0;
-				Zamowienia noweZamowienie = new Zamowienia(cena, drugiePole.getText(), trzeciePole.getText(), 1,
-						Integer.parseInt(pierwszePole.getText()), null);
+				Zamowienia noweZamowienie = new Zamowienia(cena, pola.get(1).getText(), pola.get(2).getText(), 1,
+						Integer.parseInt(pola.get(0).getText()), null);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(noweZamowienie, HibernateOracle.idUzytkownika));
 

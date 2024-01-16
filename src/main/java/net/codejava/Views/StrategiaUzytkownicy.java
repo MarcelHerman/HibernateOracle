@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -22,23 +23,15 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaUzytkownicy implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
-
 		List<Obiekt_Do_Polecen> fData = null;
-
 		try (Session session = oc.getDBSession()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
@@ -47,39 +40,21 @@ public class StrategiaUzytkownicy implements IStrategia {
 			e.printStackTrace();
 			System.out.println(e);
 		}
-
+		
 		String nazwy[] = new String[fData.size()];
-
+		
 		int i = 0;
 		for (Obiekt_Do_Polecen stan : fData) {
 			nazwy[i] = ((Typy_uzytkownika) stan).getNazwa();
 			i++;
 		}
-
-		JComboBox jombo = new JComboBox(nazwy);
-		JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
-
-		panel.add(new JLabel("Nazwa użytkownika: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Login: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Hasło: "));
-		panel.add(trzeciePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("E-mail: "));
-		panel.add(czwartePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Typ użytkownika: "));
-		panel.add(jombo);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(czyUsunietyCheck);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		
+		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa użytkownika: ", TypPola.label, "Login: ", TypPola.label, "Hasło: ", TypPola.label, "E-mail: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				oc.createDBSession();
 				Session session = oc.getDBSession();
 
@@ -88,17 +63,17 @@ public class StrategiaUzytkownicy implements IStrategia {
 						.setParameter("id", bt.id).uniqueResult();
 				oc.closeDBSession();
 
-				user.setCzy_usunieto(czyUsunietyCheck.isSelected() ? 1 : 0);
-				if (!pierwszePole.getText().isEmpty())
-					user.setNazwa_uzytkownika(pierwszePole.getText());
-				if (!drugiePole.getText().isEmpty())
-					user.setLogin(drugiePole.getText());
-				if (!trzeciePole.getText().isEmpty())
-					user.setHaslo(trzeciePole.getText());
-				if (!czwartePole.getText().isEmpty())
-					user.setE_mail(czwartePole.getText());
+				user.setCzy_usunieto(((JCheckBox)okno.getComponent(5)).isSelected() ? 1 : 0);
+				if (!pola.get(0).getText().isEmpty())
+					user.setNazwa_uzytkownika(pola.get(0).getText());
+				if (!pola.get(1).getText().isEmpty())
+					user.setLogin(pola.get(1).getText());
+				if (!pola.get(2).getText().isEmpty())
+					user.setHaslo(pola.get(2).getText());
+				if (!pola.get(3).getText().isEmpty())
+					user.setE_mail(pola.get(3).getText());
 				user.setId_typu_uzytkownika(
-						((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika());
+						((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getId_typu_uzytkownika());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
@@ -106,7 +81,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 				bt.tab.setValueAt(user.getLogin(), bt.row, 2);
 				bt.tab.setValueAt(user.getHaslo(), bt.row, 3);
 				bt.tab.setValueAt(user.getE_mail(), bt.row, 4);
-				bt.tab.setValueAt(((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getNazwa(), bt.row, 5);
+				bt.tab.setValueAt(((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getNazwa(), bt.row, 5);
 				if (user.getCzy_usunieto() == 1)
 					bt.tab.setValueAt("TAK", bt.row, 6);
 				else
@@ -134,17 +109,9 @@ public class StrategiaUzytkownicy implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-		JPanel panel = new JPanel();
-
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
-
 		List<Obiekt_Do_Polecen> fData = null;
-
 		try (Session session = oc.getDBSession()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
@@ -153,45 +120,31 @@ public class StrategiaUzytkownicy implements IStrategia {
 			e.printStackTrace();
 			System.out.println(e);
 		}
-
+		
 		String nazwy[] = new String[fData.size()];
-
+		
 		int i = 0;
 		for (Obiekt_Do_Polecen stan : fData) {
 			nazwy[i] = ((Typy_uzytkownika) stan).getNazwa();
 			i++;
 		}
-
-		JComboBox jombo = new JComboBox(nazwy);
-
-		panel.add(new JLabel("Nazwa uzytkownika: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Login: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Hasło: "));
-		panel.add(trzeciePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("E-mail: "));
-		panel.add(czwartePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Id typu użytkownika: "));
-		panel.add(jombo);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		
+		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa użytkownika: ", TypPola.label, "Login: ", TypPola.label, "Hasło: ", TypPola.label, "E-mail: ", TypPola.combobox, 1);
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
-						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()
+						|| pola.get(2).getText().isEmpty() || pola.get(3).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Użytkownik nie został dodany");
 					return;
 				}
 
-				Uzytkownicy nowyUzytkownik = new Uzytkownicy(pierwszePole.getText(), drugiePole.getText(),
-						trzeciePole.getText(), czwartePole.getText(),
-						((Typy_uzytkownika) fData.get(jombo.getSelectedIndex())).getId_typu_uzytkownika(), 0);
+				Uzytkownicy nowyUzytkownik = new Uzytkownicy(pola.get(0).getText(), pola.get(1).getText(),
+						pola.get(2).getText(), pola.get(3).getText(),
+						((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getId_typu_uzytkownika(), 0);
 
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));

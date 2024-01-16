@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -20,36 +21,17 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaProducenci implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
+		
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica: ", TypPola.checkbox, "Czy usunięty: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
 
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		JCheckBox czyUsunietyCheck = new JCheckBox("Czy usunięty: ");
-
-		panel.add(new JLabel("Nazwa producenta: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Kontakt: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Miasto: "));
-		panel.add(trzeciePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Ulica: "));
-		panel.add(czwartePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(czyUsunietyCheck);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Edytuj producenta", JOptionPane.OK_CANCEL_OPTION);
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj producenta", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
@@ -64,15 +46,17 @@ public class StrategiaProducenci implements IStrategia {
 				int szukany = user.getId_producenta();
 				oc.closeDBSession();
 
-				user.setCzy_usunieto(czyUsunietyCheck.isSelected() ? 1 : 0);
-				if (!pierwszePole.getText().isEmpty())
-					user.setNazwa(pierwszePole.getText());
-				if (!drugiePole.getText().isEmpty())
-					user.setKontakt(drugiePole.getText());
-				if (!trzeciePole.getText().isEmpty())
-					user.setMiasto(trzeciePole.getText());
-				if (!czwartePole.getText().isEmpty())
-					user.setUlica(czwartePole.getText());
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				
+				user.setCzy_usunieto(((JCheckBox)okno.getComponent(4)).isSelected() ? 1 : 0);
+				if (!pola.get(0).getText().isEmpty())
+					user.setNazwa(pola.get(0).getText());
+				if (!pola.get(1).getText().isEmpty())
+					user.setKontakt(pola.get(1).getText());
+				if (!pola.get(2).getText().isEmpty())
+					user.setMiasto(pola.get(2).getText());
+				if (!pola.get(3).getText().isEmpty())
+					user.setUlica(pola.get(3).getText());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 				List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
@@ -140,36 +124,21 @@ public class StrategiaProducenci implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-		JTextField czwartePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("Nazwa: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Kontakt: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Miasto: "));
-		panel.add(trzeciePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Ulica: "));
-		panel.add(czwartePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa produktcenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
-						|| trzeciePole.getText().isEmpty() || czwartePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()
+						|| pola.get(2).getText().isEmpty() || pola.get(3).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Producent nie został dodany");
 					return;
 				}
 
-				Producenci nowyProducent = new Producenci(pierwszePole.getText(), drugiePole.getText(),
-						trzeciePole.getText(), czwartePole.getText(), 0);
+				Producenci nowyProducent = new Producenci(pola.get(0).getText(), pola.get(1).getText(),
+						pola.get(2).getText(), pola.get(3).getText(), 0);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyProducent, HibernateOracle.idUzytkownika));
 				List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");

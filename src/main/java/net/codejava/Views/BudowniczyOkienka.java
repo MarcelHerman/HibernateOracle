@@ -24,7 +24,7 @@ public class BudowniczyOkienka {
 		return panel;
 	}
 	
-	public void dodajLabel(String tekst)
+	public void dodajJTextField(String tekst)
 	{
 		JTextField poleTekstowe = new JTextField(7);
 		panel.add(new JLabel(tekst));

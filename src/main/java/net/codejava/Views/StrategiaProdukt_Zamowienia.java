@@ -4,6 +4,7 @@ import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaProdukt_Zamowienia implements IStrategia {
 
@@ -36,39 +38,28 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
 	@Override
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-		JTextField pierwszePole = new JTextField(7);
-		JTextField drugiePole = new JTextField(7);
-		JTextField trzeciePole = new JTextField(7);
-
-		JPanel panel = new JPanel();
-
-		panel.add(new JLabel("Id zamówienia: "));
-		panel.add(pierwszePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Id produktu: "));
-		panel.add(drugiePole);
-		panel.add(Box.createHorizontalStrut(5));
-		panel.add(new JLabel("Ilość: "));
-		panel.add(trzeciePole);
-
-		int wynik = JOptionPane.showConfirmDialog(null, panel, "Dodaj produkt do zamówienia",
+		dyrektorOkienek.stworzOkno(null, TypPola.label, "Id zamowienia: ", TypPola.label, "Id produktu: ", TypPola.label, "Ilość: ");
+		JPanel okno = dyrektorOkienek.zwrocOkno();
+		
+		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj produkt do zamówienia",
 				JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				if (pierwszePole.getText().isEmpty() || drugiePole.getText().isEmpty()
-						|| trzeciePole.getText().isEmpty()) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()
+						|| pola.get(2).getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null,
 							"Nie podano wszystkich danych. Produkt nie został dodany do zamówienia.");
 					return;
 				}
 
-				if (Integer.parseInt(trzeciePole.getText()) <= 0)
+				if (Integer.parseInt(pola.get(2).getText()) <= 0)
 					throw (new Exception("Ilość nie może być ujemna ani równa 0."));
 
-				Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pierwszePole.getText()),
-						Integer.parseInt(drugiePole.getText()));
+				Produkt_Zamowienia_Id idpz = new Produkt_Zamowienia_Id(Integer.parseInt(pola.get(0).getText()),
+						Integer.parseInt(pola.get(1).getText()));
 
-				Produkt_Zamowienia nowyPZ = new Produkt_Zamowienia(idpz, Integer.parseInt(trzeciePole.getText()));
+				Produkt_Zamowienia nowyPZ = new Produkt_Zamowienia(idpz, Integer.parseInt(pola.get(2).getText()));
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyPZ, HibernateOracle.idUzytkownika));
 
