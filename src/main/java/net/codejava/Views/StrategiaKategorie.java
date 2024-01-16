@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import net.codejava.HibernateOracle;
 import net.codejava.Controllers.DyrektorOkienek;
+import net.codejava.Controllers.TypPola;
 
 public class StrategiaKategorie implements IStrategia {
 
@@ -25,7 +26,8 @@ public class StrategiaKategorie implements IStrategia {
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
 		//JPanel panel = budowniczy.zwrocOkienka();
-		dyrektorOkienek.okienkoKategoriiEdytuj();
+		//dyrektorOkienek.okienkoKategoriiEdytuj();
+		dyrektorOkienek.stworzOkno(TypPola.label, "Nazwa kategorii: ", TypPola.checkbox, "test", TypPola.combobox, 5, "WAKE ME UP", "(wake me up inside)", "I CAN'T WAKE UP", "(wake me up inside)", "SAVE ME");
 		
 		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		try {
