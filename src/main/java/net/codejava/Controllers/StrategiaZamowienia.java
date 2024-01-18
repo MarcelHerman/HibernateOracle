@@ -74,13 +74,13 @@ public class StrategiaZamowienia implements IStrategia {
 					user.setAdres_wysylki_ulica(pola.get(1).getText());
 
 				user.setId_stanu_zamowienia(
-						((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(2)).getSelectedIndex())).getId_Stanu_Zamowienia());
+						((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getId_Stanu_Zamowienia());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getAdres_wysylki_miasto(), bt.row, 1);
 				bt.tab.setValueAt(user.getAdres_wysylki_ulica(), bt.row, 2);
-				bt.tab.setValueAt(((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(2)).getSelectedIndex())).getNazwa(), bt.row, 4);
+				bt.tab.setValueAt(((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), bt.row, 4);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

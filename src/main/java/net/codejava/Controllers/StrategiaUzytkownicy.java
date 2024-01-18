@@ -62,7 +62,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 						.setParameter("id", bt.id).uniqueResult();
 				oc.closeDBSession();
 
-				user.setCzy_usunieto(((JCheckBox)okno.getComponent(5)).isSelected() ? 1 : 0);
+				user.setCzy_usunieto(((JCheckBox)okno.getComponent(14)).isSelected() ? 1 : 0);
 				if (!pola.get(0).getText().isEmpty())
 					user.setNazwa_uzytkownika(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
@@ -72,7 +72,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 				if (!pola.get(3).getText().isEmpty())
 					user.setE_mail(pola.get(3).getText());
 				user.setId_typu_uzytkownika(
-						((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getId_typu_uzytkownika());
+						((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getId_typu_uzytkownika());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
@@ -80,7 +80,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 				bt.tab.setValueAt(user.getLogin(), bt.row, 2);
 				bt.tab.setValueAt(user.getHaslo(), bt.row, 3);
 				bt.tab.setValueAt(user.getE_mail(), bt.row, 4);
-				bt.tab.setValueAt(((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getNazwa(), bt.row, 5);
+				bt.tab.setValueAt(((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getNazwa(), bt.row, 5);
 				if (user.getCzy_usunieto() == 1)
 					bt.tab.setValueAt("TAK", bt.row, 6);
 				else
@@ -143,7 +143,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 				Uzytkownicy nowyUzytkownik = new Uzytkownicy(pola.get(0).getText(), pola.get(1).getText(),
 						pola.get(2).getText(), pola.get(3).getText(),
-						((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getId_typu_uzytkownika(), 0);
+						((Typy_uzytkownika) fData.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getId_typu_uzytkownika(), 0);
 
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));

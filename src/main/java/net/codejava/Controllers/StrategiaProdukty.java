@@ -72,7 +72,7 @@ public class StrategiaProdukty implements IStrategia {
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				
-				user.setCzy_usunieto(((JCheckBox)okno.getComponent(4)).isSelected() ? 1 : 0);
+				user.setCzy_usunieto(((JCheckBox)okno.getComponent(11)).isSelected() ? 1 : 0);
 				if (!pola.get(0).getText().isEmpty())
 					user.setNazwa(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
@@ -85,14 +85,14 @@ public class StrategiaProdukty implements IStrategia {
 				if (!pola.get(3).getText().isEmpty())
 					user.setKategorie_id_kategorii(Integer.parseInt(pola.get(3).getText()));
 
-				user.setKategorie_id_kategorii(((Kategorie) fData.get(((JComboBox)okno.getComponent(3)).getSelectedIndex())).getId_Kategorii());
+				user.setKategorie_id_kategorii(((Kategorie) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_Kategorii());
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
 
 				bt.tab.setValueAt(user.getNazwa(), bt.row, 1);
 				bt.tab.setValueAt(user.getCena(), bt.row, 2);
 				bt.tab.setValueAt(user.getOpis(), bt.row, 3);
-				bt.tab.setValueAt(((Kategorie) fData.get(((JComboBox)okno.getComponent(3)).getSelectedIndex())).getNazwa(), bt.row, 5);
+				bt.tab.setValueAt(((Kategorie) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), bt.row, 5);
 				if (user.getCzy_usunieto() == 1)
 					bt.tab.setValueAt("TAK", bt.row, 6);
 				else
@@ -167,8 +167,8 @@ public class StrategiaProdukty implements IStrategia {
 				cena = Math.round(cena * 100.0) / 100.0;
 
 				Produkty nowyProdukt = new Produkty(pola.get(1).getText(), cena, pola.get(2).getText(),
-						((Producenci) fData.get(((JComboBox)okno.getComponent(3)).getSelectedIndex())).getId_producenta(),
-						((Kategorie) fData2.get(((JComboBox)okno.getComponent(4)).getSelectedIndex())).getId_Kategorii(), 0);
+						((Producenci) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_producenta(),
+						((Kategorie) fData2.get(((JComboBox)okno.getComponent(11)).getSelectedIndex())).getId_Kategorii(), 0);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyProdukt, HibernateOracle.idUzytkownika));
 
