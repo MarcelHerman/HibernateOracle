@@ -2,6 +2,8 @@ package net.codejava.Models;
 
 import java.time.LocalDate;
 
+import javax.swing.JOptionPane;
+
 import org.hibernate.Session;
 
 public abstract class Polecenie {
@@ -14,8 +16,15 @@ public abstract class Polecenie {
 	public void Wykonaj(){
 		oc = PolaczenieOracle.getInstance();
 		oc.createDBSession();
-		session = oc.getDBSession();
-		operacjaPolecenia();
+		try
+		{			
+			session = oc.getDBSession();
+			operacjaPolecenia();					
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Wystąpił następujący błąd: " + e.getMessage());
+		}	
 		oc.closeDBSession();
 	}
 	

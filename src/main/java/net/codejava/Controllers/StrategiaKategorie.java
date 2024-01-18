@@ -23,10 +23,8 @@ public class StrategiaKategorie implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
-		//JPanel panel = budowniczy.zwrocOkienka();
-		//dyrektorOkienek.okienkoKategoriiEdytuj();
-		dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");
-		
+		dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");		
+
 		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
@@ -101,33 +99,14 @@ public class StrategiaKategorie implements IStrategia {
 				lista.add(nowaKategoria);
 				HibernateOracle.cache.put("Kategorie", lista);
 
-				Component[] komponenty = kontener.getComponents();
-				JTable tab = null;
-				JButton dodajPrzycisk = null;
-				JButton eksportujDoDruku = null;
-
-				for (Component komponent : komponenty) {
-					if (komponent instanceof JScrollPane) {
-						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
-						dodajPrzycisk = (JButton) kontener.getComponent(1);
-						eksportujDoDruku = (JButton) kontener.getComponent(2);
-						kontener.removeAll();
-						break;
-					}
-				}
+				Object[] obiekty = pobierzModel(kontener);
 
 				nowaKategoria.setId_Kategorii(((Kategorie) lista.get(lista.size() - 2)).getId_Kategorii() + 1);
-				((DefaultTableModel) tab.getModel())
+				((DefaultTableModel) ((JTable)obiekty[0]).getModel())
 						.addRow(new Object[] { Integer.toString(((Kategorie) nowaKategoria).getId_Kategorii()),
 								((Kategorie) nowaKategoria).getNazwa() });
 
-				JScrollPane pane = new JScrollPane(tab);
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				kontener.repaint();
-				kontener.revalidate();
-
+				odswiezModel(kontener, obiekty);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,4 +115,32 @@ public class StrategiaKategorie implements IStrategia {
 
 	}
 
+	public Object[] pobierzModel(JPanel kontener)
+	{
+		Component[] komponenty = kontener.getComponents();
+		Object[] obiekty = new Object[3];
+		JTable tab = null;
+		JButton dodajPrzycisk = null;
+		JButton eksportujDoDruku = null;
+
+		for (Component komponent : komponenty) {
+			if (komponent instanceof JScrollPane) {
+				obiekty[0] = (JTable) (((JScrollPane) komponent).getViewport().getView());
+				obiekty[1] = (JButton) kontener.getComponent(1);
+				obiekty[2] = (JButton) kontener.getComponent(2);
+				kontener.removeAll();
+				break;
+			}
+		}
+		return obiekty;
+	}
+	public void odswiezModel(JPanel kontener, Object[] obiekty)
+	{
+		JScrollPane pane = new JScrollPane((JTable)obiekty[0]);
+		kontener.add(pane);
+		kontener.add((JButton)obiekty[1]);
+		kontener.add((JButton)obiekty[2]);
+		kontener.repaint();
+		kontener.revalidate();
+	}
 }

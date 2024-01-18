@@ -82,8 +82,6 @@ public class StrategiaProdukty implements IStrategia {
 						user.setCena(Double.parseDouble(pola.get(1).getText()));
 				if (!pola.get(2).getText().isEmpty())
 					user.setOpis(pola.get(2).getText());
-				if (!pola.get(3).getText().isEmpty())
-					user.setKategorie_id_kategorii(Integer.parseInt(pola.get(3).getText()));
 
 				user.setKategorie_id_kategorii(((Kategorie) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_Kategorii());
 
@@ -260,6 +258,18 @@ public class StrategiaProdukty implements IStrategia {
 			JOptionPane.showMessageDialog(null, "Nie udało się dodać produktu. Błąd: " + e.getMessage());
 		}
 
+	}
+
+	@Override
+	public Object[] pobierzModel(JPanel kontener) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void odswiezModel(JPanel kontener, Object[] obiekty) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

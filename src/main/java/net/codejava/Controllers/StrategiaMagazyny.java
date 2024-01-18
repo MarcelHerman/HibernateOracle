@@ -141,4 +141,16 @@ public class StrategiaMagazyny implements IStrategia {
 
 	}
 
+	@Override
+	public Object[] pobierzModel(JPanel kontener) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void odswiezModel(JPanel kontener, Object[] obiekty) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

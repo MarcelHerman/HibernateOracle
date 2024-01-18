@@ -31,28 +31,22 @@ public class StrategiaFaktury implements IStrategia {
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-
-				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.createDBSession();
-				Session session = oc.getDBSession();
-
-				Faktury user = (Faktury) session.createQuery("select u from Faktury u where u.id_faktury = :id")
-						.setParameter("id", bt.id).uniqueResult();
-				oc.closeDBSession();
-
+							
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (pola.get(0).getText().isEmpty())return;
 				
-				if (!pola.get(0).getText().isEmpty())
-					user.setNIP(pola.get(0).getText());
+				Faktury user = new Faktury();
+				user.setId_faktury(bt.id);
+				user.setNIP(pola.get(0).getText());
+							
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
-
+				
 				bt.tab.setValueAt(user.getNIP(), bt.row, 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Nie udało się edytować faktury. Błąd: " + e.getMessage());
 		}
-
 	}
 
 	@Override
@@ -120,6 +114,18 @@ public class StrategiaFaktury implements IStrategia {
 			JOptionPane.showMessageDialog(null, "Nie udało się dodać faktury. Błąd: " + e.getMessage());
 		}
 
+	}
+
+	@Override
+	public Object[] pobierzModel(JPanel kontener) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void odswiezModel(JPanel kontener, Object[] obiekty) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
