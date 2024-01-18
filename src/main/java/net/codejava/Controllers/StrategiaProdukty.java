@@ -187,8 +187,8 @@ public class StrategiaProdukty implements IStrategia {
 				List<Obiekt_Do_Polecen> cash = HibernateOracle.cache.get("Kategorie");
 				String nazwa = "Default";
 
-				int id = Integer.parseInt(((DefaultTableModel) tab.getModel())
-						.getValueAt(((DefaultTableModel) tab.getModel()).getRowCount() - 1, 0).toString());
+				int id = Integer.parseInt(((DefaultTableModel) ((JTable)obiekty[0]).getModel())
+						.getValueAt(((DefaultTableModel) ((JTable)obiekty[0]).getModel()).getRowCount() - 1, 0).toString());
 				nowyProdukt.setId_produktu(id + 1);
 
 				for (Obiekt_Do_Polecen entity : cash) {
