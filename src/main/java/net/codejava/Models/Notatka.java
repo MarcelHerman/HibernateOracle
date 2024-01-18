@@ -3,7 +3,7 @@ package net.codejava.Models;
 
 public class Notatka extends ZamowieniaDekorator
 {
-	public Notatka(Zamowienia zamowienie, String notka) {
+	public Notatka(IZamowienia zamowienie, String notka) {
 		super(zamowienie);
 		this.cena = 2.5;
 		this.opis = "notatka+" + cena + "pln:'" + notka+"'";				

@@ -3,7 +3,7 @@ package net.codejava.Models;
 
 public class Opakowanie extends ZamowieniaDekorator
 {
- 	public Opakowanie(Zamowienia zamowienie) {
+ 	public Opakowanie(IZamowienia zamowienie) {
 		super(zamowienie);
 		this.cena = 5;
 		this.opis = "opakowanie+" + cena + "%";				

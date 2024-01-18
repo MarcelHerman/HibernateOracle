@@ -7,36 +7,6 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-interface IZamowienia extends Obiekt_Do_Polecen
-{
-	 public String getOpis();
-	 public double getKoszt();
-	 
-	 public int getId_zamowienia();
-
-	public void setId_zamowienia(int id_zamowienia);
-
-	public void setKoszt(double koszt);
-
-	public String getAdres_wysylki_miasto();
-
-	public void setAdres_wysylki_miasto(String adres_wysylki_miasto);
-
-	public String getAdres_wysylki_ulica();
-
-	public void setAdres_wysylki_ulica(String adres_wysylki_ulica);
-
-	public int getId_stanu_zamowienia();
-
-	public void setId_stanu_zamowienia(int id_stanu_zamowienia);
-
-	public int getUzytkownicy_id_uzytkownika();
-
-	public void setUzytkownicy_id_uzytkownika(int uzytkownicy_id_uzytkownika);
-
-	public void setOpis(String opis);
-}
-
 
 @Entity
 public class Zamowienia implements IZamowienia {
@@ -125,13 +95,13 @@ public class Zamowienia implements IZamowienia {
 	}
 }
 
-abstract class ZamowieniaDekorator extends Zamowienia
+abstract class ZamowieniaDekorator implements IZamowienia
 {
-	Zamowienia zamowienie;
+	IZamowienia zamowienie;
 	double cena;
 	String opis;
 
-	public ZamowieniaDekorator(Zamowienia zamowienie)
+	public ZamowieniaDekorator(IZamowienia zamowienie)
 	{
 		this.zamowienie = zamowienie;
 	}

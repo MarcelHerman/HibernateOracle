@@ -2,7 +2,7 @@ package net.codejava.Models;
 
 public class Znizka extends ZamowieniaDekorator
 {
-	public Znizka(Zamowienia zamowienie, double cena) {
+	public Znizka(IZamowienia zamowienie, double cena) {
 		super(zamowienie);
 		this.cena = cena;
 		this.opis = "znizka-" + cena + "%";				

@@ -39,6 +39,7 @@ import org.hibernate.service.spi.ServiceException;
 import net.codejava.HibernateOracle;
 import net.codejava.Controllers.DyrektorTabel;
 import net.codejava.Models.Faktury;
+import net.codejava.Models.IZamowienia;
 import net.codejava.Models.Kategorie;
 import net.codejava.Models.Magazyny;
 import net.codejava.Models.Notatka;
@@ -625,7 +626,7 @@ public class widokAplikacji {
 		     
 		     	 	                	System.out.println("trzecia");	 
 		     	 	                	
-		     	 	                	Zamowienia zamowienie = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika,"");
+		     	 	                	IZamowienia zamowienie = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika,"");
 		     	 	                	if(!czwartyField.getText().isEmpty())zamowienie = new Znizka(zamowienie, Double.parseDouble(czwartyField.getText()));		     	 	                		     	 	                	
 		     	 	                			     	 	               
 		     	 	                	if(drugiCheckbox.isSelected()==true)zamowienie = new Opakowanie(zamowienie);
@@ -635,10 +636,10 @@ public class widokAplikacji {
 		     	 	                		else throw(new Exception("Podano zbyt długą notatkę - max 150 znaków."));
 		     	 	                	}
 		     	 	                				     	 	                	     	 	                	
-		     	 	                	zamowienie = new Zamowienia(zamowienie.getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
+		     	 	                	zamowienie = new Zamowienia(((Zamowienia) zamowienie).getId_zamowienia(), zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
 		     	 	                	
 		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100.0)/100.0;
-		     	 	                	zamowienie.setKoszt(zaokr);
+		     	 	                	((Zamowienia) zamowienie).setKoszt(zaokr);
 		     	 	                	
 		     	 	                	session.save(zamowienie);		  	 	                	     	 	                	
 		     	 	                	
@@ -664,9 +665,9 @@ public class widokAplikacji {
 			     		                		session.update(stan);
 			     		                	}
 		     	 	                		
-		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(zamowienie.getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
+		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(((Zamowienia) zamowienie).getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
 		     	 	                	}
-		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), zamowienie.getId_zamowienia()));  
+		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), ((Zamowienia) zamowienie).getId_zamowienia()));  
 		     	 	                	System.out.println("czwarty");
 		     	                		oc.closeDBSession();
 		     	                		

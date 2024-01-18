@@ -50,13 +50,18 @@ public class StrategiaProdukty implements IStrategia {
 			i++;
 		}
 		
-		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
+		//o = pobierzObiektDoEdycji();
+		//defo = pobierzDef()
+		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");		
+		//dyrektorOkienek.stworzOkno(defonew String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-
+				//if waliduj(okno) {
+					//zapisz(okno)
+				//}
 				oc.createDBSession();
 				Session session = oc.getDBSession();
 
