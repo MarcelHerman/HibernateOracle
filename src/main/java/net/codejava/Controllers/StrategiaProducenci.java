@@ -47,7 +47,7 @@ public class StrategiaProducenci implements IStrategia {
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				
-				user.setCzy_usunieto(((JCheckBox)okno.getComponent(4)).isSelected() ? 1 : 0);
+				user.setCzy_usunieto(((JCheckBox)okno.getComponent(12)).isSelected() ? 1 : 0);
 				if (!pola.get(0).getText().isEmpty())
 					user.setNazwa(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
