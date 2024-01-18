@@ -148,20 +148,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyUzytkownik, HibernateOracle.idUzytkownika));
 
-				Component[] komponenty = kontener.getComponents();
-				JTable tab = null;
-
-				JButton dodajPrzycisk = null;
-				JButton eksportujDoDruku = null;
-				for (Component komponent : komponenty) {
-					if (komponent instanceof JScrollPane) {
-						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
-						dodajPrzycisk = (JButton) kontener.getComponent(1);
-						eksportujDoDruku = (JButton) kontener.getComponent(2);
-						kontener.removeAll();
-						break;
-					}
-				}
+				Object[] obiekty = pobierzModel(kontener);
 
 				if (!HibernateOracle.cache.containsKey("TypyUzytkownika")) {
 					oc.createDBSession();
@@ -178,8 +165,8 @@ public class StrategiaUzytkownicy implements IStrategia {
 				List<Obiekt_Do_Polecen> cash = HibernateOracle.cache.get("TypyUzytkownika");
 				String nazwa = "Default";
 
-				int id = Integer.parseInt(((DefaultTableModel) tab.getModel())
-						.getValueAt(((DefaultTableModel) tab.getModel()).getRowCount() - 1, 0).toString());
+				int id = Integer.parseInt(((DefaultTableModel) ((JTable)obiekty[0]).getModel())
+						.getValueAt(((DefaultTableModel) ((JTable)obiekty[0]).getModel()).getRowCount() - 1, 0).toString());
 				nowyUzytkownik.setId_uzytkownika(id + 1);
 
 				for (Obiekt_Do_Polecen entity : cash) {
@@ -190,19 +177,14 @@ public class StrategiaUzytkownicy implements IStrategia {
 					}
 				}
 
-				((DefaultTableModel) tab.getModel())
+				((DefaultTableModel) ((JTable)obiekty[0]).getModel())
 						.addRow(new Object[] { Integer.toString(((Uzytkownicy) nowyUzytkownik).getId_uzytkownika()),
 								((Uzytkownicy) nowyUzytkownik).getNazwa_uzytkownika(),
 								((Uzytkownicy) nowyUzytkownik).getLogin(), ((Uzytkownicy) nowyUzytkownik).getHaslo(),
 								((Uzytkownicy) nowyUzytkownik).getE_mail(), nazwa,
 								((((Uzytkownicy) nowyUzytkownik).getCzy_usunieto()) == 1) ? "TAK" : "NIE" });
 
-				JScrollPane pane = new JScrollPane(tab);
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				kontener.repaint();
-				kontener.revalidate();
+				odswiezModel(kontener, obiekty);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -211,16 +193,31 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 	}
 
-	@Override
-	public Object[] pobierzModel(JPanel kontener) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Object[] pobierzModel(JPanel kontener)
+	{
+		Component[] komponenty = kontener.getComponents();
+		Object[] obiekty = new Object[3];
 
-	@Override
-	public void odswiezModel(JPanel kontener, Object[] obiekty) {
-		// TODO Auto-generated method stub
-		
+		for (Component komponent : komponenty) {
+			if (komponent instanceof JScrollPane) {
+				obiekty[0] = (JTable) (((JScrollPane) komponent).getViewport().getView());
+				obiekty[1] = (JButton) kontener.getComponent(1);
+				obiekty[2] = (JButton) kontener.getComponent(2);
+				kontener.removeAll();
+				break;
+			}
+		}
+		return obiekty;
+	}
+	
+	public void odswiezModel(JPanel kontener, Object[] obiekty)
+	{
+		JScrollPane pane = new JScrollPane((JTable)obiekty[0]);
+		kontener.add(pane);
+		kontener.add((JButton)obiekty[1]);
+		kontener.add((JButton)obiekty[2]);
+		kontener.repaint();
+		kontener.revalidate();
 	}
 
 }

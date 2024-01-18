@@ -111,33 +111,15 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 						Integer.parseInt(pola.get(3).getText()));
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Dodaj(nowyPM, HibernateOracle.idUzytkownika));
 
-				Component[] komponenty = kontener.getComponents();
-				JTable tab = null;
+				Object[] obiekty = pobierzModel(kontener);
 
-				JButton dodajPrzycisk = null;
-				JButton eksportujDoDruku = null;
-				for (Component komponent : komponenty) {
-					if (komponent instanceof JScrollPane) {
-						tab = (JTable) (((JScrollPane) komponent).getViewport().getView());
-						dodajPrzycisk = (JButton) kontener.getComponent(1);
-						eksportujDoDruku = (JButton) kontener.getComponent(2);
-						kontener.removeAll();
-						break;
-					}
-				}
-
-				((DefaultTableModel) tab.getModel())
+				((DefaultTableModel) ((JTable)obiekty[0]).getModel())
 						.addRow(new Object[] { Integer.toString(((Produkt_Magazyn) nowyPM).getMagazyn_id()),
 								Integer.toString(((Produkt_Magazyn) nowyPM).getProdukt_id()),
 								Integer.toString(((Produkt_Magazyn) nowyPM).getStan_faktyczny()),
 								Integer.toString(((Produkt_Magazyn) nowyPM).getStan_magazynowy()) });
 
-				JScrollPane pane = new JScrollPane(tab);
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				kontener.repaint();
-				kontener.revalidate();
+				odswiezModel(kontener, obiekty);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,16 +128,31 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	}
 
-	@Override
-	public Object[] pobierzModel(JPanel kontener) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Object[] pobierzModel(JPanel kontener)
+	{
+		Component[] komponenty = kontener.getComponents();
+		Object[] obiekty = new Object[3];
 
-	@Override
-	public void odswiezModel(JPanel kontener, Object[] obiekty) {
-		// TODO Auto-generated method stub
-		
+		for (Component komponent : komponenty) {
+			if (komponent instanceof JScrollPane) {
+				obiekty[0] = (JTable) (((JScrollPane) komponent).getViewport().getView());
+				obiekty[1] = (JButton) kontener.getComponent(1);
+				obiekty[2] = (JButton) kontener.getComponent(2);
+				kontener.removeAll();
+				break;
+			}
+		}
+		return obiekty;
+	}
+	
+	public void odswiezModel(JPanel kontener, Object[] obiekty)
+	{
+		JScrollPane pane = new JScrollPane((JTable)obiekty[0]);
+		kontener.add(pane);
+		kontener.add((JButton)obiekty[1]);
+		kontener.add((JButton)obiekty[2]);
+		kontener.repaint();
+		kontener.revalidate();
 	}
 
 }

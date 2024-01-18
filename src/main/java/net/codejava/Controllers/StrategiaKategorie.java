@@ -119,9 +119,6 @@ public class StrategiaKategorie implements IStrategia {
 	{
 		Component[] komponenty = kontener.getComponents();
 		Object[] obiekty = new Object[3];
-		JTable tab = null;
-		JButton dodajPrzycisk = null;
-		JButton eksportujDoDruku = null;
 
 		for (Component komponent : komponenty) {
 			if (komponent instanceof JScrollPane) {
@@ -134,6 +131,8 @@ public class StrategiaKategorie implements IStrategia {
 		}
 		return obiekty;
 	}
+	
+	@Override
 	public void odswiezModel(JPanel kontener, Object[] obiekty)
 	{
 		JScrollPane pane = new JScrollPane((JTable)obiekty[0]);
