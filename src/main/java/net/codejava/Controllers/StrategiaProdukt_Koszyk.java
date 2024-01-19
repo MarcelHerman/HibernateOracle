@@ -74,4 +74,10 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void dodajLogikeDruku(DyrektorTabel dyrektor) {
+		// TODO Auto-generated method stub
+		
+	}
 }

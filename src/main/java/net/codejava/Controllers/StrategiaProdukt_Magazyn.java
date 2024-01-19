@@ -1,11 +1,17 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
+import net.codejava.Views.BudowniczyTabeliDruk;
 import net.codejava.Views.BudowniczyTabeliSwing;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -18,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
 
@@ -150,6 +157,43 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 		kontener.add((JButton)obiekty[2]);
 		kontener.repaint();
 		kontener.revalidate();
+	}
+
+	@Override
+	public void dodajLogikeDruku(DyrektorTabel dyrektor) {
+    	BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+    	
+    	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+
+        List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+		
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			
+            Query<Obiekt_Do_Polecen> zapytanie = null;
+            zapytanie = sesja2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class); //tututki
+            obiekty = zapytanie.getResultList();
+            bd.zamknijSesjeBD();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+		dyrektor.tworzTabeleProdukt_Magazyn(obiekty, budDruk);
+         String table = (String)dyrektor.pobierzTabele();
+         												 		                 
+         String path = "wykaz_produkty_magazyn.txt";
+         File plik = new File(path);
+
+        		                     
+             try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+            	 pisarz.write(table);		                         
+                 JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+             } catch (IOException e) {
+                 e.printStackTrace();
+                 JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+             }
+    
+		
 	}
 
 }
