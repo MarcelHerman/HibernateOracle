@@ -39,7 +39,7 @@ public class BudowniczyTabeliDruk implements BudowniczyTabeli
 	} 
 
 	@Override
-	public Object pobierzTabele(Object ob) {
+	public Object pobierzTabele() {
 		if (this.wiersz != null) {
 	        this.dane.addLast(wiersz);
 	    }

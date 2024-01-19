@@ -6,52 +6,52 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 public class PolaczenieOracle implements IPolaczenia{
-	private static PolaczenieOracle instance = null;
-	private static Configuration config;
-	private static SessionFactory sesjaFactory;
+	private static PolaczenieOracle instancja = null;
+	private static Configuration konfiguracja;
+	private static SessionFactory fabrykaSesji;
 	private static Session sesja;
-	private static Transaction transaction;
+	private static Transaction transakcja;
 	
 	private PolaczenieOracle() {}
 	
 	public static PolaczenieOracle pobierzInstancje() 
 	{
-		if(instance==null)
+		if(instancja==null)
 		{
 			synchronized(PolaczenieOracle.class)
 			{
-				if(instance==null) instance = new PolaczenieOracle();
+				if(instancja==null) instancja = new PolaczenieOracle();
 			}		
 		}			
-		return instance;
+		return instancja;
 	}
 	
 	public void stworzSesjeBD()
 	{
-		config = new Configuration();
+		konfiguracja = new Configuration();
 		
-		config.setProperty("hibernate.connection.driver_class","oracle.jdbc.OracleDriver");
-		config.setProperty("hibernate.connection.url","jdbc:oracle:thin:@localhost:1521:xe");
-		config.setProperty("hibernate.connection.username","SYSTEM");
-		config.setProperty("hibernate.connection.password","123");
-		config.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle8iDialect");
-		config.setProperty("hibernate.show_sql","true");
+		konfiguracja.setProperty("hibernate.connection.driver_class","oracle.jdbc.OracleDriver");
+		konfiguracja.setProperty("hibernate.connection.url","jdbc:oracle:thin:@localhost:1521:xe");
+		konfiguracja.setProperty("hibernate.connection.username","SYSTEM");
+		konfiguracja.setProperty("hibernate.connection.password","123");
+		konfiguracja.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle8iDialect");
+		konfiguracja.setProperty("hibernate.show_sql","true");
 		
-		config.addAnnotatedClass(Kategorie.class);
-		config.addAnnotatedClass(Stany_Zamowienia.class);
-		config.addAnnotatedClass(Magazyny.class);
-		config.addAnnotatedClass(Producenci.class);
-		config.addAnnotatedClass(Typy_uzytkownika.class);
-		config.addAnnotatedClass(Uzytkownicy.class);
-		config.addAnnotatedClass(Zamowienia.class);
-		config.addAnnotatedClass(Produkt_Zamowienia.class);
-		config.addAnnotatedClass(Produkty.class);
-		config.addAnnotatedClass(Produkt_Magazyn.class);
-		config.addAnnotatedClass(Faktury.class);
+		konfiguracja.addAnnotatedClass(Kategorie.class);
+		konfiguracja.addAnnotatedClass(Stany_Zamowienia.class);
+		konfiguracja.addAnnotatedClass(Magazyny.class);
+		konfiguracja.addAnnotatedClass(Producenci.class);
+		konfiguracja.addAnnotatedClass(Typy_uzytkownika.class);
+		konfiguracja.addAnnotatedClass(Uzytkownicy.class);
+		konfiguracja.addAnnotatedClass(Zamowienia.class);
+		konfiguracja.addAnnotatedClass(Produkt_Zamowienia.class);
+		konfiguracja.addAnnotatedClass(Produkty.class);
+		konfiguracja.addAnnotatedClass(Produkt_Magazyn.class);
+		konfiguracja.addAnnotatedClass(Faktury.class);
 		
-		sesjaFactory = config.buildSessionFactory();
-		sesja = sesjaFactory.openSession();
-		transaction = sesja.beginTransaction();
+		fabrykaSesji = konfiguracja.buildSessionFactory();
+		sesja = fabrykaSesji.openSession();
+		transakcja = sesja.beginTransaction();
 	}
 	
 	public Session pobierzSesjeBD()
@@ -61,8 +61,8 @@ public class PolaczenieOracle implements IPolaczenia{
 	
 	public void zamknijSesjeBD()
 	{
-		transaction.commit();
+		transakcja.commit();
 		sesja.close();
-		sesjaFactory.close();
+		fabrykaSesji.close();
 	}
 }

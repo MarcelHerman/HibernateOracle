@@ -478,6 +478,6 @@ public class DyrektorTabel {
 	
 	
 	public Object pobierzTabele() {
-		return budowniczy.pobierzTabele(null);
+		return budowniczy.pobierzTabele();
 	}
 }

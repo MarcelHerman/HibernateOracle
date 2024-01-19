@@ -8,7 +8,7 @@ public interface BudowniczyTabeli {
 	
 	public void dodajWiersz();
 	
-	public Object pobierzTabele(Object ob);
+	public Object pobierzTabele();
 	
 	public void zresetuj();
 	

@@ -71,12 +71,12 @@ public class StrategiaTypy_Uzytkownika implements IStrategia{
 		dyrektor.tworzTabeleTypy_uzytkownika(obiekty, budDruk);
 		String table = (String) dyrektor.pobierzTabele();
 
-		String path = "wykaz_typy_uzytkownika.txt";
-		File plik = new File(path);
+		String sciezka = "wykaz_typy_uzytkownika.txt";
+		File plik = new File(sciezka);
 
 		try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
 			pisarz.write(table);
-			JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+			JOptionPane.showMessageDialog(null, "Powstał plik: " + sciezka);
 		} catch (IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());

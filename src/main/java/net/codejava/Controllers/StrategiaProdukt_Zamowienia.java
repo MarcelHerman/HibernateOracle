@@ -134,15 +134,15 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
         }
         
 		dyrektor.tworzTabeleProdukt_Zamowienia(obiekty, budDruk);
-         String table = (String)dyrektor.pobierzTabele();
+         String tabela = (String)dyrektor.pobierzTabele();
          												 		                 
-         String path = "wykaz_produkt_zamowienia.txt";
-         File plik = new File(path);
+         String sciezka = "wykaz_produkt_zamowienia.txt";
+         File plik = new File(sciezka);
 
         		                     
              try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
-            	 pisarz.write(table);		                         
-                 JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+            	 pisarz.write(tabela);		                         
+                 JOptionPane.showMessageDialog(null, "Powstał plik: " + sciezka);
              } catch (IOException e) {
                  e.printStackTrace();
                  JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());

@@ -127,7 +127,7 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 
 	
 	
-	public Object pobierzTabele(Object ob)
+	public Object pobierzTabele()
 	{
 		if(this.wiersz!=null) this.dane.addLast(wiersz);
 		if(HibernateOracle.nazwaTypu!=null && HibernateOracle.nazwaTypu.equals("Administrator"))
