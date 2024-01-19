@@ -1,11 +1,15 @@
 package net.codejava.Controllers;
 
 import java.awt.Component;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -72,11 +76,7 @@ public class ObslugaPrzyciskow {
         
         widok.getKontoPrzycisk().addActionListener(e -> wykonajKontoAkcje());
         
-        widok.getDodajPrzycisk().addActionListener(e -> wykonajDodajAkcje());
-        
         widok.getZalozKontoPrzycisk().addActionListener(e -> wykonajZalozKontoAkcje());
-        
-        widok.getEksportujDoDruku().addActionListener(e -> wykonajEksportujDoDrukuAkcje());
     }
 
     public void wykonajZalogujAkcje() {
@@ -355,8 +355,44 @@ public class ObslugaPrzyciskow {
     }
 
     public void wykonajWylogujAkcje() {
-        // Logika dla przycisku "Wyloguj"
-        // ...
+			List<Obiekt_Do_Polecen> obiekty = null;
+			HibernateOracle.nazwaTypu = "null";
+			HibernateOracle.koszyk.clear();
+			HibernateOracle.idUzytkownika = -1;
+
+			kontener.removeAll();
+
+			bar.removeAll();
+			bar.setVisible(true);
+
+			bd.stworzSesjeBD();
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
+						"FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
+				obiekty = zapytanie.getResultList();
+				bd.zamknijSesjeBD();
+
+				dyrektor.tworzTabeleProdukty(obiekty, budSwing);
+
+				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+
+				JScrollPane pane = new JScrollPane(tabSwing);
+
+				kontener.add(pane);
+				bar.add(glue);
+				widok.getPokazZalogujPrzycisk().setVisible(true);
+				widok.getZalozKontoPrzycisk().setVisible(true);
+				bar.add(widok.getZalozKontoPrzycisk());
+				bar.add(widok.getPokazZalogujPrzycisk());
+
+				bar.revalidate();
+				bar.repaint();
+
+				frame.revalidate();
+				frame.repaint();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
     }
 
     public void wykonajKategorieAkcje() {
@@ -529,13 +565,321 @@ public class ObslugaPrzyciskow {
     }
 
     public void wykonajKontoAkcje() {
-        // Logika dla przycisku " "
-        // ...
+
+		kontener.removeAll();
+
+		Uzytkownicy rekord = new Uzytkownicy();
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			rekord = (Uzytkownicy) sesja2.createQuery(
+					"select u from Uzytkownicy u where u.id_uzytkownika like " + HibernateOracle.idUzytkownika)
+					.uniqueResult();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		JLabel szczegoly = new JLabel("Szczególy");
+		JLabel nazwa = new JLabel("Nazwa użytkownika:  " + rekord.getNazwa_uzytkownika());
+		JLabel login = new JLabel("Login:  " + rekord.getLogin());
+		JLabel haslo = new JLabel("Hasło:  " + "*".repeat(rekord.getHaslo().length()));
+		JLabel email = new JLabel("E-mail:  " + rekord.getE_mail());
+		JButton edytujPrzycisk = new JButton("Edytuj konto");
+		JButton usunPrzycisk = new JButton("Usuń konto");
+		JButton zlozZamowieniePrzycisk = new JButton("Złóż zamówienie");
+		JButton oproznijKoszykPrzycisk = new JButton("Opróżnij koszyk");
+
+		JPanel jp = new JPanel();
+
+		jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
+
+		szczegoly.setAlignmentX(Component.CENTER_ALIGNMENT);
+		nazwa.setAlignmentX(Component.CENTER_ALIGNMENT);
+		login.setAlignmentX(Component.CENTER_ALIGNMENT);
+		haslo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		email.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		edytujPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+		usunPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		jp.add(szczegoly);
+		jp.add(nazwa);
+		jp.add(login);
+		jp.add(haslo);
+		jp.add(email);
+		jp.add(edytujPrzycisk);
+		jp.add(usunPrzycisk);
+		kontener.add(jp);
+
+		if (HibernateOracle.koszyk.size() != 0) {
+			dyrektor.tworzTabeleKoszyk(HibernateOracle.koszyk, budSwing);
+
+			JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+
+			JScrollPane pane = new JScrollPane(tabSwing);
+			pane.setAlignmentX(Component.CENTER_ALIGNMENT);
+			kontener.add(pane);
+			zlozZamowieniePrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+			oproznijKoszykPrzycisk.setAlignmentX(Component.CENTER_ALIGNMENT);
+			kontener.add(zlozZamowieniePrzycisk);
+			kontener.add(oproznijKoszykPrzycisk);
+		}
+
+		frame.revalidate();
+		frame.repaint();
+
+		edytujPrzycisk.addActionListener(e -> wykonajEdytujAkcje());
+
+		usunPrzycisk.addActionListener(e -> wykonajUsunAkcje());
+
+		zlozZamowieniePrzycisk.addActionListener(e -> wykonajZlozZamowienieAkcje());
+
+		oproznijKoszykPrzycisk.addActionListener(e -> wykonajOproznijKoszykAkcje());
     }
 
-    public void wykonajDodajAkcje() {
-        // Logika dla przycisku "Dodaj rekord"
-        // ...
+    private void wykonajEdytujAkcje() {
+		dyrektorOkienek.zalozKontoOkienko();
+		int result = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(),
+				"Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
+		try {
+			if (result == JOptionPane.OK_OPTION) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
+
+				Uzytkownicy rekord = (Uzytkownicy) sesja
+						.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "
+								+ Integer.toString(HibernateOracle.idUzytkownika))
+						.uniqueResult();
+
+				if (!pola.get(0).getText().isEmpty())
+					rekord.setNazwa_uzytkownika(pola.get(0).getText());
+				if (!pola.get(1).getText().isEmpty())
+					rekord.setLogin(pola.get(1).getText());
+				if (!pola.get(2).getText().isEmpty())
+					rekord.setHaslo(pola.get(2).getText());
+				if (!pola.get(3).getText().isEmpty())
+					rekord.setE_mail(pola.get(3).getText());
+
+				sesja.update(rekord);
+
+				bd.zamknijSesjeBD();
+
+				widok.getKontoPrzycisk().setText(rekord.getNazwa_uzytkownika());
+				widok.getKontoPrzycisk().doClick();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+					"Nie udało się edytować użytkownika. Błąd: " + e.getMessage());
+		}
+	
+    }
+    
+    private void wykonajUsunAkcje() {
+		JPanel myPanel = new JPanel();
+		myPanel.add(new JLabel("Czy na pewno chcesz usunąć dany rekord?"));
+
+		int result = JOptionPane.showConfirmDialog(null, myPanel, "Usuwanie",
+				JOptionPane.OK_CANCEL_OPTION);
+
+		try {
+			if (result == JOptionPane.OK_OPTION) {
+				int idtym = HibernateOracle.idUzytkownika;
+				wykonajWylogujAkcje();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
+				Uzytkownicy pr = (Uzytkownicy) sesja
+						.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
+						.setParameter("id", idtym).uniqueResult();
+
+				pr.setCzy_usunieto(1);
+				sesja.update(pr);
+			}
+		} catch (Exception e) {
+			System.out.println("Wystąpił błąd podczas usuwania konta: " + e.toString());
+		}
+
+		bd.zamknijSesjeBD();
+	
+    }
+    
+    private void wykonajZlozZamowienieAkcje() {
+		dyrektorOkienek.zlozZamowienieOkienko();
+		JPanel glowneOkno = dyrektorOkienek.zwrocOkno();
+		dyrektorOkienek.edytowanieFaktury();
+		JPanel drugieOkno = dyrektorOkienek.zwrocOkno();
+
+		int result = JOptionPane.showConfirmDialog(null, glowneOkno, "Złóż zamówienie",
+				JOptionPane.OK_CANCEL_OPTION);
+
+		try {
+			if (result == JOptionPane.OK_OPTION) {
+				//ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				if (((JTextField)glowneOkno.getComponent(1)).getText().isEmpty() || ((JTextField)glowneOkno.getComponent(4)).getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+							"Nie podano wszystkich danych. Zamówienie nie zostało złożone.");
+					return;
+				}
+				if (((JCheckBox) glowneOkno.getComponent(6)).isSelected() == true) {
+
+					int result2 = JOptionPane.showConfirmDialog(null, drugieOkno, "Złóż fakturę",
+							JOptionPane.OK_CANCEL_OPTION);
+
+					if (result2 == JOptionPane.CANCEL_OPTION
+							|| ((JTextField) drugieOkno.getComponent(1)).getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null,
+								"Nie podano wszystkich danych. Faktura nie zostanie dodana.");
+						throw new Exception("Zamówienie nie zostało złożone");
+					}
+				}
+
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
+
+				for (Obiekt_Do_Polecen produkt : HibernateOracle.koszyk) {
+					int id = ((Produkt_Koszyk) produkt).getPr().getId_produktu();
+
+					if (sesja.createQuery(
+							"select p.czy_usunieto from Produkty p where p.id_produktu = :idP",
+							Integer.class).setParameter("idP", id).uniqueResult() == 1 ? true : false)
+						throw new Exception(
+								"Przykro nam ale jeden z produktów został usunięty z naszej oferty.");
+
+					Query<Integer> zapytanie = sesja.createQuery(
+							"select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP",
+							Integer.class).setParameter("idP", id);
+					List<Integer> stanMagazynow = zapytanie.getResultList();
+
+					int stanMag = 0;
+
+					for (Integer stan : stanMagazynow) {
+						if (stanMag + stan > ((Produkt_Koszyk) produkt).getIlosc()) {
+							stanMag = ((Produkt_Koszyk) produkt).getIlosc();
+						} else {
+							stanMag += stan;
+						}
+					}
+
+					if (((Produkt_Koszyk) produkt).getIlosc() > stanMag)
+						throw new Exception("Niestety nie posiadamy takiej ilości produktu "
+								+ ((Produkt_Koszyk) produkt).getPr().getNazwa() + " w magazynie."
+								+ "Obecny stan: " + Integer.toString(stanMag));
+				}
+
+				double koszt = 0;
+				for (Obiekt_Do_Polecen produkt : HibernateOracle.koszyk) {
+					int id = ((Produkt_Koszyk) produkt).getPr().getId_produktu();
+
+					Query<Integer> zapytanie = sesja.createQuery(
+							"select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP",
+							Integer.class).setParameter("idP", id);
+					List<Integer> stanMagazynow = zapytanie.getResultList();
+
+					int stanMag = 0;
+
+					for (Integer stan : stanMagazynow) {
+						if (stanMag + stan > ((Produkt_Koszyk) produkt).getIlosc()) {
+							stanMag = ((Produkt_Koszyk) produkt).getIlosc();
+						} else {
+							stanMag += stan;
+						}
+					}
+
+					if (((Produkt_Koszyk) produkt).getIlosc() > stanMag)
+						throw new Exception("Niestety nie posiadamy takiej ilości produktu "
+								+ ((Produkt_Koszyk) produkt).getPr().getNazwa() + " w magazynie."
+								+ "Obecny stan: " + Integer.toString(stanMag));
+
+					koszt += ((Produkt_Koszyk) produkt).getPr().getCena()
+							* ((Produkt_Koszyk) produkt).getIlosc();
+				}
+
+				IZamowienia zamowienie = new Zamowienia(koszt, ((JTextField)glowneOkno.getComponent(1)).getText(),
+						((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, "");
+				if (!((JTextField)glowneOkno.getComponent(11)).getText().isEmpty())
+					zamowienie = new Znizka(zamowienie, Double.parseDouble(((JTextField)glowneOkno.getComponent(11)).getText()));
+				
+				if (((JCheckBox) glowneOkno.getComponent(8)).isSelected() == true)
+					zamowienie = new Opakowanie(zamowienie);
+				
+				if (!((JTextField)glowneOkno.getComponent(14)).getText().isEmpty()) {
+					if (((JTextField)glowneOkno.getComponent(14)).getText().length() < 150)
+						zamowienie = new Notatka(zamowienie, ((JTextField)glowneOkno.getComponent(14)).getText());
+					else
+						throw (new Exception("Podano zbyt długą notatkę - max 150 znaków."));
+				}
+
+				zamowienie = new Zamowienia(zamowienie.getKoszt(), ((JTextField)glowneOkno.getComponent(1)).getText(),
+						((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
+
+				double zaokr = Math.round(zamowienie.getKoszt() * 100.0) / 100.0;
+				((Zamowienia) zamowienie).setKoszt(zaokr);
+
+				sesja.save(zamowienie);
+
+				for (Obiekt_Do_Polecen odp : HibernateOracle.koszyk) {
+					int id = ((Produkt_Koszyk) odp).getPr().getId_produktu();
+
+					Query<Produkt_Magazyn> zapytanie = sesja.createQuery(
+							"select pd from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP",
+							Produkt_Magazyn.class).setParameter("idP", id);
+					List<Produkt_Magazyn> stanMagazynow = zapytanie.getResultList();
+
+					int iloscProdKoszyk = ((Produkt_Koszyk) odp).getIlosc();
+
+					for (Produkt_Magazyn stan : stanMagazynow) {
+						if (stan.getStan_magazynowy() >= ((Produkt_Koszyk) odp).getIlosc()) {
+							stan.setStan_magazynowy(
+									stan.getStan_magazynowy() - ((Produkt_Koszyk) odp).getIlosc());
+						} else {
+							((Produkt_Koszyk) odp).setIlosc(
+									((Produkt_Koszyk) odp).getIlosc() - stan.getStan_magazynowy());
+							stan.setStan_magazynowy(0);
+						}
+						sesja.update(stan);
+					}
+
+					sesja.save(new Produkt_Zamowienia(
+							new Produkt_Zamowienia_Id(((Zamowienia) zamowienie).getId_zamowienia(),
+									(((Produkt_Koszyk) odp).getPr().getId_produktu())),
+							iloscProdKoszyk));
+				}
+				if (!(((JTextField) drugieOkno.getComponent(1)).getText().isEmpty()))
+					sesja.save(new Faktury(LocalDate.now(),
+							((JTextField) drugieOkno.getComponent(1)).getText(),
+							((Zamowienia) zamowienie).getId_zamowienia()));
+				bd.zamknijSesjeBD();
+
+				HibernateOracle.koszyk.clear();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+					"Nie udało się złożyć zamówienia. Błąd: " + e.getMessage());
+		}
+    }
+    
+    private void wykonajOproznijKoszykAkcje() {
+		JPanel myPanel = new JPanel();
+		myPanel.add(new JLabel("Czy na pewno chcesz opróżnić cały koszyk?"));
+		int result = JOptionPane.showConfirmDialog(null, myPanel, "Opróżnianie koszyka",
+				JOptionPane.OK_CANCEL_OPTION);
+		try {
+			if (result == JOptionPane.OK_OPTION) {
+				HibernateOracle.koszyk.clear();
+				widok.getKontoPrzycisk().doClick();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+					"Nie udało się opróżnić koszyka. Błąd: " + e.getMessage());
+		}
+	
     }
 
     public void wykonajZalozKontoAkcje() {
@@ -562,10 +906,5 @@ public class ObslugaPrzyciskow {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Wystapil bład podczas dodawania konta: " + e.getMessage());
 		}
-    }
-
-    public void wykonajEksportujDoDrukuAkcje() {
-        // Logika dla przycisku "Drukuj"
-        // ...
     }
 }
