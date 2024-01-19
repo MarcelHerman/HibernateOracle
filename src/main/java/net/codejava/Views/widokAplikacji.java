@@ -342,13 +342,13 @@ public class widokAplikacji {
 											"Nie podano wszystkich danych. Zamówienie nie zostało złożone.");
 									return;
 								}
-								if (((JCheckBox) glowneOkno.getComponent(7)).isSelected() == true) {
+								if (((JCheckBox) glowneOkno.getComponent(6)).isSelected() == true) {
 
 									int result2 = JOptionPane.showConfirmDialog(null, drugieOkno, "Złóż fakturę",
 											JOptionPane.OK_CANCEL_OPTION);
 
 									if (result2 == JOptionPane.CANCEL_OPTION
-											|| ((JTextField) drugieOkno.getComponent(2)).getText().isEmpty()) {
+											|| ((JTextField) drugieOkno.getComponent(1)).getText().isEmpty()) {
 										JOptionPane.showMessageDialog(null,
 												"Nie podano wszystkich danych. Faktura nie zostanie dodana.");
 										throw new Exception("Zamówienie nie zostało złożone");
@@ -417,13 +417,20 @@ public class widokAplikacji {
 											* ((Produkt_Koszyk) produkt).getIlosc();
 								}
 
+								System.out.println("pocz");
+
 								IZamowienia zamowienie = new Zamowienia(koszt, ((JTextField)glowneOkno.getComponent(1)).getText(),
 										((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, "");
 								if (!((JTextField)glowneOkno.getComponent(11)).getText().isEmpty())
 									zamowienie = new Znizka(zamowienie, Double.parseDouble(((JTextField)glowneOkno.getComponent(11)).getText()));
 
-								if (((JCheckBox) glowneOkno.getComponent(9)).isSelected() == true)
+								System.out.println("po zn");
+
+								
+								if (((JCheckBox) glowneOkno.getComponent(8)).isSelected() == true)
 									zamowienie = new Opakowanie(zamowienie);
+								
+								System.out.println("po op");
 
 								if (!((JTextField)glowneOkno.getComponent(14)).getText().isEmpty()) {
 									if (((JTextField)glowneOkno.getComponent(14)).getText().length() < 150)
@@ -431,6 +438,8 @@ public class widokAplikacji {
 									else
 										throw (new Exception("Podano zbyt długą notatkę - max 150 znaków."));
 								}
+								System.out.println("po not");
+
 
 								zamowienie = new Zamowienia(zamowienie.getKoszt(), ((JTextField)glowneOkno.getComponent(1)).getText(),
 										((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
@@ -467,9 +476,9 @@ public class widokAplikacji {
 													(((Produkt_Koszyk) odp).getPr().getId_produktu())),
 											iloscProdKoszyk));
 								}
-								if (!(((JTextField) drugieOkno.getComponent(2)).getText().isEmpty()))
+								if (!(((JTextField) drugieOkno.getComponent(1)).getText().isEmpty()))
 									sesja.save(new Faktury(LocalDate.now(),
-											((JTextField) drugieOkno.getComponent(2)).getText(),
+											((JTextField) drugieOkno.getComponent(1)).getText(),
 											((Zamowienia) zamowienie).getId_zamowienia()));
 								bd.zamknijSesjeBD();
 
