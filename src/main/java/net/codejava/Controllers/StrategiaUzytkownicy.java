@@ -29,12 +29,12 @@ public class StrategiaUzytkownicy implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 		List<Obiekt_Do_Polecen> fData = null;
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
-			oc.closeDBSession();
+			oc.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -56,13 +56,13 @@ public class StrategiaUzytkownicy implements IStrategia {
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-				oc.createDBSession();
-				Session session = oc.getDBSession();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
 
 				Uzytkownicy user = (Uzytkownicy) session
 						.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
 						.setParameter("id", bt.id).uniqueResult();
-				oc.closeDBSession();
+				oc.zamknijSesjeBD();
 
 				user.setCzy_usunieto(((JCheckBox)okno.getComponent(14)).isSelected() ? 1 : 0);
 				if (!pola.get(0).getText().isEmpty())
@@ -97,11 +97,11 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 	public void dodajLogikeUsuwania(ButtonEditor bt) {
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-		Session session = oc.getDBSession();
+		oc.stworzSesjeBD();
+		Session session = oc.pobierzSesjeBD();
 		Uzytkownicy pr = (Uzytkownicy) session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
 				.setParameter("id", bt.id).uniqueResult();
-		oc.closeDBSession();
+		oc.zamknijSesjeBD();
 
 		pr.setCzy_usunieto(1);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
@@ -111,12 +111,12 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 		List<Obiekt_Do_Polecen> fData = null;
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
-			oc.closeDBSession();
+			oc.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -156,12 +156,12 @@ public class StrategiaUzytkownicy implements IStrategia {
 				Object[] obiekty = pobierzModel(kontener);
 
 				if (!HibernateOracle.cache.containsKey("TypyUzytkownika")) {
-					oc.createDBSession();
-					try (Session session2 = oc.getDBSession()) {
+					oc.stworzSesjeBD();
+					try (Session session2 = oc.pobierzSesjeBD()) {
 						Query<Obiekt_Do_Polecen> query = session2.createQuery(
 								"FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
 						HibernateOracle.cache.put("TypyUzytkownika", query.getResultList());
-						oc.closeDBSession();
+						oc.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

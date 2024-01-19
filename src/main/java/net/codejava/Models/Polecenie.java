@@ -13,19 +13,21 @@ public abstract class Polecenie {
 	protected PolaczenieOracle oc;
 	protected Session session;
 	
-	public void Wykonaj(){
-		oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
+	public void Wykonaj(){		
 		try
 		{			
-			session = oc.getDBSession();
-			operacjaPolecenia();					
+			oc = PolaczenieOracle.getInstance();
+			oc.stworzSesjeBD();
+			session = oc.pobierzSesjeBD();
+			operacjaPolecenia();	
+			oc.zamknijSesjeBD();
+			System.out.println("close");
+
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Wystąpił następujący błąd: " + e.getMessage());
-		}	
-		oc.closeDBSession();
+		}			
 	}
 	
 	public abstract void operacjaPolecenia();

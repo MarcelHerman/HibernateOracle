@@ -25,19 +25,24 @@ public class StrategiaFaktury implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		//dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ");
 		dyrektorOkienek.edytowanieFaktury();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
+				PolaczenieOracle oc = PolaczenieOracle.getInstance();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
+
+				Faktury user = (Faktury) session.createQuery("select u from Faktury u where u.id_faktury = :id")
+						.setParameter("id", bt.id).uniqueResult();
+				oc.zamknijSesjeBD();
+
 							
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				if (pola.get(0).getText().isEmpty())return;
 				
-				Faktury user = new Faktury();
-				user.setId_faktury(bt.id);
 				user.setNIP(pola.get(0).getText());
 							
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
@@ -61,7 +66,6 @@ public class StrategiaFaktury implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		//dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ", TypPola.label, "Id zamówienia");
 		dyrektorOkienek.dodawanieFaktury();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 

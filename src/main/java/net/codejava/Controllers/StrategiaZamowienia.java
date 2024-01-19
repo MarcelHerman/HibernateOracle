@@ -28,14 +28,14 @@ public class StrategiaZamowienia implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 
 		List<Obiekt_Do_Polecen> fData = null;
 
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
-			oc.closeDBSession();
+			oc.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -62,13 +62,13 @@ public class StrategiaZamowienia implements IStrategia {
 			if (wynik == JOptionPane.OK_OPTION) {
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-				oc.createDBSession();
-				Session session = oc.getDBSession();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
 
 				Zamowienia user = (Zamowienia) session
 						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", bt.id)
 						.uniqueResult();
-				oc.closeDBSession();
+				oc.zamknijSesjeBD();
 
 				if (!pola.get(0).getText().isEmpty())
 					user.setAdres_wysylki_miasto(pola.get(0).getText());
@@ -132,12 +132,12 @@ public class StrategiaZamowienia implements IStrategia {
 				
 				PolaczenieOracle oc = PolaczenieOracle.getInstance();
 				if (!HibernateOracle.cache.containsKey("StanyZamowien")) {
-					oc.createDBSession();
-					try (Session session2 = oc.getDBSession()) {
+					oc.stworzSesjeBD();
+					try (Session session2 = oc.pobierzSesjeBD()) {
 						Query<Obiekt_Do_Polecen> query = session2.createQuery(
 								"FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
 						HibernateOracle.cache.put("StanyZamowien", query.getResultList());
-						oc.closeDBSession();
+						oc.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

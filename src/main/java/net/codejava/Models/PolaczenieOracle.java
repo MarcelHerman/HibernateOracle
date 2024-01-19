@@ -26,7 +26,7 @@ public class PolaczenieOracle implements IPolaczenia{
 		return instance;
 	}
 	
-	public void createDBSession()
+	public void stworzSesjeBD()
 	{
 		config = new Configuration();
 		
@@ -54,12 +54,12 @@ public class PolaczenieOracle implements IPolaczenia{
 		transaction = session.beginTransaction();
 	}
 	
-	public Session getDBSession()
+	public Session pobierzSesjeBD()
 	{
 		return session;
 	}
 	
-	public void closeDBSession()
+	public void zamknijSesjeBD()
 	{
 		transaction.commit();
 		session.close();

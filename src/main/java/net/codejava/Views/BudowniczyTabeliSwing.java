@@ -375,8 +375,8 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 	     		                	if(Integer.parseInt(pierwszyField.getText())<=0)
 				 	                		throw(new Exception("Ilość nie może być ujemna lub równa zeru."));
 	   	     	                  	 PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		     	                	 oc.createDBSession();
-		     	                	 Session session = oc.getDBSession();
+		     	                	 oc.stworzSesjeBD();
+		     	                	 Session session = oc.pobierzSesjeBD();
 		     	                	 
 		     		                	Produkty user = (Produkty)session.createQuery("select u from Produkty u where u.id_produktu = :id")
 		     		 	                			.setParameter("id", this.id)

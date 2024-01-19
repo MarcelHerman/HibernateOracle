@@ -9,18 +9,18 @@ import net.codejava.HibernateOracle;
 public class PolaczenieProxy implements IPolaczenia
 {
 	PolaczenieOracle oc;
-	public void createDBSession()
+	public void stworzSesjeBD()
 	{
 		if(oc == null)
 			oc = PolaczenieOracle.getInstance();
 	}
 	
-	public Session getDBSession()
+	public Session pobierzSesjeBD()
 	{
-		return oc.getDBSession();
+		return oc.pobierzSesjeBD();
 	}
 	
-	public void closeDBSession()
+	public void zamknijSesjeBD()
 	{
 		try
 		{

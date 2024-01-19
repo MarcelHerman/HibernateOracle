@@ -36,15 +36,15 @@ public class StrategiaMagazyny implements IStrategia {
 				
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.createDBSession();
-				Session session = oc.getDBSession();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
 
 				Magazyny user = (Magazyny) session.createQuery("select u from Magazyny u where u.id_magazynu = :id")
 						.setParameter("id", bt.id).uniqueResult();
 
 				int szukany = user.getId_magazynu();
 
-				oc.closeDBSession();
+				oc.zamknijSesjeBD();
 				if (!pola.get(0).getText().isEmpty())
 					user.setMiasto(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())

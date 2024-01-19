@@ -4,9 +4,9 @@ import org.hibernate.Session;
 
 public interface IPolaczenia
 {
-	public void createDBSession();
+	public void stworzSesjeBD();
 	
-	public Session getDBSession();
+	public Session pobierzSesjeBD();
 	
-	public void closeDBSession();
+	public void zamknijSesjeBD();
 }

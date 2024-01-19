@@ -30,13 +30,13 @@ public class StrategiaProdukty implements IStrategia {
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 		List<Obiekt_Do_Polecen> fData = null;
 
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
-			oc.closeDBSession();
+			oc.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -64,13 +64,13 @@ public class StrategiaProdukty implements IStrategia {
 				//if waliduj(okno) {
 					//zapisz(okno)
 				//}
-				oc.createDBSession();
-				Session session = oc.getDBSession();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
 
 				Produkty user = (Produkty) session.createQuery("select u from Produkty u where u.id_produktu = :id")
 						.setParameter("id", bt.id).uniqueResult();
 
-				oc.closeDBSession();
+				oc.zamknijSesjeBD();
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				
@@ -107,11 +107,11 @@ public class StrategiaProdukty implements IStrategia {
 
 	public void dodajLogikeUsuwania(ButtonEditor bt) {
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-		Session session = oc.getDBSession();
+		oc.stworzSesjeBD();
+		Session session = oc.pobierzSesjeBD();
 		Produkty pr = (Produkty) session.createQuery("select u from Produkty u where u.id_produktu = :id")
 				.setParameter("id", bt.id).uniqueResult();
-		oc.closeDBSession();
+		oc.zamknijSesjeBD();
 		pr.setCzy_usunieto(1);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
@@ -123,13 +123,13 @@ public class StrategiaProdukty implements IStrategia {
 		List<Obiekt_Do_Polecen> fData2 = null;
 		
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-		try (Session session = oc.getDBSession()) {
+		oc.stworzSesjeBD();
+		try (Session session = oc.pobierzSesjeBD()) {
 			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
 			fData = query.getResultList();
 			query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
 			fData2 = query.getResultList();
-			oc.closeDBSession();
+			oc.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -177,12 +177,12 @@ public class StrategiaProdukty implements IStrategia {
 				Object[] obiekty = pobierzModel(kontener);
 
 				if (!HibernateOracle.cache.containsKey("Kategorie")) {
-					oc.createDBSession();
-					try (Session session2 = oc.getDBSession()) {
+					oc.stworzSesjeBD();
+					try (Session session2 = oc.pobierzSesjeBD()) {
 						Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii",
 								Obiekt_Do_Polecen.class);
 						HibernateOracle.cache.put("Kategorie", query.getResultList());
-						oc.closeDBSession();
+						oc.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -204,12 +204,12 @@ public class StrategiaProdukty implements IStrategia {
 				}
 
 				if (!HibernateOracle.cache.containsKey("Producenci")) {
-					oc.createDBSession();
-					try (Session session2 = oc.getDBSession()) {
+					oc.stworzSesjeBD();
+					try (Session session2 = oc.pobierzSesjeBD()) {
 						Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta",
 								Obiekt_Do_Polecen.class);
 						HibernateOracle.cache.put("Producenci", query.getResultList());
-						oc.closeDBSession();
+						oc.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

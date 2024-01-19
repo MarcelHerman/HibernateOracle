@@ -165,6 +165,14 @@ public class DyrektorOkienek {
 		budowniczy.dodajJTextField("Nazwa: ");
 	}
 	
+	public void zalozKontoOkienko() {
+		budowniczy.zresetuj();
+		budowniczy.dodajJTextField("Nazwa użytkownika: ");
+		budowniczy.dodajJTextField("Login: ");
+		budowniczy.dodajJTextField("Hasło: ");
+		budowniczy.dodajJTextField("E-mail: ");
+	}
+	
 	public JPanel zwrocOkno() {
 		return budowniczy.zwrocOkno();
 	}

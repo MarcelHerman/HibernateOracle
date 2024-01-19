@@ -37,15 +37,15 @@ public class StrategiaProducenci implements IStrategia {
 			if (wynik == JOptionPane.OK_OPTION) {
 
 				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.createDBSession();
-				Session session = oc.getDBSession();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
 
 				Producenci user = (Producenci) session
 						.createQuery("select u from Producenci u where u.id_producenta = :id").setParameter("id", bt.id)
 						.uniqueResult();
 
 				int szukany = user.getId_producenta();
-				oc.closeDBSession();
+				oc.zamknijSesjeBD();
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				
@@ -98,11 +98,11 @@ public class StrategiaProducenci implements IStrategia {
 	public void dodajLogikeUsuwania(ButtonEditor br) {
 
 		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.createDBSession();
-		Session session = oc.getDBSession();
+		oc.stworzSesjeBD();
+		Session session = oc.pobierzSesjeBD();
 		Producenci pr = (Producenci) session.createQuery("select u from Producenci u where u.id_producenta = :id")
 				.setParameter("id", br.id).uniqueResult();
-		oc.closeDBSession();
+		oc.zamknijSesjeBD();
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
 

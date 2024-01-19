@@ -59,18 +59,18 @@ public class DyrektorTabel {
 		if((HibernateOracle.nazwaTypu.equals("Administrator")) || (HibernateOracle.nazwaTypu.equals("Pracownik")))budowniczy.dodajKolumne("Usunięty");
 
 		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 		
 		List<Obiekt_Do_Polecen> fData = null;
 		List<Obiekt_Do_Polecen> fData2 = null;
 		
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
             Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
             fData = query.getResultList();
             
             Query<Obiekt_Do_Polecen> query2 = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
             fData2 = query2.getResultList();
-   		 oc.closeDBSession();
+   		 oc.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -304,14 +304,14 @@ public class DyrektorTabel {
 		if((HibernateOracle.nazwaTypu.equals("Administrator"))  ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))budowniczy.dodajKolumne("Usunięty");
 		
 		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 		
 		List<Obiekt_Do_Polecen> fData = null;
 		
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
             Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
             fData = query.getResultList();
-            oc.closeDBSession();
+            oc.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -363,14 +363,14 @@ public class DyrektorTabel {
 		budowniczy.dodajKolumne("Notatka");
 		
 		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		oc.createDBSession();
+		oc.stworzSesjeBD();
 		
 		List<Obiekt_Do_Polecen> fData = null;
 		
-		try (Session session = oc.getDBSession()) {
+		try (Session session = oc.pobierzSesjeBD()) {
             Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
             fData = query.getResultList();
-            oc.closeDBSession();
+            oc.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -391,11 +391,11 @@ public class DyrektorTabel {
 				}
 			}
 			List<String> nPr = null;
-			oc.createDBSession();
-			try (Session session = oc.getDBSession()) {
+			oc.stworzSesjeBD();
+			try (Session session = oc.pobierzSesjeBD()) {
 	            Query<String> query = session.createQuery("SELECT p.nazwa FROM Produkty p, Zamowienia z, Produkt_Zamowienia pz where p.id_produktu = pz.produkt_zamowienia_id.id_produktu and pz.produkt_zamowienia_id.id_zamowienia = z.id_zamowienia and z.id_zamowienia = :id", String.class).setParameter("id", ((Zamowienia) rekord).getId_zamowienia());
 	            nPr = query.getResultList();
-	            oc.closeDBSession();
+	            oc.zamknijSesjeBD();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            System.out.println(e);

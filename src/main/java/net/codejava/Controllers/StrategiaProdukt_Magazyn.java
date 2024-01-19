@@ -24,9 +24,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		
-		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Stan faktyczny: ", TypPola.label, "Stan magazynowy: ");
-		
+				
 		dyrektorOkienek.edytowanieProdukt_Magazyn();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
@@ -37,15 +35,15 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.createDBSession();
-				Session session = oc.getDBSession();
+				oc.stworzSesjeBD();
+				Session session = oc.pobierzSesjeBD();
 
 				Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(bt.id, bt.id2);
 				Produkt_Magazyn user = (Produkt_Magazyn) session
 						.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
 						.setParameter("pr", pr).uniqueResult();
 
-				oc.closeDBSession();
+				oc.zamknijSesjeBD();
 
 				if (!pola.get(0).getText().isEmpty())
 					if (Integer.parseInt(pola.get(0).getText()) < 0)
@@ -82,9 +80,7 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		
-		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Id magazynu: ", TypPola.label, "Id prouktu: ", TypPola.label, "Stan magazynowy: ", TypPola.label, "Stan faktyczny: ");
-		
+				
 		dyrektorOkienek.dodawanieProdukt_Magazyn();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
