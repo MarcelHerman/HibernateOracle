@@ -99,13 +99,13 @@ public class StrategiaProducenci implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		Session session = bd.pobierzSesjeBD();
 		Producenci pr = (Producenci) session.createQuery("select u from Producenci u where u.id_producenta = :id")
-				.setParameter("id", br.id).uniqueResult();
+				.setParameter("id", be.id).uniqueResult();
 		bd.zamknijSesjeBD();
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
@@ -124,7 +124,7 @@ public class StrategiaProducenci implements IStrategia {
 		pr.setCzy_usunieto(1);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
-		br.tab.setValueAt("TAK", br.row, 5);
+		be.tab.setValueAt("TAK", be.row, 5);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

@@ -79,16 +79,16 @@ public class StrategiaMagazyny implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 
 		Magazyny pr = new Magazyny();
-		pr.setId_magazynu(br.id);
+		pr.setId_magazynu(be.id);
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-		lista.remove(br.row);
+		lista.remove(be.row);
 		HibernateOracle.cache.put("Magazyny", lista);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

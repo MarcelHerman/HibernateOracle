@@ -60,12 +60,12 @@ public class StrategiaFaktury implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 
 		Faktury pr = new Faktury();
-		pr.setId_faktury(br.id);
+		pr.setId_faktury(be.id);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 
 	}
 

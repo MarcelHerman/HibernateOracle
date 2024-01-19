@@ -71,15 +71,15 @@ public class StrategiaKategorie implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 
 		Kategorie pr = new Kategorie();
-		pr.setId_Kategorii(br.id);
+		pr.setId_Kategorii(be.id);
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
-		lista.remove(br.row);
+		lista.remove(be.row);
 		HibernateOracle.cache.put("Kategorie", lista);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

@@ -47,14 +47,14 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 		for (Obiekt_Do_Polecen pk : HibernateOracle.koszyk) {
-			if (((Produkt_Koszyk) pk).getPr().getId_produktu() == br.id) {
+			if (((Produkt_Koszyk) pk).getPr().getId_produktu() == be.id) {
 				HibernateOracle.koszyk.remove(pk);
 				break;
 			}
 		}
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
