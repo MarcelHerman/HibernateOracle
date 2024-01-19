@@ -166,7 +166,7 @@ public class widokAplikacji {
 
 	            public void actionPerformed(ActionEvent e) {
 	            	
-	            	dyrektorOkienek.zalozKontoOkienko();
+	            	dyrektorOkienek.zalogujOkienko();
 	                int result = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), 
 	                         "Podaj login i haslo", JOptionPane.OK_CANCEL_OPTION);
 
