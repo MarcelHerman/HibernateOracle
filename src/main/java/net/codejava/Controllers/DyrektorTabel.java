@@ -231,6 +231,7 @@ public class DyrektorTabel {
 	{
 		this.budowniczy = budowniczy;
 		HibernateOracle.obiekt = new Stany_Zamowienia();
+		HibernateOracle.wzorzec = new StrategiaStany_Zamowienia();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
@@ -426,7 +427,7 @@ public class DyrektorTabel {
     {
 		this.budowniczy = budowniczy;
 		HibernateOracle.obiekt = new Typy_uzytkownika();
-		HibernateOracle.wzorzec = null;
+		HibernateOracle.wzorzec = new StrategiaTypy_Uzytkownika();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 
