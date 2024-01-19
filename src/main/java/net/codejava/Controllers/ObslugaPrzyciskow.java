@@ -59,6 +59,12 @@ public class ObslugaPrzyciskow {
         this.widok = widok;
         inicjalizujPrzyciski();
     }
+    
+    public void inicjalizujWidok(JPanel kontener, JMenuBar bar, Component glue) {
+        this.kontener = kontener;
+        this.bar = bar;
+        this.glue = glue;
+    }
 
     private void inicjalizujPrzyciski() {
         /*widok.getPokazZalogujPrzycisk().addActionListener(e -> wykonajZalogujAkcje());
