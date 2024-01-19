@@ -59,9 +59,6 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				System.out.println(rekord.getProdukt_magazyn_id() + " " + rekord.getStan_faktyczny() + " "
-						+ rekord.getStan_magazynowy());
-
 				be.tab.setValueAt(rekord.getStan_faktyczny(), be.row, 2);
 				be.tab.setValueAt(rekord.getStan_magazynowy(), be.row, 3);
 			}

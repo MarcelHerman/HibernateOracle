@@ -32,6 +32,14 @@ public class BudowniczyOkienka {
 		panel.add(Box.createHorizontalStrut(5));
 	}
 	
+	public void dodajDuzyJTextField(String tekst)
+	{
+		JTextField poleTekstowe = new JTextField(20);
+		panel.add(new JLabel(tekst));
+		panel.add(poleTekstowe);	
+		panel.add(Box.createHorizontalStrut(5));
+	}
+	
 	public void dodajCheckBox(String tekst)
 	{
 		JCheckBox poleWyboru = new JCheckBox(tekst);

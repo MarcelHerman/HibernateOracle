@@ -23,6 +23,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -78,7 +79,7 @@ public class widokAplikacji {
 			sesja = bd.pobierzSesjeBD();
 		}catch(Exception e)
 		{
-            System.out.println("Blad dodania tablicy");
+            System.out.println("Blad dodania tablicy: " + e.toString());
 		}
 		
 		List<Obiekt_Do_Polecen> obiekty = null;
@@ -102,7 +103,6 @@ public class widokAplikacji {
                 if(!HibernateOracle.nazwaTypu.equals("Klient"))
                 {
                 	HibernateOracle.repoPolecen.zapiszDoPliku();
-                	System.out.println("Okno zostaje zamknięte");
                 }            	
             }
         });
@@ -165,23 +165,15 @@ public class widokAplikacji {
 		 pokazZalogujPrzycisk.addActionListener(new ActionListener() {
 
 	            public void actionPerformed(ActionEvent e) {
-	            	JTextField loginField = new JTextField(5);
-	                JTextField hasloField = new JTextField(5);
-
-	                JPanel myPanel = new JPanel();
-	                myPanel.add(new JLabel("Login:"));
-	                myPanel.add(loginField);
-	                myPanel.add(Box.createHorizontalStrut(15));
-	                myPanel.add(new JLabel("Haslo:"));
-	                myPanel.add(hasloField);
-
-	                int result = JOptionPane.showConfirmDialog(null, myPanel, 
+	            	
+	            	dyrektorOkienek.zalozKontoOkienko();
+	                int result = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), 
 	                         "Podaj login i haslo", JOptionPane.OK_CANCEL_OPTION);
 
 	                
 	                try {
 	                	if (result == JOptionPane.OK_OPTION) {
-	                		
+	                		ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 	                		bd.stworzSesjeBD();
 	                		List<Uzytkownicy> uzytkownicy = null;
 	                		try (Session sesja2 = bd.pobierzSesjeBD()) {
@@ -193,11 +185,9 @@ public class widokAplikacji {
 	                            throw new Exception("Nie udalo polaczyc sie z baza danych");
 	                        }
 	                		for(Uzytkownicy uzytkownik: uzytkownicy) {
-			                	if(loginField.getText().equals(uzytkownik.getLogin())) {
-			                		if(hasloField.getText().equals(uzytkownik.getHaslo()) && uzytkownik.getCzy_usunieto()==0)
-			                		{
-				                		System.out.println("zalogowano");
-				                		
+			                	if(pola.get(0).getText().equals(uzytkownik.getLogin())) {
+			                		if(pola.get(1).getText().equals(uzytkownik.getHaslo()) && uzytkownik.getCzy_usunieto()==0)
+			                		{				                		
 				                		HibernateOracle.idUzytkownika = uzytkownik.getId_uzytkownika();
 				                		
 				                		bd.stworzSesjeBD();
@@ -404,30 +394,13 @@ public class widokAplikacji {
 					 {
 						 @Override
 							public void actionPerformed(ActionEvent a) {	
-							 JTextField pierwszyField = new JTextField(7);
-				                JTextField drugiField = new JTextField(7);
-				                JTextField trzeciField = new JTextField(7);
-				                JTextField czwartyField = new JTextField(7);
-			            		 
-			 	                JPanel myPanel = new JPanel();
-							 myPanel.add(new JLabel("Nazwa użytkownika: "));
-		                		myPanel.add(pierwszyField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("Login: "));
-		                		myPanel.add(drugiField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("Hasło: "));
-		                		myPanel.add(trzeciField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("E-mail: "));
-		                		myPanel.add(czwartyField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		
-		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+							 
+							 dyrektorOkienek.zalozKontoOkienko();
+		                		int result = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), 
 		   	                         "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		                		 try {
 		     	                	if (result == JOptionPane.OK_OPTION) {
-		     	                		
+		     	                		ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 		     	                		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 		     	 	                	bd.stworzSesjeBD();
 		     	 	                	Session sesja = bd.pobierzSesjeBD();
@@ -435,14 +408,14 @@ public class widokAplikacji {
 		     	 	                	Uzytkownicy rekord = (Uzytkownicy)sesja.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(HibernateOracle.idUzytkownika))
 		     	 	                			.uniqueResult();
 		     	 	                	
-		     	 	                	if(!pierwszyField.getText().isEmpty())
-		     	 	                		rekord.setNazwa_uzytkownika(pierwszyField.getText());
-		     	 	                	if(!drugiField.getText().isEmpty())
-		     	 	                		rekord.setLogin(drugiField.getText());
-		     	 	                	if(!trzeciField.getText().isEmpty())
-		     	 	                		rekord.setHaslo(trzeciField.getText());
-		     	 	                	if(!czwartyField.getText().isEmpty())
-		     	 	                		rekord.setE_mail(czwartyField.getText());
+		     	 	                	if(!pola.get(0).getText().isEmpty())
+		     	 	                		rekord.setNazwa_uzytkownika(pola.get(0).getText());
+		     	 	                	if(!pola.get(1).getText().isEmpty())
+		     	 	                		rekord.setLogin(pola.get(1).getText());
+		     	 	                	if(!pola.get(2).getText().isEmpty())
+		     	 	                		rekord.setHaslo(pola.get(2).getText());
+		     	 	                	if(!pola.get(3).getText().isEmpty())
+		     	 	                		rekord.setE_mail(pola.get(3).getText());
 		     	 	                	
 		     	                		sesja.update(rekord);
 		     	                		
@@ -498,55 +471,30 @@ public class widokAplikacji {
 					 {
 						 @Override
 							public void actionPerformed(ActionEvent a) {		
-							 JTextField pierwszyField = new JTextField(7);
-				                JTextField drugiField = new JTextField(7);
-				                JTextField trzeciField = new JTextField(7);
-				                JCheckBox checkbox = new JCheckBox("Faktura");
-				                JCheckBox drugiCheckbox = new JCheckBox("Opakowanie prezentowe");
-				                JTextField czwartyField = new JTextField(7);
-				                JTextField piatyField = new JTextField(20);
-			            		 
-			 	                JPanel myPanel = new JPanel();
-							 myPanel.add(new JLabel("Miasto wysyłki: "));
-		                		myPanel.add(pierwszyField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("Ulica: "));
-		                		myPanel.add(drugiField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel(" "));
-		                		myPanel.add(checkbox);
-		                		checkbox.setSelected(false);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel(" "));
-		                		myPanel.add(drugiCheckbox);
-		                		checkbox.setSelected(false);	
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("Wpisz zniżkę: "));
-		                		myPanel.add(czwartyField);
-		                		myPanel.add(Box.createHorizontalStrut(5));
-		                		myPanel.add(new JLabel("Notatka: "));
-		                		myPanel.add(piatyField);
+							 
+							 dyrektorOkienek.zlozZamowienieOkienko();
+		                		JPanel glowneOkno = dyrektorOkienek.zwrocOkno();
+		                		dyrektorOkienek.edytowanieFaktury();
+		                		JPanel drugieOkno = dyrektorOkienek.zwrocOkno();
 		                		
-		                		int result = JOptionPane.showConfirmDialog(null, myPanel, 
+		                		int result = JOptionPane.showConfirmDialog(null, glowneOkno, 
 		   	                         "Złóż zamówienie", JOptionPane.OK_CANCEL_OPTION);
 		                				                		
 		                		 try {	
 		                			 if (result == JOptionPane.OK_OPTION) {
-		                				 
-		                				 if(pierwszyField.getText().isEmpty() || drugiField.getText().isEmpty())
+		                				 ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+		                				 if(pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty())
 					 	                	{
 					 	                		JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Zamówienie nie zostało złożone.");
 					 	                		return;
 					 	                	}
-		                				 if(checkbox.isSelected()==true)
+		                				 if(((JCheckBox)glowneOkno.getComponent(7)).isSelected()==true)
 		                				 {
-		                					 JPanel myPanel2 = new JPanel();
-		        							 myPanel2.add(new JLabel("NIP: "));
-		        		                	 myPanel2.add(trzeciField);
-		        		                	 int result2 = JOptionPane.showConfirmDialog(null, myPanel2, 
+		                					 
+		        		                	 int result2 = JOptionPane.showConfirmDialog(null, drugieOkno, 
 			    		   	                         "Złóż fakturę", JOptionPane.OK_CANCEL_OPTION);
 			                				 
-			                				 if (result2 == JOptionPane.CANCEL_OPTION || trzeciField.getText().isEmpty()) {
+			                				 if (result2 == JOptionPane.CANCEL_OPTION || ((JTextField)drugieOkno.getComponent(2)).getText().isEmpty()) {
 			                					 JOptionPane.showMessageDialog(null, "Nie podano wszystkich danych. Faktura nie zostanie dodana.");
 			                					 throw new Exception("Zamówienie nie zostało złożone");
 			                				 }
@@ -617,18 +565,18 @@ public class widokAplikacji {
 		    	 	                		koszt+=((Produkt_Koszyk) produkt).getPr().getCena() *((Produkt_Koszyk) produkt).getIlosc() ;
 		     	 	                	}
 		     		     	 	                	
-		     	 	                	IZamowienia zamowienie = new Zamowienia(koszt, pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika,"");
-		     	 	                	if(!czwartyField.getText().isEmpty())zamowienie = new Znizka(zamowienie, Double.parseDouble(czwartyField.getText()));		     	 	                		     	 	                	
+		     	 	                	IZamowienia zamowienie = new Zamowienia(koszt, pola.get(0).getText(), pola.get(1).getText(), 1, HibernateOracle.idUzytkownika,"");
+		     	 	                	if(!pola.get(2).getText().isEmpty())zamowienie = new Znizka(zamowienie, Double.parseDouble(pola.get(2).getText()));		     	 	                		     	 	                	
 		     	 	                			     	 	               
-		     	 	                	if(drugiCheckbox.isSelected()==true)zamowienie = new Opakowanie(zamowienie);
+		     	 	                	if(((JCheckBox)glowneOkno.getComponent(9)).isSelected()==true)zamowienie = new Opakowanie(zamowienie);
 		     	 	                	
-		     	 	                	if(!piatyField.getText().isEmpty()) {
-		     	 	                		if(piatyField.getText().length() < 150)zamowienie = new Notatka(zamowienie, piatyField.getText());
+		     	 	                	if(!pola.get(3).getText().isEmpty()) {
+		     	 	                		if(pola.get(3).getText().length() < 150)zamowienie = new Notatka(zamowienie, pola.get(3).getText());
 		     	 	                		else throw(new Exception("Podano zbyt długą notatkę - max 150 znaków."));
 		     	 	                	}
 		     	 	                	
 		     	 	                				     	 	                	     	 	                	
-		     	 	                	zamowienie = new Zamowienia(zamowienie.getKoszt(), pierwszyField.getText(), drugiField.getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
+		     	 	                	zamowienie = new Zamowienia(zamowienie.getKoszt(), pola.get(0).getText(), pola.get(1).getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
 		     	 	                	
 		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100.0)/100.0;
 		     	 	                	((Zamowienia) zamowienie).setKoszt(zaokr);
@@ -659,7 +607,7 @@ public class widokAplikacji {
 		     	 	                		
 		     	 	                		sesja.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(((Zamowienia) zamowienie).getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
 		     	 	                	}
-		     	 	                	if(!(trzeciField.getText().isEmpty()))	sesja.save(new Faktury(LocalDate.now(), trzeciField.getText(), ((Zamowienia) zamowienie).getId_zamowienia()));  
+		     	 	                	if(!(((JTextField)drugieOkno.getComponent(2)).getText().isEmpty()))	sesja.save(new Faktury(LocalDate.now(), ((JTextField)drugieOkno.getComponent(2)).getText(), ((Zamowienia) zamowienie).getId_zamowienia()));  
 		     	                		bd.zamknijSesjeBD();
 		     	                		
 		     	                		HibernateOracle.koszyk.clear();
@@ -686,8 +634,7 @@ public class widokAplikacji {
 		                				 HibernateOracle.koszyk.clear();
 		     	                		kontoPrzycisk.doClick();
 		                			 }
-		                		 }
-		                		 catch(Exception e) {
+		                		 } catch(Exception e) {
 		                			 e.printStackTrace();
 		                			 JOptionPane.showMessageDialog(null, "Nie udało się opróżnić koszyka. Błąd: " + e.getMessage());
 		                		 }	 
@@ -719,7 +666,7 @@ public class widokAplikacji {
 	 	                	sesja.save(new Uzytkownicy(pola.get(0).getText(), pola.get(1).getText(), pola.get(2).getText(), pola.get(3).getText(), 3, 0));	 
 	 	                	bd.zamknijSesjeBD();               		
 	 	            	 }
-	 	            }catch(Exception e)
+	 	            } catch(Exception e)
 	 	            	 {
 	 	            	JOptionPane.showMessageDialog(null, "Wystapil bład podczas dodawania konta: " + e.getMessage());	 	            		 
 	 	            }	 	 	                

@@ -21,8 +21,6 @@ public abstract class Polecenie {
 			sesja = bd.pobierzSesjeBD();
 			operacjaPolecenia();	
 			bd.zamknijSesjeBD();
-			System.out.println("close");
-
 		}catch(Exception e)
 		{
 			e.printStackTrace();

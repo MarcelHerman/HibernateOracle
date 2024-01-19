@@ -3,6 +3,9 @@ package net.codejava.Controllers;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.Box;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -166,6 +169,30 @@ public class DyrektorOkienek {
 	}
 	
 	public void zalozKontoOkienko() {
+		budowniczy.zresetuj();
+		budowniczy.dodajJTextField("Nazwa użytkownika: ");
+		budowniczy.dodajJTextField("Login: ");
+		budowniczy.dodajJTextField("Hasło: ");
+		budowniczy.dodajJTextField("E-mail: ");
+	}
+	
+	public void zalogujOkienko() {
+		budowniczy.zresetuj();
+		budowniczy.dodajJTextField("Login: ");
+		budowniczy.dodajJTextField("Hasło: ");
+	}
+	
+	public void zlozZamowienieOkienko(){
+		budowniczy.zresetuj();
+		budowniczy.dodajJTextField("Miasto wysyłki: ");
+		budowniczy.dodajJTextField("Ulica: ");
+		budowniczy.dodajCheckBox("Faktura");
+		budowniczy.dodajCheckBox("Opakowanie prezentowe");
+		budowniczy.dodajJTextField("Wpisz zniżkę: ");
+		budowniczy.dodajDuzyJTextField("Notatka: ");
+	}
+	
+	public void edytowanieKonta() {
 		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa użytkownika: ");
 		budowniczy.dodajJTextField("Login: ");
