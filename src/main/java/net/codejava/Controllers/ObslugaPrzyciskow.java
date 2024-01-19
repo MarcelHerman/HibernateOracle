@@ -68,7 +68,7 @@ public class ObslugaPrzyciskow {
     }
 
     private void inicjalizujPrzyciski() {
-        /*widok.getPokazZalogujPrzycisk().addActionListener(e -> wykonajZalogujAkcje());
+        widok.getPokazZalogujPrzycisk().addActionListener(e -> wykonajZalogujAkcje());
         widok.getPokazProduktPrzycisk().addActionListener(e -> wykonajProduktAkcje());
         widok.getPokazZamowieniaPrzycisk().addActionListener(e -> wykonajZamowieniaAkcje());
         widok.getPokazMagazynyPrzycisk().addActionListener(e -> wykonajMagazynyAkcje());
@@ -84,11 +84,116 @@ public class ObslugaPrzyciskow {
         widok.getKontoPrzycisk().addActionListener(e -> wykonajKontoAkcje());
         widok.getDodajPrzycisk().addActionListener(e -> wykonajDodajAkcje());
         widok.getZalozKontoPrzycisk().addActionListener(e -> wykonajZalozKontoAkcje());
-        widok.getEksportujDoDrukuPrzycisk().addActionListener(e -> wykonajEksportujDoDrukuAkcje());*/
+        widok.getEksportujDoDruku().addActionListener(e -> wykonajEksportujDoDrukuAkcje());
     }
 
     public void wykonajZalogujAkcje() {
-    	
+    	dyrektorOkienek.zalogujOkienko();
+		int result = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Podaj login i haslo",
+				JOptionPane.OK_CANCEL_OPTION);
+
+		try {
+			if (result == JOptionPane.OK_OPTION) {
+				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+				bd.stworzSesjeBD();
+				List<Uzytkownicy> uzytkownicy = null;
+				try (Session sesja2 = bd.pobierzSesjeBD()) {
+					Query<Uzytkownicy> zapytanie = sesja2
+							.createQuery("FROM Uzytkownicy order by id_uzytkownika", Uzytkownicy.class);
+					uzytkownicy = zapytanie.getResultList();
+					bd.zamknijSesjeBD();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					throw new Exception("Nie udalo polaczyc sie z baza danych");
+				}
+				for (Uzytkownicy uzytkownik : uzytkownicy) {
+					if (pola.get(0).getText().equals(uzytkownik.getLogin())) {
+						if (pola.get(1).getText().equals(uzytkownik.getHaslo())
+								&& uzytkownik.getCzy_usunieto() == 0) {
+							HibernateOracle.idUzytkownika = uzytkownik.getId_uzytkownika();
+
+							bd.stworzSesjeBD();
+							Session sesja2 = bd.pobierzSesjeBD();
+							Query<Typy_uzytkownika> zapytanie = sesja2.createQuery(
+									"FROM Typy_uzytkownika order by id_typu_uzytkownika",
+									Typy_uzytkownika.class);
+							List<Typy_uzytkownika> typyUzytkownika = zapytanie.getResultList();
+
+							widok.getPokazZalogujPrzycisk().setVisible(false);
+							widok.getZalozKontoPrzycisk().setVisible(false);
+							bar.remove(widok.getPokazZalogujPrzycisk());
+							bar.remove(widok.getZalozKontoPrzycisk());
+							bar.remove(glue);
+
+							for (Typy_uzytkownika typ : typyUzytkownika) {
+								if (typ.getId_typu_uzytkownika() == uzytkownik.getId_typu_uzytkownika()) {
+									HibernateOracle.nazwaTypu = typ.getNazwa();
+									break;
+								}
+							}
+
+							switch (HibernateOracle.nazwaTypu) {
+							case "Administrator":
+								bar.add(widok.getPokazProduktPrzycisk());
+								bar.add(widok.getPokazZamowieniaPrzycisk());
+								bar.add(widok.getPokazUzytkownicyPrzycisk());
+								bar.add(widok.getPokazKategoriePrzycisk());
+								bar.add(widok.getPokazProducentowPrzycisk());
+								bar.add(widok.getPokazProduktMagazynPrzycisk());
+								bar.add(widok.getPokazProduktZamowieniaPrzycisk());
+								bar.add(widok.getPokazStanyZamowienPrzycisk());
+								bar.add(widok.getPokazTypyUzytkownikaPrzycisk());
+								bar.add(widok.getPokazMagazynyPrzycisk());
+								bar.add(widok.getPokazFakturyPrzycisk());
+								break;
+							case "Pracownik":
+								bar.add(widok.getPokazProduktPrzycisk());
+								bar.add(widok.getPokazZamowieniaPrzycisk());
+								bar.add(widok.getPokazFakturyPrzycisk());
+								bar.add(widok.getPokazProduktMagazynPrzycisk());
+								break;
+							case "Klient":
+								bar.add(widok.getPokazProduktPrzycisk());
+								bar.add(widok.getPokazZamowieniaPrzycisk());
+								bar.add(widok.getPokazFakturyPrzycisk());
+							default:
+								break;
+							}
+
+							bar.add(glue);
+
+							widok.getKontoPrzycisk().setText(uzytkownik.getNazwa_uzytkownika());
+							// nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());
+
+							// bar.add(nazwaUzytkownika);
+							bar.add(widok.getKontoPrzycisk());
+							bar.add(widok.getPokazWylogujPrzycisk());
+
+							bar.revalidate();
+							bar.repaint();
+
+							kontener.removeAll();
+
+							frame.revalidate();
+							frame.repaint();
+							bd.zamknijSesjeBD();
+							break;
+						} else {
+							throw new Exception("");
+						}
+					}
+				}
+				if (HibernateOracle.nazwaTypu.equals("null"))
+					throw new Exception("");
+			}
+
+		} catch (Exception ex) {
+			if (ex instanceof ServiceException)
+				JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później");
+			else
+				JOptionPane.showMessageDialog(null, "Podano złe dane logowania.");
+		}
+		;
 	}
 
     public void wykonajProduktAkcje() {

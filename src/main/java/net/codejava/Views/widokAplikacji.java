@@ -48,6 +48,21 @@ public class widokAplikacji {
 
 	private JButton dodajPrzycisk = new JButton("Dodaj rekord");
 	private JButton eksportujDoDruku = new JButton("Drukuj");
+	private JButton pokazZalogujPrzycisk = new JButton("Zaloguj się");
+	private JButton pokazProduktPrzycisk = new JButton("Produkty");
+	private JButton pokazZamowieniaPrzycisk = new JButton("Zamówienia");
+	private JButton pokazMagazynyPrzycisk = new JButton("Magazyny");
+	private JButton pokazFakturyPrzycisk = new JButton("Faktury");
+	private JButton pokazUzytkownicyPrzycisk = new JButton("Użytkownicy");
+	private JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
+	private JButton pokazKategoriePrzycisk = new JButton("Kategorie");
+	private JButton pokazProducentowPrzycisk = new JButton("Producenci");
+	private JButton pokazProduktMagazynPrzycisk = new JButton("Produkty w magazynach");
+	private JButton pokazProduktZamowieniaPrzycisk = new JButton("Produkty w zamowieniach");
+	private JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
+	private JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
+	private JButton kontoPrzycisk = new JButton(" ");
+	private JButton zalozKontoPrzycisk = new JButton("Zalóż konto");
 	
 	public void Inicjalizuj() {
 
@@ -96,22 +111,6 @@ public class widokAplikacji {
 
 		JMenuBar bar = new JMenuBar();
 
-		JButton pokazZalogujPrzycisk = new JButton("Zaloguj się");
-		JButton pokazProduktPrzycisk = new JButton("Produkty");
-		JButton pokazZamowieniaPrzycisk = new JButton("Zamówienia");
-		JButton pokazMagazynyPrzycisk = new JButton("Magazyny");
-		JButton pokazFakturyPrzycisk = new JButton("Faktury");
-		JButton pokazUzytkownicyPrzycisk = new JButton("Użytkownicy");
-		JButton pokazWylogujPrzycisk = new JButton("Wyloguj");
-		JButton pokazKategoriePrzycisk = new JButton("Kategorie");
-		JButton pokazProducentowPrzycisk = new JButton("Producenci");
-		JButton pokazProduktMagazynPrzycisk = new JButton("Produkty w magazynach");
-		JButton pokazProduktZamowieniaPrzycisk = new JButton("Produkty w zamowieniach");
-		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
-		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
-		JButton kontoPrzycisk = new JButton(" ");
-		JButton zalozKontoPrzycisk = new JButton("Zalóż konto");
-
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
 		bar.add(zalozKontoPrzycisk);
@@ -143,118 +142,13 @@ public class widokAplikacji {
 
 		frame.setVisible(true);
 		//e -> wykonajZalogujAkcje()
-		pokazZalogujPrzycisk.addActionListener(new ActionListener() {
+		/*pokazZalogujPrzycisk.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				dyrektorOkienek.zalogujOkienko();
-				int result = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Podaj login i haslo",
-						JOptionPane.OK_CANCEL_OPTION);
-
-				try {
-					if (result == JOptionPane.OK_OPTION) {
-						ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-						bd.stworzSesjeBD();
-						List<Uzytkownicy> uzytkownicy = null;
-						try (Session sesja2 = bd.pobierzSesjeBD()) {
-							Query<Uzytkownicy> zapytanie = sesja2
-									.createQuery("FROM Uzytkownicy order by id_uzytkownika", Uzytkownicy.class);
-							uzytkownicy = zapytanie.getResultList();
-							bd.zamknijSesjeBD();
-						} catch (Exception e1) {
-							e1.printStackTrace();
-							throw new Exception("Nie udalo polaczyc sie z baza danych");
-						}
-						for (Uzytkownicy uzytkownik : uzytkownicy) {
-							if (pola.get(0).getText().equals(uzytkownik.getLogin())) {
-								if (pola.get(1).getText().equals(uzytkownik.getHaslo())
-										&& uzytkownik.getCzy_usunieto() == 0) {
-									HibernateOracle.idUzytkownika = uzytkownik.getId_uzytkownika();
-
-									bd.stworzSesjeBD();
-									Session sesja2 = bd.pobierzSesjeBD();
-									Query<Typy_uzytkownika> zapytanie = sesja2.createQuery(
-											"FROM Typy_uzytkownika order by id_typu_uzytkownika",
-											Typy_uzytkownika.class);
-									List<Typy_uzytkownika> typyUzytkownika = zapytanie.getResultList();
-
-									pokazZalogujPrzycisk.setVisible(false);
-									zalozKontoPrzycisk.setVisible(false);
-									bar.remove(pokazZalogujPrzycisk);
-									bar.remove(zalozKontoPrzycisk);
-									bar.remove(glue);
-
-									for (Typy_uzytkownika typ : typyUzytkownika) {
-										if (typ.getId_typu_uzytkownika() == uzytkownik.getId_typu_uzytkownika()) {
-											HibernateOracle.nazwaTypu = typ.getNazwa();
-											break;
-										}
-									}
-
-									switch (HibernateOracle.nazwaTypu) {
-									case "Administrator":
-										bar.add(pokazProduktPrzycisk);
-										bar.add(pokazZamowieniaPrzycisk);
-										bar.add(pokazUzytkownicyPrzycisk);
-										bar.add(pokazKategoriePrzycisk);
-										bar.add(pokazProducentowPrzycisk);
-										bar.add(pokazProduktMagazynPrzycisk);
-										bar.add(pokazProduktZamowieniaPrzycisk);
-										bar.add(pokazStanyZamowienPrzycisk);
-										bar.add(pokazTypyUzytkownikaPrzycisk);
-										bar.add(pokazMagazynyPrzycisk);
-										bar.add(pokazFakturyPrzycisk);
-										break;
-									case "Pracownik":
-										bar.add(pokazProduktPrzycisk);
-										bar.add(pokazZamowieniaPrzycisk);
-										bar.add(pokazFakturyPrzycisk);
-										bar.add(pokazProduktMagazynPrzycisk);
-										break;
-									case "Klient":
-										bar.add(pokazProduktPrzycisk);
-										bar.add(pokazZamowieniaPrzycisk);
-										bar.add(pokazFakturyPrzycisk);
-									default:
-										break;
-									}
-
-									bar.add(glue);
-
-									kontoPrzycisk.setText(uzytkownik.getNazwa_uzytkownika());
-									// nazwaUzytkownika.setText(uzytkownik.getNazwa_uzytkownika());
-
-									// bar.add(nazwaUzytkownika);
-									bar.add(kontoPrzycisk);
-									bar.add(pokazWylogujPrzycisk);
-
-									bar.revalidate();
-									bar.repaint();
-
-									kontener.removeAll();
-
-									frame.revalidate();
-									frame.repaint();
-									bd.zamknijSesjeBD();
-									break;
-								} else {
-									throw new Exception("");
-								}
-							}
-						}
-						if (HibernateOracle.nazwaTypu.equals("null"))
-							throw new Exception("");
-					}
-
-				} catch (Exception ex) {
-					if (ex instanceof ServiceException)
-						JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później");
-					else
-						JOptionPane.showMessageDialog(null, "Podano złe dane logowania.");
-				}
-				;
+				
 
 			}
-		});
+		});*/
 
 		ActionListener akcjaWylogowania = new ActionListener() {
 
@@ -631,7 +525,7 @@ public class widokAplikacji {
 			}
 		});
 
-		zalozKontoPrzycisk.addActionListener(e -> akcja.wykonajZalozKontoAkcje());
+		/*zalozKontoPrzycisk.addActionListener(e -> akcja.wykonajZalozKontoAkcje());
 
 		pokazProduktPrzycisk.addActionListener(e -> akcja.wykonajProduktAkcje());
 
@@ -653,7 +547,7 @@ public class widokAplikacji {
 
 		pokazMagazynyPrzycisk.addActionListener(e-> akcja.wykonajMagazynyAkcje());
 
-		pokazFakturyPrzycisk.addActionListener(e-> akcja.wykonajFakturyAkcje());
+		pokazFakturyPrzycisk.addActionListener(e-> akcja.wykonajFakturyAkcje());*/
 
 		dodajPrzycisk.addActionListener(new ActionListener() {
 			@Override
@@ -677,4 +571,65 @@ public class widokAplikacji {
 	public JButton getEksportujDoDruku() {
 		return eksportujDoDruku;
 	}
+	
+	public JButton getPokazZalogujPrzycisk() {
+        return pokazZalogujPrzycisk;
+    }
+
+    public JButton getPokazProduktPrzycisk() {
+        return pokazProduktPrzycisk;
+    }
+
+    public JButton getPokazZamowieniaPrzycisk() {
+        return pokazZamowieniaPrzycisk;
+    }
+
+    public JButton getPokazMagazynyPrzycisk() {
+        return pokazMagazynyPrzycisk;
+    }
+
+    public JButton getPokazFakturyPrzycisk() {
+        return pokazFakturyPrzycisk;
+    }
+
+    public JButton getPokazUzytkownicyPrzycisk() {
+        return pokazUzytkownicyPrzycisk;
+    }
+
+    public JButton getPokazWylogujPrzycisk() {
+        return pokazWylogujPrzycisk;
+    }
+
+    public JButton getPokazKategoriePrzycisk() {
+        return pokazKategoriePrzycisk;
+    }
+
+    public JButton getPokazProducentowPrzycisk() {
+        return pokazProducentowPrzycisk;
+    }
+
+    public JButton getPokazProduktMagazynPrzycisk() {
+        return pokazProduktMagazynPrzycisk;
+    }
+
+    public JButton getPokazProduktZamowieniaPrzycisk() {
+        return pokazProduktZamowieniaPrzycisk;
+    }
+
+    public JButton getPokazStanyZamowienPrzycisk() {
+        return pokazStanyZamowienPrzycisk;
+    }
+
+    public JButton getPokazTypyUzytkownikaPrzycisk() {
+        return pokazTypyUzytkownikaPrzycisk;
+    }
+
+    public JButton getKontoPrzycisk() {
+        return kontoPrzycisk;
+    }
+
+    public JButton getZalozKontoPrzycisk() {
+        return zalozKontoPrzycisk;
+    }
+
 }
