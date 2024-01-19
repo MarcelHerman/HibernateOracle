@@ -24,7 +24,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaMagazyny implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		
 		dyrektorOkienek.edytowanieMagazyny();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
@@ -39,7 +39,7 @@ public class StrategiaMagazyny implements IStrategia {
 				Session sesja = bd.pobierzSesjeBD();
 
 				Magazyny rekord = (Magazyny) sesja.createQuery("select u from Magazyny u where u.id_magazynu = :id")
-						.setParameter("id", ButtonEditor.id).uniqueResult();
+						.setParameter("id", be.id).uniqueResult();
 
 				int szukany = rekord.getId_magazynu();
 
@@ -65,8 +65,8 @@ public class StrategiaMagazyny implements IStrategia {
 
 				HibernateOracle.cache.put("Magazyny", lista);
 
-				ButtonEditor.tab.setValueAt(rekord.getMiasto(), ButtonEditor.row, 1);
-				ButtonEditor.tab.setValueAt(rekord.getUlica(), ButtonEditor.row, 2);
+				be.tab.setValueAt(rekord.getMiasto(), be.row, 1);
+				be.tab.setValueAt(rekord.getUlica(), be.row, 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

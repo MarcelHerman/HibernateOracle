@@ -26,7 +26,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaZamowienia implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 
@@ -66,7 +66,7 @@ public class StrategiaZamowienia implements IStrategia {
 				Session sesja = bd.pobierzSesjeBD();
 
 				Zamowienia rekord = (Zamowienia) sesja
-						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", ButtonEditor.id)
+						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", be.id)
 						.uniqueResult();
 				bd.zamknijSesjeBD();
 
@@ -80,9 +80,9 @@ public class StrategiaZamowienia implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				ButtonEditor.tab.setValueAt(rekord.getAdres_wysylki_miasto(), ButtonEditor.row, 1);
-				ButtonEditor.tab.setValueAt(rekord.getAdres_wysylki_ulica(), ButtonEditor.row, 2);
-				ButtonEditor.tab.setValueAt(((Stany_Zamowienia) daneZewn.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), ButtonEditor.row, 4);
+				be.tab.setValueAt(rekord.getAdres_wysylki_miasto(), be.row, 1);
+				be.tab.setValueAt(rekord.getAdres_wysylki_ulica(), be.row, 2);
+				be.tab.setValueAt(((Stany_Zamowienia) daneZewn.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), be.row, 4);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,16 +91,16 @@ public class StrategiaZamowienia implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 		Zamowienia pr = new Zamowienia();
-		pr.setId_zamowienia(ButtonEditor.id);
+		pr.setId_zamowienia(be.id);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-		lista.remove(ButtonEditor.row);
+		lista.remove(be.row);
 		HibernateOracle.cache.put("Magazyny", lista);
-		((DefaultTableModel) ButtonEditor.tab.getModel()).removeRow(ButtonEditor.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

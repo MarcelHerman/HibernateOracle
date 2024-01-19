@@ -16,7 +16,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukt_Koszyk implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		
 		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Ilość: ");
 		
@@ -28,12 +28,12 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				if (!pola.get(0).getText().isEmpty() && Integer.parseInt(pola.get(0).getText()) > 0) {
 					for (Obiekt_Do_Polecen pk : HibernateOracle.koszyk) {
-						if (((Produkt_Koszyk) pk).getPr().getId_produktu() == ButtonEditor.id) {
+						if (((Produkt_Koszyk) pk).getPr().getId_produktu() == be.id) {
 							((Produkt_Koszyk) pk).setIlosc(Integer.parseInt(pola.get(0).getText()));
-							ButtonEditor.tab.setValueAt(Integer.parseInt(pola.get(0).getText()), ButtonEditor.row, 3);
-							ButtonEditor.tab.setValueAt(
+							be.tab.setValueAt(Integer.parseInt(pola.get(0).getText()), be.row, 3);
+							be.tab.setValueAt(
 									Integer.parseInt(pola.get(0).getText()) * ((Produkt_Koszyk) pk).getPr().getCena(),
-									ButtonEditor.row, 4);
+									be.row, 4);
 							break;
 						}
 					}

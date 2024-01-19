@@ -21,16 +21,16 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukt_Zamowienia implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		dyrektorOkienek.edytowanieProdukt_Zamowienia();
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 		Produkt_Zamowienia pr = new Produkt_Zamowienia();
-		pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(ButtonEditor.id, ButtonEditor.id2));
+		pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(be.id, be.id2));
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) ButtonEditor.tab.getModel()).removeRow(ButtonEditor.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 
 	}
 

@@ -27,7 +27,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaUzytkownicy implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		List<Obiekt_Do_Polecen> daneZewn = null;
@@ -61,7 +61,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 				Uzytkownicy rekord = (Uzytkownicy) sesja
 						.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
-						.setParameter("id", ButtonEditor.id).uniqueResult();
+						.setParameter("id", be.id).uniqueResult();
 				bd.zamknijSesjeBD();
 
 				rekord.setCzy_usunieto(((JCheckBox)okno.getComponent(14)).isSelected() ? 1 : 0);
@@ -78,15 +78,15 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				ButtonEditor.tab.setValueAt(rekord.getNazwa_uzytkownika(), ButtonEditor.row, 1);
-				ButtonEditor.tab.setValueAt(rekord.getLogin(), ButtonEditor.row, 2);
-				ButtonEditor.tab.setValueAt(rekord.getHaslo(), ButtonEditor.row, 3);
-				ButtonEditor.tab.setValueAt(rekord.getE_mail(), ButtonEditor.row, 4);
-				ButtonEditor.tab.setValueAt(((Typy_uzytkownika) daneZewn.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getNazwa(), ButtonEditor.row, 5);
+				be.tab.setValueAt(rekord.getNazwa_uzytkownika(), be.row, 1);
+				be.tab.setValueAt(rekord.getLogin(), be.row, 2);
+				be.tab.setValueAt(rekord.getHaslo(), be.row, 3);
+				be.tab.setValueAt(rekord.getE_mail(), be.row, 4);
+				be.tab.setValueAt(((Typy_uzytkownika) daneZewn.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getNazwa(), be.row, 5);
 				if (rekord.getCzy_usunieto() == 1)
-					ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
+					be.tab.setValueAt("TAK", be.row, 6);
 				else
-					ButtonEditor.tab.setValueAt("NIE", ButtonEditor.row, 6);
+					be.tab.setValueAt("NIE", be.row, 6);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,18 +95,18 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		Session sesja = bd.pobierzSesjeBD();
 		Uzytkownicy pr = (Uzytkownicy) sesja.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
-				.setParameter("id", ButtonEditor.id).uniqueResult();
+				.setParameter("id", be.id).uniqueResult();
 		bd.zamknijSesjeBD();
 
 		pr.setCzy_usunieto(1);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
-		ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
+		be.tab.setValueAt("TAK", be.row, 6);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

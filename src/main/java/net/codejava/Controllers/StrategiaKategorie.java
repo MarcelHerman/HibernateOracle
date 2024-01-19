@@ -21,7 +21,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaKategorie implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 
 		//dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");		
 		dyrektorOkienek.edytowanieKategorie();
@@ -35,7 +35,7 @@ public class StrategiaKategorie implements IStrategia {
 				
 				Kategorie kat = new Kategorie(pierwszePole.getText());
 
-				kat.setId_Kategorii(ButtonEditor.id);
+				kat.setId_Kategorii(be.id);
 
 				if (!pierwszePole.getText().isEmpty()) {
 					HibernateOracle.repoPolecen
@@ -46,7 +46,7 @@ public class StrategiaKategorie implements IStrategia {
 						Obiekt_Do_Polecen element = lista.get(i);
 						Kategorie pom = (Kategorie) element;
 
-						if (pom.getId_Kategorii() == ButtonEditor.id) {
+						if (pom.getId_Kategorii() == be.id) {
 							pom.setNazwa(kat.getNazwa());
 							break;
 						}
@@ -55,7 +55,7 @@ public class StrategiaKategorie implements IStrategia {
 					HibernateOracle.cache.put("Kategorie", lista);
 				}
 
-				ButtonEditor.tab.setValueAt(kat.getNazwa(), ButtonEditor.row, 1);
+				be.tab.setValueAt(kat.getNazwa(), be.row, 1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

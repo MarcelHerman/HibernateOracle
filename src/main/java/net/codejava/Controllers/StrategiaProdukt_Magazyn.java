@@ -23,7 +23,7 @@ import net.codejava.HibernateOracle;
 
 public class StrategiaProdukt_Magazyn implements IStrategia {
 
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 				
 		dyrektorOkienek.edytowanieProdukt_Magazyn();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
@@ -38,7 +38,7 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 				bd.stworzSesjeBD();
 				Session sesja = bd.pobierzSesjeBD();
 
-				Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(ButtonEditor.id, ButtonEditor.id2);
+				Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(be.id, be.id2);
 				Produkt_Magazyn rekord = (Produkt_Magazyn) sesja
 						.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
 						.setParameter("pr", pr).uniqueResult();
@@ -62,8 +62,8 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 				System.out.println(rekord.getProdukt_magazyn_id() + " " + rekord.getStan_faktyczny() + " "
 						+ rekord.getStan_magazynowy());
 
-				ButtonEditor.tab.setValueAt(rekord.getStan_faktyczny(), ButtonEditor.row, 2);
-				ButtonEditor.tab.setValueAt(rekord.getStan_magazynowy(), ButtonEditor.row, 3);
+				be.tab.setValueAt(rekord.getStan_faktyczny(), be.row, 2);
+				be.tab.setValueAt(rekord.getStan_magazynowy(), be.row, 3);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,11 +72,11 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 		Produkt_Magazyn pr = new Produkt_Magazyn();
-		pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(ButtonEditor.id, ButtonEditor.id2));
+		pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(be.id, be.id2));
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) ButtonEditor.tab.getModel()).removeRow(ButtonEditor.row);
+		((DefaultTableModel) be.tab.getModel()).removeRow(be.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

@@ -27,7 +27,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukty implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
@@ -68,7 +68,7 @@ public class StrategiaProdukty implements IStrategia {
 				Session sesja = bd.pobierzSesjeBD();
 
 				Produkty rekord = (Produkty) sesja.createQuery("select u from Produkty u where u.id_produktu = :id")
-						.setParameter("id", ButtonEditor.id).uniqueResult();
+						.setParameter("id", be.id).uniqueResult();
 
 				bd.zamknijSesjeBD();
 
@@ -89,14 +89,14 @@ public class StrategiaProdukty implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				ButtonEditor.tab.setValueAt(rekord.getNazwa(), ButtonEditor.row, 1);
-				ButtonEditor.tab.setValueAt(rekord.getCena(), ButtonEditor.row, 2);
-				ButtonEditor.tab.setValueAt(rekord.getOpis(), ButtonEditor.row, 3);
-				ButtonEditor.tab.setValueAt(((Kategorie) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), ButtonEditor.row, 5);
+				be.tab.setValueAt(rekord.getNazwa(), be.row, 1);
+				be.tab.setValueAt(rekord.getCena(), be.row, 2);
+				be.tab.setValueAt(rekord.getOpis(), be.row, 3);
+				be.tab.setValueAt(((Kategorie) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), be.row, 5);
 				if (rekord.getCzy_usunieto() == 1)
-					ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
+					be.tab.setValueAt("TAK", be.row, 6);
 				else
-					ButtonEditor.tab.setValueAt("NIE", ButtonEditor.row, 6);
+					be.tab.setValueAt("NIE", be.row, 6);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,17 +105,17 @@ public class StrategiaProdukty implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
+	public void dodajLogikeUsuwania(ButtonEditor be) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		Session sesja = bd.pobierzSesjeBD();
 		Produkty pr = (Produkty) sesja.createQuery("select u from Produkty u where u.id_produktu = :id")
-				.setParameter("id", ButtonEditor.id).uniqueResult();
+				.setParameter("id", be.id).uniqueResult();
 		bd.zamknijSesjeBD();
 		pr.setCzy_usunieto(1);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
-		ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
+		be.tab.setValueAt("TAK", be.row, 6);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
