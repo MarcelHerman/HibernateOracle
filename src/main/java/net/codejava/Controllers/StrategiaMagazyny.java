@@ -25,7 +25,6 @@ public class StrategiaMagazyny implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
 		
 		dyrektorOkienek.edytowanieMagazyny();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
