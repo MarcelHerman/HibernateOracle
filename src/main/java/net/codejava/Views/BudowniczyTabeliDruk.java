@@ -2,6 +2,7 @@ package net.codejava.Views;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -55,14 +56,23 @@ public class BudowniczyTabeliDruk implements BudowniczyTabeli
 
 	    // Tworzenie łańcucha znaków dla danych
 	    String daneString = "Wykaz " +HibernateOracle.obiekt.getClass().getSimpleName() + " z dnia " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +"\n"+ naglowki;
-	    for (Object[] row : dane) {
+	    for (Object[] row : dane) {	    	
 	    	String pom = "";
-	    	for (Object test : row) {
-	    		pom += (String) test;
+	    	for (Object element : row) {
+	    		if (element instanceof ArrayList){
+	    			String element2 = "";
+	    			for(Object obiekt : (ArrayList)element){
+	    				element2+=(String)obiekt + " | ";	    				
+	    			}	    			
+	    			element2 = element2.substring(0, element2.length()-3);
+	    			pom += element2;
+
+	    		}else pom += (String) element;
+	    		
+	    		pom += ", ";	    		
 	    	}
-	        //String rowString = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(row)) + "\n";
-	        System.out.println(pom);	
-	        //daneString += rowString;
+	    	
+	        daneString += pom + "\n";
 	    }
 
 	    return daneString;

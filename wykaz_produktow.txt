@@ -1,4 +1,4 @@
-Wykaz Produkty z dnia 2023-12-29 22:31:53
+Wykaz Produkty z dnia 2024-01-19 21:48:53
 Lp., Nazwa, Cena, Opis, Producent, Kategoria, Usunięty
-1, Gumowa kaczuszka, 25.99, Bardzo dobrze się z nią rozmawia, Lighterix, Inne, NIE
-2, Dildo, 69.69, Jest do dupy, Lighterix, Inne, NIE
+1, Gumowa kaczuszka, 25.99, Bardzo dobrze się z nią rozmawia, Lighterix, Inne, NIE, 
+2, Suszarka V4, 49.99, Szybka, energooszczędna, Lighterix, Suszarki, NIE, 

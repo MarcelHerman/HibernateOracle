@@ -226,13 +226,9 @@ public class StrategiaZamowienia implements IStrategia {
 			}
 						
 			dyrektor.tworzTabeleZamowienia(obiekty, budDruk);
-			
-			System.out.println("233");		
-			
+						
 			String table = (String)dyrektor.pobierzTabele();
-			
-			System.out.println("237");		
-			
+						
 			String path = "wykaz_zamowienia.txt";
 			File plik = new File(path);
 			             
