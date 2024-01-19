@@ -336,8 +336,8 @@ public class widokAplikacji {
 
 						try {
 							if (result == JOptionPane.OK_OPTION) {
-								ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-								if (pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty()) {
+								//ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
+								if (((JTextField)glowneOkno.getComponent(1)).getText().isEmpty() || ((JTextField)glowneOkno.getComponent(4)).getText().isEmpty()) {
 									JOptionPane.showMessageDialog(null,
 											"Nie podano wszystkich danych. Zamówienie nie zostało złożone.");
 									return;
@@ -417,23 +417,23 @@ public class widokAplikacji {
 											* ((Produkt_Koszyk) produkt).getIlosc();
 								}
 
-								IZamowienia zamowienie = new Zamowienia(koszt, pola.get(0).getText(),
-										pola.get(1).getText(), 1, HibernateOracle.idUzytkownika, "");
-								if (!pola.get(2).getText().isEmpty())
-									zamowienie = new Znizka(zamowienie, Double.parseDouble(pola.get(2).getText()));
+								IZamowienia zamowienie = new Zamowienia(koszt, ((JTextField)glowneOkno.getComponent(1)).getText(),
+										((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, "");
+								if (!((JTextField)glowneOkno.getComponent(11)).getText().isEmpty())
+									zamowienie = new Znizka(zamowienie, Double.parseDouble(((JTextField)glowneOkno.getComponent(11)).getText()));
 
 								if (((JCheckBox) glowneOkno.getComponent(9)).isSelected() == true)
 									zamowienie = new Opakowanie(zamowienie);
 
-								if (!pola.get(3).getText().isEmpty()) {
-									if (pola.get(3).getText().length() < 150)
-										zamowienie = new Notatka(zamowienie, pola.get(3).getText());
+								if (!((JTextField)glowneOkno.getComponent(14)).getText().isEmpty()) {
+									if (((JTextField)glowneOkno.getComponent(14)).getText().length() < 150)
+										zamowienie = new Notatka(zamowienie, ((JTextField)glowneOkno.getComponent(14)).getText());
 									else
 										throw (new Exception("Podano zbyt długą notatkę - max 150 znaków."));
 								}
 
-								zamowienie = new Zamowienia(zamowienie.getKoszt(), pola.get(0).getText(),
-										pola.get(1).getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
+								zamowienie = new Zamowienia(zamowienie.getKoszt(), ((JTextField)glowneOkno.getComponent(1)).getText(),
+										((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
 
 								double zaokr = Math.round(zamowienie.getKoszt() * 100.0) / 100.0;
 								((Zamowienia) zamowienie).setKoszt(zaokr);
