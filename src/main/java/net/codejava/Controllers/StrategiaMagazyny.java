@@ -25,7 +25,9 @@ public class StrategiaMagazyny implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
+		
+		dyrektorOkienek.edytowanieMagazyny();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj magazyn", JOptionPane.OK_CANCEL_OPTION);
@@ -88,7 +90,9 @@ public class StrategiaMagazyny implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Miasto: ", TypPola.label, "Ulica: ");
+		
+		dyrektorOkienek.dodawanieMagazyny();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj magazyn", JOptionPane.OK_CANCEL_OPTION);

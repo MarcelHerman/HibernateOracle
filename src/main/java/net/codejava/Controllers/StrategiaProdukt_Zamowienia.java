@@ -22,7 +22,7 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-
+		dyrektorOkienek.edytowanieProdukt_Zamowienia();
 	}
 
 	@Override
@@ -37,7 +37,9 @@ public class StrategiaProdukt_Zamowienia implements IStrategia {
 	@Override
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Id zamowienia: ", TypPola.label, "Id produktu: ", TypPola.label, "Ilość: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Id zamowienia: ", TypPola.label, "Id produktu: ", TypPola.label, "Ilość: ");
+		
+		dyrektorOkienek.dodawanieProdukt_Zamowienia();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj produkt do zamówienia",

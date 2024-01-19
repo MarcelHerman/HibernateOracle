@@ -23,8 +23,8 @@ public class StrategiaKategorie implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 
-		dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");		
-
+		//dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");		
+		dyrektorOkienek.edytowanieKategorie();
 		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Edytuj kategorie", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
@@ -77,8 +77,8 @@ public class StrategiaKategorie implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa");
-
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa");
+		dyrektorOkienek.dodawanieKategorie();
 		int wynik = JOptionPane.showConfirmDialog(null, dyrektorOkienek.zwrocOkno(), "Dodaj kategorię", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) { 

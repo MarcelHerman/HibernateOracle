@@ -25,7 +25,8 @@ public class StrategiaFaktury implements IStrategia {
 
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ");
+		dyrektorOkienek.edytowanieFaktury();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
@@ -60,7 +61,8 @@ public class StrategiaFaktury implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ", TypPola.label, "Id zamówienia");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "NIP: ", TypPola.label, "Id zamówienia");
+		dyrektorOkienek.dodawanieFaktury();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj fakturę", JOptionPane.OK_CANCEL_OPTION);

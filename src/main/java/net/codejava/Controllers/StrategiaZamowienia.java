@@ -50,9 +50,11 @@ public class StrategiaZamowienia implements IStrategia {
 		}
 
 		if (HibernateOracle.nazwaTypu.equals("Pracownik"))
-			dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.combobox, 1);
+			//dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.combobox, 1);
+			dyrektorOkienek.edytowanieZamowieniaPracownik(nazwy);
 		else
-			dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Ulica wysyłki: ", TypPola.label, "Miasto wysyłki: ", TypPola.combobox, 1);
+			//dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Ulica wysyłki: ", TypPola.label, "Miasto wysyłki: ", TypPola.combobox, 1);
+			dyrektorOkienek.edytowanieZamowieniaAdministrator(nazwy);
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj zamówienie", JOptionPane.OK_CANCEL_OPTION);
@@ -103,7 +105,9 @@ public class StrategiaZamowienia implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 		
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Id użytkownika: ", TypPola.label, "Adres wysyłki miasto: ", TypPola.label, "Adres wysyłki ulica: ", TypPola.label, "Koszt: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Id użytkownika: ", TypPola.label, "Adres wysyłki miasto: ", TypPola.label, "Adres wysyłki ulica: ", TypPola.label, "Koszt: ");
+		
+		dyrektorOkienek.dodawanieZamowienia();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj zamówienie", JOptionPane.OK_CANCEL_OPTION);

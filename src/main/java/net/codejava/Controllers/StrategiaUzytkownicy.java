@@ -48,7 +48,9 @@ public class StrategiaUzytkownicy implements IStrategia {
 			i++;
 		}
 		
-		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa użytkownika: ", TypPola.label, "Login: ", TypPola.label, "Hasło: ", TypPola.label, "E-mail: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
+		//dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa użytkownika: ", TypPola.label, "Login: ", TypPola.label, "Hasło: ", TypPola.label, "E-mail: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
+		
+		dyrektorOkienek.edytowanieUzytkownicy(nazwy);
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
@@ -128,8 +130,11 @@ public class StrategiaUzytkownicy implements IStrategia {
 			i++;
 		}
 		
-		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa użytkownika: ", TypPola.label, "Login: ", TypPola.label, "Hasło: ", TypPola.label, "E-mail: ", TypPola.combobox, 1);
+		//dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa użytkownika: ", TypPola.label, "Login: ", TypPola.label, "Hasło: ", TypPola.label, "E-mail: ", TypPola.combobox, 1);
+		
+		dyrektorOkienek.dodawanieUzytkownicy(nazwy);
 		JPanel okno = dyrektorOkienek.zwrocOkno();
+		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj użytkownika", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {

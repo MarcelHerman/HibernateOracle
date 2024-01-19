@@ -52,8 +52,10 @@ public class StrategiaProdukty implements IStrategia {
 		
 		//o = pobierzObiektDoEdycji();
 		//defo = pobierzDef()
-		dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");		
+		//dyrektorOkienek.stworzOkno(new String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");		
 		//dyrektorOkienek.stworzOkno(defonew String[][] {nazwy}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.checkbox, "Czy usunięty: ");
+		
+		dyrektorOkienek.edytowanieProdukty(nazwy);
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj produkt", JOptionPane.OK_CANCEL_OPTION);
@@ -147,7 +149,9 @@ public class StrategiaProdukty implements IStrategia {
 			i++;
 		}
 		
-		dyrektorOkienek.stworzOkno(new String[][] {nazwy, nazwy2}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.combobox, 2);
+		//dyrektorOkienek.stworzOkno(new String[][] {nazwy, nazwy2}, TypPola.label, "Nazwa produktu: ", TypPola.label, "Cena: ", TypPola.label, "Opis: ", TypPola.combobox, 1, TypPola.combobox, 2);
+		
+		dyrektorOkienek.dodawanieProdukty(nazwy, nazwy2);
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj produkt", JOptionPane.OK_CANCEL_OPTION);

@@ -25,7 +25,9 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Stan faktyczny: ", TypPola.label, "Stan magazynowy: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Stan faktyczny: ", TypPola.label, "Stan magazynowy: ");
+		
+		dyrektorOkienek.edytowanieProdukt_Magazyn();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj produkt w magazynie",
@@ -81,7 +83,9 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	public void dodajLogikeDodawania(JPanel kontener) {
 		
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Id magazynu: ", TypPola.label, "Id prouktu: ", TypPola.label, "Stan magazynowy: ", TypPola.label, "Stan faktyczny: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Id magazynu: ", TypPola.label, "Id prouktu: ", TypPola.label, "Stan magazynowy: ", TypPola.label, "Stan faktyczny: ");
+		
+		dyrektorOkienek.dodawanieProdukt_Magazyn();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj produkt do magazynu",

@@ -18,7 +18,9 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Ilość: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Ilość: ");
+		
+		dyrektorOkienek.edytowaniePodukt_Koszyk();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj koszyk", JOptionPane.OK_CANCEL_OPTION);
 		try {
@@ -58,7 +60,7 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-
+		dyrektorOkienek.dodawaniePodukt_Koszyk();
 	}
 
 	@Override

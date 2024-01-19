@@ -27,7 +27,9 @@ public class StrategiaProducenci implements IStrategia {
 	@Override
 	public void dodajLogikeEdytowania(ButtonEditor bt) {
 		
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica: ", TypPola.checkbox, "Czy usunięty: ");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica: ", TypPola.checkbox, "Czy usunięty: ");
+		
+		dyrektorOkienek.edytowanieProducenci();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj producenta", JOptionPane.OK_CANCEL_OPTION);
@@ -122,8 +124,9 @@ public class StrategiaProducenci implements IStrategia {
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-
-		dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica");
+		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica");
+		
+		dyrektorOkienek.dodawanieProducenci();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Dodaj producenta", JOptionPane.OK_CANCEL_OPTION);
