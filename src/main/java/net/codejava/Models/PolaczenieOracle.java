@@ -8,13 +8,13 @@ import org.hibernate.cfg.Configuration;
 public class PolaczenieOracle implements IPolaczenia{
 	private static PolaczenieOracle instance = null;
 	private static Configuration config;
-	private static SessionFactory sessionFactory;
-	private static Session session;
+	private static SessionFactory sesjaFactory;
+	private static Session sesja;
 	private static Transaction transaction;
 	
 	private PolaczenieOracle() {}
 	
-	public static PolaczenieOracle getInstance() 
+	public static PolaczenieOracle pobierzInstancje() 
 	{
 		if(instance==null)
 		{
@@ -49,20 +49,20 @@ public class PolaczenieOracle implements IPolaczenia{
 		config.addAnnotatedClass(Produkt_Magazyn.class);
 		config.addAnnotatedClass(Faktury.class);
 		
-		sessionFactory = config.buildSessionFactory();
-		session = sessionFactory.openSession();
-		transaction = session.beginTransaction();
+		sesjaFactory = config.buildSessionFactory();
+		sesja = sesjaFactory.openSession();
+		transaction = sesja.beginTransaction();
 	}
 	
 	public Session pobierzSesjeBD()
 	{
-		return session;
+		return sesja;
 	}
 	
 	public void zamknijSesjeBD()
 	{
 		transaction.commit();
-		session.close();
-		sessionFactory.close();
+		sesja.close();
+		sesjaFactory.close();
 	}
 }

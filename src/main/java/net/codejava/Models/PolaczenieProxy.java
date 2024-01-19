@@ -8,16 +8,16 @@ import net.codejava.HibernateOracle;
 
 public class PolaczenieProxy implements IPolaczenia
 {
-	PolaczenieOracle oc;
+	PolaczenieOracle bd;
 	public void stworzSesjeBD()
 	{
-		if(oc == null)
-			oc = PolaczenieOracle.getInstance();
+		if(bd == null)
+			bd = PolaczenieOracle.pobierzInstancje();
 	}
 	
 	public Session pobierzSesjeBD()
 	{
-		return oc.pobierzSesjeBD();
+		return bd.pobierzSesjeBD();
 	}
 	
 	public void zamknijSesjeBD()
@@ -25,8 +25,8 @@ public class PolaczenieProxy implements IPolaczenia
 		try
 		{
 			HibernateOracle.repoPolecen.wykonajPolecenia();
-			HibernateOracle.repoPolecen.saveToFile();
-			oc = null;
+			HibernateOracle.repoPolecen.zapiszDoPliku();
+			bd = null;
 		}catch(Exception e)
 		{
     		JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później. Błąd: " + e);

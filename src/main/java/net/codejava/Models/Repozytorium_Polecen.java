@@ -27,24 +27,24 @@ public class Repozytorium_Polecen {
 		this.polecenia = polecenia;
 	}
 	
-	public void saveToFile() {
+	public void zapiszDoPliku() {
 		String sciezka = "historia_polecen.txt";
-        File file = new File(sciezka);
+        File plik = new File(sciezka);
 
         try {
-            if (!file.exists()) {
-                file.createNewFile();
+            if (!plik.exists()) {
+            	plik.createNewFile();
                 System.out.println("Utworzono nowy plik: " + sciezka);
             } else {
                 System.out.println("Plik już istnieje: " + sciezka);
             }
 
             // Używamy konstruktora FileWriter z trybem append (dopisywania)
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik, true))) {
                 // Kod zapisu do pliku
                 for (Polecenie polecenie : polecenia) {
-                    writer.write(polecenie.toString());
-                    writer.newLine();
+                	pisarz.write(polecenie.toString());
+                	pisarz.newLine();
                 }
                 System.out.println("Zapisano polecenia do pliku: " + sciezka);
             } catch (IOException e) {

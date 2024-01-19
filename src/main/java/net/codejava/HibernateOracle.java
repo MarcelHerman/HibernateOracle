@@ -61,7 +61,7 @@ import java.util.HashMap;
 public class HibernateOracle extends JFrame {
 	
 	public static String nazwaTypu = "null";
-	public static Obiekt_Do_Polecen obj = null;
+	public static Obiekt_Do_Polecen obiekt = null;
 	public static List<Obiekt_Do_Polecen> koszyk = new ArrayList<Obiekt_Do_Polecen>();
 	public static Map<String, List<Obiekt_Do_Polecen>> cache;
 	

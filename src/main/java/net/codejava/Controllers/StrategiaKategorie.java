@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaKategorie implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
 
 		//dyrektorOkienek.stworzOkno( null,TypPola.label, "Nazwa kategorii: ");		
 		dyrektorOkienek.edytowanieKategorie();
@@ -35,7 +35,7 @@ public class StrategiaKategorie implements IStrategia {
 				
 				Kategorie kat = new Kategorie(pierwszePole.getText());
 
-				kat.setId_Kategorii(bt.id);
+				kat.setId_Kategorii(edytorPrzycisku.id);
 
 				if (!pierwszePole.getText().isEmpty()) {
 					HibernateOracle.repoPolecen
@@ -46,7 +46,7 @@ public class StrategiaKategorie implements IStrategia {
 						Obiekt_Do_Polecen element = lista.get(i);
 						Kategorie pom = (Kategorie) element;
 
-						if (pom.getId_Kategorii() == bt.id) {
+						if (pom.getId_Kategorii() == edytorPrzycisku.id) {
 							pom.setNazwa(kat.getNazwa());
 							break;
 						}
@@ -55,7 +55,7 @@ public class StrategiaKategorie implements IStrategia {
 					HibernateOracle.cache.put("Kategorie", lista);
 				}
 
-				bt.tab.setValueAt(kat.getNazwa(), bt.row, 1);
+				edytorPrzycisku.tabela.setValueAt(kat.getNazwa(), edytorPrzycisku.wiersz, 1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,15 +64,15 @@ public class StrategiaKategorie implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
 
 		Kategorie pr = new Kategorie();
 		pr.setId_Kategorii(br.id);
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Kategorie");
-		lista.remove(br.row);
+		lista.remove(br.wiersz);
 		HibernateOracle.cache.put("Kategorie", lista);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) br.tabela.getModel()).removeRow(br.wiersz);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

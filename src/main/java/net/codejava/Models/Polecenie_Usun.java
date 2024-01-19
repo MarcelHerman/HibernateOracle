@@ -9,7 +9,7 @@ public class Polecenie_Usun extends Polecenie {
 	}
 	
 	public void operacjaPolecenia() {		
-		session.delete(this.obiekt);
+		sesja.delete(this.obiekt);
 	}
 
 	@Override

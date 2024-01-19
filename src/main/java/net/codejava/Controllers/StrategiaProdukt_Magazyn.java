@@ -2,7 +2,7 @@ package net.codejava.Controllers;
 
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliSwing;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import net.codejava.HibernateOracle;
 
 public class StrategiaProdukt_Magazyn implements IStrategia {
 
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
 				
 		dyrektorOkienek.edytowanieProdukt_Magazyn();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
@@ -34,36 +34,36 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 			if (wynik == JOptionPane.OK_OPTION) {
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.stworzSesjeBD();
-				Session session = oc.pobierzSesjeBD();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
 
-				Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(bt.id, bt.id2);
-				Produkt_Magazyn user = (Produkt_Magazyn) session
+				Produkt_Magazyn_Id pr = new Produkt_Magazyn_Id(edytorPrzycisku.id, edytorPrzycisku.id2);
+				Produkt_Magazyn rekord = (Produkt_Magazyn) sesja
 						.createQuery("select u from Produkt_Magazyn u where u.produkt_magazyn_id = :pr")
 						.setParameter("pr", pr).uniqueResult();
 
-				oc.zamknijSesjeBD();
+				bd.zamknijSesjeBD();
 
 				if (!pola.get(0).getText().isEmpty())
 					if (Integer.parseInt(pola.get(0).getText()) < 0)
 						throw (new Exception("Nie można dodać ujemnego stanu faktycznego."));
 					else
-						user.setStan_faktyczny(Integer.parseInt(pola.get(0).getText()));
+						rekord.setStan_faktyczny(Integer.parseInt(pola.get(0).getText()));
 
 				if (!pola.get(1).getText().isEmpty())
 					if (Integer.parseInt(pola.get(1).getText()) < 0)
 						throw (new Exception("Nie można dodać ujemnego stanu magazynowego."));
 					else
-						user.setStan_magazynowy(Integer.parseInt(pola.get(1).getText()));
+						rekord.setStan_magazynowy(Integer.parseInt(pola.get(1).getText()));
 
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				System.out.println(user.getProdukt_magazyn_id() + " " + user.getStan_faktyczny() + " "
-						+ user.getStan_magazynowy());
+				System.out.println(rekord.getProdukt_magazyn_id() + " " + rekord.getStan_faktyczny() + " "
+						+ rekord.getStan_magazynowy());
 
-				bt.tab.setValueAt(user.getStan_faktyczny(), bt.row, 2);
-				bt.tab.setValueAt(user.getStan_magazynowy(), bt.row, 3);
+				edytorPrzycisku.tabela.setValueAt(rekord.getStan_faktyczny(), edytorPrzycisku.wiersz, 2);
+				edytorPrzycisku.tabela.setValueAt(rekord.getStan_magazynowy(), edytorPrzycisku.wiersz, 3);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,11 +72,11 @@ public class StrategiaProdukt_Magazyn implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor bt) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
 		Produkt_Magazyn pr = new Produkt_Magazyn();
-		pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(bt.id, bt.id2));
+		pr.setProdukt_magazyn_id(new Produkt_Magazyn_Id(edytorPrzycisku.id, edytorPrzycisku.id2));
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) bt.tab.getModel()).removeRow(bt.row);
+		((DefaultTableModel) edytorPrzycisku.tabela.getModel()).removeRow(edytorPrzycisku.wiersz);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

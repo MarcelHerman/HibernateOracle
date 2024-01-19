@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProducenci implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku be) {
 		
 		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica: ", TypPola.checkbox, "Czy usunięty: ");
 		
@@ -36,30 +36,30 @@ public class StrategiaProducenci implements IStrategia {
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
 
-				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.stworzSesjeBD();
-				Session session = oc.pobierzSesjeBD();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session session = bd.pobierzSesjeBD();
 
-				Producenci user = (Producenci) session
-						.createQuery("select u from Producenci u where u.id_producenta = :id").setParameter("id", bt.id)
+				Producenci rekord = (Producenci) session
+						.createQuery("select u from Producenci u where u.id_producenta = :id").setParameter("id", be.id)
 						.uniqueResult();
 
-				int szukany = user.getId_producenta();
-				oc.zamknijSesjeBD();
+				int szukany = rekord.getId_producenta();
+				bd.zamknijSesjeBD();
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				
-				user.setCzy_usunieto(((JCheckBox)okno.getComponent(12)).isSelected() ? 1 : 0);
+				rekord.setCzy_usunieto(((JCheckBox)okno.getComponent(12)).isSelected() ? 1 : 0);
 				if (!pola.get(0).getText().isEmpty())
-					user.setNazwa(pola.get(0).getText());
+					rekord.setNazwa(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
-					user.setKontakt(pola.get(1).getText());
+					rekord.setKontakt(pola.get(1).getText());
 				if (!pola.get(2).getText().isEmpty())
-					user.setMiasto(pola.get(2).getText());
+					rekord.setMiasto(pola.get(2).getText());
 				if (!pola.get(3).getText().isEmpty())
-					user.setUlica(pola.get(3).getText());
+					rekord.setUlica(pola.get(3).getText());
 
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 				List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
 
 				for (int i = 0; i < lista.size(); i++) {
@@ -67,25 +67,25 @@ public class StrategiaProducenci implements IStrategia {
 					Producenci pom = (Producenci) element;
 
 					if (pom.getId_producenta() == szukany) {
-						pom.setNazwa(user.getNazwa());
-						pom.setKontakt(user.getKontakt());
-						pom.setMiasto(user.getMiasto());
-						pom.setUlica(user.getUlica());
-						pom.setCzy_usunieto(user.getCzy_usunieto());
+						pom.setNazwa(rekord.getNazwa());
+						pom.setKontakt(rekord.getKontakt());
+						pom.setMiasto(rekord.getMiasto());
+						pom.setUlica(rekord.getUlica());
+						pom.setCzy_usunieto(rekord.getCzy_usunieto());
 						break;
 					}
 				}
 
 				HibernateOracle.cache.put("Producenci", lista);
 
-				bt.tab.setValueAt(user.getNazwa(), bt.row, 1);
-				bt.tab.setValueAt(user.getKontakt(), bt.row, 2);
-				bt.tab.setValueAt(user.getMiasto(), bt.row, 3);
-				bt.tab.setValueAt(user.getUlica(), bt.row, 4);
-				if (user.getCzy_usunieto() == 1)
-					bt.tab.setValueAt("TAK", bt.row, 5);
+				be.tabela.setValueAt(rekord.getNazwa(), be.wiersz, 1);
+				be.tabela.setValueAt(rekord.getKontakt(), be.wiersz, 2);
+				be.tabela.setValueAt(rekord.getMiasto(), be.wiersz, 3);
+				be.tabela.setValueAt(rekord.getUlica(), be.wiersz, 4);
+				if (rekord.getCzy_usunieto() == 1)
+					be.tabela.setValueAt("TAK", be.wiersz, 5);
 				else
-					bt.tab.setValueAt("NIE", bt.row, 5);
+					be.tabela.setValueAt("NIE", be.wiersz, 5);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,14 +95,14 @@ public class StrategiaProducenci implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
 
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
-		Session session = oc.pobierzSesjeBD();
+		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
+		Session session = bd.pobierzSesjeBD();
 		Producenci pr = (Producenci) session.createQuery("select u from Producenci u where u.id_producenta = :id")
 				.setParameter("id", br.id).uniqueResult();
-		oc.zamknijSesjeBD();
+		bd.zamknijSesjeBD();
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Producenci");
 
@@ -120,7 +120,7 @@ public class StrategiaProducenci implements IStrategia {
 		pr.setCzy_usunieto(1);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
-		br.tab.setValueAt("TAK", br.row, 5);
+		br.tabela.setValueAt("TAK", br.wiersz, 5);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

@@ -16,7 +16,7 @@ public class DyrektorTabel {
 	public void tworzTabeleMagazyny(List<Obiekt_Do_Polecen> obiekty,BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Magazyny();
+		HibernateOracle.obiekt = new Magazyny();
 		HibernateOracle.wzorzec = new StrategiaMagazyny();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -45,7 +45,7 @@ public class DyrektorTabel {
 	public void tworzTabeleProdukty(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Produkty();
+		HibernateOracle.obiekt = new Produkty();
 		HibernateOracle.wzorzec = new StrategiaProdukty();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -58,19 +58,19 @@ public class DyrektorTabel {
 		budowniczy.dodajKolumne("Kategoria");
 		if((HibernateOracle.nazwaTypu.equals("Administrator")) || (HibernateOracle.nazwaTypu.equals("Pracownik")))budowniczy.dodajKolumne("Usunięty");
 
-		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
+		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
 		
-		List<Obiekt_Do_Polecen> fData = null;
-		List<Obiekt_Do_Polecen> fData2 = null;
+		List<Obiekt_Do_Polecen> daneZewn = null;
+		List<Obiekt_Do_Polecen> daneZewn2 = null;
 		
-		try (Session session = oc.pobierzSesjeBD()) {
-            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
-            fData = query.getResultList();
+		try (Session sesja = bd.pobierzSesjeBD()) {
+            Query<Obiekt_Do_Polecen> zapytanie = sesja.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
+            daneZewn = zapytanie.getResultList();
             
-            Query<Obiekt_Do_Polecen> query2 = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
-            fData2 = query2.getResultList();
-   		 oc.zamknijSesjeBD();
+            Query<Obiekt_Do_Polecen> zapytanie2 = sesja.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+            daneZewn2 = zapytanie2.getResultList();
+   		 bd.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -85,7 +85,7 @@ public class DyrektorTabel {
 			budowniczy.dodajKolumne(Double.toString(((Produkty) rekord).getCena()));
 			budowniczy.dodajKolumne(((Produkty) rekord).getOpis().toString());
 			
-			for(Obiekt_Do_Polecen prod: fData) {
+			for(Obiekt_Do_Polecen prod: daneZewn) {
 				if(((Producenci)prod).getId_producenta() == ((Produkty) rekord).getProducenci_id_producenta())
 				{
 					budowniczy.dodajKolumne(((Producenci)prod).getNazwa());
@@ -93,7 +93,7 @@ public class DyrektorTabel {
 				}
 			}
 			
-			for(Obiekt_Do_Polecen kat: fData2) {
+			for(Obiekt_Do_Polecen kat: daneZewn2) {
 				if(((Kategorie)kat).getId_Kategorii() == ((Produkty) rekord).getKategorie_id_kategorii())
 				{
 					budowniczy.dodajKolumne(((Kategorie)kat).getNazwa());
@@ -119,7 +119,7 @@ public class DyrektorTabel {
 	public void tworzTabeleKategorie(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Kategorie();
+		HibernateOracle.obiekt = new Kategorie();
 		HibernateOracle.wzorzec = new StrategiaKategorie();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -145,7 +145,7 @@ public class DyrektorTabel {
 	public void tworzTabeleFaktury(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Faktury();
+		HibernateOracle.obiekt = new Faktury();
 		HibernateOracle.wzorzec = new StrategiaFaktury();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -174,7 +174,7 @@ public class DyrektorTabel {
 	public void tworzTabeleProdukt_Magazyn(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Produkt_Magazyn();
+		HibernateOracle.obiekt = new Produkt_Magazyn();
 		HibernateOracle.wzorzec = new StrategiaProdukt_Magazyn();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -203,7 +203,7 @@ public class DyrektorTabel {
 	public void tworzTabeleProdukt_Zamowienia(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Produkt_Zamowienia();
+		HibernateOracle.obiekt = new Produkt_Zamowienia();
 		HibernateOracle.wzorzec = new StrategiaProdukt_Zamowienia();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -230,7 +230,7 @@ public class DyrektorTabel {
 	public void tworzTabeleStany_Zamowienia(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Stany_Zamowienia();
+		HibernateOracle.obiekt = new Stany_Zamowienia();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
 		
@@ -254,7 +254,7 @@ public class DyrektorTabel {
 	public void tworzTabeleProducenci(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Producenci();
+		HibernateOracle.obiekt = new Producenci();
 		HibernateOracle.wzorzec = new StrategiaProducenci();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -290,7 +290,7 @@ public class DyrektorTabel {
 	public void tworzTabeleUzytkownicy(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{	
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Uzytkownicy();
+		HibernateOracle.obiekt = new Uzytkownicy();
 		HibernateOracle.wzorzec = new StrategiaUzytkownicy();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -303,15 +303,15 @@ public class DyrektorTabel {
 		budowniczy.dodajKolumne("Typ konta");
 		if((HibernateOracle.nazwaTypu.equals("Administrator"))  ||  (HibernateOracle.nazwaTypu.equals("Pracownik")))budowniczy.dodajKolumne("Usunięty");
 		
-		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
+		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
 		
-		List<Obiekt_Do_Polecen> fData = null;
+		List<Obiekt_Do_Polecen> daneZewn = null;
 		
-		try (Session session = oc.pobierzSesjeBD()) {
-            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
-            fData = query.getResultList();
-            oc.zamknijSesjeBD();
+		try (Session sesja = bd.pobierzSesjeBD()) {
+            Query<Obiekt_Do_Polecen> zapytanie = sesja.createQuery("FROM Typy_uzytkownika", Obiekt_Do_Polecen.class);
+            daneZewn = zapytanie.getResultList();
+            bd.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -326,7 +326,7 @@ public class DyrektorTabel {
 			budowniczy.dodajKolumne(((Uzytkownicy) rekord).getHaslo().toString());
 			budowniczy.dodajKolumne(((Uzytkownicy) rekord).getE_mail().toString());
 			
-			for(Obiekt_Do_Polecen typ: fData) {
+			for(Obiekt_Do_Polecen typ: daneZewn) {
 				if(((Typy_uzytkownika)typ).getId_typu_uzytkownika() == ((Uzytkownicy) rekord).getId_typu_uzytkownika() ) {
 					budowniczy.dodajKolumne(((Typy_uzytkownika)typ).getNazwa());
 				}
@@ -348,7 +348,7 @@ public class DyrektorTabel {
 	public void tworzTabeleZamowienia(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
 	{
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Zamowienia();
+		HibernateOracle.obiekt = new Zamowienia();
 		HibernateOracle.wzorzec = new StrategiaZamowienia();
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -362,15 +362,15 @@ public class DyrektorTabel {
 		budowniczy.dodajKolumne("Zamówione produkty");
 		budowniczy.dodajKolumne("Notatka");
 		
-		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
+		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
 		
-		List<Obiekt_Do_Polecen> fData = null;
+		List<Obiekt_Do_Polecen> daneZewn = null;
 		
-		try (Session session = oc.pobierzSesjeBD()) {
-            Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
-            fData = query.getResultList();
-            oc.zamknijSesjeBD();
+		try (Session sesja = bd.pobierzSesjeBD()) {
+            Query<Obiekt_Do_Polecen> zapytanie = sesja.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+            daneZewn = zapytanie.getResultList();
+            bd.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -384,18 +384,18 @@ public class DyrektorTabel {
 			budowniczy.dodajKolumne(((Zamowienia) rekord).getAdres_wysylki_ulica().toString());
 			budowniczy.dodajKolumne(Double.toString(((Zamowienia) rekord).getKoszt()));
 			
-			for(Obiekt_Do_Polecen stan: fData) {
+			for(Obiekt_Do_Polecen stan: daneZewn) {
 				if(((Stany_Zamowienia)stan).getId_Stanu_Zamowienia() == ((Zamowienia)rekord).getId_stanu_zamowienia() ) {
 					budowniczy.dodajKolumne(((Stany_Zamowienia)stan).getNazwa());
 					break;
 				}
 			}
 			List<String> nPr = null;
-			oc.stworzSesjeBD();
-			try (Session session = oc.pobierzSesjeBD()) {
-	            Query<String> query = session.createQuery("SELECT p.nazwa FROM Produkty p, Zamowienia z, Produkt_Zamowienia pz where p.id_produktu = pz.produkt_zamowienia_id.id_produktu and pz.produkt_zamowienia_id.id_zamowienia = z.id_zamowienia and z.id_zamowienia = :id", String.class).setParameter("id", ((Zamowienia) rekord).getId_zamowienia());
-	            nPr = query.getResultList();
-	            oc.zamknijSesjeBD();
+			bd.stworzSesjeBD();
+			try (Session sesja = bd.pobierzSesjeBD()) {
+	            Query<String> zapytanie = sesja.createQuery("SELECT p.nazwa FROM Produkty p, Zamowienia z, Produkt_Zamowienia pz where p.id_produktu = pz.produkt_zamowienia_id.id_produktu and pz.produkt_zamowienia_id.id_zamowienia = z.id_zamowienia and z.id_zamowienia = :id", String.class).setParameter("id", ((Zamowienia) rekord).getId_zamowienia());
+	            nPr = zapytanie.getResultList();
+	            bd.zamknijSesjeBD();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            System.out.println(e);
@@ -425,7 +425,7 @@ public class DyrektorTabel {
 	public void tworzTabeleTypy_uzytkownika(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
     {
 		this.budowniczy = budowniczy;
-		HibernateOracle.obj = new Typy_uzytkownika();
+		HibernateOracle.obiekt = new Typy_uzytkownika();
 		HibernateOracle.wzorzec = null;
 		budowniczy.zresetuj();
 		budowniczy.dodajNaglowek();
@@ -449,7 +449,7 @@ public class DyrektorTabel {
 	
 	public void tworzTabeleKoszyk(List<Obiekt_Do_Polecen> obiekty, BudowniczyTabeli budowniczy)
     {
-		HibernateOracle.obj = new Produkt_Koszyk();
+		HibernateOracle.obiekt = new Produkt_Koszyk();
 		HibernateOracle.wzorzec = new StrategiaProdukt_Koszyk();
 		this.budowniczy = budowniczy;
 		budowniczy.zresetuj();

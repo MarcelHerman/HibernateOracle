@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -27,25 +27,25 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukty implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
 		
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
-		List<Obiekt_Do_Polecen> fData = null;
+		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
+		List<Obiekt_Do_Polecen> daneZewn = null;
 
-		try (Session session = oc.pobierzSesjeBD()) {
-			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
-			fData = query.getResultList();
-			oc.zamknijSesjeBD();
+		try (Session sesja = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+			daneZewn = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
 		}
 
-		String nazwy[] = new String[fData.size()];
+		String nazwy[] = new String[daneZewn.size()];
 
 		int i = 0;
-		for (Obiekt_Do_Polecen stan : fData) {
+		for (Obiekt_Do_Polecen stan : daneZewn) {
 			nazwy[i] = ((Kategorie) stan).getNazwa();
 			i++;
 		}
@@ -64,39 +64,39 @@ public class StrategiaProdukty implements IStrategia {
 				//if waliduj(okno) {
 					//zapisz(okno)
 				//}
-				oc.stworzSesjeBD();
-				Session session = oc.pobierzSesjeBD();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
 
-				Produkty user = (Produkty) session.createQuery("select u from Produkty u where u.id_produktu = :id")
-						.setParameter("id", bt.id).uniqueResult();
+				Produkty rekord = (Produkty) sesja.createQuery("select u from Produkty u where u.id_produktu = :id")
+						.setParameter("id", edytorPrzycisku.id).uniqueResult();
 
-				oc.zamknijSesjeBD();
+				bd.zamknijSesjeBD();
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				
-				user.setCzy_usunieto(((JCheckBox)okno.getComponent(11)).isSelected() ? 1 : 0);
+				rekord.setCzy_usunieto(((JCheckBox)okno.getComponent(11)).isSelected() ? 1 : 0);
 				if (!pola.get(0).getText().isEmpty())
-					user.setNazwa(pola.get(0).getText());
+					rekord.setNazwa(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
 					if (Double.parseDouble(pola.get(1).getText()) <= 0)
 						throw (new Exception("Nie można dodać ujemnej ceny, ani ceny równej 0"));
 					else
-						user.setCena(Double.parseDouble(pola.get(1).getText()));
+						rekord.setCena(Double.parseDouble(pola.get(1).getText()));
 				if (!pola.get(2).getText().isEmpty())
-					user.setOpis(pola.get(2).getText());
+					rekord.setOpis(pola.get(2).getText());
 
-				user.setKategorie_id_kategorii(((Kategorie) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_Kategorii());
+				rekord.setKategorie_id_kategorii(((Kategorie) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_Kategorii());
 
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				bt.tab.setValueAt(user.getNazwa(), bt.row, 1);
-				bt.tab.setValueAt(user.getCena(), bt.row, 2);
-				bt.tab.setValueAt(user.getOpis(), bt.row, 3);
-				bt.tab.setValueAt(((Kategorie) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), bt.row, 5);
-				if (user.getCzy_usunieto() == 1)
-					bt.tab.setValueAt("TAK", bt.row, 6);
+				edytorPrzycisku.tabela.setValueAt(rekord.getNazwa(), edytorPrzycisku.wiersz, 1);
+				edytorPrzycisku.tabela.setValueAt(rekord.getCena(), edytorPrzycisku.wiersz, 2);
+				edytorPrzycisku.tabela.setValueAt(rekord.getOpis(), edytorPrzycisku.wiersz, 3);
+				edytorPrzycisku.tabela.setValueAt(((Kategorie) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), edytorPrzycisku.wiersz, 5);
+				if (rekord.getCzy_usunieto() == 1)
+					edytorPrzycisku.tabela.setValueAt("TAK", edytorPrzycisku.wiersz, 6);
 				else
-					bt.tab.setValueAt("NIE", bt.row, 6);
+					edytorPrzycisku.tabela.setValueAt("NIE", edytorPrzycisku.wiersz, 6);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,46 +105,46 @@ public class StrategiaProdukty implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor bt) {
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
-		Session session = oc.pobierzSesjeBD();
-		Produkty pr = (Produkty) session.createQuery("select u from Produkty u where u.id_produktu = :id")
-				.setParameter("id", bt.id).uniqueResult();
-		oc.zamknijSesjeBD();
+	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
+		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
+		Session sesja = bd.pobierzSesjeBD();
+		Produkty pr = (Produkty) sesja.createQuery("select u from Produkty u where u.id_produktu = :id")
+				.setParameter("id", edytorPrzycisku.id).uniqueResult();
+		bd.zamknijSesjeBD();
 		pr.setCzy_usunieto(1);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
-		bt.tab.setValueAt("TAK", bt.row, 6);
+		edytorPrzycisku.tabela.setValueAt("TAK", edytorPrzycisku.wiersz, 6);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
-		List<Obiekt_Do_Polecen> fData = null;
-		List<Obiekt_Do_Polecen> fData2 = null;
+		List<Obiekt_Do_Polecen> daneZewn = null;
+		List<Obiekt_Do_Polecen> daneZewn2 = null;
 		
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
-		try (Session session = oc.pobierzSesjeBD()) {
-			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
-			fData = query.getResultList();
-			query = session.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
-			fData2 = query.getResultList();
-			oc.zamknijSesjeBD();
+		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
+		try (Session sesja = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja.createQuery("FROM Producenci", Obiekt_Do_Polecen.class);
+			daneZewn = zapytanie.getResultList();
+			zapytanie = sesja.createQuery("FROM Kategorie", Obiekt_Do_Polecen.class);
+			daneZewn2 = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
 		}
 		
-		String nazwy[] = new String[fData.size()];
-		String nazwy2[] = new String[fData2.size()];
+		String nazwy[] = new String[daneZewn.size()];
+		String nazwy2[] = new String[daneZewn2.size()];
 
 		int i = 0;
-		for (Obiekt_Do_Polecen stan : fData) {
+		for (Obiekt_Do_Polecen stan : daneZewn) {
 			nazwy[i] = ((Producenci) stan).getNazwa();
 			i++;
 		}
 		i = 0;
-		for (Obiekt_Do_Polecen stan : fData2) {
+		for (Obiekt_Do_Polecen stan : daneZewn2) {
 			nazwy2[i] = ((Kategorie) stan).getNazwa();
 			i++;
 		}
@@ -169,33 +169,33 @@ public class StrategiaProdukty implements IStrategia {
 				cena = Math.round(cena * 100.0) / 100.0;
 
 				Produkty nowyProdukt = new Produkty(pola.get(1).getText(), cena, pola.get(2).getText(),
-						((Producenci) fData.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_producenta(),
-						((Kategorie) fData2.get(((JComboBox)okno.getComponent(11)).getSelectedIndex())).getId_Kategorii(), 0);
+						((Producenci) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getId_producenta(),
+						((Kategorie) daneZewn2.get(((JComboBox)okno.getComponent(11)).getSelectedIndex())).getId_Kategorii(), 0);
 				HibernateOracle.repoPolecen
 						.dodajPolecenie(new Polecenie_Dodaj(nowyProdukt, HibernateOracle.idUzytkownika));
 
 				Object[] obiekty = pobierzModel(kontener);
 
 				if (!HibernateOracle.cache.containsKey("Kategorie")) {
-					oc.stworzSesjeBD();
-					try (Session session2 = oc.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii",
+					bd.stworzSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Kategorie order by id_kategorii",
 								Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("Kategorie", query.getResultList());
-						oc.zamknijSesjeBD();
+						HibernateOracle.cache.put("Kategorie", zapytanie.getResultList());
+						bd.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 
-				List<Obiekt_Do_Polecen> cash = HibernateOracle.cache.get("Kategorie");
+				List<Obiekt_Do_Polecen> cache = HibernateOracle.cache.get("Kategorie");
 				String nazwa = "Default";
 
 				int id = Integer.parseInt(((DefaultTableModel) ((JTable)obiekty[0]).getModel())
 						.getValueAt(((DefaultTableModel) ((JTable)obiekty[0]).getModel()).getRowCount() - 1, 0).toString());
 				nowyProdukt.setId_produktu(id + 1);
 
-				for (Obiekt_Do_Polecen entity : cash) {
+				for (Obiekt_Do_Polecen entity : cache) {
 					Kategorie ent = (Kategorie) entity;
 					if (ent.getId_Kategorii() == nowyProdukt.getKategorie_id_kategorii()) {
 						nazwa = ent.getNazwa();
@@ -204,12 +204,12 @@ public class StrategiaProdukty implements IStrategia {
 				}
 
 				if (!HibernateOracle.cache.containsKey("Producenci")) {
-					oc.stworzSesjeBD();
-					try (Session session2 = oc.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta",
+					bd.stworzSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Producenci order by id_producenta",
 								Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("Producenci", query.getResultList());
-						oc.zamknijSesjeBD();
+						HibernateOracle.cache.put("Producenci", zapytanie.getResultList());
+						bd.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

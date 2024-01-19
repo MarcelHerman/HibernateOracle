@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -21,16 +21,16 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukt_Zamowienia implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
 		dyrektorOkienek.edytowanieProdukt_Zamowienia();
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor bt) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
 		Produkt_Zamowienia pr = new Produkt_Zamowienia();
-		pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(bt.id, bt.id2));
+		pr.setProdukt_zamowienia_id(new Produkt_Zamowienia_Id(edytorPrzycisku.id, edytorPrzycisku.id2));
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) bt.tab.getModel()).removeRow(bt.row);
+		((DefaultTableModel) edytorPrzycisku.tabela.getModel()).removeRow(edytorPrzycisku.wiersz);
 
 	}
 

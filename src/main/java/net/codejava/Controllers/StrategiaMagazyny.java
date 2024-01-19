@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaMagazyny implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
 		
 		dyrektorOkienek.edytowanieMagazyny();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
@@ -34,22 +34,22 @@ public class StrategiaMagazyny implements IStrategia {
 			if (wynik == JOptionPane.OK_OPTION) {
 				
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.stworzSesjeBD();
-				Session session = oc.pobierzSesjeBD();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
 
-				Magazyny user = (Magazyny) session.createQuery("select u from Magazyny u where u.id_magazynu = :id")
-						.setParameter("id", bt.id).uniqueResult();
+				Magazyny rekord = (Magazyny) sesja.createQuery("select u from Magazyny u where u.id_magazynu = :id")
+						.setParameter("id", edytorPrzycisku.id).uniqueResult();
 
-				int szukany = user.getId_magazynu();
+				int szukany = rekord.getId_magazynu();
 
-				oc.zamknijSesjeBD();
+				bd.zamknijSesjeBD();
 				if (!pola.get(0).getText().isEmpty())
-					user.setMiasto(pola.get(0).getText());
+					rekord.setMiasto(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
-					user.setUlica(pola.get(1).getText());
+					rekord.setUlica(pola.get(1).getText());
 
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 				List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
 
 				for (int i = 0; i < lista.size(); i++) {
@@ -57,16 +57,16 @@ public class StrategiaMagazyny implements IStrategia {
 					Magazyny pom = (Magazyny) element;
 
 					if (pom.getId_magazynu() == szukany) {
-						pom.setMiasto(user.getMiasto());
-						pom.setUlica(user.getUlica());
+						pom.setMiasto(rekord.getMiasto());
+						pom.setUlica(rekord.getUlica());
 						break;
 					}
 				}
 
 				HibernateOracle.cache.put("Magazyny", lista);
 
-				bt.tab.setValueAt(user.getMiasto(), bt.row, 1);
-				bt.tab.setValueAt(user.getUlica(), bt.row, 2);
+				edytorPrzycisku.tabela.setValueAt(rekord.getMiasto(), edytorPrzycisku.wiersz, 1);
+				edytorPrzycisku.tabela.setValueAt(rekord.getUlica(), edytorPrzycisku.wiersz, 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,16 +76,16 @@ public class StrategiaMagazyny implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
 
 		Magazyny pr = new Magazyny();
 		pr.setId_magazynu(br.id);
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-		lista.remove(br.row);
+		lista.remove(br.wiersz);
 		HibernateOracle.cache.put("Magazyny", lista);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) br.tabela.getModel()).removeRow(br.wiersz);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

@@ -9,7 +9,7 @@ public class Polecenie_Dodaj extends Polecenie {
 	}
 	
 	public void operacjaPolecenia() {
-		session.save(this.obiekt);		
+		sesja.save(this.obiekt);		
 	}
 	
 	@Override

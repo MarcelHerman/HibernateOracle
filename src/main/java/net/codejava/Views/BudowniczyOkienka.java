@@ -34,15 +34,15 @@ public class BudowniczyOkienka {
 	
 	public void dodajCheckBox(String tekst)
 	{
-		JCheckBox checkBox = new JCheckBox(tekst);
-		panel.add(checkBox);
+		JCheckBox poleWyboru = new JCheckBox(tekst);
+		panel.add(poleWyboru);
 		panel.add(Box.createHorizontalStrut(5));
 	}
 	
 	public void dodajJComboBox(String[] nazwy)
 	{
-		JComboBox comboBox = new JComboBox(nazwy);
-		panel.add(comboBox);
+		JComboBox listaRozwijana = new JComboBox(nazwy);
+		panel.add(listaRozwijana);
 		panel.add(Box.createHorizontalStrut(5));
 	}
 	

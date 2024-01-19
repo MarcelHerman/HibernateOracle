@@ -66,16 +66,16 @@ public class widokAplikacji {
 	
 	public void Inicjalizuj() {
 		
-		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 		
-		oc.stworzSesjeBD();
+		bd.stworzSesjeBD();
 		HibernateOracle.cache = new HashMap<>();
 		
-		Session session = oc.pobierzSesjeBD();		
+		Session sesja = bd.pobierzSesjeBD();		
 		
 		try
 		{
-			session = oc.pobierzSesjeBD();
+			sesja = bd.pobierzSesjeBD();
 		}catch(Exception e)
 		{
             System.out.println("Blad dodania tablicy");
@@ -83,14 +83,14 @@ public class widokAplikacji {
 		
 		List<Obiekt_Do_Polecen> obiekty = null;
 		
-		try (Session session2 = oc.pobierzSesjeBD()) {
-            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
-            obiekty = query.getResultList();
-            oc.zamknijSesjeBD();
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
+            obiekty = zapytanie.getResultList();
+            bd.zamknijSesjeBD();
         } catch (Exception e) {
             e.printStackTrace();
         }
-		//oc.zamknijSesjeBD();			 
+		//bd.zamknijSesjeBD();			 
 			
 		final JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -101,7 +101,7 @@ public class widokAplikacji {
             public void windowClosing(WindowEvent e) {
                 if(!HibernateOracle.nazwaTypu.equals("Klient"))
                 {
-                	HibernateOracle.repoPolecen.saveToFile();
+                	HibernateOracle.repoPolecen.zapiszDoPliku();
                 	System.out.println("Okno zostaje zamknięte");
                 }            	
             }
@@ -182,12 +182,12 @@ public class widokAplikacji {
 	                try {
 	                	if (result == JOptionPane.OK_OPTION) {
 	                		
-	                		oc.stworzSesjeBD();
+	                		bd.stworzSesjeBD();
 	                		List<Uzytkownicy> uzytkownicy = null;
-	                		try (Session session2 = oc.pobierzSesjeBD()) {
-	                            Query<Uzytkownicy> query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Uzytkownicy.class);
-	                            uzytkownicy = query.getResultList();
-	                            oc.zamknijSesjeBD();
+	                		try (Session sesja2 = bd.pobierzSesjeBD()) {
+	                            Query<Uzytkownicy> zapytanie = sesja2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Uzytkownicy.class);
+	                            uzytkownicy = zapytanie.getResultList();
+	                            bd.zamknijSesjeBD();
 	                        } catch (Exception e1) {
 	                            e1.printStackTrace();
 	                            throw new Exception("Nie udalo polaczyc sie z baza danych");
@@ -200,10 +200,10 @@ public class widokAplikacji {
 				                		
 				                		HibernateOracle.idUzytkownika = uzytkownik.getId_uzytkownika();
 				                		
-				                		oc.stworzSesjeBD();
-				                		Session session2 = oc.pobierzSesjeBD();
-				                		Query<Typy_uzytkownika> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Typy_uzytkownika.class);
-			                            List<Typy_uzytkownika> typyUzytkownika = query.getResultList();                           
+				                		bd.stworzSesjeBD();
+				                		Session sesja2 = bd.pobierzSesjeBD();
+				                		Query<Typy_uzytkownika> zapytanie = sesja2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Typy_uzytkownika.class);
+			                            List<Typy_uzytkownika> typyUzytkownika = zapytanie.getResultList();                           
 			                                
 			                            pokazZalogujPrzycisk.setVisible(false);
 			                            zalozKontoPrzycisk.setVisible(false);
@@ -262,7 +262,7 @@ public class widokAplikacji {
 				                		
 				                		frame.revalidate();
 				                		frame.repaint();
-				                		oc.zamknijSesjeBD();
+				                		bd.zamknijSesjeBD();
 				                		break;
 			                		}
 			                		else
@@ -298,11 +298,11 @@ public class widokAplikacji {
 				 bar.removeAll();
 				 bar.setVisible(true);
 
-				 oc.stworzSesjeBD();
-				 try (Session session2 = oc.pobierzSesjeBD()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+				 bd.stworzSesjeBD();
+				 try (Session sesja2 = bd.pobierzSesjeBD()) {
+			            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        							       
 			     dyrektor.tworzTabeleProdukty(obiekty, budSwing);
 			     
@@ -340,22 +340,22 @@ public class widokAplikacji {
 				public void actionPerformed(ActionEvent a) {				 	
 				 	kontener.removeAll();
 
-					Uzytkownicy user = new Uzytkownicy();
-					oc.stworzSesjeBD();
+					Uzytkownicy rekord = new Uzytkownicy();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
-						user = (Uzytkownicy)session2.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+ HibernateOracle.idUzytkownika)
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+						rekord = (Uzytkownicy)sesja2.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+ HibernateOracle.idUzytkownika)
 	 	                			.uniqueResult();			            			            
-			            oc.zamknijSesjeBD();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
 															
 					JLabel szczegoly = new JLabel("Szczególy");
-					JLabel nazwa = new JLabel("Nazwa użytkownika:  " + user.getNazwa_uzytkownika());
-					JLabel login = new JLabel("Login:  " + user.getLogin());
-					JLabel haslo = new JLabel("Hasło:  " + "*".repeat(user.getHaslo().length()));
-					JLabel email = new JLabel("E-mail:  " + user.getE_mail());
+					JLabel nazwa = new JLabel("Nazwa użytkownika:  " + rekord.getNazwa_uzytkownika());
+					JLabel login = new JLabel("Login:  " + rekord.getLogin());
+					JLabel haslo = new JLabel("Hasło:  " + "*".repeat(rekord.getHaslo().length()));
+					JLabel email = new JLabel("E-mail:  " + rekord.getE_mail());
 					JButton edytujPrzycisk = new JButton("Edytuj konto");
 					JButton usunPrzycisk = new JButton("Usuń konto");
 					JButton zlozZamowieniePrzycisk = new JButton("Złóż zamówienie");
@@ -428,27 +428,27 @@ public class widokAplikacji {
 		                		 try {
 		     	                	if (result == JOptionPane.OK_OPTION) {
 		     	                		
-		     	                		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		     	 	                	oc.stworzSesjeBD();
-		     	 	                	Session session = oc.pobierzSesjeBD();
+		     	                		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+		     	 	                	bd.stworzSesjeBD();
+		     	 	                	Session sesja = bd.pobierzSesjeBD();
 		     	                		
-		     	 	                	Uzytkownicy user = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(HibernateOracle.idUzytkownika))
+		     	 	                	Uzytkownicy rekord = (Uzytkownicy)sesja.createQuery("select u from Uzytkownicy u where u.id_uzytkownika like "+Integer.toString(HibernateOracle.idUzytkownika))
 		     	 	                			.uniqueResult();
 		     	 	                	
 		     	 	                	if(!pierwszyField.getText().isEmpty())
-		     	 	                		user.setNazwa_uzytkownika(pierwszyField.getText());
+		     	 	                		rekord.setNazwa_uzytkownika(pierwszyField.getText());
 		     	 	                	if(!drugiField.getText().isEmpty())
-		     	 	                		user.setLogin(drugiField.getText());
+		     	 	                		rekord.setLogin(drugiField.getText());
 		     	 	                	if(!trzeciField.getText().isEmpty())
-		     	 	                		user.setHaslo(trzeciField.getText());
+		     	 	                		rekord.setHaslo(trzeciField.getText());
 		     	 	                	if(!czwartyField.getText().isEmpty())
-		     	 	                		user.setE_mail(czwartyField.getText());
+		     	 	                		rekord.setE_mail(czwartyField.getText());
 		     	 	                	
-		     	                		session.update(user);
+		     	                		sesja.update(rekord);
 		     	                		
-		     	                		oc.zamknijSesjeBD();
+		     	                		bd.zamknijSesjeBD();
 		     	                		
-		     	                		kontoPrzycisk.setText(user.getNazwa_uzytkownika());
+		     	                		kontoPrzycisk.setText(rekord.getNazwa_uzytkownika());
 		     	                		kontoPrzycisk.doClick();
 		     	                	}
 		                		 }
@@ -474,15 +474,15 @@ public class widokAplikacji {
 				 	            	 if (result == JOptionPane.OK_OPTION) {		
 				 	            		 int idtym = HibernateOracle.idUzytkownika;
 				 	            		 akcjaWylogowania.actionPerformed(a);		 	            		 
-				 	            		 PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-				 	            		 oc.stworzSesjeBD();	                			
-				 	            		 Session session = oc.pobierzSesjeBD();
-				 	            		Uzytkownicy pr = (Uzytkownicy)session.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
+				 	            		 PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+				 	            		 bd.stworzSesjeBD();	                			
+				 	            		 Session sesja = bd.pobierzSesjeBD();
+				 	            		Uzytkownicy pr = (Uzytkownicy)sesja.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
 			 	 	                			.setParameter("id", idtym)
 			 	 	                			.uniqueResult();
 			 	                		
 				 	            		pr.setCzy_usunieto(1);
-				 	 	                session.update(pr);
+				 	 	                sesja.update(pr);
 				 	            	 }
 				 	            }catch(Exception e)
 				 	            	 {
@@ -490,7 +490,7 @@ public class widokAplikacji {
 				 	            		 
 				 	            }
 		 	 	 	                
-				 	            	oc.zamknijSesjeBD();							 		 	 	 	                	 	 	 	                	 	 	                
+				 	            	bd.zamknijSesjeBD();							 		 	 	 	                	 	 	 	                	 	 	                
 						 }	 	 	 	             
 					 });
 					 
@@ -552,20 +552,20 @@ public class widokAplikacji {
 			                				 }
 		                				 }
 		                				 
-		     	                		PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		     	 	                	oc.stworzSesjeBD();
-		     	 	                	Session session = oc.pobierzSesjeBD();
+		     	                		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+		     	 	                	bd.stworzSesjeBD();
+		     	 	                	Session sesja = bd.pobierzSesjeBD();
 		     	 	                			     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen produkt: HibernateOracle.koszyk) {
 			     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
-			     	 	                	if(session.createQuery("select p.czy_usunieto from Produkty p where p.id_produktu = :idP", Integer.class)
+			     	 	                	if(sesja.createQuery("select p.czy_usunieto from Produkty p where p.id_produktu = :idP", Integer.class)
 		     		 	                			.setParameter("idP", id)
 		     		 	                			.uniqueResult()==1? true:false)throw new Exception("Przykro nam ale jeden z produktów został usunięty z naszej oferty.");
 			     	 	                	
-			     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
+			     		                	Query<Integer> zapytanie = sesja.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
 		     		 	                			.setParameter("idP", id);
-			     		                	List<Integer> stanMagazynow = query.getResultList();
+			     		                	List<Integer> stanMagazynow = zapytanie.getResultList();
 			     		                	
 			     		                	int stanMag = 0;
 			     		                	
@@ -592,9 +592,9 @@ public class widokAplikacji {
 		     	 	                		int id = ((Produkt_Koszyk)produkt).getPr().getId_produktu();
 			     	 	                	
 			     	 	                	
-			     		                	Query<Integer> query = session.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
+			     		                	Query<Integer> zapytanie = sesja.createQuery("select pd.stan_magazynowy from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Integer.class)
 		     		 	                			.setParameter("idP", id);
-			     		                	List<Integer> stanMagazynow = query.getResultList();
+			     		                	List<Integer> stanMagazynow = zapytanie.getResultList();
 			     		                	
 			     		                	int stanMag = 0;
 			     		                	
@@ -633,15 +633,15 @@ public class widokAplikacji {
 		     	 	                	double zaokr = Math.round(zamowienie.getKoszt()*100.0)/100.0;
 		     	 	                	((Zamowienia) zamowienie).setKoszt(zaokr);
 		     	 	                	
-		     	 	                	session.save(zamowienie);	
+		     	 	                	sesja.save(zamowienie);	
 		     	 	                	
 		     	 	                	for(Obiekt_Do_Polecen odp : HibernateOracle.koszyk)		 
 		     	 	                	{
 		     	 	                		int id = ((Produkt_Koszyk)odp).getPr().getId_produktu();
 		     	 	                		
-					     	 	            Query<Produkt_Magazyn> query = session.createQuery("select pd from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Produkt_Magazyn.class)
+					     	 	            Query<Produkt_Magazyn> zapytanie = sesja.createQuery("select pd from Produkt_Magazyn pd where pd.produkt_magazyn_id.produkty_id_produktu = :idP", Produkt_Magazyn.class)
 			 		 	                			.setParameter("idP", id);
-			     		                	List<Produkt_Magazyn> stanMagazynow = query.getResultList();
+			     		                	List<Produkt_Magazyn> stanMagazynow = zapytanie.getResultList();
 			     		                	
 			     		                	int iloscProdKoszyk = ((Produkt_Koszyk)odp).getIlosc();
 			     		                	
@@ -654,13 +654,13 @@ public class widokAplikacji {
 			     		                			((Produkt_Koszyk)odp).setIlosc(((Produkt_Koszyk)odp).getIlosc() - stan.getStan_magazynowy());
 			     		                			stan.setStan_magazynowy(0);
 			     		                		}
-			     		                		session.update(stan);
+			     		                		sesja.update(stan);
 			     		                	}
 		     	 	                		
-		     	 	                		session.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(((Zamowienia) zamowienie).getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
+		     	 	                		sesja.save(new Produkt_Zamowienia(new Produkt_Zamowienia_Id(((Zamowienia) zamowienie).getId_zamowienia(), (((Produkt_Koszyk)odp).getPr().getId_produktu())), iloscProdKoszyk));
 		     	 	                	}
-		     	 	                	if(!(trzeciField.getText().isEmpty()))	session.save(new Faktury(LocalDate.now(), trzeciField.getText(), ((Zamowienia) zamowienie).getId_zamowienia()));  
-		     	                		oc.zamknijSesjeBD();
+		     	 	                	if(!(trzeciField.getText().isEmpty()))	sesja.save(new Faktury(LocalDate.now(), trzeciField.getText(), ((Zamowienia) zamowienie).getId_zamowienia()));  
+		     	                		bd.zamknijSesjeBD();
 		     	                		
 		     	                		HibernateOracle.koszyk.clear();
 		                			 }
@@ -712,12 +712,12 @@ public class widokAplikacji {
 	 	            		if(pola.get(0).getText().isEmpty() || pola.get(1).getText().isEmpty() || pola.get(2).getText().isEmpty() || pola.get(3).getText().isEmpty())
 	 	            			throw(new Exception("Nie podano wszystkich danych. Konto nie zostało utworzone."));
 	 	                		 	                		 	                	
-	 	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-	 	                	oc.stworzSesjeBD();
-	 	                	Session session = oc.pobierzSesjeBD();
+	 	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+	 	                	bd.stworzSesjeBD();
+	 	                	Session sesja = bd.pobierzSesjeBD();
 	 	                	
-	 	                	session.save(new Uzytkownicy(pola.get(0).getText(), pola.get(1).getText(), pola.get(2).getText(), pola.get(3).getText(), 3, 0));	 
-	 	                	oc.zamknijSesjeBD();               		
+	 	                	sesja.save(new Uzytkownicy(pola.get(0).getText(), pola.get(1).getText(), pola.get(2).getText(), pola.get(3).getText(), 3, 0));	 
+	 	                	bd.zamknijSesjeBD();               		
 	 	            	 }
 	 	            }catch(Exception e)
 	 	            	 {
@@ -736,15 +736,15 @@ public class widokAplikacji {
 					 pc.zamknijSesjeBD();
 
 					List<Obiekt_Do_Polecen> obiekty = null;
-					oc.stworzSesjeBD();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
 						
-			            Query<Obiekt_Do_Polecen> query = null;
-			            if((HibernateOracle.nazwaTypu.equals("Klient")))query = session2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
-			            else query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+			            Query<Obiekt_Do_Polecen> zapytanie = null;
+			            if((HibernateOracle.nazwaTypu.equals("Klient")))zapytanie = sesja2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class); 
+			            else zapytanie = sesja2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
@@ -776,14 +776,14 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 					List<Obiekt_Do_Polecen> obiekty = null;
-					oc.stworzSesjeBD();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
-			            Query<Obiekt_Do_Polecen> query = null;
-			            if(HibernateOracle.nazwaTypu.equals("Klient"))query = session2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia", Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
-			            else query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+			            Query<Obiekt_Do_Polecen> zapytanie = null;
+			            if(HibernateOracle.nazwaTypu.equals("Klient"))zapytanie = sesja2.createQuery("FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia", Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
+			            else zapytanie = sesja2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
@@ -812,12 +812,12 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 					List<Obiekt_Do_Polecen> obiekty = null;
-					oc.stworzSesjeBD();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+			            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
@@ -843,11 +843,11 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 					if(!HibernateOracle.cache.containsKey("Kategorie")) {
-						oc.stworzSesjeBD();						
-						try (Session session2 = oc.pobierzSesjeBD()) {
-							Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
-							HibernateOracle.cache.put("Kategorie", query.getResultList());
-							oc.zamknijSesjeBD();
+						bd.stworzSesjeBD();						
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
+							Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class);
+							HibernateOracle.cache.put("Kategorie", zapytanie.getResultList());
+							bd.zamknijSesjeBD();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}	
@@ -875,11 +875,11 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 				 	if(!HibernateOracle.cache.containsKey("Producenci")) {
-						oc.stworzSesjeBD();
-						try (Session session2 = oc.pobierzSesjeBD()) {
-				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
-				            HibernateOracle.cache.put("Producenci", query.getResultList());
-				            oc.zamknijSesjeBD();
+						bd.stworzSesjeBD();
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
+				            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
+				            HibernateOracle.cache.put("Producenci", zapytanie.getResultList());
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -906,12 +906,12 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 					List<Obiekt_Do_Polecen> obiekty = null;
-					oc.stworzSesjeBD();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+			            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
@@ -937,12 +937,12 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 					List<Obiekt_Do_Polecen> obiekty = null;
-					oc.stworzSesjeBD();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
-			            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Produkt_Zamowienia order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+			            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Produkt_Zamowienia order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
@@ -968,11 +968,11 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 				 	if(!HibernateOracle.cache.containsKey("StanyZamowien")) {
-						oc.stworzSesjeBD();
-						try (Session session2 = oc.pobierzSesjeBD()) {
-				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
-				            HibernateOracle.cache.put("StanyZamowien",query.getResultList());
-				            oc.zamknijSesjeBD();
+						bd.stworzSesjeBD();
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
+				            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
+				            HibernateOracle.cache.put("StanyZamowien",zapytanie.getResultList());
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -998,11 +998,11 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 				 	if(!HibernateOracle.cache.containsKey("TypyUzytkownika")) {
-						oc.stworzSesjeBD();
-						try (Session session2 = oc.pobierzSesjeBD()) {
-				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
-				            HibernateOracle.cache.put("TypyUzytkownika", query.getResultList());
-				            oc.zamknijSesjeBD();
+						bd.stworzSesjeBD();
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
+				            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
+				            HibernateOracle.cache.put("TypyUzytkownika", zapytanie.getResultList());
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1028,11 +1028,11 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();
 
 					if(!HibernateOracle.cache.containsKey("Magazyny")) {
-						oc.stworzSesjeBD();
-						try (Session session2 = oc.pobierzSesjeBD()) {
-				            Query<Obiekt_Do_Polecen> query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class);
-				            HibernateOracle.cache.put("Magazyny", query.getResultList());
-				            oc.zamknijSesjeBD();
+						bd.stworzSesjeBD();
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
+				            Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class);
+				            HibernateOracle.cache.put("Magazyny", zapytanie.getResultList());
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1059,14 +1059,14 @@ public class widokAplikacji {
 					pc.zamknijSesjeBD();		 	
 
 					List<Obiekt_Do_Polecen> obiekty = null;
-					oc.stworzSesjeBD();
+					bd.stworzSesjeBD();
 					
-					try (Session session2 = oc.pobierzSesjeBD()) {
-			            Query<Obiekt_Do_Polecen> query = null;
-			            if(HibernateOracle.nazwaTypu.equals("Klient"))query = session2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury", Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
-			            else query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
-			            obiekty = query.getResultList();
-			            oc.zamknijSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+			            Query<Obiekt_Do_Polecen> zapytanie = null;
+			            if(HibernateOracle.nazwaTypu.equals("Klient"))zapytanie = sesja2.createQuery("SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury", Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
+			            else zapytanie = sesja2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
+			            obiekty = zapytanie.getResultList();
+			            bd.zamknijSesjeBD();
 			        } catch (Exception e) {
 			            e.printStackTrace();
 			        }
@@ -1098,18 +1098,18 @@ public class widokAplikacji {
 		 {
 			 @Override
 				public void actionPerformed(ActionEvent a) {				                
-	                if(HibernateOracle.obj instanceof Produkty) 
+	                if(HibernateOracle.obiekt instanceof Produkty) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
-		                oc.stworzSesjeBD();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+		                bd.stworzSesjeBD();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
 		                
-						try (Session session2 = oc.pobierzSesjeBD()) {							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+						try (Session sesja2 = bd.pobierzSesjeBD()) {							
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1118,11 +1118,11 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produktow.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
@@ -1131,19 +1131,19 @@ public class widokAplikacji {
 		                	            		         		 
 	                }
 	                
-	                else if(HibernateOracle.obj instanceof Faktury) 
+	                else if(HibernateOracle.obiekt instanceof Faktury) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1152,11 +1152,11 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_faktur.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
@@ -1164,19 +1164,19 @@ public class widokAplikacji {
 		                     }
 	                }
 	                
-	                else if(HibernateOracle.obj instanceof Kategorie) 
+	                else if(HibernateOracle.obiekt instanceof Kategorie) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1186,30 +1186,30 @@ public class widokAplikacji {
 						String table = (String)dyrektor.pobierzTabele();
 						
 		                 String path = "wykaz_katgorii.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Magazyny) 
+	                else if(HibernateOracle.obiekt instanceof Magazyny) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Magazyny order by id_magazynu", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1218,30 +1218,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_magazynow.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Producenci) 
+	                else if(HibernateOracle.obiekt instanceof Producenci) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1250,30 +1250,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_producentow.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Produkt_Magazyn)
+	                else if(HibernateOracle.obiekt instanceof Produkt_Magazyn)
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class); //tututki
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu", Obiekt_Do_Polecen.class); //tututki
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1282,30 +1282,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produkty_magazyn.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Produkt_Zamowienia) 
+	                else if(HibernateOracle.obiekt instanceof Produkt_Zamowienia) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Produkt_Zamowienia  order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Produkt_Zamowienia  order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1314,30 +1314,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_produkt_zamowienia.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Stany_Zamowienia) 
+	                else if(HibernateOracle.obiekt instanceof Stany_Zamowienia) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1346,30 +1346,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_stany_zamowienia.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Typy_uzytkownika) 
+	                else if(HibernateOracle.obiekt instanceof Typy_uzytkownika) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1378,30 +1378,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_typy_uzytkownika.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Uzytkownicy) 
+	                else if(HibernateOracle.obiekt instanceof Uzytkownicy) 
 	                {
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Uzytkownicy order by id_uzytkownika", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1410,30 +1410,30 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_uzytkownicy.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();
 		                         JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 		                     }
 	                }
-	                else if(HibernateOracle.obj instanceof Zamowienia) 
+	                else if(HibernateOracle.obiekt instanceof Zamowienia) 
 	                {		         			                	
-	                	PolaczenieOracle oc =  PolaczenieOracle.getInstance();
+	                	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
 		                List<Obiekt_Do_Polecen> obiekty = null;
-						oc.stworzSesjeBD();
+						bd.stworzSesjeBD();
 						
-						try (Session session2 = oc.pobierzSesjeBD()) {
+						try (Session sesja2 = bd.pobierzSesjeBD()) {
 							
-				            Query<Obiekt_Do_Polecen> query = null;
-				            query = session2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class); 
-				            obiekty = query.getResultList();
-				            oc.zamknijSesjeBD();
+				            Query<Obiekt_Do_Polecen> zapytanie = null;
+				            zapytanie = sesja2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class); 
+				            obiekty = zapytanie.getResultList();
+				            bd.zamknijSesjeBD();
 				        } catch (Exception e) {
 				            e.printStackTrace();
 				        }
@@ -1442,11 +1442,11 @@ public class widokAplikacji {
 		                 String table = (String)dyrektor.pobierzTabele();
 		                 												 		                 
 		                 String path = "wykaz_zamowienia.txt";
-		                 File file = new File(path);
+		                 File plik = new File(path);
 
 		                		                     
-		                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-		                         writer.write(table);		                         
+		                     try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+		                    	 pisarz.write(table);		                         
 		                         JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
 		                     } catch (IOException e) {
 		                         e.printStackTrace();

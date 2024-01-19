@@ -9,7 +9,7 @@ public class Polecenie_Edytuj extends Polecenie {
 	}
 	
 	public void operacjaPolecenia() {
-		session.update(this.obiekt);
+		sesja.update(this.obiekt);
 	}
 
 	@Override

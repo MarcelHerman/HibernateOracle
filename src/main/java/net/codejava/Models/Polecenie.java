@@ -10,17 +10,17 @@ public abstract class Polecenie {
 	protected Obiekt_Do_Polecen obiekt;
 	private LocalDate data_wykonania;
 	private int id_wykonawcy;
-	protected PolaczenieOracle oc;
-	protected Session session;
+	protected PolaczenieOracle bd;
+	protected Session sesja;
 	
 	public void Wykonaj(){		
 		try
 		{			
-			oc = PolaczenieOracle.getInstance();
-			oc.stworzSesjeBD();
-			session = oc.pobierzSesjeBD();
+			bd = PolaczenieOracle.pobierzInstancje();
+			bd.stworzSesjeBD();
+			sesja = bd.pobierzSesjeBD();
 			operacjaPolecenia();	
-			oc.zamknijSesjeBD();
+			bd.zamknijSesjeBD();
 			System.out.println("close");
 
 		}catch(Exception e)

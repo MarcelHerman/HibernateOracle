@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -26,25 +26,25 @@ import net.codejava.HibernateOracle;
 public class StrategiaZamowienia implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
-		PolaczenieOracle oc = PolaczenieOracle.getInstance();
-		oc.stworzSesjeBD();
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
+		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+		bd.stworzSesjeBD();
 
-		List<Obiekt_Do_Polecen> fData = null;
+		List<Obiekt_Do_Polecen> daneZewn = null;
 
-		try (Session session = oc.pobierzSesjeBD()) {
-			Query<Obiekt_Do_Polecen> query = session.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
-			fData = query.getResultList();
-			oc.zamknijSesjeBD();
+		try (Session sesja = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja.createQuery("FROM Stany_Zamowienia", Obiekt_Do_Polecen.class);
+			daneZewn = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
 		}
 
-		String nazwy[] = new String[fData.size()];
+		String nazwy[] = new String[daneZewn.size()];
 
 		int i = 0;
-		for (Obiekt_Do_Polecen stan : fData) {
+		for (Obiekt_Do_Polecen stan : daneZewn) {
 			nazwy[i] = ((Stany_Zamowienia) stan).getNazwa();
 			i++;
 		}
@@ -62,27 +62,27 @@ public class StrategiaZamowienia implements IStrategia {
 			if (wynik == JOptionPane.OK_OPTION) {
 
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
-				oc.stworzSesjeBD();
-				Session session = oc.pobierzSesjeBD();
+				bd.stworzSesjeBD();
+				Session sesja = bd.pobierzSesjeBD();
 
-				Zamowienia user = (Zamowienia) session
-						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", bt.id)
+				Zamowienia rekord = (Zamowienia) sesja
+						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", edytorPrzycisku.id)
 						.uniqueResult();
-				oc.zamknijSesjeBD();
+				bd.zamknijSesjeBD();
 
 				if (!pola.get(0).getText().isEmpty())
-					user.setAdres_wysylki_miasto(pola.get(0).getText());
+					rekord.setAdres_wysylki_miasto(pola.get(0).getText());
 				if (!pola.get(1).getText().isEmpty())
-					user.setAdres_wysylki_ulica(pola.get(1).getText());
+					rekord.setAdres_wysylki_ulica(pola.get(1).getText());
 
-				user.setId_stanu_zamowienia(
-						((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getId_Stanu_Zamowienia());
+				rekord.setId_stanu_zamowienia(
+						((Stany_Zamowienia) daneZewn.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getId_Stanu_Zamowienia());
 
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				bt.tab.setValueAt(user.getAdres_wysylki_miasto(), bt.row, 1);
-				bt.tab.setValueAt(user.getAdres_wysylki_ulica(), bt.row, 2);
-				bt.tab.setValueAt(((Stany_Zamowienia) fData.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), bt.row, 4);
+				edytorPrzycisku.tabela.setValueAt(rekord.getAdres_wysylki_miasto(), edytorPrzycisku.wiersz, 1);
+				edytorPrzycisku.tabela.setValueAt(rekord.getAdres_wysylki_ulica(), edytorPrzycisku.wiersz, 2);
+				edytorPrzycisku.tabela.setValueAt(((Stany_Zamowienia) daneZewn.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), edytorPrzycisku.wiersz, 4);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,16 +91,16 @@ public class StrategiaZamowienia implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(ButtonEditor bt) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
 		Zamowienia pr = new Zamowienia();
-		pr.setId_zamowienia(bt.id);
+		pr.setId_zamowienia(edytorPrzycisku.id);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-		lista.remove(bt.row);
+		lista.remove(edytorPrzycisku.wiersz);
 		HibernateOracle.cache.put("Magazyny", lista);
-		((DefaultTableModel) bt.tab.getModel()).removeRow(bt.row);
+		((DefaultTableModel) edytorPrzycisku.tabela.getModel()).removeRow(edytorPrzycisku.wiersz);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
@@ -130,26 +130,26 @@ public class StrategiaZamowienia implements IStrategia {
 
 				Object[] obiekty = pobierzModel(kontener);
 				
-				PolaczenieOracle oc = PolaczenieOracle.getInstance();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 				if (!HibernateOracle.cache.containsKey("StanyZamowien")) {
-					oc.stworzSesjeBD();
-					try (Session session2 = oc.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> query = session2.createQuery(
+					bd.stworzSesjeBD();
+					try (Session sesja2 = bd.pobierzSesjeBD()) {
+						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
 								"FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("StanyZamowien", query.getResultList());
-						oc.zamknijSesjeBD();
+						HibernateOracle.cache.put("StanyZamowien", zapytanie.getResultList());
+						bd.zamknijSesjeBD();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-				List<Obiekt_Do_Polecen> cash = HibernateOracle.cache.get("StanyZamowien");
+				List<Obiekt_Do_Polecen> cache = HibernateOracle.cache.get("StanyZamowien");
 				String nazwa = "Default";
 
 				int id = Integer.parseInt(((DefaultTableModel) ((JTable)obiekty[0]).getModel())
 						.getValueAt(((DefaultTableModel) ((JTable)obiekty[0]).getModel()).getRowCount() - 1, 0).toString());
 				noweZamowienie.setId_zamowienia(id + 1);
 
-				for (Obiekt_Do_Polecen entities : cash) {
+				for (Obiekt_Do_Polecen entities : cache) {
 					Stany_Zamowienia ent = (Stany_Zamowienia) entities;
 
 					if (ent.getId_Stanu_Zamowienia() == noweZamowienie.getId_stanu_zamowienia()) {

@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukt_Koszyk implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
 		
 		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Ilość: ");
 		
@@ -28,12 +28,12 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				if (!pola.get(0).getText().isEmpty() && Integer.parseInt(pola.get(0).getText()) > 0) {
 					for (Obiekt_Do_Polecen pk : HibernateOracle.koszyk) {
-						if (((Produkt_Koszyk) pk).getPr().getId_produktu() == bt.id) {
+						if (((Produkt_Koszyk) pk).getPr().getId_produktu() == edytorPrzycisku.id) {
 							((Produkt_Koszyk) pk).setIlosc(Integer.parseInt(pola.get(0).getText()));
-							bt.tab.setValueAt(Integer.parseInt(pola.get(0).getText()), bt.row, 3);
-							bt.tab.setValueAt(
+							edytorPrzycisku.tabela.setValueAt(Integer.parseInt(pola.get(0).getText()), edytorPrzycisku.wiersz, 3);
+							edytorPrzycisku.tabela.setValueAt(
 									Integer.parseInt(pola.get(0).getText()) * ((Produkt_Koszyk) pk).getPr().getCena(),
-									bt.row, 4);
+									edytorPrzycisku.wiersz, 4);
 							break;
 						}
 					}
@@ -49,14 +49,14 @@ public class StrategiaProdukt_Koszyk implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
 		for (Obiekt_Do_Polecen pk : HibernateOracle.koszyk) {
 			if (((Produkt_Koszyk) pk).getPr().getId_produktu() == br.id) {
 				HibernateOracle.koszyk.remove(pk);
 				break;
 			}
 		}
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) br.tabela.getModel()).removeRow(br.wiersz);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

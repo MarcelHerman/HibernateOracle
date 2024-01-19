@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
+import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
 
 import java.awt.Component;
 import java.time.LocalDate;
@@ -24,30 +24,30 @@ import net.codejava.HibernateOracle;
 public class StrategiaFaktury implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(ButtonEditor bt) {
+	public void dodajLogikeEdytowania(EdytorPrzycisku be) {
 		dyrektorOkienek.edytowanieFaktury();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
 		int wynik = JOptionPane.showConfirmDialog(null, okno, "Edytuj fakturę", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (wynik == JOptionPane.OK_OPTION) {
-				PolaczenieOracle oc = PolaczenieOracle.getInstance();
-				oc.stworzSesjeBD();
-				Session session = oc.pobierzSesjeBD();
+				PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
+				bd.stworzSesjeBD();
+				Session session = bd.pobierzSesjeBD();
 
-				Faktury user = (Faktury) session.createQuery("select u from Faktury u where u.id_faktury = :id")
-						.setParameter("id", bt.id).uniqueResult();
-				oc.zamknijSesjeBD();
+				Faktury rekord = (Faktury) session.createQuery("select u from Faktury u where u.id_faktury = :id")
+						.setParameter("id", be.id).uniqueResult();
+				bd.zamknijSesjeBD();
 
 							
 				ArrayList<JTextField> pola = dyrektorOkienek.zwrocPolaTekstowe();
 				if (pola.get(0).getText().isEmpty())return;
 				
-				user.setNIP(pola.get(0).getText());
+				rekord.setNIP(pola.get(0).getText());
 							
-				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(user, HibernateOracle.idUzytkownika));
+				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 				
-				bt.tab.setValueAt(user.getNIP(), bt.row, 2);
+				be.tabela.setValueAt(rekord.getNIP(), be.wiersz, 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,12 +56,12 @@ public class StrategiaFaktury implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(ButtonEditor br) {
+	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
 
 		Faktury pr = new Faktury();
 		pr.setId_faktury(br.id);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
+		((DefaultTableModel) br.tabela.getModel()).removeRow(br.wiersz);
 
 	}
 
