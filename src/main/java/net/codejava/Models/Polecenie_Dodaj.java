@@ -1,7 +1,5 @@
 package net.codejava.Models;
 
-import org.hibernate.Session;
-
 public class Polecenie_Dodaj extends Polecenie {
 	
 	public Polecenie_Dodaj(Obiekt_Do_Polecen obiekt, int id_wykonawcy){

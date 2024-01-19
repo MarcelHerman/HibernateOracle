@@ -123,6 +123,7 @@ public class StrategiaKategorie implements IStrategia {
 
 	}
 	
+	@Override
 	public void dodajLogikeDruku(DyrektorTabel dyrektor) {
 
     	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();

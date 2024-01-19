@@ -122,7 +122,7 @@ public class widokAplikacji {
 		DyrektorTabel dyrektor = new DyrektorTabel();
 		DyrektorOkienek dyrektorOkienek = new DyrektorOkienek();
 		
-		akcja.inicjalizujWidok(kontener, bar, glue);
+		akcja.inicjalizujWidok(frame, kontener, bar, glue);
 
 		// budSwing.tworzTabeleProdukty(obiekty);
 		dyrektor.tworzTabeleProdukty(obiekty, budSwing);

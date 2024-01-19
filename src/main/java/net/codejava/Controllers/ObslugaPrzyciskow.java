@@ -48,7 +48,7 @@ public class ObslugaPrzyciskow {
     public final widokAplikacji widok;
     private PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
     private DyrektorOkienek dyrektorOkienek = new DyrektorOkienek();
-    private final JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
+    private JFrame frame = new JFrame("Elektryka Prad Nie Tyka");
     private JPanel kontener = new JPanel();
     private JMenuBar bar = new JMenuBar();
     private Component glue = Box.createHorizontalGlue();
@@ -60,7 +60,8 @@ public class ObslugaPrzyciskow {
         inicjalizujPrzyciski();
     }
     
-    public void inicjalizujWidok(JPanel kontener, JMenuBar bar, Component glue) {
+    public void inicjalizujWidok(JFrame frame, JPanel kontener, JMenuBar bar, Component glue) {
+    	this.frame = frame;
         this.kontener = kontener;
         this.bar = bar;
         this.glue = glue;

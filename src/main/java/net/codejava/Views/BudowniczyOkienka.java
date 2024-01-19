@@ -2,17 +2,12 @@ package net.codejava.Views;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class BudowniczyOkienka {
