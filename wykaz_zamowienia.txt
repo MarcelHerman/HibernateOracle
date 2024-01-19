@@ -1,11 +1,13 @@
-Wykaz Zamowienia z dnia 2023-12-29
+Wykaz Zamowienia z dnia 2024-01-19 21:50:55
 Lp., Miasto wysyłki, Ulica wysyłki, Koszt, Stan zamowienia, Id Użytkownika, Zamówione produkty, Notatka
-2, as, ads, 27.289499999999997, W Realizacji
-4, sds, sdsd, 12.995000000000001, W Realizacji
-5, sdsa, dasd, 13.644750000000002, W Realizacji
-6, csfas, dsads, 27.0, W Realizacji
-7, sadasasdasd, sdasdasd, 25.0, W Realizacji
-8, dsa, dad, 25.99, W Realizacji
-9, dsds, dsds, 13.64, W Realizacji
-10, dsasadadfxsz, sadadassda, 21.06, W Realizacji
-11, ada, da, 16.14, W Realizacji
+2, as, ads, 27.289499999999997, W Realizacji, 1, Gumowa kaczuszka, null, 
+4, sds, sdsd, 12.995000000000001, W Realizacji, 1, Gumowa kaczuszka, znizka-50.0%  , 
+5, sdsa, dasd, 13.644750000000002, W Realizacji, 1, Gumowa kaczuszka, znizka-50.0%  opakowanie+5.0%  , 
+6, qqq, qqq, 27.0, W Realizacji, 1, Gumowa kaczuszka, znizka-1.0%;opakowanie+5.0%;, 
+7, sadasasdasd, sdasdasd, 25.0, W Realizacji, 1, Gumowa kaczuszka, null, 
+8, dsa, dad, 25.99, W Realizacji, 1, Gumowa kaczuszka, null, 
+9, eee, eee, 13.64, W Realizacji, 1, Gumowa kaczuszka, znizka-50.0%;opakowanie+5.0%;, 
+10, dsasadadfxsz, sadadassda, 21.06, W Realizacji, 1, Gumowa kaczuszka, znizka-32.0%;opakowanie+5.0%;notatka+2.5pln:'dla mamy';, 
+11, ada, da, 16.14, W Realizacji, 1, Gumowa kaczuszka, znizka-50.0%;opakowanie+5.0%;notatka+2.5pln:'dla miłej sąsiadki';, 
+12, xd, xd, 27.06, Dostarczone, 1, Gumowa kaczuszka | Suszarka V4, znizka-10.0%;opakowanie+5.0%;notatka+2.5pln:'hejka';, 
+13, Białystok, Wiejska 45A, 44.49, W Realizacji, 2, Suszarka V4, znizka-20.0%;opakowanie+5.0%;notatka+2.5pln:'miłego dnia';, 
