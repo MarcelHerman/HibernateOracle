@@ -1,9 +1,14 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
+import net.codejava.Views.BudowniczyTabeliDruk;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import net.codejava.HibernateOracle;
 
@@ -113,6 +121,43 @@ public class StrategiaKategorie implements IStrategia {
 			JOptionPane.showMessageDialog(null, "Nie udało się dodać kategorii. Błąd: " + e.getMessage());
 		}
 
+	}
+	
+	public void dodajLogikeDruku(DyrektorTabel dyrektor) {
+
+    	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
+
+    	BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
+    	
+        List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+		
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			
+            Query<Obiekt_Do_Polecen> zapytanie = null;
+            zapytanie = sesja2.createQuery("FROM Kategorie order by id_kategorii", Obiekt_Do_Polecen.class); 
+            obiekty = zapytanie.getResultList();
+            bd.zamknijSesjeBD();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+		dyrektor.tworzTabeleKategorie(obiekty, budDruk);
+         												 		   
+		String table = (String)dyrektor.pobierzTabele();
+		
+         String path = "wykaz_katgorii.txt";
+         File plik = new File(path);
+
+        		                     
+             try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
+            	 pisarz.write(table);		                         
+                 JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
+             } catch (IOException e) {
+                 e.printStackTrace();
+                 JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
+             }
+    
 	}
 
 	public Object[] pobierzModel(JPanel kontener)
