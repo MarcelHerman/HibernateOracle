@@ -2,7 +2,6 @@ package net.codejava.Controllers;
 
 import net.codejava.Models.*;
 import net.codejava.Views.BudowniczyTabeliDruk;
-import net.codejava.Views.BudowniczyTabeliSwing;
 import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
@@ -13,9 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

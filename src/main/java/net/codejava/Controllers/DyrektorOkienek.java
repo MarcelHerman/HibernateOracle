@@ -1,14 +1,8 @@
 package net.codejava.Controllers;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-
-import javax.swing.Box;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import net.codejava.Models.TypPola;
 import net.codejava.Views.BudowniczyOkienka;
 
