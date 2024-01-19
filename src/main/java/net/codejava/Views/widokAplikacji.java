@@ -61,19 +61,11 @@ public class widokAplikacji {
 		ObslugaPrzyciskow akcja = new ObslugaPrzyciskow(this);
 		bd.stworzSesjeBD();
 		HibernateOracle.cache = new HashMap<>();
-
-		Session sesja = bd.pobierzSesjeBD();
-
-		try {
-			sesja = bd.pobierzSesjeBD();
-		} catch (Exception e) {
-			System.out.println("Blad dodania tablicy: " + e.toString());
-		}
-
+		
 		List<Obiekt_Do_Polecen> obiekty = null;
 
-		try (Session sesja2 = bd.pobierzSesjeBD()) {
-			Query<Obiekt_Do_Polecen> zapytanie = sesja2
+		try (Session sesja = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja
 					.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu", Obiekt_Do_Polecen.class);
 			obiekty = zapytanie.getResultList();
 			bd.zamknijSesjeBD();
@@ -106,7 +98,6 @@ public class widokAplikacji {
 		bar.add(zalozKontoPrzycisk);
 		bar.add(pokazZalogujPrzycisk);
 
-		BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
 		BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();
 		DyrektorTabel dyrektor = new DyrektorTabel();
 		DyrektorOkienek dyrektorOkienek = new DyrektorOkienek();

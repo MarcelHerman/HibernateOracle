@@ -1,47 +1,23 @@
 package net.codejava.Controllers;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
-
 import net.codejava.HibernateOracle;
 import net.codejava.Views.BudowniczyTabeliSwing;
 import net.codejava.Views.widokAplikacji;
-import net.codejava.Controllers.*;
 import net.codejava.Models.*;
 
 public class ObslugaPrzyciskow {
