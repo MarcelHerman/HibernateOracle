@@ -69,21 +69,37 @@ public class ObslugaPrzyciskow {
 
     private void inicjalizujPrzyciski() {
         widok.getPokazZalogujPrzycisk().addActionListener(e -> wykonajZalogujAkcje());
+
         widok.getPokazProduktPrzycisk().addActionListener(e -> wykonajProduktAkcje());
+        
         widok.getPokazZamowieniaPrzycisk().addActionListener(e -> wykonajZamowieniaAkcje());
+
         widok.getPokazMagazynyPrzycisk().addActionListener(e -> wykonajMagazynyAkcje());
+        
         widok.getPokazFakturyPrzycisk().addActionListener(e -> wykonajFakturyAkcje());
+        
         widok.getPokazUzytkownicyPrzycisk().addActionListener(e -> wykonajUzytkownicyAkcje());
+        
         widok.getPokazWylogujPrzycisk().addActionListener(e -> wykonajWylogujAkcje());
+        
         widok.getPokazKategoriePrzycisk().addActionListener(e -> wykonajKategorieAkcje());
+        
         widok.getPokazProducentowPrzycisk().addActionListener(e -> wykonajProducentowAkcje());
+        
         widok.getPokazProduktMagazynPrzycisk().addActionListener(e -> wykonajProduktMagazynAkcje());
+        
         widok.getPokazProduktZamowieniaPrzycisk().addActionListener(e -> wykonajProduktZamowieniaAkcje());
+        
         widok.getPokazStanyZamowienPrzycisk().addActionListener(e -> wykonajStanyZamowienAkcje());
+        
         widok.getPokazTypyUzytkownikaPrzycisk().addActionListener(e -> wykonajTypyUzytkownikaAkcje());
+        
         widok.getKontoPrzycisk().addActionListener(e -> wykonajKontoAkcje());
+        
         widok.getDodajPrzycisk().addActionListener(e -> wykonajDodajAkcje());
+        
         widok.getZalozKontoPrzycisk().addActionListener(e -> wykonajZalozKontoAkcje());
+        
         widok.getEksportujDoDruku().addActionListener(e -> wykonajEksportujDoDrukuAkcje());
     }
 

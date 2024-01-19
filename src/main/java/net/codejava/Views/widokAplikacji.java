@@ -417,29 +417,20 @@ public class widokAplikacji {
 											* ((Produkt_Koszyk) produkt).getIlosc();
 								}
 
-								System.out.println("pocz");
-
 								IZamowienia zamowienie = new Zamowienia(koszt, ((JTextField)glowneOkno.getComponent(1)).getText(),
 										((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, "");
 								if (!((JTextField)glowneOkno.getComponent(11)).getText().isEmpty())
 									zamowienie = new Znizka(zamowienie, Double.parseDouble(((JTextField)glowneOkno.getComponent(11)).getText()));
-
-								System.out.println("po zn");
-
 								
 								if (((JCheckBox) glowneOkno.getComponent(8)).isSelected() == true)
 									zamowienie = new Opakowanie(zamowienie);
 								
-								System.out.println("po op");
-
 								if (!((JTextField)glowneOkno.getComponent(14)).getText().isEmpty()) {
 									if (((JTextField)glowneOkno.getComponent(14)).getText().length() < 150)
 										zamowienie = new Notatka(zamowienie, ((JTextField)glowneOkno.getComponent(14)).getText());
 									else
 										throw (new Exception("Podano zbyt długą notatkę - max 150 znaków."));
 								}
-								System.out.println("po not");
-
 
 								zamowienie = new Zamowienia(zamowienie.getKoszt(), ((JTextField)glowneOkno.getComponent(1)).getText(),
 										((JTextField)glowneOkno.getComponent(4)).getText(), 1, HibernateOracle.idUzytkownika, zamowienie.getOpis());
@@ -515,30 +506,6 @@ public class widokAplikacji {
 
 			}
 		});
-
-		/*zalozKontoPrzycisk.addActionListener(e -> akcja.wykonajZalozKontoAkcje());
-
-		pokazProduktPrzycisk.addActionListener(e -> akcja.wykonajProduktAkcje());
-
-		pokazZamowieniaPrzycisk.addActionListener(e -> akcja.wykonajZamowieniaAkcje());
-
-		pokazUzytkownicyPrzycisk.addActionListener(e -> akcja.wykonajUzytkownicyAkcje());
-
-		pokazKategoriePrzycisk.addActionListener(e -> akcja.wykonajKategorieAkcje());
-
-		pokazProducentowPrzycisk.addActionListener(e -> akcja.wykonajProducentowAkcje());
-
-		pokazProduktMagazynPrzycisk.addActionListener(e -> akcja.wykonajProduktMagazynAkcje());
-
-		pokazProduktZamowieniaPrzycisk.addActionListener(e -> akcja.wykonajProduktZamowieniaAkcje());
-
-		pokazStanyZamowienPrzycisk.addActionListener(e-> akcja.wykonajStanyZamowienAkcje());
-		
-		pokazTypyUzytkownikaPrzycisk.addActionListener(e-> akcja.wykonajTypyUzytkownikaAkcje());
-
-		pokazMagazynyPrzycisk.addActionListener(e-> akcja.wykonajMagazynyAkcje());
-
-		pokazFakturyPrzycisk.addActionListener(e-> akcja.wykonajFakturyAkcje());*/
 
 		dodajPrzycisk.addActionListener(new ActionListener() {
 			@Override
