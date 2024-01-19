@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProducenci implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(EdytorPrzycisku be) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		
 		//dyrektorOkienek.stworzOkno(null, TypPola.label, "Nazwa producenta: ", TypPola.label, "Kontakt: ", TypPola.label, "Miasto: ", TypPola.label, "Ulica: ", TypPola.checkbox, "Czy usunięty: ");
 		
@@ -78,14 +78,14 @@ public class StrategiaProducenci implements IStrategia {
 
 				HibernateOracle.cache.put("Producenci", lista);
 
-				be.tabela.setValueAt(rekord.getNazwa(), be.wiersz, 1);
-				be.tabela.setValueAt(rekord.getKontakt(), be.wiersz, 2);
-				be.tabela.setValueAt(rekord.getMiasto(), be.wiersz, 3);
-				be.tabela.setValueAt(rekord.getUlica(), be.wiersz, 4);
+				be.tab.setValueAt(rekord.getNazwa(), be.row, 1);
+				be.tab.setValueAt(rekord.getKontakt(), be.row, 2);
+				be.tab.setValueAt(rekord.getMiasto(), be.row, 3);
+				be.tab.setValueAt(rekord.getUlica(), be.row, 4);
 				if (rekord.getCzy_usunieto() == 1)
-					be.tabela.setValueAt("TAK", be.wiersz, 5);
+					be.tab.setValueAt("TAK", be.row, 5);
 				else
-					be.tabela.setValueAt("NIE", be.wiersz, 5);
+					be.tab.setValueAt("NIE", be.row, 5);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class StrategiaProducenci implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
+	public void dodajLogikeUsuwania(ButtonEditor br) {
 
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
@@ -120,7 +120,7 @@ public class StrategiaProducenci implements IStrategia {
 		pr.setCzy_usunieto(1);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
-		br.tabela.setValueAt("TAK", br.wiersz, 5);
+		br.tab.setValueAt("TAK", br.row, 5);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

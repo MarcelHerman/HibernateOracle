@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaZamowienia implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 
@@ -66,7 +66,7 @@ public class StrategiaZamowienia implements IStrategia {
 				Session sesja = bd.pobierzSesjeBD();
 
 				Zamowienia rekord = (Zamowienia) sesja
-						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", edytorPrzycisku.id)
+						.createQuery("select u from Zamowienia u where u.id_zamowienia = :id").setParameter("id", ButtonEditor.id)
 						.uniqueResult();
 				bd.zamknijSesjeBD();
 
@@ -80,9 +80,9 @@ public class StrategiaZamowienia implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				edytorPrzycisku.tabela.setValueAt(rekord.getAdres_wysylki_miasto(), edytorPrzycisku.wiersz, 1);
-				edytorPrzycisku.tabela.setValueAt(rekord.getAdres_wysylki_ulica(), edytorPrzycisku.wiersz, 2);
-				edytorPrzycisku.tabela.setValueAt(((Stany_Zamowienia) daneZewn.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), edytorPrzycisku.wiersz, 4);
+				ButtonEditor.tab.setValueAt(rekord.getAdres_wysylki_miasto(), ButtonEditor.row, 1);
+				ButtonEditor.tab.setValueAt(rekord.getAdres_wysylki_ulica(), ButtonEditor.row, 2);
+				ButtonEditor.tab.setValueAt(((Stany_Zamowienia) daneZewn.get(((JComboBox)okno.getComponent(6)).getSelectedIndex())).getNazwa(), ButtonEditor.row, 4);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,16 +91,16 @@ public class StrategiaZamowienia implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
 		Zamowienia pr = new Zamowienia();
-		pr.setId_zamowienia(edytorPrzycisku.id);
+		pr.setId_zamowienia(ButtonEditor.id);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-		lista.remove(edytorPrzycisku.wiersz);
+		lista.remove(ButtonEditor.row);
 		HibernateOracle.cache.put("Magazyny", lista);
-		((DefaultTableModel) edytorPrzycisku.tabela.getModel()).removeRow(edytorPrzycisku.wiersz);
+		((DefaultTableModel) ButtonEditor.tab.getModel()).removeRow(ButtonEditor.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

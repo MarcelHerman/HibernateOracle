@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaProdukty implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
 		
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
@@ -68,7 +68,7 @@ public class StrategiaProdukty implements IStrategia {
 				Session sesja = bd.pobierzSesjeBD();
 
 				Produkty rekord = (Produkty) sesja.createQuery("select u from Produkty u where u.id_produktu = :id")
-						.setParameter("id", edytorPrzycisku.id).uniqueResult();
+						.setParameter("id", ButtonEditor.id).uniqueResult();
 
 				bd.zamknijSesjeBD();
 
@@ -89,14 +89,14 @@ public class StrategiaProdukty implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				edytorPrzycisku.tabela.setValueAt(rekord.getNazwa(), edytorPrzycisku.wiersz, 1);
-				edytorPrzycisku.tabela.setValueAt(rekord.getCena(), edytorPrzycisku.wiersz, 2);
-				edytorPrzycisku.tabela.setValueAt(rekord.getOpis(), edytorPrzycisku.wiersz, 3);
-				edytorPrzycisku.tabela.setValueAt(((Kategorie) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), edytorPrzycisku.wiersz, 5);
+				ButtonEditor.tab.setValueAt(rekord.getNazwa(), ButtonEditor.row, 1);
+				ButtonEditor.tab.setValueAt(rekord.getCena(), ButtonEditor.row, 2);
+				ButtonEditor.tab.setValueAt(rekord.getOpis(), ButtonEditor.row, 3);
+				ButtonEditor.tab.setValueAt(((Kategorie) daneZewn.get(((JComboBox)okno.getComponent(9)).getSelectedIndex())).getNazwa(), ButtonEditor.row, 5);
 				if (rekord.getCzy_usunieto() == 1)
-					edytorPrzycisku.tabela.setValueAt("TAK", edytorPrzycisku.wiersz, 6);
+					ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
 				else
-					edytorPrzycisku.tabela.setValueAt("NIE", edytorPrzycisku.wiersz, 6);
+					ButtonEditor.tab.setValueAt("NIE", ButtonEditor.row, 6);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,17 +105,17 @@ public class StrategiaProdukty implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		Session sesja = bd.pobierzSesjeBD();
 		Produkty pr = (Produkty) sesja.createQuery("select u from Produkty u where u.id_produktu = :id")
-				.setParameter("id", edytorPrzycisku.id).uniqueResult();
+				.setParameter("id", ButtonEditor.id).uniqueResult();
 		bd.zamknijSesjeBD();
 		pr.setCzy_usunieto(1);
 
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
-		edytorPrzycisku.tabela.setValueAt("TAK", edytorPrzycisku.wiersz, 6);
+		ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

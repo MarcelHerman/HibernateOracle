@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaFaktury implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(EdytorPrzycisku be) {
+	public void dodajLogikeEdytowania(ButtonEditor be) {
 		dyrektorOkienek.edytowanieFaktury();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
 		
@@ -47,7 +47,7 @@ public class StrategiaFaktury implements IStrategia {
 							
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 				
-				be.tabela.setValueAt(rekord.getNIP(), be.wiersz, 2);
+				be.tab.setValueAt(rekord.getNIP(), be.row, 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,12 +56,12 @@ public class StrategiaFaktury implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
+	public void dodajLogikeUsuwania(ButtonEditor br) {
 
 		Faktury pr = new Faktury();
 		pr.setId_faktury(br.id);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
-		((DefaultTableModel) br.tabela.getModel()).removeRow(br.wiersz);
+		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
 
 	}
 

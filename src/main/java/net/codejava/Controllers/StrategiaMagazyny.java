@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaMagazyny implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
 		
 		dyrektorOkienek.edytowanieMagazyny();
 		JPanel okno = dyrektorOkienek.zwrocOkno();
@@ -39,7 +39,7 @@ public class StrategiaMagazyny implements IStrategia {
 				Session sesja = bd.pobierzSesjeBD();
 
 				Magazyny rekord = (Magazyny) sesja.createQuery("select u from Magazyny u where u.id_magazynu = :id")
-						.setParameter("id", edytorPrzycisku.id).uniqueResult();
+						.setParameter("id", ButtonEditor.id).uniqueResult();
 
 				int szukany = rekord.getId_magazynu();
 
@@ -65,8 +65,8 @@ public class StrategiaMagazyny implements IStrategia {
 
 				HibernateOracle.cache.put("Magazyny", lista);
 
-				edytorPrzycisku.tabela.setValueAt(rekord.getMiasto(), edytorPrzycisku.wiersz, 1);
-				edytorPrzycisku.tabela.setValueAt(rekord.getUlica(), edytorPrzycisku.wiersz, 2);
+				ButtonEditor.tab.setValueAt(rekord.getMiasto(), ButtonEditor.row, 1);
+				ButtonEditor.tab.setValueAt(rekord.getUlica(), ButtonEditor.row, 2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,16 +76,16 @@ public class StrategiaMagazyny implements IStrategia {
 	}
 
 	@Override
-	public void dodajLogikeUsuwania(EdytorPrzycisku br) {
+	public void dodajLogikeUsuwania(ButtonEditor br) {
 
 		Magazyny pr = new Magazyny();
 		pr.setId_magazynu(br.id);
 		List<Obiekt_Do_Polecen> lista = HibernateOracle.cache.get("Magazyny");
-		lista.remove(br.wiersz);
+		lista.remove(br.row);
 		HibernateOracle.cache.put("Magazyny", lista);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Usun(pr, HibernateOracle.idUzytkownika));
 
-		((DefaultTableModel) br.tabela.getModel()).removeRow(br.wiersz);
+		((DefaultTableModel) br.tab.getModel()).removeRow(br.row);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {

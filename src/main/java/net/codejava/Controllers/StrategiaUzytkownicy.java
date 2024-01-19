@@ -1,7 +1,7 @@
 package net.codejava.Controllers;
 
 import net.codejava.Models.*;
-import net.codejava.Views.BudowniczyTabeliSwing.EdytorPrzycisku;
+import net.codejava.Views.BudowniczyTabeliSwing.ButtonEditor;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import net.codejava.HibernateOracle;
 public class StrategiaUzytkownicy implements IStrategia {
 
 	@Override
-	public void dodajLogikeEdytowania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeEdytowania(ButtonEditor ButtonEditor) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		List<Obiekt_Do_Polecen> daneZewn = null;
@@ -61,7 +61,7 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 				Uzytkownicy rekord = (Uzytkownicy) sesja
 						.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
-						.setParameter("id", edytorPrzycisku.id).uniqueResult();
+						.setParameter("id", ButtonEditor.id).uniqueResult();
 				bd.zamknijSesjeBD();
 
 				rekord.setCzy_usunieto(((JCheckBox)okno.getComponent(14)).isSelected() ? 1 : 0);
@@ -78,15 +78,15 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 				HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(rekord, HibernateOracle.idUzytkownika));
 
-				edytorPrzycisku.tabela.setValueAt(rekord.getNazwa_uzytkownika(), edytorPrzycisku.wiersz, 1);
-				edytorPrzycisku.tabela.setValueAt(rekord.getLogin(), edytorPrzycisku.wiersz, 2);
-				edytorPrzycisku.tabela.setValueAt(rekord.getHaslo(), edytorPrzycisku.wiersz, 3);
-				edytorPrzycisku.tabela.setValueAt(rekord.getE_mail(), edytorPrzycisku.wiersz, 4);
-				edytorPrzycisku.tabela.setValueAt(((Typy_uzytkownika) daneZewn.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getNazwa(), edytorPrzycisku.wiersz, 5);
+				ButtonEditor.tab.setValueAt(rekord.getNazwa_uzytkownika(), ButtonEditor.row, 1);
+				ButtonEditor.tab.setValueAt(rekord.getLogin(), ButtonEditor.row, 2);
+				ButtonEditor.tab.setValueAt(rekord.getHaslo(), ButtonEditor.row, 3);
+				ButtonEditor.tab.setValueAt(rekord.getE_mail(), ButtonEditor.row, 4);
+				ButtonEditor.tab.setValueAt(((Typy_uzytkownika) daneZewn.get(((JComboBox)okno.getComponent(12)).getSelectedIndex())).getNazwa(), ButtonEditor.row, 5);
 				if (rekord.getCzy_usunieto() == 1)
-					edytorPrzycisku.tabela.setValueAt("TAK", edytorPrzycisku.wiersz, 6);
+					ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
 				else
-					edytorPrzycisku.tabela.setValueAt("NIE", edytorPrzycisku.wiersz, 6);
+					ButtonEditor.tab.setValueAt("NIE", ButtonEditor.row, 6);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,18 +95,18 @@ public class StrategiaUzytkownicy implements IStrategia {
 
 	}
 
-	public void dodajLogikeUsuwania(EdytorPrzycisku edytorPrzycisku) {
+	public void dodajLogikeUsuwania(ButtonEditor ButtonEditor) {
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
 		bd.stworzSesjeBD();
 		Session sesja = bd.pobierzSesjeBD();
 		Uzytkownicy pr = (Uzytkownicy) sesja.createQuery("select u from Uzytkownicy u where u.id_uzytkownika = :id")
-				.setParameter("id", edytorPrzycisku.id).uniqueResult();
+				.setParameter("id", ButtonEditor.id).uniqueResult();
 		bd.zamknijSesjeBD();
 
 		pr.setCzy_usunieto(1);
 		HibernateOracle.repoPolecen.dodajPolecenie(new Polecenie_Edytuj(pr, HibernateOracle.idUzytkownika));
 
-		edytorPrzycisku.tabela.setValueAt("TAK", edytorPrzycisku.wiersz, 6);
+		ButtonEditor.tab.setValueAt("TAK", ButtonEditor.row, 6);
 	}
 
 	public void dodajLogikeDodawania(JPanel kontener) {
