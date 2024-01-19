@@ -39,9 +39,9 @@ import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
 
 import net.codejava.HibernateOracle;
+import net.codejava.Views.BudowniczyTabeliSwing;
 import net.codejava.Views.widokAplikacji;
-import net.codejava.Controllers.DyrektorOkienek;
-import net.codejava.Controllers.DyrektorTabel;
+import net.codejava.Controllers.*;
 import net.codejava.Models.*;
 
 public class ObslugaPrzyciskow {
@@ -52,6 +52,8 @@ public class ObslugaPrzyciskow {
     private JPanel kontener = new JPanel();
     private JMenuBar bar = new JMenuBar();
     private Component glue = Box.createHorizontalGlue();
+	BudowniczyTabeliSwing budSwing = new BudowniczyTabeliSwing();
+	DyrektorTabel dyrektor = new DyrektorTabel();
     
     public ObslugaPrzyciskow(widokAplikacji widok) {
         this.widok = widok;
@@ -83,28 +85,169 @@ public class ObslugaPrzyciskow {
 	}
 
     public void wykonajProduktAkcje() {
-        // Logika dla przycisku "Produkty"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+
+			Query<Obiekt_Do_Polecen> zapytanie = null;
+			if ((HibernateOracle.nazwaTypu.equals("Klient")))
+				zapytanie = sesja2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu",
+						Obiekt_Do_Polecen.class);
+			else
+				zapytanie = sesja2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
+			obiekty = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		dyrektor.tworzTabeleProdukty(obiekty, budSwing);
+
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+
+		if (!(HibernateOracle.nazwaTypu.equals("Klient"))) {
+			kontener.add(widok.getDodajPrzycisk());
+			kontener.add(widok.getEksportujDoDruku());
+		}
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajZamowieniaAkcje() {
-        // Logika dla przycisku "Zamówienia"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = null;
+			if (HibernateOracle.nazwaTypu.equals("Klient"))
+				zapytanie = sesja2.createQuery(
+						"FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia",
+						Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
+			else
+				zapytanie = sesja2.createQuery("FROM Zamowienia order by id_zamowienia",
+						Obiekt_Do_Polecen.class);
+			obiekty = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		dyrektor.tworzTabeleZamowienia(obiekty, budSwing);
+
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		if (!(HibernateOracle.nazwaTypu.equals("Klient"))) {
+			kontener.add(widok.getDodajPrzycisk());
+			kontener.add(widok.getEksportujDoDruku());
+		}
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajMagazynyAkcje() {
-        // Logika dla przycisku "Magazyny"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		if (!HibernateOracle.cache.containsKey("Magazyny")) {
+			bd.stworzSesjeBD();
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Magazyny order by id_magazynu",
+						Obiekt_Do_Polecen.class);
+				HibernateOracle.cache.put("Magazyny", zapytanie.getResultList());
+				bd.zamknijSesjeBD();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		dyrektor.tworzTabeleMagazyny(HibernateOracle.cache.get("Magazyny"), budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getDodajPrzycisk());
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajFakturyAkcje() {
-        // Logika dla przycisku "Faktury"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = null;
+			if (HibernateOracle.nazwaTypu.equals("Klient"))
+				zapytanie = sesja2.createQuery(
+						"SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury",
+						Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
+			else
+				zapytanie = sesja2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
+			obiekty = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		dyrektor.tworzTabeleFaktury(obiekty, budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		if (!(HibernateOracle.nazwaTypu.equals("Klient"))) {
+			kontener.add(widok.getDodajPrzycisk());
+			kontener.add(widok.getEksportujDoDruku());
+		}
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajUzytkownicyAkcje() {
-        // Logika dla przycisku "Użytkownicy"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Uzytkownicy order by id_uzytkownika",
+					Obiekt_Do_Polecen.class);
+			obiekty = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		dyrektor.tworzTabeleUzytkownicy(obiekty, budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getDodajPrzycisk());
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajWylogujAkcje() {
@@ -113,33 +256,172 @@ public class ObslugaPrzyciskow {
     }
 
     public void wykonajKategorieAkcje() {
-        // Logika dla przycisku "Kategorie"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		if (!HibernateOracle.cache.containsKey("Kategorie")) {
+			bd.stworzSesjeBD();
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Kategorie order by id_kategorii",
+						Obiekt_Do_Polecen.class);
+				HibernateOracle.cache.put("Kategorie", zapytanie.getResultList());
+				bd.zamknijSesjeBD();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		dyrektor.tworzTabeleKategorie(HibernateOracle.cache.get("Kategorie"), budSwing);
+
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getDodajPrzycisk());
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajProducentowAkcje() {
-        // Logika dla przycisku "Producenci"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		if (!HibernateOracle.cache.containsKey("Producenci")) {
+			bd.stworzSesjeBD();
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				Query<Obiekt_Do_Polecen> zapytanie = sesja2
+						.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
+				HibernateOracle.cache.put("Producenci", zapytanie.getResultList());
+				bd.zamknijSesjeBD();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		dyrektor.tworzTabeleProducenci(HibernateOracle.cache.get("Producenci"), budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getDodajPrzycisk());
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajProduktMagazynAkcje() {
-        // Logika dla przycisku "Produkty w magazynach"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
+					"FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu",
+					Obiekt_Do_Polecen.class);
+			obiekty = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		dyrektor.tworzTabeleProdukt_Magazyn(obiekty, budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getDodajPrzycisk());
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajProduktZamowieniaAkcje() {
-        // Logika dla przycisku "Produkty w zamówieniach"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		List<Obiekt_Do_Polecen> obiekty = null;
+		bd.stworzSesjeBD();
+
+		try (Session sesja2 = bd.pobierzSesjeBD()) {
+			Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
+					"FROM Produkt_Zamowienia order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu",
+					Obiekt_Do_Polecen.class);
+			obiekty = zapytanie.getResultList();
+			bd.zamknijSesjeBD();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		dyrektor.tworzTabeleProdukt_Zamowienia(obiekty, budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getDodajPrzycisk());
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajStanyZamowienAkcje() {
-        // Logika dla przycisku "Stany zamówień"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		if (!HibernateOracle.cache.containsKey("StanyZamowien")) {
+			bd.stworzSesjeBD();
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
+						"FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
+				HibernateOracle.cache.put("StanyZamowien", zapytanie.getResultList());
+				bd.zamknijSesjeBD();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		dyrektor.tworzTabeleStany_Zamowienia(HibernateOracle.cache.get("StanyZamowien"), budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajTypyUzytkownikaAkcje() {
-        // Logika dla przycisku "Typy użytkownika"
-        // ...
+    	kontener.removeAll();
+		PolaczenieProxy pc = new PolaczenieProxy();
+		pc.zamknijSesjeBD();
+
+		if (!HibernateOracle.cache.containsKey("TypyUzytkownika")) {
+			bd.stworzSesjeBD();
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
+						"FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
+				HibernateOracle.cache.put("TypyUzytkownika", zapytanie.getResultList());
+				bd.zamknijSesjeBD();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		dyrektor.tworzTabeleTypy_uzytkownika(HibernateOracle.cache.get("TypyUzytkownika"), budSwing);
+		JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		JScrollPane pane = new JScrollPane(tabSwing);
+
+		kontener.add(pane);
+		kontener.add(widok.getEksportujDoDruku());
+		frame.revalidate();
+		frame.repaint();
     }
 
     public void wykonajKontoAkcje() {

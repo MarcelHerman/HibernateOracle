@@ -46,6 +46,9 @@ import net.codejava.Models.*;
 
 public class widokAplikacji {
 
+	private JButton dodajPrzycisk = new JButton("Dodaj rekord");
+	private JButton eksportujDoDruku = new JButton("Drukuj");
+	
 	public void Inicjalizuj() {
 
 		PolaczenieOracle bd = PolaczenieOracle.pobierzInstancje();
@@ -107,9 +110,7 @@ public class widokAplikacji {
 		JButton pokazStanyZamowienPrzycisk = new JButton("Stany zamówień");
 		JButton pokazTypyUzytkownikaPrzycisk = new JButton("Typy użytkownika");
 		JButton kontoPrzycisk = new JButton(" ");
-		JButton dodajPrzycisk = new JButton("Dodaj rekord");
 		JButton zalozKontoPrzycisk = new JButton("Zalóż konto");
-		JButton eksportujDoDruku = new JButton("Drukuj");
 
 		Component glue = Box.createHorizontalGlue();
 		bar.add(glue);
@@ -630,373 +631,27 @@ public class widokAplikacji {
 
 		zalozKontoPrzycisk.addActionListener(e -> akcja.wykonajZalozKontoAkcje());
 
-		pokazProduktPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
+		pokazProduktPrzycisk.addActionListener(e -> akcja.wykonajProduktAkcje());
 
-				List<Obiekt_Do_Polecen> obiekty = null;
-				bd.stworzSesjeBD();
+		pokazZamowieniaPrzycisk.addActionListener(e -> akcja.wykonajZamowieniaAkcje());
 
-				try (Session sesja2 = bd.pobierzSesjeBD()) {
+		pokazUzytkownicyPrzycisk.addActionListener(e -> akcja.wykonajUzytkownicyAkcje());
 
-					Query<Obiekt_Do_Polecen> zapytanie = null;
-					if ((HibernateOracle.nazwaTypu.equals("Klient")))
-						zapytanie = sesja2.createQuery("FROM Produkty where czy_usunieto = 0 order by id_produktu",
-								Obiekt_Do_Polecen.class);
-					else
-						zapytanie = sesja2.createQuery("FROM Produkty order by id_produktu", Obiekt_Do_Polecen.class);
-					obiekty = zapytanie.getResultList();
-					bd.zamknijSesjeBD();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		pokazKategoriePrzycisk.addActionListener(e -> akcja.wykonajKategorieAkcje());
 
-				dyrektor.tworzTabeleProdukty(obiekty, budSwing);
+		pokazProducentowPrzycisk.addActionListener(e -> akcja.wykonajProducentowAkcje());
 
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
+		pokazProduktMagazynPrzycisk.addActionListener(e -> akcja.wykonajProduktMagazynAkcje());
 
-				JScrollPane pane = new JScrollPane(tabSwing);
+		pokazProduktZamowieniaPrzycisk.addActionListener(e -> akcja.wykonajProduktZamowieniaAkcje());
 
-				kontener.add(pane);
+		pokazStanyZamowienPrzycisk.addActionListener(e-> akcja.wykonajStanyZamowienAkcje());
+		
+		pokazTypyUzytkownikaPrzycisk.addActionListener(e-> akcja.wykonajTypyUzytkownikaAkcje());
 
-				if (!(HibernateOracle.nazwaTypu.equals("Klient"))) {
-					kontener.add(dodajPrzycisk);
-					kontener.add(eksportujDoDruku);
-				}
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
+		pokazMagazynyPrzycisk.addActionListener(e-> akcja.wykonajMagazynyAkcje());
 
-		pokazZamowieniaPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				List<Obiekt_Do_Polecen> obiekty = null;
-				bd.stworzSesjeBD();
-
-				try (Session sesja2 = bd.pobierzSesjeBD()) {
-					Query<Obiekt_Do_Polecen> zapytanie = null;
-					if (HibernateOracle.nazwaTypu.equals("Klient"))
-						zapytanie = sesja2.createQuery(
-								"FROM Zamowienia z where z.uzytkownicy_id_uzytkownika = :id order by z.id_zamowienia",
-								Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
-					else
-						zapytanie = sesja2.createQuery("FROM Zamowienia order by id_zamowienia",
-								Obiekt_Do_Polecen.class);
-					obiekty = zapytanie.getResultList();
-					bd.zamknijSesjeBD();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				dyrektor.tworzTabeleZamowienia(obiekty, budSwing);
-
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				if (!(HibernateOracle.nazwaTypu.equals("Klient"))) {
-					kontener.add(dodajPrzycisk);
-					kontener.add(eksportujDoDruku);
-				}
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazUzytkownicyPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				List<Obiekt_Do_Polecen> obiekty = null;
-				bd.stworzSesjeBD();
-
-				try (Session sesja2 = bd.pobierzSesjeBD()) {
-					Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Uzytkownicy order by id_uzytkownika",
-							Obiekt_Do_Polecen.class);
-					obiekty = zapytanie.getResultList();
-					bd.zamknijSesjeBD();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				dyrektor.tworzTabeleUzytkownicy(obiekty, budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazKategoriePrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				if (!HibernateOracle.cache.containsKey("Kategorie")) {
-					bd.stworzSesjeBD();
-					try (Session sesja2 = bd.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Kategorie order by id_kategorii",
-								Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("Kategorie", zapytanie.getResultList());
-						bd.zamknijSesjeBD();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
-				dyrektor.tworzTabeleKategorie(HibernateOracle.cache.get("Kategorie"), budSwing);
-
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazProducentowPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				if (!HibernateOracle.cache.containsKey("Producenci")) {
-					bd.stworzSesjeBD();
-					try (Session sesja2 = bd.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> zapytanie = sesja2
-								.createQuery("FROM Producenci order by id_producenta", Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("Producenci", zapytanie.getResultList());
-						bd.zamknijSesjeBD();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
-				dyrektor.tworzTabeleProducenci(HibernateOracle.cache.get("Producenci"), budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazProduktMagazynPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				List<Obiekt_Do_Polecen> obiekty = null;
-				bd.stworzSesjeBD();
-
-				try (Session sesja2 = bd.pobierzSesjeBD()) {
-					Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
-							"FROM Produkt_Magazyn order by produkt_magazyn_id.magazyny_id_magazynu, produkt_magazyn_id.produkty_id_produktu",
-							Obiekt_Do_Polecen.class);
-					obiekty = zapytanie.getResultList();
-					bd.zamknijSesjeBD();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				dyrektor.tworzTabeleProdukt_Magazyn(obiekty, budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazProduktZamowieniaPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				List<Obiekt_Do_Polecen> obiekty = null;
-				bd.stworzSesjeBD();
-
-				try (Session sesja2 = bd.pobierzSesjeBD()) {
-					Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
-							"FROM Produkt_Zamowienia order by produkt_zamowienia_id.id_zamowienia, produkt_zamowienia_id.id_produktu",
-							Obiekt_Do_Polecen.class);
-					obiekty = zapytanie.getResultList();
-					bd.zamknijSesjeBD();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				dyrektor.tworzTabeleProdukt_Zamowienia(obiekty, budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazStanyZamowienPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				if (!HibernateOracle.cache.containsKey("StanyZamowien")) {
-					bd.stworzSesjeBD();
-					try (Session sesja2 = bd.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
-								"FROM Stany_Zamowienia order by id_stanu_zamowienia", Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("StanyZamowien", zapytanie.getResultList());
-						bd.zamknijSesjeBD();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
-				dyrektor.tworzTabeleStany_Zamowienia(HibernateOracle.cache.get("StanyZamowien"), budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazTypyUzytkownikaPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				if (!HibernateOracle.cache.containsKey("TypyUzytkownika")) {
-					bd.stworzSesjeBD();
-					try (Session sesja2 = bd.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery(
-								"FROM Typy_uzytkownika order by id_typu_uzytkownika", Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("TypyUzytkownika", zapytanie.getResultList());
-						bd.zamknijSesjeBD();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
-				dyrektor.tworzTabeleTypy_uzytkownika(HibernateOracle.cache.get("TypyUzytkownika"), budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazMagazynyPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				if (!HibernateOracle.cache.containsKey("Magazyny")) {
-					bd.stworzSesjeBD();
-					try (Session sesja2 = bd.pobierzSesjeBD()) {
-						Query<Obiekt_Do_Polecen> zapytanie = sesja2.createQuery("FROM Magazyny order by id_magazynu",
-								Obiekt_Do_Polecen.class);
-						HibernateOracle.cache.put("Magazyny", zapytanie.getResultList());
-						bd.zamknijSesjeBD();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-
-				dyrektor.tworzTabeleMagazyny(HibernateOracle.cache.get("Magazyny"), budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				kontener.add(dodajPrzycisk);
-				kontener.add(eksportujDoDruku);
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
-
-		pokazFakturyPrzycisk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				kontener.removeAll();
-				PolaczenieProxy pc = new PolaczenieProxy();
-				pc.zamknijSesjeBD();
-
-				List<Obiekt_Do_Polecen> obiekty = null;
-				bd.stworzSesjeBD();
-
-				try (Session sesja2 = bd.pobierzSesjeBD()) {
-					Query<Obiekt_Do_Polecen> zapytanie = null;
-					if (HibernateOracle.nazwaTypu.equals("Klient"))
-						zapytanie = sesja2.createQuery(
-								"SELECT f FROM Faktury f, Zamowienia z, Uzytkownicy u where f.zamowienia_id_zamowienia=z.id_zamowienia and z.uzytkownicy_id_uzytkownika=u.id_uzytkownika and u.id_uzytkownika = :id order by f.id_faktury",
-								Obiekt_Do_Polecen.class).setParameter("id", HibernateOracle.idUzytkownika);
-					else
-						zapytanie = sesja2.createQuery("FROM Faktury order by id_faktury", Obiekt_Do_Polecen.class);
-					obiekty = zapytanie.getResultList();
-					bd.zamknijSesjeBD();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				dyrektor.tworzTabeleFaktury(obiekty, budSwing);
-				JTable tabSwing = (JTable) dyrektor.pobierzTabele();
-				JScrollPane pane = new JScrollPane(tabSwing);
-
-				kontener.add(pane);
-				if (!(HibernateOracle.nazwaTypu.equals("Klient"))) {
-					kontener.add(dodajPrzycisk);
-					kontener.add(eksportujDoDruku);
-				}
-				frame.revalidate();
-				frame.repaint();
-			}
-		});
+		pokazFakturyPrzycisk.addActionListener(e-> akcja.wykonajFakturyAkcje());
 
 		dodajPrzycisk.addActionListener(new ActionListener() {
 			@Override
@@ -1345,5 +1000,13 @@ public class widokAplikacji {
 
 			}
 		});
+	}
+	
+	public JButton getDodajPrzycisk() {
+		return dodajPrzycisk;
+	}
+	
+	public JButton getEksportujDoDruku() {
+		return eksportujDoDruku;
 	}
 }
