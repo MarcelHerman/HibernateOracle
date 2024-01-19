@@ -27,16 +27,19 @@ public class DyrektorOkienek {
     }
 	
 	public void edytowanieZamowieniaPracownik(String[] nazwy) {
+		budowniczy.zresetuj();
 		budowniczy.dodajJComboBox(nazwy);
 	}
 		
 	public void edytowanieZamowieniaAdministrator(String[] nazwy) {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Ulica wysyłki: ");
 		budowniczy.dodajJTextField("Miasto wysyłki: ");
 		budowniczy.dodajJComboBox(nazwy);
 	}
 		
 	public void dodawanieZamowienia() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Id użytkownika: ");
 		budowniczy.dodajJTextField("Adres wysyłki miasto: ");
 		budowniczy.dodajJTextField("Adres wysyłki ulica: ");
@@ -44,6 +47,7 @@ public class DyrektorOkienek {
 	}
 		
 	public void edytowanieUzytkownicy(String[] nazwy) {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa użytkownika: ");
 		budowniczy.dodajJTextField("Login: ");
 		budowniczy.dodajJTextField("Hasło: ");
@@ -53,6 +57,7 @@ public class DyrektorOkienek {
 	}
 	
 	public void dodawanieUzytkownicy(String[] nazwy) {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa użytkownika: ");
 		budowniczy.dodajJTextField("Login: ");
 		budowniczy.dodajJTextField("Hasło: ");
@@ -62,6 +67,7 @@ public class DyrektorOkienek {
 	}
 	
 	public void edytowanieProdukty(String[] nazwy) {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa produktu: ");
 		budowniczy.dodajJTextField("Cena: ");
 		budowniczy.dodajJTextField("Opis: ");
@@ -70,6 +76,7 @@ public class DyrektorOkienek {
 	}
 	
 	public void dodawanieProdukty(String[] nazwy, String[] nazwy2) {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa produktu: ");
 		budowniczy.dodajJTextField("Cena: ");
 		budowniczy.dodajJTextField("Opis: ");
@@ -80,17 +87,20 @@ public class DyrektorOkienek {
 	public void edytowanieProdukt_Zamowienia() {}
 	
 	public void dodawanieProdukt_Zamowienia() {	
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Id zamowienia: ");
 		budowniczy.dodajJTextField("Id produktu: ");
 		budowniczy.dodajJTextField("Ilość: ");	
 	}
 	
 	public void edytowanieProdukt_Magazyn() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Stan faktyczny: ");
 		budowniczy.dodajJTextField("Stan magazynowy: ");
 	}
 	
 	public void dodawanieProdukt_Magazyn() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Id magazynu: ");
 		budowniczy.dodajJTextField("Id produktu: ");
 		budowniczy.dodajJTextField("Stan faktyczny: ");
@@ -98,6 +108,7 @@ public class DyrektorOkienek {
 	}
 	
 	public void edytowaniePodukt_Koszyk() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Ilość: ");
 	}
 	
@@ -105,6 +116,7 @@ public class DyrektorOkienek {
 	}
 	
 	public void edytowanieProducenci() {	
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa producenta: ");
 		budowniczy.dodajJTextField("Kontakt: ");
 		budowniczy.dodajJTextField("Miasto: ");
@@ -113,6 +125,7 @@ public class DyrektorOkienek {
 	}
 	
 	public void dodawanieProducenci() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa producenta: ");
 		budowniczy.dodajJTextField("Kontakt: ");
 		budowniczy.dodajJTextField("Miasto: ");
@@ -120,38 +133,40 @@ public class DyrektorOkienek {
 	}
 	
 	public void edytowanieMagazyny() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Miasto: ");
 		budowniczy.dodajJTextField("Ulica: ");
 	}
 	
 	public void dodawanieMagazyny() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Miasto: ");
 		budowniczy.dodajJTextField("Ulica: ");
 	}
 	
 	public void edytowanieFaktury() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("NIP: ");
 	}
 	
 	public void dodawanieFaktury() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("NIP: ");
 		budowniczy.dodajJTextField("ID zamówienia: ");
 	}
 	
 	public void edytowanieKategorie() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa kategorii: ");
 	}
 	
 	public void dodawanieKategorie() {
+		budowniczy.zresetuj();
 		budowniczy.dodajJTextField("Nazwa: ");
 	}
 	
 	public JPanel zwrocOkno() {
-		
-		JPanel kopia = budowniczy.zwrocOkno();
-		budowniczy.zresetuj();
-		
-		return kopia;
+		return budowniczy.zwrocOkno();
 	}
 	
 	public ArrayList<JTextField> zwrocPolaTekstowe(){
