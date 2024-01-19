@@ -55,8 +55,9 @@ public class BudowniczyTabeliDruk implements BudowniczyTabeli
 
 	    // Tworzenie łańcucha znaków dla danych
 	    String daneString = "Wykaz " +HibernateOracle.obiekt.getClass().getSimpleName() + " z dnia " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +"\n"+ naglowki;
-	    for (Object[] row : dane) {
+	    for (Object[] row : dane) {	    		
 	        String rowString = String.join(", ", (Iterable<? extends CharSequence>) Arrays.asList(row)) + "\n";
+	        System.out.println(rowString);	
 	        daneString += rowString;
 	    }
 

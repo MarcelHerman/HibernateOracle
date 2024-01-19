@@ -209,30 +209,33 @@ public class StrategiaZamowienia implements IStrategia {
 
 	@Override
 		public void dodajLogikeDruku(DyrektorTabel dyrektor) {
-	    	BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-	     	
-		PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
-		
-		List<Obiekt_Do_Polecen> obiekty = null;
-		bd.stworzSesjeBD();
-		
-		try (Session sesja2 = bd.pobierzSesjeBD()) {
+	    	BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();	     	
+			PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 			
-			Query<Obiekt_Do_Polecen> zapytanie = null;
-			zapytanie = sesja2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class); 
-			obiekty = zapytanie.getResultList();
-			bd.zamknijSesjeBD();
-			} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		dyrektor.tworzTabeleZamowienia(obiekty, budDruk);
-		String table = (String)dyrektor.pobierzTabele();
-											 		                 
-		String path = "wykaz_zamowienia.txt";
-		File plik = new File(path);
-		
-		             
+			List<Obiekt_Do_Polecen> obiekty = null;
+			bd.stworzSesjeBD();
+			
+			try (Session sesja2 = bd.pobierzSesjeBD()) {
+				
+				Query<Obiekt_Do_Polecen> zapytanie = null;
+				zapytanie = sesja2.createQuery("FROM Zamowienia order by id_zamowienia", Obiekt_Do_Polecen.class); 
+				obiekty = zapytanie.getResultList();
+				bd.zamknijSesjeBD();
+				} catch (Exception e) {
+				e.printStackTrace();
+			}
+						
+			dyrektor.tworzTabeleZamowienia(obiekty, budDruk);
+			
+			System.out.println("233");		
+			
+			String table = (String)dyrektor.pobierzTabele();
+			
+			System.out.println("237");		
+			
+			String path = "wykaz_zamowienia.txt";
+			File plik = new File(path);
+			             
 			try (BufferedWriter pisarz = new BufferedWriter(new FileWriter(plik))) {
 			pisarz.write(table);		                         
 			JOptionPane.showMessageDialog(null, "Powstał plik: " + path);
@@ -240,7 +243,7 @@ public class StrategiaZamowienia implements IStrategia {
 					e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Błąd podczas zapisu do pliku: " + e.getMessage());
 			}
-		
+			
 	}
 
 }

@@ -201,7 +201,6 @@ public class StrategiaProducenci implements IStrategia {
 	@Override
 	public void dodajLogikeDruku(DyrektorTabel dyrektor) {
     	BudowniczyTabeliDruk budDruk = new BudowniczyTabeliDruk();
-    	
 
     	PolaczenieOracle bd =  PolaczenieOracle.pobierzInstancje();
 
