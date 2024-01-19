@@ -29,7 +29,7 @@ public class PolaczenieProxy implements IPolaczenia
 			oc = null;
 		}catch(Exception e)
 		{
-    		JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później");
+    		JOptionPane.showMessageDialog(null, "Nie udalo polaczyc sie z baza danych. Spróbuj później. Błąd: " + e);
 		}	
 	}
 }
