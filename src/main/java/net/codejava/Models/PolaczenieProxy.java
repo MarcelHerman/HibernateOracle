@@ -9,6 +9,12 @@ import net.codejava.HibernateOracle;
 public class PolaczenieProxy implements IPolaczenia
 {
 	PolaczenieOracle bd;
+	
+	public PolaczenieProxy()
+	{
+		this.stworzSesjeBD();
+	}
+	
 	public void stworzSesjeBD()
 	{
 		if(bd == null)
