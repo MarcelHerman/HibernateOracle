@@ -336,7 +336,7 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 
         public Object getCellEditorValue() {
             if (isPushed) {
-            	 if (this.label.equals("Edytuj"))  HibernateOracle.wzorzec.dodajLogikeEdytowania(this);  // Kod dla przycisku "Edytuj"
+            	 if (this.label.equals("Edytuj"))  HibernateOracle.obecnaStrategia.dodajLogikeEdytowania(this);  // Kod dla przycisku "Edytuj"
                 	                      
                   else if ("Usuń".equals(this.label)) {
                 	  JPanel myPanel = new JPanel();
@@ -344,7 +344,7 @@ public class BudowniczyTabeliSwing implements BudowniczyTabeli
 
                      int result = JOptionPane.showConfirmDialog(null, myPanel, 
                               "Usuwanie", JOptionPane.OK_CANCEL_OPTION);
-                     if (result == JOptionPane.OK_OPTION)HibernateOracle.wzorzec.dodajLogikeUsuwania(this);
+                     if (result == JOptionPane.OK_OPTION)HibernateOracle.obecnaStrategia.dodajLogikeUsuwania(this);
                   }
                  else if(this.label.equals("Dodaj do koszyka")) {
                 	 //Przycisk Dodaj do koszyka

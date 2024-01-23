@@ -113,9 +113,9 @@ public class widokAplikacji {
 
 		frame.setVisible(true);
 
-		dodajPrzycisk.addActionListener(e -> HibernateOracle.wzorzec.dodajLogikeDodawania(kontener));
+		dodajPrzycisk.addActionListener(e -> HibernateOracle.obecnaStrategia.dodajLogikeDodawania(kontener));
 
-		eksportujDoDruku.addActionListener(e -> HibernateOracle.wzorzec.dodajLogikeDruku(dyrektor));
+		eksportujDoDruku.addActionListener(e -> HibernateOracle.obecnaStrategia.dodajLogikeDruku(dyrektor));
 	}
 	
 	public JButton getDodajPrzycisk() {

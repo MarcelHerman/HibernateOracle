@@ -20,7 +20,7 @@ public class HibernateOracle extends JFrame {
 	
 	public static Repozytorium_Polecen repoPolecen = new Repozytorium_Polecen();
 	
-	public static IStrategia wzorzec;
+	public static IStrategia obecnaStrategia;
 
 	public static void main(String[] args) {
 		widokAplikacji aplikacja = new widokAplikacji();
