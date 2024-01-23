@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import java.util.Map;
-
+ 
 public class HibernateOracle extends JFrame {
 	
 	public static String nazwaTypu = "null";
