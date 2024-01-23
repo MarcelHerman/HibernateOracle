@@ -31,9 +31,9 @@ public class PolaczenieOracle implements IPolaczenia{
 		konfiguracja = new Configuration();
 		
 		konfiguracja.setProperty("hibernate.connection.driver_class","oracle.jdbc.OracleDriver");
-		konfiguracja.setProperty("hibernate.connection.url","jdbc:oracle:thin:@localhost:1521:xe");
-		konfiguracja.setProperty("hibernate.connection.username","SYSTEM");
-		konfiguracja.setProperty("hibernate.connection.password","123");
+		konfiguracja.setProperty("hibernate.connection.url","jdbc:oracle:thin:@212.33.90.213:1521:xe");
+		konfiguracja.setProperty("hibernate.connection.username","SBD_ST_PS10_1");
+		konfiguracja.setProperty("hibernate.connection.password","kotkiwpiwnicy");
 		konfiguracja.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle8iDialect");
 		konfiguracja.setProperty("hibernate.show_sql","true");
 		
